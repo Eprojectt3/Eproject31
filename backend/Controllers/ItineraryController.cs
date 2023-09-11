@@ -27,6 +27,22 @@ namespace backend.Controllers
             return Ok(output);
         }
 
+        //[HttpPost]
+        //public async Task<ActionResult> ListItineraryPagination(int pageIndex = 1, int pageSize = 10)
+        //{
+        //    var output = await itineraryBusinessLogic.SelectAllItineraryPagination(pageIndex, pageSize);
+
+        //    // Kiểm tra xem trang có dữ liệu hay không
+        //    if (output.Data.Count == 0)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // Trả về dữ liệu phân trang và thông tin về trang
+        //    return Ok(output);
+        //}
+
+
         //execute add new itinerary
         [HttpPost]
         public async Task<IActionResult> Add(Itinerary itinerary)
