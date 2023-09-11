@@ -1,0 +1,50 @@
+﻿using Microsoft.EntityFrameworkCore;
+using webapi.Base;
+using webapi.Dao.Specification;
+using webapi.Data;
+
+namespace webapi.Dao.Repository
+{
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    {
+        private DataContext context;
+        public GenericRepository(DataContext context)
+        {
+            this.context = context;
+        }
+
+        public async Task AddAsync(T entity)
+        {
+            await context.Set<T>().AddAsync(entity);
+        }
+
+        public async void Delete(T entity)
+        {
+            context.Set<T>().Remove(entity);
+        }
+
+        public async Task<IReadOnlyList<T>> GetAllAsync()
+        {
+            return await context.Set<T>().ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<T>> GetAllWithAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
+        }
+
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await context.Set<T>().FindAsync(id);
+        }
+
+        public async void Update(T entity)
+        {
+            context.Set<T>().Update(entity);
+        }
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(context.Set<T>(), spec);
+        }
+    }
+}
