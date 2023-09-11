@@ -13,15 +13,11 @@ namespace backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public CategoryBusinessLogic categoryBusinessLogic;
+        public CategoryBussinessLogic categoryBussinessLogic;
         private readonly IResponseCacheService responseCacheService;
-
-        public CategoryController(
-            CategoryBusinessLogic categoryBussiness,
-            IResponseCacheService responseCache
-        )
+        public CategoryController(CategoryBussinessLogic categoryBussiness, IResponseCacheService responseCache)
         {
-            categoryBusinessLogic = categoryBussiness;
+            categoryBussinessLogic = categoryBussiness;
             responseCacheService = responseCache;
         }
 
