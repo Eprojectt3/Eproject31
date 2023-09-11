@@ -1,7 +1,10 @@
-﻿using backend.Dao.Specification.DiscountSpec;
+﻿using AutoMapper;
+using backend.Dao.Specification;
 using backend.Dao.Specification.DiscountSpec;
+using backend.Dtos.DiscountDtos;
 using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -9,9 +12,11 @@ namespace backend.BussinessLogic
     public class DiscountBusinessLogic
     {
         public IUnitofWork unitofWork;
-        public DiscountBusinessLogic(IUnitofWork _unitofWork)
+        public IMapper mapper;
+        public DiscountBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            this.mapper = mapper;
         }
 
         //list category
@@ -107,6 +112,24 @@ namespace backend.BussinessLogic
                 .GetEntityWithSpecAsync(new DiscountByNameSpecification(DiscountName));
 
             return duplicateDiscount != null;
+        }
+        public async Task<Pagination<DiscountDto>> SelectAllDiscountPagination(SpecParams specParams)
+        {
+
+            var spec = new SearchDiscountSpec(specParams);
+            var discounts = await unitofWork.Repository<Discount>().GetAllWithAsync(spec);
+
+            var data = mapper.Map<IReadOnlyList<Discount>, IReadOnlyList<DiscountDto>>(discounts);
+            var DiscountPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+
+            var countSpec = new SearchDiscountSpec(specParams);
+            var count = await unitofWork.Repository<Discount>().GetCountWithSpecAsync(countSpec);
+
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+
+            var pagination = new Pagination<DiscountDto>(specParams.PageIndex, specParams.PageSize, DiscountPage, count, totalPageIndex);
+
+            return pagination;
         }
     }
 }

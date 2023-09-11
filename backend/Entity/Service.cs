@@ -14,8 +14,8 @@ namespace backend.Entity
     [Column(TypeName = "ntext")]
     public string? Description { get; set; }
 
-    [ForeignKey(nameof(Booking.Id))]
-    public int? BookingId { get; set; }
-    public Booking? book { get; set; }
+    [ForeignKey(nameof(TourDetail.Id))]
+    public int? TourDetailId { get; set; }
+    public TourDetail? tourDetail { get; set; }
   }
 }

@@ -1,5 +1,6 @@
 ﻿using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -19,7 +20,21 @@ namespace backend.BussinessLogic
             var data = await unitofWork.Repository<Itinerary>().GetAllAsync();
             return data;
         }
+        //
+        //public async Task<Pagination<Itinerary>> SelectAllItineraryPagination(int pageIndex, int pageSize)
+        //{
+        //    var data = await unitofWork.Repository<Itinerary>().GetAllAsync();
 
+        //    // Tính toán chỉ mục bắt đầu dựa trên pageIndex và pageSize
+        //    var skip = (pageIndex - 1) * pageSize;
+
+        //    // Lấy một trang dữ liệu dựa trên chỉ mục bắt đầu và kích thước trang
+        //    var itineraryPage = data.Skip(skip).Take(pageSize).ToList();
+
+        //    // Tạo đối tượng Pagination và trả về
+        //    var pagination = new Pagination<Itinerary>(pageIndex, pageSize, itineraryPage);
+        //    return pagination;
+        //}
         //create itinerary
         public async Task Create(Itinerary itinerary)
         {
@@ -59,7 +74,8 @@ namespace backend.BussinessLogic
             existingItinerary.Description = itinerary.Description;
             existingItinerary.StartTime = itinerary.StartTime;
             existingItinerary.EndTime = itinerary.EndTime;
-            existingItinerary.LocationID = itinerary.LocationID;
+            existingItinerary.ParentId = itinerary.ParentId;
+            
             await unitofWork.Repository<Itinerary>().Update(existingItinerary);
             var check = await unitofWork.Complete();
             if (check < 1)
