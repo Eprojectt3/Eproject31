@@ -15,6 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 
+
 // Font awesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -25,6 +26,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HomeComponent,
     AboutUsComponent,
     FooterComponent,
+
   ],
   imports: [
     BrowserModule,
