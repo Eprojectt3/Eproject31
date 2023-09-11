@@ -1,0 +1,96 @@
+<div>
+  <!--  Icon close-->
+  <div id="close-button" class="h-[38px] flex justify-end">
+    <button
+      type="button"
+      class="mr-0"
+      mat-icon-button
+      aria-label="Close"
+      (click)="onClose()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!--  Title-->
+  <div class="w-[100%] text-center">
+    <h1 class="!font-bold !text-[25px]" mat-dialog-title>Login</h1>
+  </div>
+
+  <!--  Form-->
+  <div mat-dialog-content class="m-auto w-[80%]">
+    <form class="w-[100%]" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!--  Username-->
+      <div class="mt-[15px]">
+        <mat-form-field class="w-[100%]" focused>
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            formControlName="username"
+            [errorStateMatcher]="validatorForm"
+          />
+          <mat-error
+            *ngIf="loginForm.controls['username'].errors?.['whitespace']"
+            >Username is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--      Password-->
+      <div class="mt-[8px]">
+        <mat-form-field class="w-[100%]">
+          <mat-label>Enter the password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="password"
+            [errorStateMatcher]="validatorForm"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="isShowPassword()"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+
+          <mat-error
+            *ngIf="loginForm.controls['password'].errors?.['whitespace']"
+            >Password is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <!--      Forgot password-->
+        <div class="ml-[10px] mb-[25px]">
+          <a class="cursor-pointer text-[#36373b] hover:text-[#5473f0]"
+            >Forgot Password</a
+          >
+        </div>
+
+        <!--      Login button-->
+        <div class="text-center mt-[15px]">
+          <button
+            type="submit"
+            class="ml-[2px] font-[600] w-[200px] h-[40px]"
+            mat-raised-button
+            color="primary"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <mat-divider class="!mt-[20px]"></mat-divider>
+
+    <!--    If don't have account-->
+    <div class="text-center mt-[8px] text-[13px]">
+      <p>Don't have an account</p>
+    </div>
+  </div>
+</div>
