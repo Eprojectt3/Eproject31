@@ -54,6 +54,7 @@ namespace backend.BussinessLogic
             existingTour.CreateDate = tour.CreateDate;
             existingTour.UpdateBy = tour.UpdateBy;
             existingTour.CreateBy = tour.CreateBy;
+            existingTour.IsActive = tour.IsActive;
             existingTour.Name = tour.Name;
             existingTour.Price = tour.Price;
             existingTour.category_id = tour.category_id;

@@ -25,5 +25,7 @@ namespace backend.Entity
         
         [Column(TypeName = "ntext")]
         public string? Description { get; set; }
+        public ICollection<OrderDetail>? OrderDetails { get; set; }
+        public ICollection<Service>? Services { get; set; }
     }
 }
