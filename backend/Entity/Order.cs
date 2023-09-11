@@ -13,6 +13,6 @@ namespace backend.Entity
     public int? Number_people { get; set; }
     public DateTime Create_Date { get; set; }
     public DateTime End_Date { get; set; }
-    public ICollection<OrderDetail> OrderDetails { get; set; }
+    public ICollection<OrderDetail>? OrderDetails { get; set; }
   }
 }
