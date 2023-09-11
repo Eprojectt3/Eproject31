@@ -1,0 +1,54 @@
+<mat-toolbar class="justify-between" color="primary" role="heading">
+  <div>
+    <span class="ml-[12px]">Navbar</span>
+    <a
+      mat-button
+      class="font-[500] lg:ml-[60px] lg:text-[17px] hover:bg-[#3f4c8c]"
+      routerLink="/home"
+      >Home</a
+    >
+    <a
+      mat-button
+      class="hover:bg-[#3f4c8c] font-[500] lg:text-[17px] lg:ml-[15px]"
+      >About</a
+    >
+    <a
+      mat-button
+      class="hover:bg-[#3f4c8c] font-[500] lg:text-[17px] lg:ml-[15px]"
+      >Contact</a
+    >
+  </div>
+  <div *ngIf="!isLogin" class="mr-[7px]">
+    <button
+      mat-raised-button
+      class="font-[600] hover:w-[80px] hover:h-[38px]"
+      (click)="openDialogLogin()"
+    >
+      Login
+    </button>
+    <button
+      mat-stroked-button
+      class="font-[600] ml-[13px] !border-slate-300 hover:w-[100px] hover:h-[40px] !border-[0.5px]"
+      (click)="openDialogRegister()"
+    >
+      Register
+    </button>
+  </div>
+  <div *ngIf="isLogin" id="login-success">
+    <button
+      mat-fab
+      color="primary"
+      arra-label="User"
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon>person</mat-icon>
+    </button>
+
+    <mat-menu class="w-[370px]" #menu="matMenu">
+      <button (click)="isLogout()" type="button" mat-menu-item>
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>
