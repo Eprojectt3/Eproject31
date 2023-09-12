@@ -6,7 +6,10 @@ import { Router } from '@angular/router';
 import { TokenStorageService } from './token-storage.service';
 import { SnackbarService } from './snackbar.service';
 
-const AUTH_API: string = 'https://localhost:7110/api/Users/';
+// const AUTH_API: string = 'https://localhost:7110/api/Users/';
+// const AUTH_API: string = 'http://localhost:5019/api/Users/';
+const AUTH_API: string = 'http://dapury.click/api/Users/';
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
@@ -25,7 +28,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private tokenStorage: TokenStorageService,
-    private snackBarService: SnackbarService
+    private snackBarService: SnackbarService,
   ) {
     this.userSubject = new BehaviorSubject<User | null>(null);
     this.$user = this.userSubject.asObservable();
@@ -44,7 +47,7 @@ export class AuthService {
           username: user?.userInfo?.username,
           password: user?.userInfo?.password,
         },
-        httpOptions
+        httpOptions,
       )
 
       .pipe(
@@ -59,7 +62,7 @@ export class AuthService {
           this.snackBarService.openSnackBar(err, 'Error');
 
           return of(err);
-        })
+        }),
       );
   };
 
@@ -74,12 +77,12 @@ export class AuthService {
           accessToken: token?.accessToken,
           refreshToken: token?.refreshToken,
         },
-        httpOptions
+        httpOptions,
       )
       .pipe(
         tap(() => {
           this.$isLoggedInSubject.next(false);
-        })
+        }),
       )
       .subscribe();
     this.stopRefreshTokenTimer();
@@ -103,7 +106,7 @@ export class AuthService {
 
           return data;
         }),
-        tap(() => this.startRefreshTokenTimer())
+        tap(() => this.startRefreshTokenTimer()),
       );
   };
 
@@ -120,7 +123,7 @@ export class AuthService {
 
       this.refreshTokenTimeout = setTimeout(
         () => this.refreshToken().subscribe(),
-        timeout
+        timeout,
       );
     }
   };
