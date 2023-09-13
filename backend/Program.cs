@@ -1,5 +1,6 @@
 using System.Text;
 using backend.Extensions;
+using backend.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -100,7 +101,8 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseMiddleware<CheckSlugRole>();
+//app.UseMiddleware<CheckSlugRole>();
+app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 app.MapControllers();
 

@@ -1,4 +1,5 @@
 ﻿using backend.Base;
+using backend.BussinessLogic;
 using backend.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -16,6 +17,7 @@ namespace backend.Extensions
 
             services.AddScoped<IUnitofWork, UnitofWork>();
             services.AddSingleton<Hashtable>();
+            services.AddTransient<CategoryBussinessLogic>();
 
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>

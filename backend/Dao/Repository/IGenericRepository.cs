@@ -4,7 +4,7 @@ using webapi.Dao.Specification;
 namespace webapi.Dao.Repository
 {
     public interface IGenericRepository<T>
-        where T : BaseEntity
+        where T : BaseCreateDate
     {
         Task<IReadOnlyList<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
@@ -15,5 +15,7 @@ namespace webapi.Dao.Repository
         Task AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
+        Task<T> GetEntityWithSpecAsync(ISpecification<T> spec);
+        Task<int> GetCountWithSpecAsync(ISpecification<T> spec);
     }
 }

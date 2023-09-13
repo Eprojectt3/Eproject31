@@ -4,7 +4,7 @@ namespace webapi.Dao.UnitofWork
 {
     public interface IUnitofWork
     {
-        IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity;
+        IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseCreateDate;
 
         Task<int> Complete();
     }

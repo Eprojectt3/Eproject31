@@ -5,7 +5,7 @@ using webapi.Data;
 
 namespace webapi.Dao.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseCreateDate
     {
         private DataContext context;
         public GenericRepository(DataContext context)
@@ -22,12 +22,15 @@ namespace webapi.Dao.Repository
         {
             context.Set<T>().Remove(entity);
         }
-
+        public async void Update(T entity)
+        {
+            context.Set<T>().Update(entity);
+        }
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await context.Set<T>().ToListAsync();
         }
-
+        //Lấy tất cả bản ghi theo điều kiện
         public async Task<IReadOnlyList<T>> GetAllWithAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).ToListAsync();
@@ -37,11 +40,16 @@ namespace webapi.Dao.Repository
         {
             return await context.Set<T>().FindAsync(id);
         }
-
-        public async void Update(T entity)
+        // Đếm số lượng phần tử trả ra theo điều kiện
+        public async Task<int> GetCountWithSpecAsync(ISpecification<T> spec)
         {
-            context.Set<T>().Update(entity);
+            return await ApplySpecification(spec).CountAsync();
         }
+        // Lấy phần tử đầu tiên theo điều kiện
+        public async Task<T> GetEntityWithSpecAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).FirstOrDefaultAsync();
+        }   
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(context.Set<T>(), spec);
