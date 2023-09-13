@@ -1,4 +1,5 @@
 using System.Text;
+using backend.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -62,8 +63,8 @@ builder.Services
 
 // Dependency injection
 builder.Services.AddSingleton<IJWTManagerService, JWTManagerService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<DataContext>();
+builder.Services.AddAppServices();
 
 // Cors
 builder.Services.AddCors(
