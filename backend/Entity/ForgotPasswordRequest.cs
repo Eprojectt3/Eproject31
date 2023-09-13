@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace webapi.Model
+namespace backend.Entity
 {
     public class ForgotPasswordRequest
     {

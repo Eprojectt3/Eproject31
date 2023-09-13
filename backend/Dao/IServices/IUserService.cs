@@ -1,4 +1,4 @@
-﻿using webapi.Model;
+﻿using backend.Entity;
 
 namespace webapi.Dao.IServices
 {

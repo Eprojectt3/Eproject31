@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using webapi.Model;
+﻿using backend.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace webapi.Data
 {

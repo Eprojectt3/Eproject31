@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace webapi.Model
+namespace backend.Entity
 {
     public class Slug
     {
