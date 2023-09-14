@@ -8,14 +8,13 @@ namespace backend.Entity
         public string? Name { get; set; }
         public string? Address { get; set; }
         public int Rating { get; set; }
-        public int ImageDetail { get; set; }  
+        public int? ImageDetail { get; set; }  
         public string? Description { get; set; }
         public string? Avatar { get; set; }
         public double Price { get; set; }
         public int PhoneNumber { get; set; }
-        public bool  IsActive { get; set; } = true;
-        public int CountryId { get; set; }
-        public Country? Country { get; set; }
+        public bool?  IsActive { get; set; } = true;      
+        public int LocationId { get; set; }
         public Location1? Location { get; set; }
     }
 }

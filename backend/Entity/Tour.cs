@@ -19,7 +19,7 @@ namespace backend.Entity
         public User? User { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public int discount_Id { get; set; }
+        public int? discount_Id { get; set; }
         public Discount? discount { get; set; }
     }
 }
