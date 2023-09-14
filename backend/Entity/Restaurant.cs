@@ -6,12 +6,12 @@ namespace backend.Entity
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public float Price { get; set; }
+        public double Price { get; set; }
         public int Ratings { get; set; }
-        public string State { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
-        public string Image { get;set; }
+        public string avatar { get;set; }
+        public string image_detail { get; set; }
         public int PhoneNumbber { get; set; }       
     }
 }

@@ -1,16 +1,11 @@
-﻿using webapi.Base;
-
-namespace backend.Entity
+﻿namespace backend.Entity
 {
-    public class Discount:BaseCreateDate
+    public class Discount
     {
         public int Id { get; set; }
-        public int discount { get; set; }
-        public string? type { get; set; }
-        public bool isActive { get; set; } = true;
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-        public Tour? Tour { get; set; }
-        
+        public string Discount1 { get;set; }
+        public DateTime Start_Date { get; set; }
+        public DateTime End_Date { get; set;}
+        public string Description { get; set; }
     }
 }
