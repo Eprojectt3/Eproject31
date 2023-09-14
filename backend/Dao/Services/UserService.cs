@@ -1,9 +1,9 @@
-﻿using BCrypt.Net;
+﻿using backend.Entity;
+using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using webapi.Dao.IServices;
 using webapi.Data;
-using webapi.Model;
 
 namespace webapi.Dao.Services
 {

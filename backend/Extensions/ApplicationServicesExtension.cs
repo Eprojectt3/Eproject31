@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using webapi.Dao.Repository;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 
 namespace backend.Extensions
 {
@@ -22,9 +23,10 @@ namespace backend.Extensions
                 options.InvalidModelStateResponseFactory = acttionContext =>
                 {
                     var errors = acttionContext.ModelState
-                                               .Where(e => e.Value.Errors.Count > 0)
-                                               .SelectMany(x => x.Value.Errors)
-                                               .Select(x => x.ErrorMessage).ToArray();
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .SelectMany(x => x.Value.Errors)
+                        .Select(x => x.ErrorMessage)
+                        .ToArray();
                     var errorResponse = new APIValidationError
                     {
                         Errors = errors,
