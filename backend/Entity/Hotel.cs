@@ -1,4 +1,4 @@
-﻿using webapi.Base;
+using webapi.Base;
 
 namespace backend.Entity
 {
@@ -16,6 +16,5 @@ namespace backend.Entity
         public string? Image { get; set; }
         public int PhoneNumber { get; set; }
         public string? link { get; set; }
-
     }
 }

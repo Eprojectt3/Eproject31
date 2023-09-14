@@ -1,4 +1,4 @@
-﻿using webapi.Base;
+using webapi.Base;
 
 namespace backend.Entity
 {

@@ -1,23 +1,19 @@
-<mat-toolbar class="justify-between" color="primary" role="heading">
+<mat-toolbar class="justify-between" role="heading">
   <div>
     <span class="ml-[12px]">Navbar</span>
+  </div>
+
+  <div>
     <a
       mat-button
-      class="font-[500] lg:ml-[60px] lg:text-[17px] hover:bg-[#3f4c8c]"
+      class="font-[700] text-[30px] lg:ml-[60px] lg:text-[17px]"
       routerLink="/home"
       >Home</a
     >
-    <a
-      mat-button
-      class="hover:bg-[#3f4c8c] font-[500] lg:text-[17px] lg:ml-[15px]"
-      >About</a
-    >
-    <a
-      mat-button
-      class="hover:bg-[#3f4c8c] font-[500] lg:text-[17px] lg:ml-[15px]"
-      >Contact</a
-    >
+    <a mat-button class="font-[700] lg:text-[17px] lg:ml-[15px]">About</a>
+    <a mat-button class="font-[700] lg:text-[17px] lg:ml-[15px]">Contact</a>
   </div>
+
   <div *ngIf="!isLogin" class="mr-[7px]">
     <button
       mat-raised-button
