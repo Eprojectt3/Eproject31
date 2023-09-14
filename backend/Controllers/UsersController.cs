@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Timers;
 using backend.Entity;
+using backend.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -73,7 +74,6 @@ namespace webapi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserLogin user)
         {
-            var username = user;
             var validUser = await userService.IsValidUserAsync(user.Username, user.Password);
 
             if (validUser is null)
