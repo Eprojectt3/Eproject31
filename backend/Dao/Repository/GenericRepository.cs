@@ -5,7 +5,7 @@ using webapi.Data;
 
 namespace webapi.Dao.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseCreateDate
     {
         private DataContext context;
         public GenericRepository(DataContext context)

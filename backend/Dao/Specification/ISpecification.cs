@@ -3,7 +3,7 @@ using webapi.Base;
 
 namespace webapi.Dao.Specification
 {
-    public interface ISpecification<T> where T : BaseEntity
+    public interface ISpecification<T> where T : BaseCreateDate
     {
         //điều kiện where
         Expression<Func<T, bool>> Criteria { get; set; }

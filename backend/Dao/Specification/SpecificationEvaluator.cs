@@ -3,7 +3,7 @@ using webapi.Base;
 
 namespace webapi.Dao.Specification
 {
-    public static class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
+    public static class SpecificationEvaluator<TEntity> where TEntity : BaseCreateDate
     {
         public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> InputQuery, ISpecification<TEntity> spec)
         {
