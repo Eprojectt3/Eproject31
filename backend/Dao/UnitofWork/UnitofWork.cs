@@ -19,7 +19,7 @@ namespace webapi.Dao.UnitofWork
             return await context.SaveChangesAsync();
         }
 
-        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
+        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseCreateDate
         {
             if (_repositories == null) { _repositories = new Hashtable(); }
 
