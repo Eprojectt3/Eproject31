@@ -1,15 +1,16 @@
 ﻿using backend.Dao.Specification;
+using backend.Dao.Specification.HotelSpec;
 using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
 {
-    public class HotelBussinessLogic
+    public class HotelBusinessLogic
     {
         public IUnitofWork unitofWork;
 
-        public HotelBussinessLogic(IUnitofWork _unitofWork)
+        public HotelBusinessLogic(IUnitofWork _unitofWork)
         {
             unitofWork = _unitofWork;
         }
@@ -70,7 +71,7 @@ namespace backend.BussinessLogic
             existingHotel.Price = hotel.Price;
             existingHotel.Rate = hotel.Rate;
             existingHotel.Description = hotel.Description;
-
+            existingHotel.Links = hotel.Links;
             if (await IsHotelAddressDuplicate(hotel.Address))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");

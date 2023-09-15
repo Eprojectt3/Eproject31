@@ -1,4 +1,4 @@
-﻿using backend.Dao.Specification;
+﻿using backend.Dao.Specification.RestaurantSpec;
 using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
@@ -71,6 +71,7 @@ namespace backend.BussinessLogic
             existingRestaurant.Price = restaurant.Price;
             existingRestaurant.Ratings = restaurant.Ratings;
             existingRestaurant.Description = restaurant.Description;
+            existingRestaurant.link = restaurant.link;
             if (await IsRestaurantNameDuplicate(restaurant.Address))
             {
                 throw new BadRequestExceptions("Restaurant Address is exist.");
