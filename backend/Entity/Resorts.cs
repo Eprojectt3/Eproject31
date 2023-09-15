@@ -1,9 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.ComponentModel.DataAnnotations.Schema;
+using webapi.Base;
 
 namespace backend.Entity
 {
-    public class Resorts
+    public class Resorts : BaseCreateDate
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -19,7 +20,6 @@ namespace backend.Entity
         [ForeignKey(nameof(Location1.ID))]
         public int LocationId { get; set; }
         public Location1? Location { get; set; }
-
-        public string? link { get; set; }
+        public string? Links { get; set; }
     }
 }

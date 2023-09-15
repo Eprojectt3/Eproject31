@@ -1,4 +1,4 @@
-using backend.Dao.Specification;
+﻿using backend.Dao.Specification;
 using backend.Dao.Specification.CategorySpec;
 using backend.Entity;
 using backend.Exceptions;
@@ -9,12 +9,10 @@ using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
 {
-    public class CategoryBussinessLogic
+    public class CategoryBusinessLogic
     {
         public IUnitofWork unitofWork;
-
-        public CategoryBussinessLogic(IUnitofWork _unitofWork)
-        {
+        public CategoryBusinessLogic(IUnitofWork _unitofWork) {
             unitofWork = _unitofWork;
         }
 
@@ -37,6 +35,7 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Category Name is exist.");
             }
+            
 
             await unitofWork.Repository<Category>().AddAsync(category);
             var check = await unitofWork.Complete();
@@ -53,21 +52,19 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
-
-            var existingCategory = await unitofWork
-                .Repository<Category>()
-                .GetByIdAsync(category.Id);
-
+            
+            var existingCategory = await unitofWork.Repository<Category>().GetByIdAsync(category.Id);
+            
             if (existingCategory is null)
             {
-                throw new NotFoundExceptions("not found");
+               throw new NotFoundExceptions("not found");
             }
-            existingCategory.UpdateDate = category.UpdateDate;
+            existingCategory.UpdateDate = category.UpdateDate ;
             existingCategory.CreateDate = category.CreateDate;
-            existingCategory.UpdateBy = category.UpdateBy;
-            existingCategory.CreateBy = category.CreateBy;
-            existingCategory.Name = category.Name;
-            existingCategory.IsActive = category.IsActive;
+            existingCategory.UpdateBy = category.UpdateBy ;
+            existingCategory.CreateBy = category.CreateBy ;
+            existingCategory.Name = category.Name ;
+            existingCategory.IsActive = category.IsActive ;
 
             await unitofWork.Repository<Category>().Update(existingCategory);
             var check = await unitofWork.Complete();
@@ -80,9 +77,9 @@ namespace backend.BussinessLogic
         //delete category
         public async Task Delete(int id)
         {
+            
             var existingCategory = await unitofWork.Repository<Category>().GetByIdAsync(id);
-            if (existingCategory == null)
-            {
+            if (existingCategory == null) { 
                 throw new NotFoundExceptions("not found");
             }
             await unitofWork.Repository<Category>().Delete(existingCategory);
@@ -98,10 +95,9 @@ namespace backend.BussinessLogic
         {
             // Chuyển tên category thành chữ thường để so sánh không phân biệt chữ hoa/chữ thường
             categoryName = categoryName.ToLower();
-
+           
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
-            var duplicateCategory = await unitofWork
-                .Repository<Category>()
+            var duplicateCategory = await unitofWork.Repository<Category>()
                 .GetEntityWithSpecAsync(new CategoryByNameSpecification(categoryName));
 
             return duplicateCategory != null;
