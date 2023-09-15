@@ -8,7 +8,6 @@ namespace backend.BussinessLogic
     public class RestaurantBusinessLogic
     {
         public IUnitofWork unitofWork;
-
         public RestaurantBusinessLogic(IUnitofWork _unitofWork)
         {
             unitofWork = _unitofWork;
@@ -34,6 +33,7 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("Restaurant Address is exist.");
             }
 
+
             await unitofWork.Repository<Restaurant>().AddAsync(restaurant);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -50,9 +50,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingRestaurant = await unitofWork
-                .Repository<Restaurant>()
-                .GetByIdAsync(restaurant.Id);
+            var existingRestaurant = await unitofWork.Repository<Restaurant>().GetByIdAsync(restaurant.Id);
 
             if (existingRestaurant is null)
             {
@@ -88,6 +86,7 @@ namespace backend.BussinessLogic
         //delete restaurant
         public async Task Delete(int id)
         {
+
             var existingRestaurant = await unitofWork.Repository<Restaurant>().GetByIdAsync(id);
             if (existingRestaurant == null)
             {
@@ -108,11 +107,11 @@ namespace backend.BussinessLogic
             restaurantName = restaurantName.ToLower();
 
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
-            var duplicateRestaurant = await unitofWork
-                .Repository<Restaurant>()
+            var duplicateRestaurant = await unitofWork.Repository<Restaurant>()
                 .GetEntityWithSpecAsync(new RestaurantByAddressSpecification(restaurantName));
 
             return duplicateRestaurant != null;
         }
     }
 }
+

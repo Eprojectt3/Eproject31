@@ -35,6 +35,7 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
 
+
             await unitofWork.Repository<Hotel>().AddAsync(hotel);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -71,7 +72,7 @@ namespace backend.BussinessLogic
             existingHotel.Price = hotel.Price;
             existingHotel.Rate = hotel.Rate;
             existingHotel.Description = hotel.Description;
-            existingHotel.Links = hotel.Links;
+            existingHotel.link = hotel.link;
             if (await IsHotelAddressDuplicate(hotel.Address))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
@@ -88,6 +89,7 @@ namespace backend.BussinessLogic
         //delete hotel
         public async Task Delete(int id)
         {
+
             var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
             if (existingHotel == null)
             {
@@ -98,6 +100,14 @@ namespace backend.BussinessLogic
             if (check < 1)
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
+            }
+        }
+        public async Task GetByHotelId(int id)
+        {
+            var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
+            if (existingHotel == null)
+            {
+                throw new NotFoundExceptions("not found");
             }
         }
 

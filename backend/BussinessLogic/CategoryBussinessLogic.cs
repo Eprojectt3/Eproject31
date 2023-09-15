@@ -96,8 +96,7 @@ namespace backend.BussinessLogic
         //duplicate name
         private async Task<bool> IsCategoryNameDuplicate(string categoryName)
         {
-            // Chuyển tên category thành chữ thường để so sánh không phân biệt chữ hoa/chữ thường
-            categoryName = categoryName.ToLower();
+            
 
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateCategory = await unitofWork

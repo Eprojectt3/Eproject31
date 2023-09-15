@@ -1,4 +1,5 @@
-﻿using backend.Dao.Specification.ResortSpec;
+﻿
+using backend.Dao.Specification.ResortSpec;
 using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
@@ -18,7 +19,7 @@ namespace backend.BussinessLogic
         public async Task<IReadOnlyList<Resorts>> SelectAllResorts()
         {
             var data = await unitofWork.Repository<Resorts>().GetAllAsync();
-
+            
             return data;
         }
 
@@ -34,6 +35,7 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Resorts Address is exist.");
             }
+
 
             await unitofWork.Repository<Resorts>().AddAsync(resort);
             var check = await unitofWork.Complete();
@@ -72,7 +74,7 @@ namespace backend.BussinessLogic
             existingResorts.IsActive = resort.IsActive;
             existingResorts.LocationId = resort.LocationId;
             existingResorts.Location = resort.Location;
-            existingResorts.Links = resort.Links;
+            existingResorts.link = resort.link;
             if (await IsResortsAddressDuplicate(resort.Address))
             {
                 throw new BadRequestExceptions("Resorts Address is exist.");
@@ -89,6 +91,7 @@ namespace backend.BussinessLogic
         //delete resort
         public async Task Delete(int id)
         {
+
             var existingResorts = await unitofWork.Repository<Resorts>().GetByIdAsync(id);
             if (existingResorts == null)
             {
