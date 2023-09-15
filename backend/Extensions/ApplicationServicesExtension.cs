@@ -1,4 +1,5 @@
 ﻿using backend.Base;
+using backend.BussinessLogic;
 using backend.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -16,6 +17,7 @@ namespace backend.Extensions
 
             services.AddScoped<IUnitofWork, UnitofWork>();
             services.AddSingleton<Hashtable>();
+            services.AddTransient<CategoryBussinessLogic>();
 
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
@@ -23,10 +25,9 @@ namespace backend.Extensions
                 options.InvalidModelStateResponseFactory = acttionContext =>
                 {
                     var errors = acttionContext.ModelState
-                        .Where(e => e.Value.Errors.Count > 0)
-                        .SelectMany(x => x.Value.Errors)
-                        .Select(x => x.ErrorMessage)
-                        .ToArray();
+                                               .Where(e => e.Value.Errors.Count > 0)
+                                               .SelectMany(x => x.Value.Errors)
+                                               .Select(x => x.ErrorMessage).ToArray();
                     var errorResponse = new APIValidationError
                     {
                         Errors = errors,
