@@ -1,6 +1,8 @@
-﻿namespace backend.Entity
+﻿using webapi.Base;
+
+namespace backend.Entity
 {
-    public class Service
+    public class Service:BaseCreateDate
     {
         public int ID { get; set; }
         public string Name { get; set; }

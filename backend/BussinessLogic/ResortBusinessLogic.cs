@@ -1,4 +1,5 @@
-﻿using backend.Dao.Specification.ResortSpec;
+﻿
+using backend.Dao.Specification.ResortSpec;
 using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
@@ -18,7 +19,7 @@ namespace backend.BussinessLogic
         public async Task<IReadOnlyList<Resorts>> SelectAllResorts()
         {
             var data = await unitofWork.Repository<Resorts>().GetAllAsync();
-
+            
             return data;
         }
 
@@ -34,6 +35,7 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Resorts Address is exist.");
             }
+
 
             await unitofWork.Repository<Resorts>().AddAsync(resort);
             var check = await unitofWork.Complete();
@@ -66,8 +68,9 @@ namespace backend.BussinessLogic
             existingResorts.Rating = resort.Rating;
             existingResorts.ImageDetail = resort.ImageDetail;
             existingResorts.Description = resort.Description;
-            existingResorts.Avatar = resort.Avatar;
+            existingResorts.Image = resort.Image;
             existingResorts.Price = resort.Price;
+            existingResorts.Price_range = resort.Price_range;
             existingResorts.PhoneNumber = resort.PhoneNumber;
             existingResorts.IsActive = resort.IsActive;
             existingResorts.LocationId = resort.LocationId;
@@ -89,6 +92,7 @@ namespace backend.BussinessLogic
         //delete resort
         public async Task Delete(int id)
         {
+
             var existingResorts = await unitofWork.Repository<Resorts>().GetByIdAsync(id);
             if (existingResorts == null)
             {
@@ -101,12 +105,19 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
         }
-
+        //get resort by id
+        public async Task GetByResortId(int id)
+        {
+            var existingHotel = await unitofWork.Repository<Resorts>().GetByIdAsync(id);
+            if (existingHotel == null)
+            {
+                throw new NotFoundExceptions("not found");
+            }
+        }
         //duplicate name
         private async Task<bool> IsResortsAddressDuplicate(string resortAddress)
         {
-            // Chuyển tên resort thành chữ thường để so sánh không phân biệt chữ hoa/chữ thường
-            resortAddress = resortAddress.ToLower();
+        
 
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateResorts = await unitofWork

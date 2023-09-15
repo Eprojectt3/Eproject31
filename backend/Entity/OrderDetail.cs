@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using webapi.Base;
 
 namespace backend.Entity
 {
-    public class OrderDetail
+    public class OrderDetail:BaseCreateDate
     {
         public int Id { get; set; }
 

@@ -9,13 +9,13 @@ namespace backend.Entity
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }
-        public int Rating { get; set; }
-        public int? ImageDetail { get; set; }
+        public int? Rating { get; set; }
+        public string? ImageDetail { get; set; }
         public string? Description { get; set; }
-        public string? Avatar { get; set; }
+        public string? Image { get; set; }
         public double Price { get; set; }
+        public string Price_range { get; set; }
         public int PhoneNumber { get; set; }
-        public bool? IsActive { get; set; } = true;
 
         [ForeignKey(nameof(Location1.ID))]
         public int LocationId { get; set; }

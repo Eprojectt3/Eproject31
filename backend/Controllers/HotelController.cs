@@ -54,5 +54,13 @@ namespace backend.Controllers
             await hotelBusinessLogic.Delete(id);
             return Ok();
         }
+
+        //get hotel by id
+        [HttpPost]
+        public async Task<IActionResult> GetByHotelId(int id)
+        {
+            await hotelBusinessLogic.GetByHotelId(id);
+            return Ok();
+        }
     }
 }

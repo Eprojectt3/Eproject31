@@ -35,6 +35,7 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
 
+
             await unitofWork.Repository<Hotel>().AddAsync(hotel);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -68,8 +69,10 @@ namespace backend.BussinessLogic
             existingHotel.Location1 = hotel.Location1;
             existingHotel.LocatinId = hotel.LocatinId;
             existingHotel.Image = hotel.Image;
+            existingHotel.ImageDetail = hotel.ImageDetail;
             existingHotel.Price = hotel.Price;
-            existingHotel.Rate = hotel.Rate;
+            existingHotel.Price_range = hotel.Price_range;
+            existingHotel.Rating = hotel.Rating;
             existingHotel.Description = hotel.Description;
             existingHotel.Links = hotel.Links;
             if (await IsHotelAddressDuplicate(hotel.Address))
@@ -88,6 +91,7 @@ namespace backend.BussinessLogic
         //delete hotel
         public async Task Delete(int id)
         {
+
             var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
             if (existingHotel == null)
             {
@@ -100,13 +104,19 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
         }
+        public async Task GetByHotelId(int id)
+        {
+            var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
+            if (existingHotel == null)
+            {
+                throw new NotFoundExceptions("not found");
+            }
+        }
 
         //duplicate name
         private async Task<bool> IsHotelAddressDuplicate(string hotelName)
         {
-            // Chuyển tên hotel thành chữ thường để so sánh không phân biệt chữ hoa/chữ thường
-            hotelName = hotelName.ToLower();
-
+            
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateHotel = await unitofWork
                 .Repository<Hotel>()

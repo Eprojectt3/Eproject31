@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using webapi.Base;
 
 namespace backend.Entity
 {
-    public class Tour
+    public class Tour:BaseCreateDate
     {
         public int Id { get; set; }
         public string Name { get; set; }
