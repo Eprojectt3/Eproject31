@@ -18,11 +18,11 @@ namespace webapi.Dao.Repository
             await context.Set<T>().AddAsync(entity);
         }
 
-        public async void Delete(T entity)
+        public async Task Delete(T entity)
         {
             context.Set<T>().Remove(entity);
         }
-        public async void Update(T entity)
+        public async Task Update(T entity)
         {
             context.Set<T>().Update(entity);
         }

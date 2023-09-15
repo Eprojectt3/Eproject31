@@ -22,5 +22,15 @@ namespace backend.BussinessLogic
             await unitofWork.Repository<Category>().AddAsync(category);
             await unitofWork.Complete();
         }
+        public async Task Update(Category category)
+        {
+            await unitofWork.Repository<Category>().Update(category);
+            await unitofWork.Complete();
+        }
+        public async Task Delete(Category category)
+        {
+            await unitofWork.Repository<Category>().Delete(category);
+            await unitofWork.Complete();
+        }
     }
 }
