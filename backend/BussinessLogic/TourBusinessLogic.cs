@@ -90,6 +90,14 @@ namespace backend.BussinessLogic
             }
         }
 
-        
+        //get restaurant by id
+        public async Task GetByTourId(int id)
+        {
+            var existingHotel = await unitofWork.Repository<Tour>().GetByIdAsync(id);
+            if (existingHotel == null)
+            {
+                throw new NotFoundExceptions("not found");
+            }
+        }
     }
 }

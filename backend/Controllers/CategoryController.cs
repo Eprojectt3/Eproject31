@@ -60,14 +60,7 @@ namespace backend.Controllers
             return Ok(category);
         }
 
-        //execute update category
-        [HttpPost]
-        public async Task<IActionResult> Update( Category category)
-        {
-
-            await categoryBussinessLogic.Update(category);
-            return Ok(category);
-        }
+        
 
         //execute delete category
         [HttpDelete]
