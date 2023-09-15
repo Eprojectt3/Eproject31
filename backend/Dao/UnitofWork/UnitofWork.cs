@@ -9,17 +9,18 @@ namespace webapi.Dao.UnitofWork
     {
         private DataContext context;
         private Hashtable _repositories;
-        public UnitofWork(DataContext context, Hashtable hashtable)
+        public UnitofWork(DataContext context)
         {
             this.context = context;
-            this._repositories = hashtable;
+ 
         }
         public async Task<int> Complete()
         {
             return await context.SaveChangesAsync();
         }
+      
 
-        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
+        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseCreateDate
         {
             if (_repositories == null) { _repositories = new Hashtable(); }
 
