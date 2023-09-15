@@ -7,19 +7,19 @@ namespace backend.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class TourController : ControllerBase
+    public class FeedBackController : ControllerBase
     {
-        public TourBusinessLogic tourBusinessLogic;
-        public TourController(TourBusinessLogic Bussiness)
+        public FeedBackBusinessLogic feedBackBusinessLogic;
+        public FeedBackController(FeedBackBusinessLogic Bussiness)
         {
-            tourBusinessLogic = Bussiness;
+            feedBackBusinessLogic = Bussiness;
         }
 
         // execute list all tour
         [HttpGet]
-        public async Task<ActionResult> ListTour()
+        public async Task<ActionResult> ListFeedBack()
         {
-            var output = await tourBusinessLogic.SelectAllTour();
+            var output = await feedBackBusinessLogic.SelectAllFeedBack();
             if (output == null)
             {
                 return NotFound();
@@ -30,20 +30,20 @@ namespace backend.Controllers
         //execute add new tour
         [HttpPost]
 
-        public async Task<IActionResult> Add(Tour tour)
+        public async Task<IActionResult> Add(FeedBack tour)
         {
 
-            await tourBusinessLogic.Create(tour);
+            await feedBackBusinessLogic.Create(tour);
 
             return Ok(tour);
         }
 
         //execute update tour
         [HttpPost]
-        public async Task<IActionResult> Update(Tour tour)
+        public async Task<IActionResult> Update(FeedBack tour)
         {
 
-            await tourBusinessLogic.Update(tour);
+            await feedBackBusinessLogic.Update(tour);
             return Ok(tour);
         }
 
@@ -51,15 +51,9 @@ namespace backend.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            await tourBusinessLogic.Delete(id);
+            await feedBackBusinessLogic.Delete(id);
             return Ok();
         }
-        //get tour by id
-        [HttpPost]
-        public async Task<IActionResult> GetByTourId(int id)
-        {
-            await tourBusinessLogic.GetByTourId(id);
-            return Ok();
-        }
+        
     }
 }

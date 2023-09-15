@@ -64,12 +64,13 @@ namespace backend.BussinessLogic
             existingRestaurant.IsActive = restaurant.IsActive;
             existingRestaurant.Address = restaurant.Address;
             existingRestaurant.PhoneNumbber = restaurant.PhoneNumbber;
-            existingRestaurant.Avatar = restaurant.Avatar;
+            existingRestaurant.Image = restaurant.Image;
             existingRestaurant.Image_detail = restaurant.Image_detail;
             existingRestaurant.Price = restaurant.Price;
-            existingRestaurant.Ratings = restaurant.Ratings;
+            existingRestaurant.Price_range = restaurant.Price_range;
+            existingRestaurant.Rating = restaurant.Rating;
             existingRestaurant.Description = restaurant.Description;
-            existingRestaurant.link = restaurant.link;
+            existingRestaurant.Links = restaurant.Links;
             if (await IsRestaurantNameDuplicate(restaurant.Address))
             {
                 throw new BadRequestExceptions("Restaurant Address is exist.");
@@ -99,13 +100,18 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
         }
-
+        //get restaurant by id
+        public async Task GetByRestaurantId(int id)
+        {
+            var existingHotel = await unitofWork.Repository<Restaurant>().GetByIdAsync(id);
+            if (existingHotel == null)
+            {
+                throw new NotFoundExceptions("not found");
+            }
+        }
         //duplicate name
         private async Task<bool> IsRestaurantNameDuplicate(string restaurantName)
         {
-            // Chuyển tên restaurant thành chữ thường để so sánh không phân biệt chữ hoa/chữ thường
-            restaurantName = restaurantName.ToLower();
-
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateRestaurant = await unitofWork.Repository<Restaurant>()
                 .GetEntityWithSpecAsync(new RestaurantByAddressSpecification(restaurantName));

@@ -1,4 +1,5 @@
 ﻿
+using backend.Dao.Specification.LocationSpec;
 using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
@@ -74,11 +75,31 @@ namespace backend.BussinessLogic
         {
 
             var existingLocation1 = await unitofWork.Repository<Location1>().GetByIdAsync(id);
+            var HotelHaveLocationId = await unitofWork.Repository<Hotel>().GetAllWithAsync(new GetHotelHasLocationId(id));
+            var ResortHaveLocationId = await unitofWork.Repository<Resorts>().GetAllWithAsync(new GetResortHasLocationId(id));
+            var RestaurantHaveLocationId = await unitofWork.Repository<Restaurant>().GetAllWithAsync(new GetRestaurantHasLocationId(id));
             if (existingLocation1 == null)
             {
                 throw new NotFoundExceptions("not found");
             }
+            // Xóa tất cả các khách sạn liên quan
+            foreach (var hotel in HotelHaveLocationId)
+            {
+                await unitofWork.Repository<Hotel>().Delete(hotel);
+            }
+            // Xóa tất cả các resort liên quan
+            foreach (var resort in ResortHaveLocationId)
+            {
+                await unitofWork.Repository<Resorts>().Delete(resort);
+            }
+            // Xóa tất cả các resort liên quan
+            foreach (var restaurant in RestaurantHaveLocationId)
+            {
+                await unitofWork.Repository<Restaurant>().Delete(restaurant);
+            }
+
             await unitofWork.Repository<Location1>().Delete(existingLocation1);
+
             var check = await unitofWork.Complete();
             if (check < 1)
             {

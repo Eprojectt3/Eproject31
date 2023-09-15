@@ -69,8 +69,10 @@ namespace backend.BussinessLogic
             existingHotel.Location1 = hotel.Location1;
             existingHotel.LocatinId = hotel.LocatinId;
             existingHotel.Image = hotel.Image;
+            existingHotel.ImageDetail = hotel.ImageDetail;
             existingHotel.Price = hotel.Price;
-            existingHotel.Rate = hotel.Rate;
+            existingHotel.Price_range = hotel.Price_range;
+            existingHotel.Rating = hotel.Rating;
             existingHotel.Description = hotel.Description;
             existingHotel.link = hotel.link;
             if (await IsHotelAddressDuplicate(hotel.Address))
@@ -114,9 +116,7 @@ namespace backend.BussinessLogic
         //duplicate name
         private async Task<bool> IsHotelAddressDuplicate(string hotelName)
         {
-            // Chuyển tên hotel thành chữ thường để so sánh không phân biệt chữ hoa/chữ thường
-            hotelName = hotelName.ToLower();
-
+            
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateHotel = await unitofWork
                 .Repository<Hotel>()

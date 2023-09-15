@@ -96,8 +96,6 @@ namespace backend.BussinessLogic
         //duplicate name
         private async Task<bool> IsCategoryNameDuplicate(string categoryName)
         {
-            
-
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateCategory = await unitofWork
                 .Repository<Category>()
