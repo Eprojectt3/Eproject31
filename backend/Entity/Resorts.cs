@@ -16,5 +16,7 @@ namespace backend.Entity
         public bool?  IsActive { get; set; } = true;      
         public int LocationId { get; set; }
         public Location1? Location { get; set; }
+        public string? link { get; set; }
+
     }
 }

@@ -21,5 +21,6 @@ namespace backend.Entity
         public DateTime EndTime { get; set; }
         public int? discount_Id { get; set; }
         public Discount? discount { get; set; }
+        public ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }
