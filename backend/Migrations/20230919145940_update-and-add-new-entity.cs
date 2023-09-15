@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class V1 : Migration
+    public partial class updateandaddnewentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -112,6 +112,8 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Price = table.Column<double>(type: "float", nullable: false),
                     number_people = table.Column<int>(type: "int", nullable: false),
+                    Create_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -144,7 +146,7 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "ntext", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -180,14 +182,16 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Rate = table.Column<int>(type: "int", nullable: false),
-                    Location1ID = table.Column<int>(type: "int", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageDetail = table.Column<int>(type: "int", nullable: false),
+                    Price_range = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: true),
+                    LocatinId = table.Column<int>(type: "int", nullable: false),
+                    location1ID = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "ntext", nullable: true),
+                    ImageDetail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Links = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -198,8 +202,8 @@ namespace backend.Migrations
                 {
                     table.PrimaryKey("PK_Hotels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Hotels_Locations_Location1ID",
-                        column: x => x.Location1ID,
+                        name: "FK_Hotels_Locations_location1ID",
+                        column: x => x.location1ID,
                         principalTable: "Locations",
                         principalColumn: "ID");
                 });
@@ -212,15 +216,20 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    ImageDetail = table.Column<int>(type: "int", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rating = table.Column<int>(type: "int", nullable: true),
+                    ImageDetail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "ntext", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
+                    Price_range = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: true),
                     LocationId = table.Column<int>(type: "int", nullable: false),
-                    link = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Links = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,14 +250,15 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Ratings = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price_range = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "ntext", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image_detail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumbber = table.Column<int>(type: "int", nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: false),
-                    link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Links = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -318,14 +328,24 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
+                    category_id = table.Column<int>(type: "int", nullable: false),
                     categoryId = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    quantity_limit = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<bool>(type: "bit", nullable: true),
-                    TransportationId = table.Column<int>(type: "int", nullable: true),
+                    Transportation_ID = table.Column<int>(type: "int", nullable: false),
+                    transportationId = table.Column<int>(type: "int", nullable: true),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    discountId = table.Column<int>(type: "int", nullable: true)
+                    discount_Id = table.Column<int>(type: "int", nullable: true),
+                    discountId = table.Column<int>(type: "int", nullable: true),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -341,8 +361,8 @@ namespace backend.Migrations
                         principalTable: "Discount",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tour_Transportation_TransportationId",
-                        column: x => x.TransportationId,
+                        name: "FK_Tour_Transportation_transportationId",
+                        column: x => x.transportationId,
                         principalTable: "Transportation",
                         principalColumn: "Id");
                 });
@@ -389,12 +409,17 @@ namespace backend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderID = table.Column<int>(type: "int", nullable: false),
-                    quantity = table.Column<int>(type: "int", nullable: false),
-                    price = table.Column<double>(type: "float", nullable: false),
-                    Create_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    End_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: true),
                     TourID = table.Column<int>(type: "int", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: false)
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -419,10 +444,36 @@ namespace backend.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Service",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "ntext", nullable: true),
+                    TourID = table.Column<int>(type: "int", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Service", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Service_Tour_TourID",
+                        column: x => x.TourID,
+                        principalTable: "Tour",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Hotels_Location1ID",
+                name: "IX_Hotels_location1ID",
                 table: "Hotels",
-                column: "Location1ID");
+                column: "location1ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Itinerarie_LocationID",
@@ -460,6 +511,11 @@ namespace backend.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Service_TourID",
+                table: "Service",
+                column: "TourID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Slugs_RoleId",
                 table: "Slugs",
                 column: "RoleId");
@@ -475,9 +531,9 @@ namespace backend.Migrations
                 column: "discountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tour_TransportationId",
+                name: "IX_Tour_transportationId",
                 table: "Tour",
-                column: "TransportationId");
+                column: "transportationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -516,6 +572,9 @@ namespace backend.Migrations
                 name: "Restaurant");
 
             migrationBuilder.DropTable(
+                name: "Service");
+
+            migrationBuilder.DropTable(
                 name: "Slugs");
 
             migrationBuilder.DropTable(
@@ -525,13 +584,16 @@ namespace backend.Migrations
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Tour");
-
-            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "Tour");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Category");
@@ -541,9 +603,6 @@ namespace backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Transportation");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
         }
     }
 }
