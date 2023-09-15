@@ -12,8 +12,8 @@ using webapi.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230915170558_CREATEENTITY")]
-    partial class CREATEENTITY
+    [Migration("20230919145940_update-and-add-new-entity")]
+    partial class updateandaddnewentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,21 +180,21 @@ namespace backend.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ImageDetail")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageDetail")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LocatinId")
-                        .HasColumnType("int");
+                    b.Property<string>("Links")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Location1ID")
+                    b.Property<int>("LocatinId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -206,7 +206,11 @@ namespace backend.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("Rate")
+                    b.Property<string>("Price_range")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Rating")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdateBy")
@@ -215,12 +219,12 @@ namespace backend.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("link")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("location1ID")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Location1ID");
+                    b.HasIndex("location1ID");
 
                     b.ToTable("Hotels");
                 });
@@ -322,6 +326,12 @@ namespace backend.Migrations
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("Create_Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("End_Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -350,25 +360,40 @@ namespace backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Create_Date")
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("End_Date")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("TourID")
                         .HasColumnType("int");
 
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<double>("price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -393,17 +418,26 @@ namespace backend.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Avatar")
+                    b.Property<string>("CreateBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("ntext");
+
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ImageDetail")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageDetail")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsActive")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Links")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
@@ -417,11 +451,18 @@ namespace backend.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("Rating")
+                    b.Property<string>("Price_range")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("link")
+                    b.Property<string>("UpdateBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -441,9 +482,6 @@ namespace backend.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CreateBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -451,6 +489,9 @@ namespace backend.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("ntext");
+
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image_detail")
@@ -458,6 +499,9 @@ namespace backend.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Links")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
@@ -471,7 +515,11 @@ namespace backend.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("Ratings")
+                    b.Property<string>("Price_range")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Rating")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdateBy")
@@ -479,9 +527,6 @@ namespace backend.Migrations
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("link")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -505,6 +550,46 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("backend.Entity.Service", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("ntext");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TourID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TourID");
+
+                    b.ToTable("Service");
                 });
 
             modelBuilder.Entity("backend.Entity.Slug", b =>
@@ -541,6 +626,12 @@ namespace backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -548,12 +639,18 @@ namespace backend.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -563,6 +660,12 @@ namespace backend.Migrations
 
                     b.Property<bool?>("Type")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("categoryId")
                         .HasColumnType("int");
@@ -611,7 +714,7 @@ namespace backend.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("ntext");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -700,11 +803,11 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entity.Hotel", b =>
                 {
-                    b.HasOne("backend.Entity.Location1", "Location1")
+                    b.HasOne("backend.Entity.Location1", "location1")
                         .WithMany("Hotels")
-                        .HasForeignKey("Location1ID");
+                        .HasForeignKey("location1ID");
 
-                    b.Navigation("Location1");
+                    b.Navigation("location1");
                 });
 
             modelBuilder.Entity("backend.Entity.Itinerary", b =>
@@ -728,7 +831,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entity.OrderDetail", b =>
                 {
-                    b.HasOne("backend.Entity.Order", null)
+                    b.HasOne("backend.Entity.Order", "order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -747,6 +850,8 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Users");
+
+                    b.Navigation("order");
 
                     b.Navigation("tour");
                 });
@@ -771,6 +876,17 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("backend.Entity.Service", b =>
+                {
+                    b.HasOne("backend.Entity.Tour", "tour")
+                        .WithMany()
+                        .HasForeignKey("TourID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("tour");
                 });
 
             modelBuilder.Entity("backend.Entity.Slug", b =>

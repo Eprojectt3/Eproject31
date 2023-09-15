@@ -53,6 +53,7 @@ namespace backend.BussinessLogic
             existingFeedBack.CreateDate = feedback.CreateDate;
             existingFeedBack.UpdateBy = feedback.UpdateBy;
             existingFeedBack.CreateBy = feedback.CreateBy;
+            existingFeedBack.IsActive = feedback.IsActive;
             existingFeedBack.Title = feedback.Title;
             existingFeedBack.Name = feedback.Name;
             existingFeedBack.Email = feedback.Email;

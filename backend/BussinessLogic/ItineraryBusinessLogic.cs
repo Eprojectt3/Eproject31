@@ -53,6 +53,7 @@ namespace backend.BussinessLogic
             existingItinerary.CreateDate = itinerary.CreateDate;
             existingItinerary.UpdateBy = itinerary.UpdateBy;
             existingItinerary.CreateBy = itinerary.CreateBy;
+            existingItinerary.IsActive = itinerary.IsActive;
             existingItinerary.TourID = itinerary.TourID;
             existingItinerary.Sequence = itinerary.Sequence;
             existingItinerary.Description = itinerary.Description;

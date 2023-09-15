@@ -60,6 +60,7 @@ namespace backend.BussinessLogic
             existingTour.Description = tour.Description;
             existingTour.image = tour.image;
             existingTour.quantity_limit = tour.quantity_limit;
+            existingTour.Rating = tour.Rating;
             existingTour.Type = tour.Type;
             existingTour.Transportation_ID = tour.Transportation_ID;
             existingTour.StartTime = tour.StartTime;

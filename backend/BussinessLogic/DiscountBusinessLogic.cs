@@ -61,6 +61,7 @@ namespace backend.BussinessLogic
             existingDiscount.CreateDate = discount.CreateDate;
             existingDiscount.UpdateBy = discount.UpdateBy;
             existingDiscount.CreateBy = discount.CreateBy;
+            existingDiscount.IsActive = discount.IsActive;
             existingDiscount.Discount1 = discount.Discount1;
             existingDiscount.Start_Date = discount.Start_Date;
             existingDiscount.End_Date = discount.End_Date;
