@@ -45,14 +45,14 @@ namespace backend.BussinessLogic
         }
 
         //update category
-        public async Task Update(int id,Category category)
+        public async Task Update(Category category)
         {
             if (category is null)
             {
                 throw new NotFoundExceptions("not found");
             }
             
-            var existingCategory = await unitofWork.Repository<Category>().GetByIdAsync(id);
+            var existingCategory = await unitofWork.Repository<Category>().GetByIdAsync(category.Id);
             
             if (existingCategory is null)
             {

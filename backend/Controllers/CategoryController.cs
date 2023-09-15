@@ -40,10 +40,10 @@ namespace backend.Controllers
 
         //execute update category
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Category category)
+        public async Task<IActionResult> Update( Category category)
         {
 
-            await categoryBussinessLogic.Update(id, category);
+            await categoryBussinessLogic.Update(category);
             return Ok(category);
         }
 
