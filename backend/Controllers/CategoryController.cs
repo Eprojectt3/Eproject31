@@ -32,7 +32,7 @@ namespace backend.Controllers
 
         public async Task<IActionResult> Add(Category category)
         {
-
+            
             await categoryBussinessLogic.Create(category);
 
             return Ok(category);
@@ -50,7 +50,7 @@ namespace backend.Controllers
         //execute delete category
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
-        {           
+        {
             await categoryBussinessLogic.Delete(id);
             return Ok();
         }
