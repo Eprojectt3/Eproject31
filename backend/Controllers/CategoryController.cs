@@ -62,6 +62,7 @@ namespace backend.Controllers
 
                 return Ok(NotFound());
             }
+            //check exist category
             var existingCategory = await categoryBussinessLogic.SelectAllCategory();
             existingCategory.FirstOrDefault(cat => cat.Id == id);
             if (existingCategory == null)
@@ -87,7 +88,7 @@ namespace backend.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id )
         {
-            
+            //check exist category
             var existingCategory = await categoryBussinessLogic.SelectAllCategory();
             Category category = existingCategory.FirstOrDefault(cat => cat.Id == id);
             if (existingCategory == null)
