@@ -101,7 +101,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseMiddleware<CheckSlugRole>();
+//app.UseMiddleware<CheckSlugRole>();
 app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 app.MapControllers();

@@ -7,7 +7,10 @@ namespace webapi.Data
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options) { }
-
+        public DataContext()
+        {
+            
+        }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserRefreshTokens> UserRefreshTokens { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
