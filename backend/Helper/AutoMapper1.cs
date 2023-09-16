@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using backend.Dtos.CategoryDtos;
+using backend.Entity;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace backend.Helper
@@ -7,7 +9,7 @@ namespace backend.Helper
     {
         public AutoMapper1()
         {
-            //CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<CategoryDtos, Category>().ReverseMap();
 
         }
 

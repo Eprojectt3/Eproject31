@@ -18,6 +18,7 @@ namespace backend.Extensions
             services.AddScoped<IUnitofWork, UnitofWork>();
             services.AddSingleton<Hashtable>();
             services.AddTransient<CategoryBussinessLogic>();
+            services.AddTransient<RestaurantBusinessLogic>();
 
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
