@@ -8,6 +8,7 @@ namespace backend.BussinessLogic
     public class HotelBussinessLogic
     {
         public IUnitofWork unitofWork;
+
         public HotelBussinessLogic(IUnitofWork _unitofWork)
         {
             unitofWork = _unitofWork;
@@ -32,7 +33,6 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
-
 
             await unitofWork.Repository<Hotel>().AddAsync(hotel);
             var check = await unitofWork.Complete();
@@ -70,7 +70,7 @@ namespace backend.BussinessLogic
             existingHotel.Price = hotel.Price;
             existingHotel.Rate = hotel.Rate;
             existingHotel.Description = hotel.Description;
-            existingHotel.link = hotel.link;
+
             if (await IsHotelAddressDuplicate(hotel.Address))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
@@ -87,7 +87,6 @@ namespace backend.BussinessLogic
         //delete hotel
         public async Task Delete(int id)
         {
-
             var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
             if (existingHotel == null)
             {
@@ -108,7 +107,8 @@ namespace backend.BussinessLogic
             hotelName = hotelName.ToLower();
 
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
-            var duplicateHotel = await unitofWork.Repository<Hotel>()
+            var duplicateHotel = await unitofWork
+                .Repository<Hotel>()
                 .GetEntityWithSpecAsync(new HotelByAddressSpecification(hotelName));
 
             return duplicateHotel != null;
