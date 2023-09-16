@@ -10,6 +10,7 @@ namespace backend.Controllers
     public class CategoryController : ControllerBase
     {
         public CategoryBussinessLogic categoryBussinessLogic;
+
         public CategoryController(CategoryBussinessLogic categoryBussiness)
         {
             categoryBussinessLogic = categoryBussiness;
@@ -29,10 +30,8 @@ namespace backend.Controllers
 
         //execute add new category
         [HttpPost]
-
         public async Task<IActionResult> Add(Category category)
         {
-            
             await categoryBussinessLogic.Create(category);
 
             return Ok(category);
@@ -40,9 +39,8 @@ namespace backend.Controllers
 
         //execute update category
         [HttpPost]
-        public async Task<IActionResult> Update( Category category)
+        public async Task<IActionResult> Update(Category category)
         {
-
             await categoryBussinessLogic.Update(category);
             return Ok(category);
         }
@@ -54,7 +52,5 @@ namespace backend.Controllers
             await categoryBussinessLogic.Delete(id);
             return Ok();
         }
-
-        
     }
 }

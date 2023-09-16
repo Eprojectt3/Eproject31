@@ -1,4 +1,5 @@
-﻿using webapi.Base;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using webapi.Base;
 
 namespace backend.Entity
 {
@@ -13,9 +14,9 @@ namespace backend.Entity
         public string? Avatar { get;set; }
         public string? Image_detail { get; set; }
         public int PhoneNumbber { get; set; }
+        [ForeignKey(nameof(Location1.ID))]
         public int LocationId { get; set; }
         public Location1? Location { get; set; }
-        public string? link { get; set; }
 
     }
 }

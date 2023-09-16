@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateEntity : Migration
+    public partial class V1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,6 +72,21 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ForgotPasswordRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExpirationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForgotPasswordRequests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -95,7 +110,6 @@ namespace backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     number_people = table.Column<int>(type: "int", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -107,6 +121,19 @@ namespace backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -130,6 +157,22 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserRefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActived = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRefreshTokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Hotels",
                 columns: table => new
                 {
@@ -138,13 +181,13 @@ namespace backend.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Rate = table.Column<int>(type: "int", nullable: false),
-                    LocatinId = table.Column<int>(type: "int", nullable: false),
                     Location1ID = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageDetail = table.Column<int>(type: "int", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<int>(type: "int", nullable: false),
+                    link = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -176,7 +219,8 @@ namespace backend.Migrations
                     Price = table.Column<double>(type: "float", nullable: false),
                     PhoneNumber = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: true),
-                    LocationId = table.Column<int>(type: "int", nullable: false)
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    link = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -204,6 +248,7 @@ namespace backend.Migrations
                     Image_detail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumbber = table.Column<int>(type: "int", nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: false),
+                    link = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -222,6 +267,50 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Slugs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    URI = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    URIName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Slugs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Slugs_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tour",
                 columns: table => new
                 {
@@ -229,17 +318,13 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    category_id = table.Column<int>(type: "int", nullable: false),
                     categoryId = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<bool>(type: "bit", nullable: true),
-                    Transportation_ID = table.Column<int>(type: "int", nullable: false),
                     TransportationId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    discount_Id = table.Column<int>(type: "int", nullable: true),
                     discountId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -260,12 +345,6 @@ namespace backend.Migrations
                         column: x => x.TransportationId,
                         principalTable: "Transportation",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Tour_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -314,7 +393,8 @@ namespace backend.Migrations
                     price = table.Column<double>(type: "float", nullable: false),
                     Create_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     End_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TourID = table.Column<int>(type: "int", nullable: false)
+                    TourID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -329,6 +409,12 @@ namespace backend.Migrations
                         name: "FK_OrderDetail_Tour_TourID",
                         column: x => x.TourID,
                         principalTable: "Tour",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetail_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -359,6 +445,11 @@ namespace backend.Migrations
                 column: "TourID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderDetail_UserID",
+                table: "OrderDetail",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Resorts_LocationId",
                 table: "Resorts",
                 column: "LocationId");
@@ -367,6 +458,11 @@ namespace backend.Migrations
                 name: "IX_Restaurant_LocationId",
                 table: "Restaurant",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Slugs_RoleId",
+                table: "Slugs",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tour_categoryId",
@@ -384,9 +480,15 @@ namespace backend.Migrations
                 column: "TransportationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tour_UserId",
-                table: "Tour",
-                column: "UserId");
+                name: "IX_Users_RoleId",
+                table: "Users",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -394,6 +496,9 @@ namespace backend.Migrations
         {
             migrationBuilder.DropTable(
                 name: "FeedBack");
+
+            migrationBuilder.DropTable(
+                name: "ForgotPasswordRequests");
 
             migrationBuilder.DropTable(
                 name: "Hotels");
@@ -411,10 +516,19 @@ namespace backend.Migrations
                 name: "Restaurant");
 
             migrationBuilder.DropTable(
+                name: "Slugs");
+
+            migrationBuilder.DropTable(
+                name: "UserRefreshTokens");
+
+            migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Tour");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Locations");
@@ -427,6 +541,9 @@ namespace backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Transportation");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }
