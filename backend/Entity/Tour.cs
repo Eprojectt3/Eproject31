@@ -11,8 +11,9 @@ namespace backend.Entity
         public Category? category { get; set; }
         public string Description { get; set; }
         public string? image { get; set; }
+
         //Xác định tour theo yêu cầu hay tour theo lộ trình
-        public bool? Type { get;set; }
+        public bool? Type { get; set; }
         public int Transportation_ID { get; set; }
         public Transportation? Transportation { get; set; }
         public int UserId { get; set; }

@@ -8,14 +8,13 @@ namespace backend.Entity
         public string? Name { get; set; }
         public double Price { get; set; }
         public int Ratings { get; set; }
-        public  string? Description { get; set; }
+        public string? Description { get; set; }
         public string? Address { get; set; }
-        public string? Avatar { get;set; }
+        public string? Avatar { get; set; }
         public string? Image_detail { get; set; }
         public int PhoneNumbber { get; set; }
         public int LocationId { get; set; }
         public Location1? Location { get; set; }
         public string? link { get; set; }
-
     }
 }

@@ -7,7 +7,13 @@ namespace backend.Entity
         public int Id { get; set; }
         public int UserID { get; set; }
         public double Price { get; set; }
-        public enum Status { Cancel,Success } 
+
+        public enum Status
+        {
+            Cancel,
+            Success
+        }
+
         public int number_people { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
     }

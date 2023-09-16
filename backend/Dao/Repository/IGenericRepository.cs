@@ -13,8 +13,8 @@ namespace webapi.Dao.Repository
         Task<IReadOnlyList<T>> GetAllWithAsync(ISpecification<T> spec);
 
         Task AddAsync(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        Task Update(T entity);
+        Task Delete(T entity);
         Task<T> GetEntityWithSpecAsync(ISpecification<T> spec);
         Task<int> GetCountWithSpecAsync(ISpecification<T> spec);
     }

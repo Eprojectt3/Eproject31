@@ -9,24 +9,48 @@ namespace backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public CategoryBussinessLogic categoryBussinessLogic { get; set; }
+        public CategoryBussinessLogic categoryBussinessLogic;
+
         public CategoryController(CategoryBussinessLogic categoryBussiness)
         {
             categoryBussinessLogic = categoryBussiness;
         }
+
+        // execute list all category
         [HttpGet]
         public async Task<ActionResult> ListCategory()
         {
             var output = await categoryBussinessLogic.SelectAllCategory();
+            if (output == null)
+            {
+                return NotFound();
+            }
             return Ok(output);
         }
+
+        //execute add new category
         [HttpPost]
-        [Route("[Controller]/[Action]")]
         public async Task<IActionResult> Add(Category category)
         {
             await categoryBussinessLogic.Create(category);
 
             return Ok(category);
+        }
+
+        //execute update category
+        [HttpPost]
+        public async Task<IActionResult> Update(Category category)
+        {
+            await categoryBussinessLogic.Update(category);
+            return Ok(category);
+        }
+
+        //execute delete category
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await categoryBussinessLogic.Delete(id);
+            return Ok();
         }
     }
 }
