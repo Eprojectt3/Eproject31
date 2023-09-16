@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Entity
 {
@@ -14,8 +15,11 @@ namespace backend.Entity
         public double Price { get; set; }
         public int PhoneNumber { get; set; }
         public bool? IsActive { get; set; } = true;
+
+        [ForeignKey(nameof(Location1.ID))]
         public int LocationId { get; set; }
         public Location1? Location { get; set; }
+
         public string? link { get; set; }
     }
 }
