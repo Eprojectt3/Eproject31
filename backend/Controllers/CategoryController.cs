@@ -1,7 +1,11 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Repository;
 using backend.Entity;
+using backend.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
+using System;
 
 namespace backend.Controllers
 {
@@ -9,16 +13,22 @@ namespace backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public CategoryBusinessLogic categoryBussinessLogic;
+        public CategoryBussinessLogic categoryBussinessLogic;
+        private readonly IResponseCacheService responseCacheService;
 
-        public CategoryController(CategoryBusinessLogic categoryBussiness)
+        public CategoryController(
+            CategoryBussinessLogic categoryBussiness,
+            IResponseCacheService responseCache
+        )
         {
             categoryBussinessLogic = categoryBussiness;
+            responseCacheService = responseCache;
         }
 
         // execute list all category
         [HttpGet]
-        public async Task<ActionResult> ListCategory()
+        [Cache(1400)]
+        public async Task<ActionResult> ListCategory(int id = 1, string hehe = "abc")
         {
             var output = await categoryBussinessLogic.SelectAllCategory();
             if (output == null)
@@ -34,6 +44,8 @@ namespace backend.Controllers
         {
             await categoryBussinessLogic.Create(category);
 
+            var api = "/api/Category/ListCategory*";
+            responseCacheService.RemoveCache(api);
             return Ok(category);
         }
 
