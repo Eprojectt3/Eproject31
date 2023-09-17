@@ -17,6 +17,6 @@ namespace backend.Entity
         [ForeignKey(nameof(Location1.ID))]
         public int LocationId { get; set; }
         public Location1? Location { get; set; }
-
+        public string? link { get; set; }
     }
 }

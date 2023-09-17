@@ -9,9 +9,9 @@ namespace backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public CategoryBussinessLogic categoryBussinessLogic;
+        public CategoryBusinessLogic categoryBussinessLogic;
 
-        public CategoryController(CategoryBussinessLogic categoryBussiness)
+        public CategoryController(CategoryBusinessLogic categoryBussiness)
         {
             categoryBussinessLogic = categoryBussiness;
         }

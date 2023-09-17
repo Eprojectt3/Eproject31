@@ -9,8 +9,8 @@ namespace backend.Controllers
     [ApiController]
     public class HotelController : ControllerBase
     {
-        public HotelBussinessLogic hotelBusinessLogic;
-        public HotelController(HotelBussinessLogic Bussiness)
+        public HotelBusinessLogic hotelBusinessLogic;
+        public HotelController(HotelBusinessLogic Bussiness)
         {
             hotelBusinessLogic = Bussiness;
         }
