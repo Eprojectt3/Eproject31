@@ -1,8 +1,8 @@
-﻿namespace backend.Extensions
+﻿namespace backend.Helper
 {
     public static class Singleton
     {
-        private static readonly Dictionary<Type, object>   _instance = new Dictionary<Type, object>();
+        private static readonly Dictionary<Type, object> _instance = new Dictionary<Type, object>();
         private static object _instanceLock = new object();
 
         public static object Instance<T>() where T : new()
