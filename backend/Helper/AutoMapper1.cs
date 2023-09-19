@@ -1,10 +1,19 @@
 ﻿
 using AutoMapper;
 using backend.Dtos.CategoryDtos;
+using backend.Dtos.FeedBackDtos;
 using backend.Dtos.HotelDtos;
+using backend.Dtos.ItineraryDtos;
 using backend.Dtos.LocationDtos;
+using backend.Dtos.OrderDetaiDtos;
 using backend.Dtos.PaymentDtos;
+using backend.Dtos.ResortDtos;
+using backend.Dtos.RestaurantDtos;
+using backend.Dtos.ServiceDtos;
+using backend.Dtos.StaffDtos;
+using backend.Dtos.TourDetailDtos;
 using backend.Dtos.TourDtos;
+using backend.Dtos.TransportationDtos;
 using backend.Entity;
 
 namespace backend.Helper
@@ -20,57 +29,38 @@ namespace backend.Helper
             CreateMap<Hotel, HotelDto>()
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.location1.State))
                 .ReverseMap();
+            CreateMap<HotelImageDto, Hotel>().ReverseMap();
             CreateMap<Resorts, Dtos.ResortDtos.ResortDto>()
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
                 .ReverseMap();
-=======
-            CreateMap<TourDto, Tour>().ReverseMap();
-     .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Vnp_Amount))
-            CreateMap<Tour_Detail_PaymentPaypal_Dto, TourDetail>().ReverseMap();
-     .ForMember(dest => dest.Vnp_TransactionNo, opt => opt.MapFrom(src => src.Vnp_TransactionNo))
-     .ForMember(dest => dest.OrderDescription, opt => opt.MapFrom(src => src.Vnp_OrderInfo))
-     .ForMember(dest => dest.Status, opt => opt.MapFrom(src => int.Parse(src.Vnp_TransactionStatus)))
-     .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.ParseExact(src.Vnp_PayDate, "yyyyMMddHHmmss", CultureInfo.InvariantCulture)))
-     .ForMember(dest => dest.Vpn_TxnResponseCode, opt => opt.MapFrom(src => src.Vnp_Response));
+            CreateMap<ResortImageDto, Resorts>().ReverseMap();
+            CreateMap<Restaurant, RestaurantDto>()
+                .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
+                .ReverseMap();
+            CreateMap<RestaurantImageDto, Restaurant>().ReverseMap();
+            CreateMap<Transportation, TransportationDto>()
+                .ForMember(h => h.Name, otp => otp.MapFrom(o => o.Name))
+                .ReverseMap();
 
-
-=======
-            CreateMap<PaymentDtos, Payment>()
-     .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Vnp_Amount))
-     .ForMember(dest => dest.BankCode, opt => opt.MapFrom(src => src.Vnp_BankCode))
-     .ForMember(dest => dest.Vnp_TransactionNo, opt => opt.MapFrom(src => src.Vnp_TransactionNo))
-     .ForMember(dest => dest.OrderDescription, opt => opt.MapFrom(src => src.Vnp_OrderInfo))
-     .ForMember(dest => dest.Status, opt => opt.MapFrom(src => int.Parse(src.Vnp_TransactionStatus)))
-     .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.ParseExact(src.Vnp_PayDate, "yyyyMMddHHmmss", CultureInfo.InvariantCulture)))
-     .ForMember(dest => dest.Vpn_TxnResponseCode, opt => opt.MapFrom(src => src.Vnp_Response));
-
-
-=======
-            CreateMap<PaymentDtos, Payment>()
-     .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Vnp_Amount))
-            CreateMap<Tour_Detail_PaymentPaypal_Dto, TourDetail>().ReverseMap();
-     .ForMember(dest => dest.OrderDescription, opt => opt.MapFrom(src => src.Vnp_OrderInfo))
-     .ForMember(dest => dest.Status, opt => opt.MapFrom(src => int.Parse(src.Vnp_TransactionStatus)))
-     .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.ParseExact(src.Vnp_PayDate, "yyyyMMddHHmmss", CultureInfo.InvariantCulture)))
-     .ForMember(dest => dest.Vpn_TxnResponseCode, opt => opt.MapFrom(src => src.Vnp_Response));
-
-
-=======
-            CreateMap<PaymentDtos, Payment>()
-     .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Vnp_Amount))
-     .ForMember(dest => dest.BankCode, opt => opt.MapFrom(src => src.Vnp_BankCode))
-     .ForMember(dest => dest.Vnp_TransactionNo, opt => opt.MapFrom(src => src.Vnp_TransactionNo))
-     .ForMember(dest => dest.OrderDescription, opt => opt.MapFrom(src => src.Vnp_OrderInfo))
-     .ForMember(dest => dest.Status, opt => opt.MapFrom(src => int.Parse(src.Vnp_TransactionStatus)))
-     .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.ParseExact(src.Vnp_PayDate, "yyyyMMddHHmmss", CultureInfo.InvariantCulture)))
-     .ForMember(dest => dest.Vpn_TxnResponseCode, opt => opt.MapFrom(src => src.Vnp_Response));
-
-
+            CreateMap<Staff, StaffDto>().ReverseMap();
+            CreateMap<StaffImageDto, Staff>().ReverseMap();
 
             CreateMap<TourDto, Tour>().ReverseMap();
+            CreateMap<FeedBack, FeedBackDto>().ReverseMap();
 
->>>>>>> 16175b6 (haidang)
->>>>>>> 64a5e53 (son create route for information page)
+            CreateMap<Itinerary, ItineraryDto>()
+                .ForMember(i => i.Tour_Name, otp => otp.MapFrom(o => o.tour.Name));
+
+            CreateMap<Service, ServiceDto>()
+                .ForMember(s => s.Tour_Name, otp => otp.MapFrom(o => o.Tour.Name));
+            //CreateMap<Tour, TourDto>()
+            //    .ForMember(s => s.Category_Name, otp => otp.MapFrom(o => o.category.Name));
+            CreateMap<TourDetail, TourDetailDto>()
+                .ForMember(s => s.Tour_Name, otp => otp.MapFrom(o => o.tour.Name));
+            CreateMap<OrderDetail, OrderDetailDto>()
+                .ForMember(s => s.User_Name, otp => otp.MapFrom(o => o.Users.Name));
+
+            CreateMap<Tour_Detail_PaymentPaypal_Dto, TourDetail>().ReverseMap();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Specification;
 using backend.Dtos.TourDetailDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
@@ -66,5 +67,20 @@ namespace backend.Controllers
             await tourDetailBusinessLogic.Update_User(tourDetail_By_Update_UserDto);
             return Ok("Success");
         }
+        [HttpPost]
+        public async Task<ActionResult> ListTourDetailPagination(SpecParams pagination)
+        {
+            var output = await tourDetailBusinessLogic.SelectAllTourDetailPagination(pagination);
+
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
+        }
+        
     }
 }

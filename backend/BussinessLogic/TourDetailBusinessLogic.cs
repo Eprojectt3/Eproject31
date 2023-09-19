@@ -1,17 +1,23 @@
-﻿using backend.Dtos.TourDetailDtos;
+﻿using AutoMapper;
+using backend.Dao.Specification;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
 using webapi.Dao.UnitofWork;
+using backend.Dtos.TourDetailDtos;
+using backend.Dao.Specification.TourDetailSpec;
 
 namespace backend.BussinessLogic
 {
     public class TourDetailBusinessLogic
     {
         public IUnitofWork unitofWork;
-
-        public TourDetailBusinessLogic(IUnitofWork _unitofWork)
+        public IMapper mapper;
+        public TourDetailBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            this.mapper = mapper;
         }
 
         //list tourDetail
@@ -132,5 +138,23 @@ namespace backend.BussinessLogic
             }
         }
 
+        public async Task<Pagination<TourDetailDto>> SelectAllTourDetailPagination(SpecParams specParams)
+        {
+
+            var spec = new SearchTourDetailSpec(specParams);
+            var tourDetails = await unitofWork.Repository<TourDetail>().GetAllWithAsync(spec);
+
+            var data = mapper.Map<IReadOnlyList<TourDetail>, IReadOnlyList<TourDetailDto>>(tourDetails);
+            var tourDetailsPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+
+            var countSpec = new SearchTourDetailSpec(specParams);
+            var count = await unitofWork.Repository<TourDetail>().GetCountWithSpecAsync(countSpec);
+
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+
+            var pagination = new Pagination<TourDetailDto>(specParams.PageIndex, specParams.PageSize, tourDetailsPage, count, totalPageIndex);
+
+            return pagination;
+        }
     }
 }

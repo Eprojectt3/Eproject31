@@ -32,7 +32,7 @@ namespace backend.Controllers
             var result = await paymentBussinessLogic.CreateDataAsync(paymentVnPay);
             return Ok(result);
         }
-        
+
 
     }
 }

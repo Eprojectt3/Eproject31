@@ -15,5 +15,16 @@ namespace backend.Entity
         public string? Email { get; set; }
         public string? PersonId { get; set; }
         public ICollection<TourDetail>? TourDetails { get; set; }
+        public void AddImage(string imageName)
+        {
+            if (string.IsNullOrEmpty(Image))
+            {
+                Image = imageName;
+            }
+            else
+            {
+                Image += "," + imageName;
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using backend.BussinessLogic;
+using backend.Dao.Specification;
+using backend.Dao.Specification.TourSpec;
 using backend.Dtos.TourDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
@@ -63,5 +65,22 @@ namespace backend.Controllers
            var result =  await tourBusinessLogic.GetByTourId(id);
             return Ok(result);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> ListTourPagination(TourSpecParams pagination)
+        {
+            var output = await tourBusinessLogic.SelectAllTourPagination(pagination);
+
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
+        }
+
+        
     }
 }

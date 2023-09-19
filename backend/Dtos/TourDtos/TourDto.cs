@@ -1,4 +1,7 @@
-﻿namespace backend.Dtos.TourDtos
+﻿using backend.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace backend.Dtos.TourDtos
 {
     public class TourDto
     {
@@ -8,6 +11,7 @@
         public int? category_id { get; set; }
         public string? Description { get; set; }
         public int? quantity_limit { get; set; }
+        public DateTime? Departure_Time { get; set; }
         public int? Rating { get; set; } = 0;
         public bool? Type { get; set; } = false;
         public int? Range_time { get; set; } = 4;

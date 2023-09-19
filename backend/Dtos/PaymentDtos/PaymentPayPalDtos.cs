@@ -6,6 +6,7 @@ namespace backend.Dtos.PaymentDtos
 {
     public class PaymentPayPalDtos
     {
+        public int TourDetailID { get; set; }
         public int UserID { get; set; }
         public string orderid { get; set; }  //Trong vnpay là vnp_TxnRef còn PayPal là ID
         public Tour_Detail_PaymentPaypal_Dto Tour_Detail_Payment_Dto { get; set; }

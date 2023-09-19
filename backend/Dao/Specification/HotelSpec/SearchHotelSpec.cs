@@ -6,7 +6,7 @@ namespace backend.Dao.Specification.HotelSpec
     public class SearchHotelSpec : BaseSpecification<Hotel>
     {
         public SearchHotelSpec(SpecParams param)
-            : base(l =>
+        : base(l =>
             string.IsNullOrEmpty(param.Search) ||
             param.Search.ToLower().Contains(l.Name.ToLower())
         )

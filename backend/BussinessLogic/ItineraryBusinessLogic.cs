@@ -1,4 +1,8 @@
-﻿using backend.Entity;
+﻿using AutoMapper;
+using backend.Dao.Specification.ItinerarySpec;
+using backend.Dao.Specification;
+using backend.Dtos.ItineraryDtos;
+using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
@@ -8,10 +12,11 @@ namespace backend.BussinessLogic
     public class ItineraryBusinessLogic
     {
         public IUnitofWork unitofWork;
-
-        public ItineraryBusinessLogic(IUnitofWork _unitofWork)
+        public IMapper mapper;
+        public ItineraryBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            this.mapper = mapper;
         }
 
         //list itinerary
@@ -99,6 +104,24 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
+        }
+        public async Task<Pagination<ItineraryDto>> SelectAllItineraryPagination(SpecParams specParams)
+        {
+
+            var spec = new SearchItinerarySpec(specParams);
+            var itinerary = await unitofWork.Repository<Itinerary>().GetAllWithAsync(spec);
+
+            var data = mapper.Map<IReadOnlyList<Itinerary>, IReadOnlyList<ItineraryDto>>(itinerary);
+            var itireraryPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+
+            var countSpec = new SearchItinerarySpec(specParams);
+            var count = await unitofWork.Repository<Itinerary>().GetCountWithSpecAsync(countSpec);
+
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+
+            var pagination = new Pagination<ItineraryDto>(specParams.PageIndex, specParams.PageSize, itireraryPage, count, totalPageIndex);
+
+            return pagination;
         }
     }
 }
