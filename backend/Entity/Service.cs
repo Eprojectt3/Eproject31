@@ -1,13 +1,21 @@
-﻿using webapi.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using webapi.Base;
 
 namespace backend.Entity
 {
-    public class Service:BaseCreateDate
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public int TourID { get; set; }
-        public Tour? Tour { get; set; }
-    }
+  public class Service : BaseCreateDate
+  {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int ID { get; set; }
+    public string Name { get; set; }
+
+    [Column(TypeName = "ntext")]
+    public string? Description { get; set; }
+
+    [ForeignKey(nameof(Tour.Id))]
+    public int TourID { get; set; }
+    public Tour? tour { get; set; }
+  }
 }
