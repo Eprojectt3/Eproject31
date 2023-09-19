@@ -1,5 +1,6 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Repository;
+using backend.Dao.Specification;
 using backend.Entity;
 using backend.Model;
 using Microsoft.AspNetCore.Http;
@@ -13,24 +14,20 @@ namespace backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public CategoryBusinessLogic categoryBusinessLogic;
+        public CategoryBusinessLogic categoryBussinessLogic;
         private readonly IResponseCacheService responseCacheService;
-
-        public CategoryController(
-            CategoryBusinessLogic categoryBussiness,
-            IResponseCacheService responseCache
-        )
+        public CategoryController(CategoryBusinessLogic categoryBussiness, IResponseCacheService responseCache)
         {
-            categoryBusinessLogic = categoryBussiness;
+            categoryBussinessLogic = categoryBussiness;
             responseCacheService = responseCache;
         }
 
         // execute list all category
         [HttpGet]
         [Cache(1400)]
-        public async Task<ActionResult> ListCategory(int id = 1, string hehe = "abc")
+        public async Task<ActionResult> ListCategory()
         {
-            var output = await categoryBusinessLogic.SelectAllCategory();
+            var output = await categoryBussinessLogic.SelectAllCategory();
             if (output == null)
             {
                 return NotFound();
@@ -44,7 +41,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Add(Category category)
         {
             
-            await categoryBusinessLogic.Create(category);
+            await categoryBussinessLogic.Create(category);
 
             var api = "/api/Category/ListCategory*";
             responseCacheService.RemoveCache(api);
@@ -56,7 +53,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Update( Category category)
         {
 
-            await categoryBusinessLogic.Update(category);
+            await categoryBussinessLogic.Update(category);
             return Ok(category);
         }
 
@@ -66,10 +63,23 @@ namespace backend.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            await categoryBusinessLogic.Delete(id);
+            await categoryBussinessLogic.Delete(id);
             return Ok();
         }
+        [HttpPost]
+        public async Task<ActionResult> ListCategoryPagination(SpecParams pagination)
+        {
+            var output = await categoryBussinessLogic.SelectAllCategoryPagination(pagination);
 
-        
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
+        }
+
     }
 }

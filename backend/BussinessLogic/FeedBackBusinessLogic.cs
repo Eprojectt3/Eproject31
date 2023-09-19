@@ -1,5 +1,10 @@
-﻿using backend.Entity;
+﻿using AutoMapper;
+using backend.Dao.Specification.FeedBackSpec;
+using backend.Dao.Specification;
+using backend.Dtos.FeedBackDtos;
+using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -7,10 +12,11 @@ namespace backend.BussinessLogic
     public class FeedBackBusinessLogic
     {
         public IUnitofWork unitofWork;
-
-        public FeedBackBusinessLogic(IUnitofWork _unitofWork)
+        public IMapper mapper;
+        public FeedBackBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            this.mapper = mapper;
         }
 
         //list feedback
@@ -53,6 +59,7 @@ namespace backend.BussinessLogic
             existingFeedBack.CreateDate = feedback.CreateDate;
             existingFeedBack.UpdateBy = feedback.UpdateBy;
             existingFeedBack.CreateBy = feedback.CreateBy;
+            existingFeedBack.IsActive = feedback.IsActive;
             existingFeedBack.Title = feedback.Title;
             existingFeedBack.Name = feedback.Name;
             existingFeedBack.Email = feedback.Email;
@@ -80,6 +87,24 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
+        }
+        public async Task<Pagination<FeedBackDto>> SelectAllFeedBackPagination(SpecParams specParams)
+        {
+
+            var spec = new SearchFeedBackSpec(specParams);
+            var resorts = await unitofWork.Repository<FeedBack>().GetAllWithAsync(spec);
+
+            var data = mapper.Map<IReadOnlyList<FeedBack>, IReadOnlyList<FeedBackDto>>(resorts);
+            var feedbackPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+
+            var countSpec = new SearchFeedBackSpec(specParams);
+            var count = await unitofWork.Repository<FeedBack>().GetCountWithSpecAsync(countSpec);
+
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+
+            var pagination = new Pagination<FeedBackDto>(specParams.PageIndex, specParams.PageSize, feedbackPage, count, totalPageIndex);
+
+            return pagination;
         }
     }
 }

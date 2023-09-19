@@ -9,13 +9,13 @@ namespace backend.Entity
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID { get; set; }
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [Column(TypeName = "ntext")]
     public string? Description { get; set; }
 
-    [ForeignKey(nameof(Tour.Id))]
-    public int TourID { get; set; }
-    public Tour? tour { get; set; }
+    public int? Tour_ID { get; set; }
+     [ForeignKey("Tour_ID")]
+     public Tour? Tour { get; set; }
   }
 }

@@ -1,4 +1,6 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Specification;
+using backend.Dtos.HotelDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +28,25 @@ namespace backend.Controllers
             }
             return Ok(output);
         }
+        [HttpPost]
+        public async Task<ActionResult> ListHotelPagination(SpecParams pagination)
+        {
+            var output = await hotelBusinessLogic.SelectAllHotelPagination(pagination);
+
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
+        }
 
         //execute add new hotel
         [HttpPost]
 
-        public async Task<IActionResult> Add(Hotel hotel)
+        public async Task<IActionResult> Add([FromForm]HotelImageDto hotel)
         {
 
             await hotelBusinessLogic.Create(hotel);
@@ -40,7 +56,7 @@ namespace backend.Controllers
 
         //execute update hotel
         [HttpPost]
-        public async Task<IActionResult> Update(Hotel hotel)
+        public async Task<IActionResult> Update([FromForm] HotelImageDto hotel)
         {
 
             await hotelBusinessLogic.Update(hotel);

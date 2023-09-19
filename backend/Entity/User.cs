@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using webapi.Base;
 
 namespace backend.Entity
 {
-    public class User
+    public class User : BaseCreateDate
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -28,10 +29,14 @@ namespace backend.Entity
         )]
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
+        [Required(ErrorMessage = "Phone is required")]
+        public string Phone { get; set; }
 
         [ForeignKey(nameof(Role.Id))]
         [Required(ErrorMessage = "RoleId is required")]
         public int RoleId { get; set; }
         public virtual Role? Roles { get; set; }
+
+        public ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }

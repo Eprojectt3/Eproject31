@@ -1,4 +1,5 @@
-﻿using backend.Entity;
+﻿using backend.Dao.Specification.Order1;
+using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
 
@@ -54,8 +55,9 @@ namespace backend.BussinessLogic
             existingOrder.UpdateBy = order.UpdateBy;
             existingOrder.CreateBy = order.CreateBy;
             existingOrder.Price = order.Price;
-            //existingOrder.Status = order.Status;
-            existingOrder.number_people = order.number_people;
+            existingOrder.IsActive = order.IsActive;
+            existingOrder.Number_people = order.Number_people;
+     
             await unitofWork.Repository<Order>().Update(existingOrder);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -79,6 +81,16 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
+        }
+        public async Task<Order> GetEntityByCondition(int TourDetailID)
+        {
+            var spec = new OrderSpecByTourDetailID(TourDetailID);
+            var check_duplicate_order = await unitofWork.Repository<Entity.Order>().GetEntityWithSpecAsync(spec);
+            if(check_duplicate_order == null)
+            {
+                return null;
+            }
+            return check_duplicate_order;
         }
     }
 }

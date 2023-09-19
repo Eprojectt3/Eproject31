@@ -1,4 +1,6 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Specification;
+using backend.Dtos.ResortDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +32,7 @@ namespace backend.Controllers
         //execute add new resort
         [HttpPost]
 
-        public async Task<IActionResult> Add(Resorts resort)
+        public async Task<IActionResult> Add([FromForm]ResortImageDto resort)
         {
 
             await resortBusinessLogic.Create(resort);
@@ -40,9 +42,8 @@ namespace backend.Controllers
 
         //execute update resort
         [HttpPost]
-        public async Task<IActionResult> Update(Resorts resort)
+        public async Task<IActionResult> Update([FromForm] ResortImageDto resort)
         {
-
             await resortBusinessLogic.Update(resort);
             return Ok(resort);
         }
@@ -60,6 +61,20 @@ namespace backend.Controllers
         {
             await resortBusinessLogic.GetByResortId(id);
             return Ok();
+        }
+        [HttpPost]
+        public async Task<ActionResult> ListResortsPagination(SpecParams pagination)
+        {
+            var output = await resortBusinessLogic.SelectAllResortsPagination(pagination);
+
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
         }
     }
 }

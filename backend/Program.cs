@@ -1,5 +1,6 @@
 using System.Configuration;
 using System.Text;
+using backend.Entity;
 using backend.Extensions;
 using backend.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -69,7 +70,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<DataContext>();
 builder.Services.AddAppServices();
 builder.Services.AddRedis(builder.Configuration);
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 // Cors
 builder.Services.AddCors(
     opt =>
@@ -94,6 +97,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
 
 app.UseRouting();
 

@@ -10,6 +10,6 @@ namespace backend.Entity
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Name role is required")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

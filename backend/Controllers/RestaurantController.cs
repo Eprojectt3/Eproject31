@@ -1,4 +1,6 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Specification;
+using backend.Dtos.RestaurantDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +32,7 @@ namespace backend.Controllers
         //execute add new restaurant
         [HttpPost]
 
-        public async Task<IActionResult> Add(Restaurant restaurant)
+        public async Task<IActionResult> Add([FromForm]RestaurantImageDto restaurant)
         {
 
             await restaurantBusinessLogic.Create(restaurant);
@@ -40,7 +42,7 @@ namespace backend.Controllers
 
         //execute update restaurant
         [HttpPost]
-        public async Task<IActionResult> Update(Restaurant restaurant)
+        public async Task<IActionResult> Update([FromForm] RestaurantImageDto restaurant)
         {
 
             await restaurantBusinessLogic.Update(restaurant);
@@ -60,6 +62,20 @@ namespace backend.Controllers
         {
             await restaurantBusinessLogic.GetByRestaurantId(id);
             return Ok();
+        }
+        [HttpPost]
+        public async Task<ActionResult> ListRestaurantPagination(SpecParams pagination)
+        {
+            var output = await restaurantBusinessLogic.SelectAllRestaurantPagination(pagination);
+
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
         }
     }
 }

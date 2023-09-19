@@ -1,5 +1,7 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Specification;
 using backend.Entity;
+using backend.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +28,20 @@ namespace backend.Controllers
             }
             return Ok(output);
         }
+        [HttpPost]
+        public async Task<ActionResult> ListLocation1Pagination(SpecParams pagination)
+        {
+            var output = await locationBussinessLogic.SelectAllLocation1Pagination(pagination);
 
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
+        }
         //execute add new location
         [HttpPost]
 
