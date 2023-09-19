@@ -1,9 +1,13 @@
-﻿using webapi.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using webapi.Base;
 
 namespace backend.Entity
 {
     public class Order : BaseCreateDate
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public double Price { get; set; }
 
