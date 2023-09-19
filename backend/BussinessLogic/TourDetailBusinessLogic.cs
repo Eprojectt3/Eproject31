@@ -1,4 +1,6 @@
-﻿using backend.Dtos.TourDetailDtos;
+﻿using AutoMapper;
+using backend.Dao.Specification;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;

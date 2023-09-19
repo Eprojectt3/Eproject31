@@ -36,7 +36,6 @@ namespace backend.Entity
         [Required(ErrorMessage = "RoleId is required")]
         public int RoleId { get; set; }
         public virtual Role? Roles { get; set; }
-        public string Phone { get;set; }
 
         public ICollection<OrderDetail>? OrderDetails { get; set; }
     }

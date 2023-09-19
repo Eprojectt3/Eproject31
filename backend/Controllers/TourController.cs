@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using backend.BussinessLogic;
+using backend.Dao.Specification;
+using backend.Dao.Specification.TourSpec;
 using backend.Dtos.TourDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
@@ -65,7 +67,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ListTourPagination(SpecParams pagination)
+        public async Task<ActionResult> ListTourPagination(TourSpecParams pagination)
         {
             var output = await tourBusinessLogic.SelectAllTourPagination(pagination);
 
@@ -78,5 +80,7 @@ namespace backend.Controllers
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
         }
+
+        
     }
 }

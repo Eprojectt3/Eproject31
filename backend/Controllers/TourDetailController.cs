@@ -73,5 +73,20 @@ namespace backend.Controllers
             var result = await tourDetailSearch.Search_Tour(search_Tour_Dto);        
             return Ok(result);
         }
+        [HttpPost]
+        public async Task<ActionResult> ListTourDetailPagination(SpecParams pagination)
+        {
+            var output = await tourDetailBusinessLogic.SelectAllTourDetailPagination(pagination);
+
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
+        }
+        
     }
 }

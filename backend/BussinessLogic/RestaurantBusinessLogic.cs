@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using backend.Dao.Specification;
+using backend.Dao.Specification.ResortSpec;
 using backend.Dao.Specification.RestaurantSpec;
 using backend.Dtos.RestaurantDtos;
 using backend.Entity;
@@ -13,32 +14,64 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
-        public RestaurantBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        private ImageService Image;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public RestaurantBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, ImageService Image, IHttpContextAccessor _httpContextAccessor)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.Image = Image;
+            this._httpContextAccessor = _httpContextAccessor;
         }
 
-        //list category
-        public async Task<IReadOnlyList<Restaurant>> SelectAllRestaurant()
+        //list restaurant
+        public async Task<IEnumerable<object>> SelectAllRestaurant()
         {
             var data = await unitofWork.Repository<Restaurant>().GetAllAsync();
-            return data;
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new List<object>();
+
+            foreach (var restaurant in data)
+            {
+                var restaurantInfo = new
+                {
+                    restaurant.Id,
+                    restaurant.Name,
+                    restaurant.Price_range,
+                    restaurant.Rating,
+                    restaurant.LocationId,
+                    restaurant.Description,
+                    restaurant.Image,
+                    restaurant.Address,
+                    restaurant.PhoneNumbber,
+                    restaurant.Links,
+                    UrlImage = Image.GetUrlImage(restaurant.Name, "restaurant", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                };
+
+                result.Add(restaurantInfo);
+            }
+            return result;
         }
 
         //create category
-        public async Task Create(Restaurant restaurant)
+        public async Task Create(RestaurantImageDto restaurantDto)
         {
+            var restaurant = mapper.Map<RestaurantImageDto, Restaurant>(restaurantDto);
             if (restaurant is null)
             {
-                throw new NotFoundExceptions("Cattegory not found");
+                throw new NotFoundExceptions("Restaurant not found");
             }
 
             if (await IsRestaurantNameDuplicate(restaurant.Address))
             {
                 throw new BadRequestExceptions("Restaurant Address is exist.");
             }
-
+            var images = Image.Upload_Image(restaurantDto.Name, "restaurant", restaurantDto.fileCollection);
+            foreach (var image in images)
+            {
+                restaurant.AddImage(image);
+            }
             await unitofWork.Repository<Restaurant>().AddAsync(restaurant);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -48,8 +81,9 @@ namespace backend.BussinessLogic
         }
 
         //update restaurant
-        public async Task Update(Restaurant restaurant)
+        public async Task Update(RestaurantImageDto restaurantDto)
         {
+            var restaurant = mapper.Map<RestaurantImageDto, Restaurant>(restaurantDto);
             if (restaurant is null)
             {
                 throw new NotFoundExceptions("not found");
@@ -62,6 +96,11 @@ namespace backend.BussinessLogic
             if (existingRestaurant is null)
             {
                 throw new NotFoundExceptions("not found");
+            }
+            var images = Image.Upload_Image(restaurantDto.Name, "restaurant", restaurantDto.fileCollection);
+            foreach (var image in images)
+            {
+                restaurant.AddImage(image);
             }
             existingRestaurant.UpdateDate = restaurant.UpdateDate;
             existingRestaurant.CreateDate = restaurant.CreateDate;
@@ -94,9 +133,14 @@ namespace backend.BussinessLogic
         public async Task Delete(int id)
         {
             var existingRestaurant = await unitofWork.Repository<Restaurant>().GetByIdAsync(id);
+            var itineraryHaveRestaurantId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new RestaurantDeleteItinerarySpec(id));
             if (existingRestaurant == null)
             {
                 throw new NotFoundExceptions("not found");
+            }
+            foreach (var iteam in itineraryHaveRestaurantId)
+            {
+                await unitofWork.Repository<Itinerary>().Delete(iteam);
             }
             await unitofWork.Repository<Restaurant>().Delete(existingRestaurant);
             var check = await unitofWork.Complete();
@@ -107,13 +151,29 @@ namespace backend.BussinessLogic
         }
 
         //get restaurant by id
-        public async Task GetByRestaurantId(int id)
+        public async Task<object> GetByRestaurantId(int id)
         {
-            var existingHotel = await unitofWork.Repository<Restaurant>().GetByIdAsync(id);
-            if (existingHotel == null)
+            var restaurant = await unitofWork.Repository<Restaurant>().GetByIdAsync(id);
+            if (restaurant == null)
             {
                 throw new NotFoundExceptions("not found");
             }
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new
+            {
+                restaurant.Id,
+                restaurant.Name,
+                restaurant.Price_range,
+                restaurant.Rating,
+                restaurant.LocationId,
+                restaurant.Description,
+                restaurant.Image,
+                restaurant.Address,
+                restaurant.PhoneNumbber,
+                restaurant.Links,
+                urlImage = Image.GetUrlImage(restaurant.Name, "restaurant", httpRequest)
+            };
+            return result;
         }
 
         //duplicate name
@@ -130,9 +190,9 @@ namespace backend.BussinessLogic
         {
 
             var spec = new SearchRestaurantSpec(specParams);
-            var resorts = await unitofWork.Repository<Restaurant>().GetAllWithAsync(spec);
+            var restaurants = await unitofWork.Repository<Restaurant>().GetAllWithAsync(spec);
 
-            var data = mapper.Map<IReadOnlyList<Restaurant>, IReadOnlyList<RestaurantDto>>(resorts);
+            var data = mapper.Map<IReadOnlyList<Restaurant>, IReadOnlyList<RestaurantDto>>(restaurants);
             var restaurantPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
             var countSpec = new SearchRestaurantSpec(specParams);

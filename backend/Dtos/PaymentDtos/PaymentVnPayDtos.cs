@@ -6,6 +6,7 @@
         public string vnp_TransactionStatus { get; set; }
         public string Description { get; set; } // vnp_OrderInfo
         public double Amount { get; set; } // vnp_Amount
-        public int quantity { get; set; }        
+        public int quantity { get; set; }
+        
     }
 }

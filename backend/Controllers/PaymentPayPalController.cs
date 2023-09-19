@@ -245,6 +245,11 @@ namespace backend.Controllers
                        var tour_detail = mapper.Map<Tour_Detail_PaymentPaypal_Dto, TourDetail>(payment.Tour_Detail_Payment_Dto);
                         exist_tour_detail = await TourDetailBusinessLogic.Create(tour_detail);
                 }
+                */
+                if ( tour_detail == null)
+                {
+                    throw new NotFoundExceptions("You have successfully paid but encounter problems during processing, please contact management");
+                }
 
                 var response_capture = await _client.GetAsync($"https://api-m.sandbox.paypal.com/v2/checkout/orders/{payment.orderid}"); 
                 var responseAsString_capture = await response_capture.Content.ReadAsStringAsync();
