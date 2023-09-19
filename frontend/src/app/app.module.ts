@@ -17,6 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import {MatInputModule} from '@angular/material/input'
 
 
+import { MatCardModule } from '@angular/material/card';
 
 // Font awesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -30,6 +31,9 @@ import { NgIf } from '@angular/common';
 
 // PrimeNg
 // import { CarouselModule } from 'primeng/carousel';
+
+// PrimeNg
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [
@@ -60,6 +64,8 @@ import { NgIf } from '@angular/common';
     NgIf,
 
 
+    MatCardModule,
+    CarouselModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

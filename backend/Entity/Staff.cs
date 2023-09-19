@@ -14,6 +14,6 @@ namespace backend.Entity
         public int? Phone { get; set; }
         public string? Email { get; set; }
         public string? PersonId { get; set; }
-        public ICollection<Booking>? Bookings { get; set; }
+        public ICollection<TourDetail>? TourDetails { get; set; }
     }
 }
