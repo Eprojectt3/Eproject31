@@ -72,7 +72,6 @@ namespace backend.BussinessLogic
       existingResorts.PhoneNumber = resort.PhoneNumber;
       existingResorts.IsActive = resort.IsActive;
       existingResorts.LocationId = resort.LocationId;
-      existingResorts.Location = resort.Location;
       existingResorts.Links = resort.Links;
       if (await IsResortsAddressDuplicate(resort.Address))
       {

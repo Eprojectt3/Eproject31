@@ -19,7 +19,7 @@ namespace backend.Entity
     public string Description { get; set; }
     public string? image { get; set; }
     public int quantity_limit { get; set; }
-
+    public int Rating { get; set; } = 0;
     //Xác định tour theo yêu cầu hay tour theo lộ trình
     public bool? Type { get; set; } = false;
 

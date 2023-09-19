@@ -56,6 +56,7 @@ namespace backend.BussinessLogic
             existingTransportation.CreateDate = transportation.CreateDate;
             existingTransportation.UpdateBy = transportation.UpdateBy;
             existingTransportation.CreateBy = transportation.CreateBy;
+            existingTransportation.IsActive = transportation.IsActive;
             existingTransportation.Name = transportation.Name;
             existingTransportation.Price = transportation.Price;
             existingTransportation.Description = transportation.Description;
