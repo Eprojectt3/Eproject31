@@ -262,19 +262,19 @@ namespace backend.Controllers
                     order.Tour_Detail_ID = exist_tour_detail.Id;
                     check_duplicate_order = await OrderBusinessLogic.Create(order);                
                 }
-                    var oderdetail = new OrderDetail
-                    {
-                        OrderID = check_duplicate_order.Id,
-                        Quantity = int.Parse(result.purchase_units[0].items[0].quantity),
+                var oderdetail = new OrderDetail
+                {
+                    OrderID = check_duplicate_order.Id,
+                    Quantity = int.Parse(result.purchase_units[0].items[0].quantity),
                         Price = Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.net_amount.value) * 24380,
-                        UserID = payment.UserID,
+                    UserID = payment.UserID,
                         Description = result.purchase_units[0].items[0].description + " |Paypal fee: " + Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.paypal_fee.value) * 23000,
-                        Type_Payment = "PayPal",
-                        Payment_ID = result.id,
+                    Type_Payment = "PayPal",
+                    Payment_ID = result.id,
                         Tour_Detail_ID = exist_tour_detail.Id
                 };
                 await OrderDetailBusinessLogic.Create(oderdetail);
-                    //CẬP NHẬT LẠI TOURDetail
+                //CẬP NHẬT LẠI TOURDetail
                 exist_tour_detail.Quantity -= oderdetail.Quantity;
                 await TourDetailBusinessLogic.Update(exist_tour_detail);
 

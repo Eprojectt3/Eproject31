@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutComponent } from './components/layout/layout.component';
 
 // Material angular
 import { MatIconModule } from '@angular/material/icon';
@@ -101,6 +102,7 @@ import { AdminLayoutComponent } from './components/admin-layout/admin-layout.com
       multi: true,
     },
   ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

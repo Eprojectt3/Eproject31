@@ -25,3 +25,4 @@ namespace backend.Entity
         public ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }
+//Them 1 bảng nữa và chạy migratiom
