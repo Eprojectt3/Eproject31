@@ -29,6 +29,8 @@ namespace webapi.Data
         public virtual DbSet<Tour> Tour { get; set; }
         public virtual DbSet<Transportation> Transportation { get; set; }
         public virtual DbSet<Service> Service { get; set; }
+        public virtual DbSet<Payment> OrderInfo { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasIndex(ul => new { ul.Username }).IsUnique();

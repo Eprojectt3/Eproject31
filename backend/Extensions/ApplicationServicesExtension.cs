@@ -24,6 +24,7 @@ namespace backend.Extensions
             services.AddTransient<DiscountBusinessLogic>();
             services.AddTransient<TransportationBusinessLogic>();
             services.AddTransient<ResortBusinessLogic>();
+            services.AddTransient<PaymentBussinessLogic>();
 
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
