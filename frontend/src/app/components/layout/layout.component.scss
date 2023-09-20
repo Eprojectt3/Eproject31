@@ -3,9 +3,16 @@
   height: 500px;
 
   .nav {
-    margin: 0 auto;
+    // margin-left: 50%;
+    // transform: translateX(-45%);
 
     .logo {
+      font-family: "Yesteryear", cursive;
+    }
+  }
+
+  #title {
+    .title {
       font-family: "Yesteryear", cursive;
     }
   }
