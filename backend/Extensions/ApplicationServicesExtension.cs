@@ -30,6 +30,8 @@ namespace backend.Extensions
             services.AddTransient<ItineraryBusinessLogic>();
             services.AddTransient<OrderDetailBusinessLogic>();
             services.AddTransient<ServiceBusinessLogic>();
+            services.AddTransient<BookingBusinessLogic>();
+            services.AddTransient<StaffBusinessLogic>();
 
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
