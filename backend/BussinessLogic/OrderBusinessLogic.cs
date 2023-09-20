@@ -55,7 +55,7 @@ namespace backend.BussinessLogic
             existingOrder.CreateBy = order.CreateBy;
             existingOrder.Price = order.Price;
             existingOrder.IsActive = order.IsActive;
-            existingOrder.number_people = order.number_people;
+            existingOrder.Number_people = order.Number_people;
             existingOrder.Create_Date = order.Create_Date;
             existingOrder.End_Date = order.End_Date;
             await unitofWork.Repository<Order>().Update(existingOrder);

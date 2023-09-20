@@ -54,7 +54,7 @@ namespace backend.BussinessLogic
             existingOrderDetail.UpdateBy = orderDetail.UpdateBy;
             existingOrderDetail.CreateBy = orderDetail.CreateBy;
             existingOrderDetail.IsActive = orderDetail.IsActive;
-            existingOrderDetail.TourID = orderDetail.TourID;
+            existingOrderDetail.BookigId = orderDetail.BookigId;
             existingOrderDetail.OrderID = orderDetail.OrderID;
             existingOrderDetail.Quantity = orderDetail.Quantity;
             existingOrderDetail.Price = orderDetail.Price;
@@ -62,7 +62,7 @@ namespace backend.BussinessLogic
             existingOrderDetail.Status = orderDetail.Status;
             existingOrderDetail.UserID = orderDetail.UserID;
             
-            existingOrderDetail.UserID = orderDetail.UserID;
+            
             await unitofWork.Repository<OrderDetail>().Update(existingOrderDetail);
             var check = await unitofWork.Complete();
             if (check < 1)
