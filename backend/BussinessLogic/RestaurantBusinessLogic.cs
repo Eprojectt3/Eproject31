@@ -67,12 +67,11 @@ namespace backend.BussinessLogic
       existingRestaurant.Address = restaurant.Address;
       existingRestaurant.PhoneNumbber = restaurant.PhoneNumbber;
       existingRestaurant.Image = restaurant.Image;
-      existingRestaurant.Image_detail = restaurant.Image_detail;
-      existingRestaurant.Price = restaurant.Price;
       existingRestaurant.Price_range = restaurant.Price_range;
       existingRestaurant.Rating = restaurant.Rating;
       existingRestaurant.Description = restaurant.Description;
       existingRestaurant.Links = restaurant.Links;
+      existingRestaurant.LocationId = restaurant.LocationId;
       if (await IsRestaurantNameDuplicate(restaurant.Address))
       {
         throw new BadRequestExceptions("Restaurant Address is exist.");

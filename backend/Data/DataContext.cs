@@ -28,10 +28,20 @@ namespace webapi.Data
     public virtual DbSet<Tour> Tour { get; set; }
     public virtual DbSet<Transportation> Transportation { get; set; }
     public virtual DbSet<Service> Service { get; set; }
+    public virtual DbSet<Booking> Booking { get; set; }
+    public virtual DbSet<Staff> Staff { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<User>().HasIndex(ul => new { ul.Username }).IsUnique();
-    }
+
+
+            modelBuilder.Entity<Hotel>()
+        .HasOne(h => h.location1)
+        .WithMany(l => l.Hotels)
+        .HasForeignKey(h => h.LocatinId)
+        .IsRequired()
+        .OnDelete(DeleteBehavior.Cascade);
+        }
   }
 }

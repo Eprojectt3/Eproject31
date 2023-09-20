@@ -64,10 +64,8 @@ namespace backend.BussinessLogic
       existingResorts.Name = resort.Name;
       existingResorts.Address = resort.Address;
       existingResorts.Rating = resort.Rating;
-      existingResorts.ImageDetail = resort.ImageDetail;
       existingResorts.Description = resort.Description;
       existingResorts.Image = resort.Image;
-      existingResorts.Price = resort.Price;
       existingResorts.Price_range = resort.Price_range;
       existingResorts.PhoneNumber = resort.PhoneNumber;
       existingResorts.IsActive = resort.IsActive;
