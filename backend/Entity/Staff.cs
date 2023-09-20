@@ -10,8 +10,8 @@ namespace backend.Entity
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Image { get; set; }
-        public int Phone { get; set; }
+        public int? Phone { get; set; }
         public string? Email { get; set; }
-        public string? Cccd { get; set; }
+        public string? PersonId { get; set; }
     }
 }
