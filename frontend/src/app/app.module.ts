@@ -14,18 +14,37 @@ import { FooterComponent } from './components/footer/footer.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatInputModule} from '@angular/material/input'
+
 
 
 // Font awesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgIf } from '@angular/common';
+
+
+// Test
+
+// PrimeNg
+// import { CarouselModule } from 'primeng/carousel';
+
+// PrimeNg
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [
+
     AppComponent,
     LayoutComponent,
     HomeComponent,
     AboutUsComponent,
     FooterComponent,
+    ContactUsComponent,
+
+
 
   ],
   imports: [
@@ -37,6 +56,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatDividerModule,
     MatButtonModule,
     MatMenuModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    NgIf,
+
+
   ],
   providers: [],
   bootstrap: [AppComponent],

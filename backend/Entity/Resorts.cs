@@ -24,5 +24,6 @@ namespace backend.Entity
     public int? LocationId { get; set; }
     public Location1? Location { get; set; }
     public string? Links { get; set; }
+        //public ICollection<Itinerary>? Itineraries { get; set; }
   }
 }

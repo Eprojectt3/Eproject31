@@ -27,10 +27,7 @@ namespace backend.Entity
     public int Transportation_ID { get; set; }
     public Transportation? transportation { get; set; }
 
-
-    [ForeignKey(nameof(Discount.Id))]
-    public int? discount_Id { get; set; }
-    public Discount? discount { get; set; }
     public ICollection<OrderDetail>? OrderDetails { get; set; }
+        public ICollection<Itinerary>? Itineraries { get; set; }
   }
 }
