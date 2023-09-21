@@ -14,10 +14,13 @@ import { FooterComponent } from './components/footer/footer.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-
+import { MatCardModule } from '@angular/material/card';
 
 // Font awesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+// PrimeNg
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HomeComponent,
     AboutUsComponent,
     FooterComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatDividerModule,
     MatButtonModule,
     MatMenuModule,
+    MatCardModule,
+    CarouselModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

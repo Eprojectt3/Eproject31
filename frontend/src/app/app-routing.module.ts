@@ -18,10 +18,17 @@ const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
   },
+  {
+    path: 'infomation',
+    loadChildren: () =>
+      import('./pages/infomation/infomation.module').then(
+        (m) => m.InfomationModule,
+      ),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
