@@ -53,15 +53,14 @@ namespace backend.BussinessLogic
             existingOrderDetail.CreateDate = orderDetail.CreateDate;
             existingOrderDetail.UpdateBy = orderDetail.UpdateBy;
             existingOrderDetail.CreateBy = orderDetail.CreateBy;
-            existingOrderDetail.IsActive = orderDetail.IsActive;
-            existingOrderDetail.BookigId = orderDetail.BookigId;
+            existingOrderDetail.IsActive = orderDetail.IsActive;            
             existingOrderDetail.OrderID = orderDetail.OrderID;
             existingOrderDetail.Quantity = orderDetail.Quantity;
             existingOrderDetail.Price = orderDetail.Price;
-            existingOrderDetail.Rating = orderDetail.Rating;
-            existingOrderDetail.Status = orderDetail.Status;
+            existingOrderDetail.Rating = orderDetail.Rating;          
             existingOrderDetail.UserID = orderDetail.UserID;
-            
+            existingOrderDetail.Payment_Id = orderDetail.Payment_Id;
+            existingOrderDetail.Type_Payment = orderDetail.Type_Payment;
             
             await unitofWork.Repository<OrderDetail>().Update(existingOrderDetail);
             var check = await unitofWork.Complete();
