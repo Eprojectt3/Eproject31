@@ -432,7 +432,7 @@ namespace backend.Migrations
                         name: "FK_Itinerarie_Restaurant_ParentId",
                         column: x => x.ParentId,
                         principalTable: "Restaurant",
-                        principalColumn: "Id"git);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Itinerarie_Tour_TourID",
                         column: x => x.TourID,
