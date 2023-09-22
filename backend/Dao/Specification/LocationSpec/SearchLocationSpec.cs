@@ -12,7 +12,7 @@ namespace backend.Dao.Specification.LocationSpec
             param.Search.ToLower().Contains(l.State.ToLower())
         )
         {
-            ApplyPagination(param.PageSize * (param.PageIndex - 1), param.PageSize);
+            //ApplyPagination(param.PageSize * (param.PageIndex - 1), param.PageSize);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Specification;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,20 @@ namespace backend.Controllers
             {
                 return NotFound();
             }
+            return Ok(output);
+        }
+        [HttpPost]
+        public async Task<ActionResult> ListHotelPagination(SpecParams pagination)
+        {
+            var output = await hotelBusinessLogic.SelectAllHotelPagination(pagination);
+
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
         }
 

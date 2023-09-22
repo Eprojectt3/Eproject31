@@ -31,6 +31,9 @@ import { NgIf } from '@angular/common';
 // PrimeNg
 // import { CarouselModule } from 'primeng/carousel';
 
+// PrimeNg
+import { CarouselModule } from 'primeng/carousel';
+
 @NgModule({
   declarations: [
 

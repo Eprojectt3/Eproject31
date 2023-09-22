@@ -4,7 +4,7 @@ using webapi.Base;
 
 namespace backend.Entity
 {
-    public class Booking:BaseCreateDate
+    public class TourDetail:BaseCreateDate
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,8 +27,8 @@ namespace backend.Entity
         public string? Description { get; set; }
         public Tour? tour { get; set; }
         public Discount? discount { get; set; }
-        public Staff? staff { get; set; }
-        public ICollection<OrderDetail>? OrderDetails { get; set; }
+        public Staff? staff { get; set; }       
         public ICollection<Service>? Services { get; set; }
+        public ICollection<Order>? Orders { get; set; }
     }
 }

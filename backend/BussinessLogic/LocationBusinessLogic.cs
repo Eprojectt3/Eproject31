@@ -117,12 +117,14 @@ namespace backend.BussinessLogic
             var products = await unitofWork.Repository<Location1>().GetAllWithAsync(spec);
 
             var data = mapper.Map<IReadOnlyList<Location1>,IReadOnlyList<LocationDtos>>(products);
-
-
+            var locationPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+            
             var countSpec = new SearchLocationSpec(specParams);
             var count = await unitofWork.Repository<Location1>().GetCountWithSpecAsync(countSpec);
 
-            var pagination = new Pagination<LocationDtos>(specParams.PageIndex, specParams.PageSize, data, count);
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+
+            var pagination = new Pagination<LocationDtos>(specParams.PageIndex, specParams.PageSize, locationPage, count , totalPageIndex);
 
             return pagination;
         }
