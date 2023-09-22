@@ -13,22 +13,21 @@ namespace backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public CategoryBusinessLogic categoryBusinessLogic;
-        private readonly IResponseCacheService responseCacheService;
 
-        public CategoryController(
-            CategoryBusinessLogic categoryBussiness,
-            IResponseCacheService responseCache
-        )
+        public CategoryBussinessLogic categoryBussinessLogic;
+        private readonly IResponseCacheService responseCacheService;
+        public CategoryController(CategoryBussinessLogic categoryBussiness, IResponseCacheService responseCache)
+
+        public CategoryController(CategoryBusinessLogic categoryBussiness)
         {
-            categoryBusinessLogic = categoryBussiness;
+            categoryBussinessLogic = categoryBussiness;
             responseCacheService = responseCache;
         }
 
         // execute list all category
         [HttpGet]
         [Cache(1400)]
-        public async Task<ActionResult> ListCategory(int id = 1, string hehe = "abc")
+        public async Task<ActionResult> ListCategory()
         {
             var output = await categoryBusinessLogic.SelectAllCategory();
             if (output == null)

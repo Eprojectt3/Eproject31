@@ -69,7 +69,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<DataContext>();
 builder.Services.AddAppServices();
 builder.Services.AddRedis(builder.Configuration);
-
 // Cors
 builder.Services.AddCors(
     opt =>

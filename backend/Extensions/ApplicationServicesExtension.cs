@@ -25,14 +25,6 @@ namespace backend.Extensions
             services.AddTransient<DiscountBusinessLogic>();
             services.AddTransient<TransportationBusinessLogic>();
             services.AddTransient<ResortBusinessLogic>();
-            services.AddTransient<FeedBackBusinessLogic>();
-            services.AddTransient<OrderBusinessLogic>();
-            services.AddTransient<TourBusinessLogic>();
-            services.AddTransient<ItineraryBusinessLogic>();
-            services.AddTransient<OrderDetailBusinessLogic>();
-            services.AddTransient<ServiceBusinessLogic>();
-            services.AddTransient<BookingBusinessLogic>();
-            services.AddTransient<StaffBusinessLogic>();
             services.AddTransient<PaymentBussinessLogic>();
             services.AddHttpClient<PaymentPayPalController>();
 
