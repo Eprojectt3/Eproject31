@@ -42,7 +42,6 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(Resorts resort)
         {
-
             await resortBusinessLogic.Update(resort);
             return Ok(resort);
         }

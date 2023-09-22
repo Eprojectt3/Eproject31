@@ -1,5 +1,6 @@
 ﻿using backend.Base;
 using backend.BussinessLogic;
+using backend.Controllers;
 using backend.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -25,6 +26,7 @@ namespace backend.Extensions
             services.AddTransient<TransportationBusinessLogic>();
             services.AddTransient<ResortBusinessLogic>();
             services.AddTransient<PaymentBussinessLogic>();
+            services.AddHttpClient<PaymentPayPalController>();
 
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
