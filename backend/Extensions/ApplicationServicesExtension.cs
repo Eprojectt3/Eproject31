@@ -33,6 +33,7 @@ namespace backend.Extensions
             services.AddTransient<ServiceBusinessLogic>();
             services.AddTransient<BookingBusinessLogic>();
             services.AddTransient<StaffBusinessLogic>();
+
             services.AddTransient<PaymentBussinessLogic>();
             services.AddHttpClient<PaymentPayPalController>();
 
