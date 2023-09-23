@@ -32,5 +32,6 @@ namespace backend.Entity
     public int? discount_Id { get; set; }
     public Discount? discount { get; set; }
     public ICollection<OrderDetail>? OrderDetails { get; set; }
+        public ICollection<Itinerary>? Itineraries { get; set; }
   }
 }

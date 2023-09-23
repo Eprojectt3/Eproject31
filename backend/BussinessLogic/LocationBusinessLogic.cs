@@ -1,7 +1,12 @@
 ﻿
+using AutoMapper;
+using backend.Dao.Specification;
 using backend.Dao.Specification.LocationSpec;
+using backend.Dtos.LocationDtos;
 using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
+using System.Drawing.Printing;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -9,9 +14,11 @@ namespace backend.BussinessLogic
     public class LocationBusinessLogic
     {
         public IUnitofWork unitofWork;
-        public LocationBusinessLogic(IUnitofWork _unitofWork)
+        public IMapper mapper;
+        public LocationBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            this.mapper = mapper;
         }
 
         //list category
@@ -20,7 +27,7 @@ namespace backend.BussinessLogic
             var data = await unitofWork.Repository<Location1>().GetAllAsync();
             return data;
         }
-
+        
         //create category
         public async Task Create(Location1 location)
         {
@@ -28,10 +35,6 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("Cattegory not found");
             }
-
-          
-
-
             await unitofWork.Repository<Location1>().AddAsync(location);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -107,7 +110,22 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
         }
+        public async Task<Pagination<LocationDtos>> SelectAllLocation1Pagination(SpecParams specParams)
+        {
+           
+            var spec = new SearchLocationSpec(specParams);
+            var products = await unitofWork.Repository<Location1>().GetAllWithAsync(spec);
 
-        
+            var data = mapper.Map<IReadOnlyList<Location1>,IReadOnlyList<LocationDtos>>(products);
+
+
+            var countSpec = new SearchLocationSpec(specParams);
+            var count = await unitofWork.Repository<Location1>().GetCountWithSpecAsync(countSpec);
+
+            var pagination = new Pagination<LocationDtos>(specParams.PageIndex, specParams.PageSize, data, count);
+
+            return pagination;
+        }
+
     }
 }
