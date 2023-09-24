@@ -49,7 +49,7 @@ export class CategoryService {
 
 
   // Update category
-  public updateCategory = (data: any): Observable<any> => {
-    return this.http.put(`${AUTH_API}/api/Category/Update`, data);
+  public updateCategory = (id:number,data: any): Observable<any> => {
+    return this.http.put(`${AUTH_API}/api/Category/Update/${id}`, data);
   };
 }

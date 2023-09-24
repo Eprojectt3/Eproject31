@@ -10,9 +10,25 @@ import { DetailHotelComponent } from './admin-hotel/detail-hotel/detail-hotel.co
 import { UpdateHotelComponent } from './admin-hotel/update-hotel/update-hotel.component';
 import { CreateTourComponent } from './admin-tour/create-tour/create-tour.component';
 import { ListFeedbacksComponent } from './admin-feedback/list-feedbacks/list-feedbacks.component';
-import { UpdateFeedComponent } from './admin-feedback/update-feed/update-feed.component';
 import { DialogCreateComponent } from './admin-category/dialog-create/dialog-create.component';
-import { UpdateCateComponent } from './admin-category/update-cate/update-cate.component';
+import { ListRolesComponent } from './admin-role/list-roles/list-roles.component';
+import { CreateRoleComponent } from './admin-role/create-role/create-role.component';
+import { ListTransportationsComponent } from './admin-transportation/list-transportations/list-transportations.component';
+import { CreateTransportationComponent } from './admin-transportation/create-transportation/create-transportation.component';
+import { ListServicesComponent } from './admin-service/list-services/list-services.component';
+import { CreateServiceComponent } from './admin-service/create-service/create-service.component';
+import { ListLocationsComponent } from './admin-location/list-locations/list-locations.component';
+import { CreateLocationComponent } from './admin-location/create-location/create-location.component';
+import { ListItinerariesComponent } from './admin-itinerary/list-itineraries/list-itineraries.component';
+import { CreateItinerariesComponent } from './admin-itinerary/create-itineraries/create-itineraries.component';
+import { ListResortsComponent } from './admin-resort/list-resorts/list-resorts.component';
+import { CreateResortComponent } from './admin-resort/create-resort/create-resort.component';
+import { DetailResortComponent } from './admin-resort/detail-resort/detail-resort.component';
+import { UpdateResortComponent } from './admin-resort/update-resort/update-resort.component';
+import { CreateRestaurantComponent } from './admin-restaurant/create-restaurant/create-restaurant.component';
+import { DetailRestaurantComponent } from './admin-restaurant/detail-restaurant/detail-restaurant.component';
+import { UpdateRestaurantComponent } from './admin-restaurant/update-restaurant/update-restaurant.component';
+import { ListRestaurantsComponent } from './admin-restaurant/list-restaurants/list-restaurants.component';
 
 const routes: Routes = [
   {
@@ -27,10 +43,6 @@ const routes: Routes = [
         path: 'create',
         component: DialogCreateComponent,
       },
-      {
-        path: 'update/:id',
-        component: UpdateCateComponent,
-      },
     ],
   },
   { path: '', component: AdminComponent, pathMatch: 'full' },
@@ -39,9 +51,61 @@ const routes: Routes = [
     path: 'feedbacks',
     component: ListFeedbacksComponent,
   },
+
   {
-    path: 'update-feed/:id',
-    component: UpdateFeedComponent,
+    path: 'roles',
+    component: ListRolesComponent,
+    children: [
+      {
+        path: 'create',
+        component: CreateRoleComponent,
+      },
+
+    ],
+  },
+  {
+    path: 'locations',
+    component: ListLocationsComponent,
+    children: [
+      {
+        path: 'create',
+        component: CreateLocationComponent,
+      },
+
+    ],
+  },
+  {
+    path: 'itineraries',
+    component: ListItinerariesComponent,
+    children: [
+      {
+        path: 'create',
+        component: CreateItinerariesComponent,
+      },
+
+    ],
+  },
+  {
+    path: 'transportations',
+    component: ListTransportationsComponent,
+    children: [
+      {
+        path: 'create',
+        component: CreateTransportationComponent,
+      },
+
+    ],
+  },
+  {
+    path: 'services',
+    component: ListServicesComponent,
+    children: [
+      {
+        path: 'create',
+        component: CreateServiceComponent,
+      },
+
+    ],
   },
   {
     path: 'tours',
@@ -63,6 +127,42 @@ const routes: Routes = [
       {
         path: 'update/:id',
         component: UpdateHotelComponent,
+      },
+    ],
+  },
+  {
+    path: 'resorts',
+    component: ListResortsComponent,
+    children: [
+      {
+        path: 'create',
+        component: CreateResortComponent,
+      },
+      {
+        path: 'detail/:id',
+        component: DetailResortComponent,
+      },
+      {
+        path: 'update/:id',
+        component: UpdateResortComponent,
+      },
+    ],
+  },
+  {
+    path: 'restaurants',
+    component: ListRestaurantsComponent,
+    children: [
+      {
+        path: 'create',
+        component: CreateRestaurantComponent,
+      },
+      {
+        path: 'detail/:id',
+        component: DetailRestaurantComponent,
+      },
+      {
+        path: 'update/:id',
+        component: UpdateRestaurantComponent,
       },
     ],
   },

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { Resort } from '../models/resort';
+import { Resort } from '../models/resort.model';
+
 
 const AUTH_API: string = environment.apiLocallHost;
 const httpOptions = {
@@ -57,7 +58,7 @@ export class ResortService {
   };
 
   // Delete Resort
-  public deleteResort = (id: number): Observable<any> => {
+  public deleteResort = (id: string): Observable<any> => {
     return this.httpClient.delete(`${AUTH_API}/api/Resort/Delete/${id}`);
   };
 

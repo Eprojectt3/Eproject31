@@ -4,7 +4,6 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { DialogCreateComponent } from '../dialog-create/dialog-create.component';
-import { UpdateCateComponent } from '../update-cate/update-cate.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -70,6 +69,27 @@ export class ListCategoriesComponent implements OnInit {
       height: '230px',
       width: '400px',
     });
+    dialogRef.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.getListCategories();
+        }
+      }
+    })
+  };
+  public openUpdateCate = (data:any) => {
+    const dialogRef = this.dialog.open(DialogCreateComponent, {
+      data: data,
+      height: '230px',
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.getListCategories();
+        }
+      }
+    })
   };
 
   public deleteCategory = (id:string) => {

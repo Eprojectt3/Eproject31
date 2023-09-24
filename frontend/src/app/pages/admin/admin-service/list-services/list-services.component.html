@@ -1,1 +1,97 @@
-<p>list-services works!</p>
+<section class="w-[100%] bg-white p-[15px] h-[auto] m-auto">
+  <div *ngIf="!isShowCreateServices() &&  !isUpdateServices()">
+    <div class="mb-[30px] ml-[25px] mt-[20px] flex w-[96%] justify-between">
+      <h1 class="font-[600] text-[25px]">Services</h1>
+
+      <!-- Button create -->
+      <div class="">
+        <button
+        (click)="openCreateService()"
+          mat-flat-button
+          color="primary"
+          class="w-[150px] !rounded-[30px]"
+        >
+          Create
+        </button>
+      </div>
+    </div>
+
+    <!-- Table  -->
+    <div class="table-categories w-[97%] m-auto">
+      <table mat-table [dataSource]="services" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>Id</th>
+          <td mat-cell *matCellDef="let element">{{ element?.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element">{{ element?.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tour">
+          <th mat-header-cell *matHeaderCellDef>Tour</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element?.tour_Name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let element">
+            {{element?.description}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action" class="">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element" class="w-[400px]">
+            <button
+              mat-flat-button
+              color="primary"
+              class="mr-[10px]"
+              [routerLink]="['/admin/services/update', element.id]"
+            >
+              Edit
+            </button>
+            <button
+              mat-flat-button
+              color="primary"
+              class="mr-[10px]"
+              [routerLink]="['/admin/services/detail', element.id]"
+            >
+              Detail
+            </button>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="deleteService(element?.id)"
+            >
+              Delete
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <mat-paginator
+        #paginator
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="pageEvent = handlePage($event)"
+        [pageSizeOptions]="[5, 10]"
+        [length]="totalSize"
+        showFirstLastButtons
+        aria-label="Select
+      page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="isShowCreateTour() || isShowDetailTour() || isUpdateTour()">
+    <router-outlet></router-outlet>
+  </div> -->
+</section>

@@ -46,6 +46,10 @@ export class TourService {
   public createTours = (data: any): Observable<any> => {
     return this.httpclient.post(`${AUTH_API}/api/Tour/Add`, data);
   };
+   // Delete Itinerary
+   public deleteTours = (id: string): Observable<any> => {
+    return this.httpclient.delete(`${AUTH_API}/api/Tour/Delete/${id}`);
+  };
 
   // getTourDetail(){
   //   return this.httpclient.get("'https://localhost:7110/api/TourDetail/ListTourDetail")

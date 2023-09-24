@@ -12,9 +12,9 @@ export interface Resort {
   isActive?: boolean;
   intineraries?: any;
   links?: string;
-  location1?: any;
+  location?: string;
   locationId?: number;
-  phoneNumber?: number;
+  phoneNumber?: string;
   updateBy?: string;
   updateDate?: Date;
   urlImage?: string[];

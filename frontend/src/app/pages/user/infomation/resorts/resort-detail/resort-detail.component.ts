@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faFacebook ,faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { Hotel } from 'src/app/models/hotel';
-import { Resort } from 'src/app/models/resort';
+import { Resort } from 'src/app/models/resort.model';
+
 import { ResortService } from 'src/app/services/resort.service';
 import { TitleService } from 'src/app/services/title.service';
 

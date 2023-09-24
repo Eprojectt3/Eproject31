@@ -68,18 +68,16 @@ export class ListToursComponent implements OnInit {
       });
   };
 
-  // Delete hotel
-  public deleteTours = (id: number): void => {
-    // this.hotelService.deleteHotel(id).subscribe(
-    //   (val: any) => {
-    //     this.snackBar.openSnackBar('Delete success', 'Success');
-    //     this.getListHotels();
-    //   },
-    //   (err) => {
-    //     this.snackBar.openSnackBar(err, 'Error');
-    //     console.log(err);
-    //   }
-    // );
+  // Delete tour
+  public deleteTours = (id: string): void => {
+    this.tourService.deleteTours(id).subscribe(val=>{
+      this.tourService
+      .getListToursPagination(this.index, this.pageSize)
+      .subscribe((val: any) => {
+        this.tours = val.data;
+        this.totalSize = val.count;
+      });
+    })
   };
 
   public isShowCreateTour = (): boolean => {
