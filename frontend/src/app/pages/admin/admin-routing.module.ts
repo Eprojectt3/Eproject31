@@ -34,20 +34,21 @@ import { CreateStaffComponent } from './admin-staff/create-staff/create-staff.co
 import { DetailStaffComponent } from './admin-staff/detail-staff/detail-staff.component';
 import { UpdateStaffComponent } from './admin-staff/update-staff/update-staff.component';
 import { ListDashboardComponent } from './admin-dashboard/list-dashboard/list-dashboard.component';
+import { DetailTourComponent } from './admin-tour/detail-tour/detail-tour.component';
+import { UpdateTourComponent } from './admin-tour/update-tour/update-tour.component';
 
 const routes: Routes = [
-
   {
     path: 'dashboards',
-      component: ListDashboardComponent,
-      // children: [
-      //   {
-      //     path: 'create',
-      //     component: CreateRestaurantComponent,
-      //   },
+    component: ListDashboardComponent,
+    // children: [
+    //   {
+    //     path: 'create',
+    //     component: CreateRestaurantComponent,
+    //   },
 
-      // ],
-    },
+    // ],
+  },
 
   {
     path: 'users',
@@ -123,7 +124,17 @@ const routes: Routes = [
   {
     path: 'tours',
     component: ListToursComponent,
-    children: [{ path: 'create', component: CreateTourComponent }],
+    children: [
+      { path: 'create', component: CreateTourComponent },
+      {
+        path: 'detail/:id',
+        component: DetailTourComponent,
+      },
+      {
+        path: 'update/:id',
+        component: UpdateTourComponent,
+      },
+    ],
   },
   {
     path: 'hotels',
@@ -197,8 +208,6 @@ const routes: Routes = [
       },
     ],
   },
-
-
 
   { path: '', component: AdminComponent, pathMatch: 'full' },
 ];

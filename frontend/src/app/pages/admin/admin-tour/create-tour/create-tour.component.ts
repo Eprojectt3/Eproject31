@@ -56,7 +56,7 @@ export class CreateTourComponent implements OnInit {
       description: [
         '',
         Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
-      
+
       ],
       quantity_limit: [
         '',
@@ -94,29 +94,15 @@ export class CreateTourComponent implements OnInit {
     this.formData.append('Name', this.loginForm.controls['name'].value);
     this.formData.append('Rating', '0');
     this.formData.append('Price', this.loginForm.controls['price'].value);
-    this.formData.append('category_Id',this.loginForm.controls['category'].value);
+    this.formData.append('Category_Id',this.loginForm.controls['category'].value);
     this.formData.append('Description', this.description);
     this.formData.append('Quantity_limit', this.loginForm.controls['quantity_limit'].value);
-    this.formData.append('Departure_Time', this.loginForm.controls['departure_Time'].value);
+    // this.formData.append('Departure_Time', this.loginForm.controls['departure_Time'].value);
     this.formData.append('Range_time', this.loginForm.controls['range_time'].value);
-    this.formData.append('Transportation', this.loginForm.controls['transportation'].value);
+    this.formData.append('Transportation_ID', this.loginForm.controls['transportation'].value);
     this.formData.append('Discount', this.loginForm.controls['discount'].value);
     this.formData.append('Departure_location', this.loginForm.controls['departure_location'].value);
-
-    this.dataForm = {
-      Name: this.loginForm.controls['name'].value,
-      Rating: '0',
-      Price_range: this.loginForm.controls['price'].value,
-      LocationId: this.loginForm.controls['category'].value,
-      Description: this.description,
-      Quantity_limit: this.loginForm.controls['quantity_limit'].value,
-      Departure_Time: this.loginForm.controls['departure_Time'].value,
-      Range_time: this.loginForm.controls['range_time'].value,
-      Transportation: this.loginForm.controls['transportation'].value,
-      Discount: this.loginForm.controls['discount'].value,
-      Departure_location: this.loginForm.controls['departure_location'].value,
-      fileCollection: this.uploadedImages,
-    };
+    // console.log(this.formData);
 
     if (
       !this.loginForm.controls['name'].errors &&
@@ -124,7 +110,7 @@ export class CreateTourComponent implements OnInit {
       !this.loginForm.controls['category'].errors &&
       !this.loginForm.controls['quantity_limit'].errors &&
       !this.loginForm.controls['description'].errors &&
-      !this.loginForm.controls['departure_Time'].errors&&
+      // !this.loginForm.controls['departure_Time'].errors&&
       !this.loginForm.controls['range_time'].errors&&
       !this.loginForm.controls['transportation'].errors&&
       !this.loginForm.controls['discount'].errors&&
@@ -136,6 +122,7 @@ export class CreateTourComponent implements OnInit {
           this.router.navigate(['/admin/tours'], {
             queryParams: { refresh: 'true' },
           });
+
         },
         (err) => {
           console.log(err);

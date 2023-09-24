@@ -74,22 +74,14 @@ export class TourService {
   };
 
   // Delete Tour
-  public deleteTours = (id: string): Observable<any> => {
+  public deleteTours = (id: number): Observable<any> => {
     return this.httpclient.delete(`${AUTH_API}/api/Tour/Delete/${id}`);
   };
 
-  // Create tour
-  public createTour = (data: any): Observable<any> => {
-    return this.httpclient.post(`${AUTH_API}/api/Tour/Add`, data);
-  };
 
-  // Delete Tour
-  public deleteTour = (id: number): Observable<any> => {
-    return this.httpclient.delete(`${AUTH_API}/api/Tour/Delete/${id}`);
-  };
 
   // Update Tour
-  public updateTour = (data: any): Observable<any> => {
+  public updateTours = (data: any): Observable<any> => {
     return this.httpclient.put(`${AUTH_API}/api/Tour/Update`, data);
   };
 

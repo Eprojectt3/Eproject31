@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Category } from 'src/app/models/category.model';
-import { Tour, tours } from 'src/app/models/tour';
+import { Tour } from 'src/app/models/tour';
 import { CategoryService } from 'src/app/services/category.service';
 import { LocationService } from 'src/app/services/location.service';
 import { TourService } from 'src/app/services/tour.service';
