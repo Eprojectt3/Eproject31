@@ -28,7 +28,6 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { ImageModule } from 'primeng/image';
 
 
-
 @NgModule({
 
     declarations: [InfomationComponent, HotelsListComponent, HotelDetailComponent, RestaurantsListComponent, RestaurantDetailComponent, ResortsListComponent, ResortDetailComponent, ToursListComponent, TourDetailComponent,],
@@ -44,7 +43,8 @@ import { ImageModule } from 'primeng/image';
     MatFormFieldModule,
     MatSelectModule,
     MatButtonToggleModule,
-    ImageModule
+    ImageModule,
+
 
 
   ],

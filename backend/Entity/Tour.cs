@@ -27,6 +27,6 @@ namespace backend.Entity
     public Transportation? transportation { get; set; }
 
     public ICollection<OrderDetail>? OrderDetails { get; set; }
-        public ICollection<Itinerary>? Itineraries { get; set; }
+       public ICollection<Itinerary>? Itineraries { get; set; }
   }
 }
