@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -14,7 +15,7 @@ import { ValidatorFormService } from 'src/app/services/validator-form.service';
 export class UpdateCateComponent implements OnInit {
   formData: FormData = new FormData();
   loginForm!: FormGroup;
-  // Editor = ClassicEditor;
+  Editor = ClassicEditor;
   category!: Category;
   id!: number;
 
@@ -38,21 +39,7 @@ export class UpdateCateComponent implements OnInit {
         '',
         Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
       ],
-      title: [
-        '',
-        Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
-      ],
-      phone: [
-        '',
-        Validators.compose([
-          this.validatorForm.NoWhitespaceValidator(),
-          Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/),
-        ]),
-      ],
-      email: [
-        '',
-        Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
-      ],
+
     });
 
     this.categoryService.categorySubject.subscribe((val: any) => {
@@ -88,9 +75,5 @@ export class UpdateCateComponent implements OnInit {
       );
     }
   };
-  public isUpdateCategory = (): boolean => {
-    const currentUrl: string = this.router.url;
 
-    return currentUrl.includes('/admin/categories/update/');
-  };
 }

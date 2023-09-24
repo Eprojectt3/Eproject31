@@ -47,6 +47,7 @@ export class FeedbackService {
       );
     };
 
+
     // delete feedback
     public deleteFeedback = (id:string | undefined):Observable<FeedBack>=>{
       return this.http.delete<FeedBack>(`${AUTH_API}/api/FeedBack/Delete/`+id)
