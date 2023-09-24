@@ -3,6 +3,7 @@ import { Hotel } from '../../../../models/hotel';
 import { HotelService } from '../../../../services/hotel.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { PlaceService } from 'src/app/services/place.service';
 
 @Component({
   selector: 'app-detail-hotel',
@@ -15,13 +16,14 @@ export class DetailHotelComponent implements OnInit {
 
   constructor(
     private hotelService: HotelService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private placeService: PlaceService
   ) {}
 
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.hotelService.getDetailHotel(this.id).subscribe((val: any) => {
+    this.placeService.getPlaceById(this.id).subscribe((val: any) => {
       this.hotel = val;
     });
   }

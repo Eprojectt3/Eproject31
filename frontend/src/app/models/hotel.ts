@@ -18,6 +18,7 @@ export interface Hotel {
   updateBy?: string;
   updateDate?: Date;
   urlImage?: any;
+  place_Type_ID:number
 
   // quantityLimit?: number;
   // type?: boolean | false;
