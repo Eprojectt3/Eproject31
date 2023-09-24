@@ -106,6 +106,9 @@ namespace backend.BussinessLogic
             }
         }
 
+
+
+
         //update tour
         public async Task Update(TourDto tourdto)
         {
@@ -213,5 +216,8 @@ namespace backend.BussinessLogic
 
             return pagination;
         }
+
+
+
     }
 }

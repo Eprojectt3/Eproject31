@@ -1,29 +1,41 @@
 export interface Hotel {
   id?: number;
   name?: string;
-  price?: number;
-  date?: string;
+  rating?: number | null;
+  price_range?: string;
+  createDate? : Date;
   description: string;
   image?: string;
-  quantityLimit?: number;
-  rating?: number | null;
-  type?: boolean | false;
-  transportation?: string;
-  discount?: string;
+  imageDetail?: string;
+  address? : string;
+  createBy?: string;
+  isActive? : boolean;
+  intineraries?: any;
+  links? :string;
+  location1? :any;
+  locationId?: number;
+  phoneNumber?: number;
+  updateBy?: string;
+  updateDate?: Date;
+
+  // quantityLimit?: number;
+  // type?: boolean | false;
+  // transportation?: string;
+  // discount?: string;
 }
-export const hotels: Hotel[] = [
-  {
-    id: 1,
-    name: 'Ha Long Bay',
-    price: 1000,
-    date: 'April 6, 2023',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sollicitudin, tellus vitae condimentum egestas, libero dolor auctor tellus, eu consectetur neque elit quis nunc. Cras elementum pretium est. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Cras sollicitudin, tellus vitae condimentum egestas, libero dolor auctor tellus, eu consectetur neque elit quis nunc.Cras elementum pretium est.',
-    image: '../../assets/images/Rectangle 19377.jpg',
-    quantityLimit: 40,
-    rating: 5,
-    type: false,
-    transportation: 'plane',
-    discount: '20%',
-  },
-]
+// export const hotels: Hotel[] = [
+//   {
+//     id: 1,
+//     Name: 'Ha Long Bay',
+//     price_range: 1000,
+//     date: 'April 6, 2023',
+//     description:
+//       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sollicitudin, tellus vitae condimentum egestas, libero dolor auctor tellus, eu consectetur neque elit quis nunc. Cras elementum pretium est. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Cras sollicitudin, tellus vitae condimentum egestas, libero dolor auctor tellus, eu consectetur neque elit quis nunc.Cras elementum pretium est.',
+//     image: '../../assets/images/Rectangle 19377.jpg',
+//     quantityLimit: 40,
+//     rating: 5,
+//     type: false,
+//     transportation: 'plane',
+//     discount: '20%',
+//   },
+// ]

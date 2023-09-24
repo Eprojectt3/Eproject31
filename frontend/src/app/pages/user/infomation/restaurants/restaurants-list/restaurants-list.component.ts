@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Filter, filter } from 'src/app/models/filter.model';
-import { Tour, tours } from 'src/app/models/tour';
+import { Tour } from 'src/app/models/tour';
 import { TitleService } from 'src/app/services/title.service';
+import { RestaurantService } from '../../../../../services/restaurant.service';
+import { Restaurant } from 'src/app/models/restaurant';
+
 
 @Component({
   selector: 'app-restaurants-list',
@@ -9,13 +12,19 @@ import { TitleService } from 'src/app/services/title.service';
   styleUrls: ['./restaurants-list.component.scss'],
 })
 export class RestaurantsListComponent {
-  tours: Tour[] = tours;
+
+  restaurants!: Restaurant[]
   selected = 'none';
   filters: Filter[] = filter;
 
-  constructor(private titleService: TitleService) {}
+  constructor(private titleService: TitleService , private restaurantService:RestaurantService) {}
 
   ngOnInit(): void {
     this.titleService.setTitleValue('Restaurant List');
+    this.restaurantService.GetListRestaurant().subscribe((val: any) => {
+      this.restaurants=val;
+      console.log(this.restaurants=val);
+
+    })
   }
 }

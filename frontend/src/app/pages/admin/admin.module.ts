@@ -27,9 +27,9 @@ import { ListToursComponent } from './admin-tour/list-tours/list-tours.component
 import { ListTransportationsComponent } from './admin-transportation/list-transportations/list-transportations.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
+
 @NgModule({
-  declarations: [
-    AdminComponent,
+  declarations: [ AdminComponent,
     ListUsersComponent,
     ListCategoriesComponent,
     ListFeedbacksComponent,
@@ -42,8 +42,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ListRolesComponent,
     ListServicesComponent,
     ListToursComponent,
-    ListTransportationsComponent,
-  ],
+    ListTransportationsComponent,],
   imports: [
     CommonModule,
     AdminRoutingModule,
