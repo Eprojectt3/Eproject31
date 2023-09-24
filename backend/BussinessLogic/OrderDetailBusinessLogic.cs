@@ -1,4 +1,5 @@
-﻿using backend.Entity;
+﻿using backend.Dao.Specification.Order1;
+using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
 
@@ -15,6 +16,11 @@ namespace backend.BussinessLogic
 
         //list orderDetail
         public async Task<IReadOnlyList<OrderDetail>> SelectAllOrderDetail()
+        {
+            var data = await unitofWork.Repository<OrderDetail>().GetAllAsync();
+            return data;
+        }
+        public async Task<IEnumerable<OrderDetail>> SelectAllOrderDetail2()
         {
             var data = await unitofWork.Repository<OrderDetail>().GetAllAsync();
             return data;
@@ -87,5 +93,6 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
         }
+      
     }
 }

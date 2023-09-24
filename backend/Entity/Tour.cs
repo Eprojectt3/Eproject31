@@ -12,9 +12,8 @@ namespace backend.Entity
     public int Id { get; set; }
     public string? Name { get; set; }
     public double Price { get; set; }
-
-    [ForeignKey(nameof(Category.Id))]
     public int category_id { get; set; }
+    [ForeignKey("category_id")]
     public Category? category { get; set; }
     public string? Description { get; set; }
     public string? image { get; set; }
