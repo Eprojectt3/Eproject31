@@ -29,8 +29,12 @@
       <!-- Card tour -->
       <div class="card-tour mt-[30px] xl:w-[59%] 2xl:w-[80%] m-auto mb-[35px]">
         <div class="flex flex-wrap -mx-4">
+
           <div *ngFor="let tour of tours" class="px-4 mb-[40px] xl:w-1/4">
+
+
             <button [routerLink]="['/infomation/resort-detail', tour.id]">
+
               <div>
                 <mat-card
                   class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
