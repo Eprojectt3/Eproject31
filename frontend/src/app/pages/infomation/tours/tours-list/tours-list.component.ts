@@ -17,18 +17,6 @@ export class ToursListComponent implements OnInit {
   constructor(private titleService: TitleService) {}
 
   ngOnInit(): void {
-    this.titleService.setTitleValue('Tours list');
-  }
-
-  setGridView() {
-    this.isGridView = true;
-    this.isLineView = false;
-    console.log(this.isGridView);
-  }
-
-  setLineView() {
-    this.isGridView = false;
-    this.isLineView = true;
-    console.log(this.isGridView);
+    this.titleService.setTitleValue('Tour List');
   }
 }
