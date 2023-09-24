@@ -14,9 +14,17 @@ import { CarouselModule } from 'primeng/carousel';
 import { CardModule } from 'primeng/card';
 import { AppModule } from 'src/app/app.module';
 import { PipeModule } from 'src/app/pipes/pipe.module';
+import { HotelsListComponent } from './hotels/hotels-list/hotels-list.component';
+import { HotelDetailComponent } from './hotels/hotel-detail/hotel-detail.component';
+import { RestaurantsListComponent } from './restaurants/restaurants-list/restaurants-list.component';
+import { RestaurantDetailComponent } from './restaurants/restaurant-detail/restaurant-detail.component';
+import { ResortsListComponent } from './resorts/resorts-list/resorts-list.component';
+import { ResortDetailComponent } from './resorts/resort-detail/resort-detail.component';
+import { ToursListComponent } from './tours/tours-list/tours-list.component';
+import { TourDetailComponent } from './tours/tour-detail/tour-detail.component';
 
 @NgModule({
-  declarations: [InfomationComponent],
+  declarations: [InfomationComponent, HotelsListComponent, HotelDetailComponent, RestaurantsListComponent, RestaurantDetailComponent, ResortsListComponent, ResortDetailComponent, ToursListComponent, TourDetailComponent],
   imports: [
     MatButtonModule,
     CommonModule,

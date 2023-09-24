@@ -18,7 +18,10 @@
           [responsiveOptions]="responsiveOptions"
         >
           <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
-            <button type="button">
+            <button
+              type="button"
+              [routerLink]="['/infomation/tour-detail/', tour.id]"
+            >
               <div>
                 <mat-card
                   class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
@@ -32,7 +35,7 @@
                   <!-- Card header -->
                   <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
                     ><mat-card-title
-                      class="!text-[15px] text-[#181E4B] xl:!text-[18px]"
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
                       >{{ tour.name }}</mat-card-title
                     >
                   </mat-card-header>
@@ -75,6 +78,7 @@
         <button
           mat-flat-button
           class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+          routerLink="/infomation/tours"
         >
           View more
         </button>
@@ -117,7 +121,7 @@
                   <!-- Card header -->
                   <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
                     ><mat-card-title
-                      class="!text-[15px] text-[#181E4B] xl:!text-[18px]"
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
                       >{{ tour.name }}</mat-card-title
                     >
                   </mat-card-header>
@@ -188,7 +192,10 @@
           [responsiveOptions]="responsiveOptions"
         >
           <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
-            <button type="button">
+            <button
+              type="button"
+              [routerLink]="['/infomation/resort-detail/', tour.id]"
+            >
               <div>
                 <mat-card
                   class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
@@ -202,7 +209,7 @@
                   <!-- Card header -->
                   <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
                     ><mat-card-title
-                      class="!text-[15px] text-[#181E4B] xl:!text-[18px]"
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
                       >{{ tour.name }}</mat-card-title
                     >
                   </mat-card-header>
@@ -245,6 +252,7 @@
         <button
           mat-flat-button
           class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+          routerLink="/infomation/resorts"
         >
           View more
         </button>
@@ -276,7 +284,10 @@
           [responsiveOptions]="responsiveOptions"
         >
           <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
-            <button type="button">
+            <button
+              type="button"
+              [routerLink]="['/infomation/restaurant-detail/', tour.id]"
+            >
               <div>
                 <mat-card
                   class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
@@ -290,7 +301,7 @@
                   <!-- Card header -->
                   <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
                     ><mat-card-title
-                      class="!text-[15px] text-[#181E4B] xl:!text-[18px]"
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
                       >{{ tour.name }}</mat-card-title
                     >
                   </mat-card-header>
@@ -333,6 +344,7 @@
         <button
           mat-flat-button
           class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+          routerLink="/infomation/restaurants"
         >
           View more
         </button>
@@ -359,7 +371,10 @@
           [responsiveOptions]="responsiveOptions"
         >
           <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
-            <button type="button">
+            <button
+              href=""
+              [routerLink]="['/infomation/hotel-detail', tour.id]"
+            >
               <div>
                 <mat-card
                   class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
@@ -373,7 +388,7 @@
                   <!-- Card header -->
                   <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
                     ><mat-card-title
-                      class="!text-[15px] text-[#181E4B] xl:!text-[18px]"
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !truncate !w-[220px]"
                       >{{ tour.name }}</mat-card-title
                     >
                   </mat-card-header>
@@ -416,6 +431,7 @@
         <button
           mat-flat-button
           class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+          routerLink="/infomation/hotels"
         >
           View more
         </button>
