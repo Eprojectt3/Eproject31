@@ -1,1 +1,67 @@
-<p>detail-restaurant works!</p>
+<ng-container>
+  <div class="container">
+    <div class="title">
+      <h1 class="text-[23px] font-bold mb-[10px]">Restaurant detail</h1>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="detail mt-[15px]">
+      <!--        restaurant name-->
+      <div class="flex mb-[8px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Restaurant name:</h3>
+        <span class="text-[18px]">{{ restaurant?.name }}</span>
+      </div>
+
+      <!--        Price-->
+      <div class="flex mb-[8px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Price:</h3>
+        <span class="text-[18px]">{{ restaurant?.price_range }}</span>
+      </div>
+
+      <!--        Rating-->
+      <div class="flex mb-[8px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Rating:</h3>
+        <span class="text-[18px]">{{ restaurant?.rating }}</span>
+      </div>
+
+      <!--        Location-->
+      <div class="flex mb-[8px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Location:</h3>
+        <span class="text-[18px]">{{ restaurant?.locationId }}</span>
+      </div>
+
+      <!--        Address-->
+      <div class="flex mb-[15px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Address:</h3>
+        <span class="text-[18px]">{{ restaurant?.address }}</span>
+      </div>
+
+      <!--        Description-->
+      <div class="">
+        <h3 class="text-[18px] font-bold mr-[10px] mb-[10px]">Description:</h3>
+        <span class="text-[14px]" [innerHTML]="restaurant?.description"></span>
+      </div>
+
+      <!--        Image-->
+      <div class="image flex mt-[40px]">
+        <div
+          *ngFor="let img of restaurant?.urlImage"
+          class="w-[200px] h-[200px] bg-cover object-cover mr-[10px]"
+        >
+          <p-image
+            [imageStyle]="{
+              width: '250px',
+              height: '150px'
+            }"
+            class="bg-cover object-cover"
+            [src]="img.image"
+            alt="Error"
+            [preview]="true"
+          ></p-image>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+

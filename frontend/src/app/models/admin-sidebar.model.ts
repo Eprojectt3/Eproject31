@@ -5,6 +5,12 @@ export interface AdminSidebar {
 }
 
 export const adminSidebar: AdminSidebar[] = [
+
+  {
+    icon: 'bar_chart_4_bars',
+    title: 'Dashboard',
+    link: '/admin/dashboards',
+  },
   {
     icon: 'person',
     title: 'User',

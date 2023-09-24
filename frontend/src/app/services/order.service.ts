@@ -42,4 +42,22 @@ export class OrderService {
       )
       .pipe(tap((val) => this.orderSubject.next(val)));
   };
+
+  //get Dashbord Mont/year
+
+  public getListMonthWeek = (year: number, month: number): Observable<Order[]> => {
+    const url = `${AUTH_API}/api/Order/GetRevenueByMonth/${year}/${month}`;
+    return this.httpclient.get<Order[]>(url, httpOptions);
+  };
+
+  public getListYear = (year: number): Observable<Order[]> => {
+    const url = `${AUTH_API}/api/Order/GetRevenueByYear/${year}`;
+    return this.httpclient.get<Order[]>(url, httpOptions);
+
+  };
+
+  public getDataForDays = (year: number, month: number,day:number): Observable<Order[]> => {
+    const url = `${AUTH_API}/api/Order/GetRevenueByDay/${year}/${month}/${day}`;
+    return this.httpclient.get<Order[]>(url, httpOptions);
+  };
 }

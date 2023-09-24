@@ -13,7 +13,6 @@ import { PlaceService } from 'src/app/services/place.service';
 })
 export class HotelsListComponent implements OnInit {
   filters: Filter[] = filter;
-  // tours:Tour[]=tours
   hotels!: Hotel[];
   selected = 'none';
   public pageSize: number = 12;

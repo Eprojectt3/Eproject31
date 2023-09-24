@@ -9,6 +9,8 @@ import { ServiceService } from 'src/app/services/service.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { TourService } from 'src/app/services/tour.service';
 import { CreateServiceComponent } from '../create-service/create-service.component';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
+
 
 @Component({
   selector: 'app-list-services',
@@ -37,8 +39,10 @@ export class ListServicesComponent implements OnInit {
     private router: Router,
     private snackBar: SnackbarService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    // private confirmationService: ConfirmationService,
+    // private messageService: MessageService
+   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
@@ -50,6 +54,28 @@ export class ListServicesComponent implements OnInit {
     // Get list services pagination
     this.getListServices();
   }
+
+
+  // confirm2() {
+  //   this.confirmationService.confirm({
+  //     message: 'Do you want to delete this record?',
+  //     header: 'Delete Confirmation',
+  //     icon: 'pi pi-info-circle',
+  //     accept: () => {
+  //       this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+  //     },
+  //     reject: (type:any) => {
+  //       switch (type) {
+  //         case ConfirmEventType.REJECT:
+  //           this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+  //           break;
+  //         case ConfirmEventType.CANCEL:
+  //           this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+  //           break;
+  //       }
+  //     }
+  //   });
+  // }
 
   // HandlePage
   public handlePage = (e: any): any => {

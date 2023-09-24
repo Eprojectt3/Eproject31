@@ -57,7 +57,9 @@ export class ServiceService {
   };
 
   // Update Service
-  public updateService = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Service/Update`, data);
+  public updateService = (data: any,id:number): Observable<any> => {
+    console.log(data)
+    return this.httpClient.put(`${AUTH_API}/api/Service/Update/${id}`, data);
+
   };
 }

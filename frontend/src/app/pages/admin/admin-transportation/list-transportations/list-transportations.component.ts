@@ -94,6 +94,7 @@ export class ListTransportationsComponent implements OnInit {
       .subscribe((val: any) => {
         this.transportations = val.data;
         this.totalSize = val.count;
+
       });
     })
   }

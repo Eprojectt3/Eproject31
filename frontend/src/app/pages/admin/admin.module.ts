@@ -64,6 +64,13 @@ import { UpdateRestaurantComponent } from './admin-restaurant/update-restaurant/
 import { DetailRestaurantComponent } from './admin-restaurant/detail-restaurant/detail-restaurant.component';
 import { ListStaffsComponent } from './admin-staff/list-staffs/list-staffs.component';
 import { CreateStaffComponent } from './admin-staff/create-staff/create-staff.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { ListDashboardComponent } from './admin-dashboard/list-dashboard/list-dashboard.component';
+import { ChartModule } from 'primeng/chart';
+import { FormsModule } from '@angular/forms';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -109,6 +116,8 @@ import { CreateStaffComponent } from './admin-staff/create-staff/create-staff.co
     DetailRestaurantComponent,
     ListStaffsComponent,
     CreateStaffComponent,
+    ListDashboardComponent,
+
   ],
   imports: [
     CommonModule,
@@ -133,6 +142,12 @@ import { CreateStaffComponent } from './admin-staff/create-staff/create-staff.co
     FileUploadModule,
     MatDividerModule,
     ImageModule,
+    ConfirmDialogModule,
+    ToastModule,
+    ChartModule,
+    FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [AdminComponent],
 })

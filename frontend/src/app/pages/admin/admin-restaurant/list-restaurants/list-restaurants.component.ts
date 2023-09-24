@@ -4,8 +4,9 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { Restaurant } from 'src/app/models/restaurant';
+
 import { RestaurantService } from 'src/app/services/restaurant.service';
+import { Restaurant } from 'src/app/models/restaurant.model';
 
 @Component({
   selector: 'app-list-restaurants',
@@ -68,6 +69,7 @@ export class ListRestaurantsComponent implements OnInit {
       });
   };
 
+
   // Delete hotel
   public deleteRestaurant = (id: number): void => {
     this.restaurantService.deleteRestaurant(id).subscribe(
@@ -82,22 +84,22 @@ export class ListRestaurantsComponent implements OnInit {
     );
   };
 
-  public isShowCreateHotel = (): boolean => {
+  public isShowCreateRestaurants = (): boolean => {
     const currentUrl: string = this.router.url;
 
-    return currentUrl.includes('/admin/resorts/create');
+    return currentUrl.includes('/admin/restaurants/create');
   };
 
-  public isShowDetailHotel = (): boolean => {
+  public isShowDetailRestaurants = (): boolean => {
     const currentUrl: string = this.router.url;
 
-    return currentUrl.includes('/admin/resorts/detail/');
+    return currentUrl.includes('/admin/restaurants/detail/');
   };
 
-  public isUpdateHotel = (): boolean => {
+  public isUpdateRestaurants = (): boolean => {
     const currentUrl: string = this.router.url;
 
-    return currentUrl.includes('/admin/resorts/update/');
+    return currentUrl.includes('/admin/restaurants/update/');
   };
 
 }

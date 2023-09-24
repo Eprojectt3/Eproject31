@@ -3,10 +3,10 @@ import { Filter, filter } from 'src/app/models/filter.model';
 import { Tour } from 'src/app/models/tour';
 import { TitleService } from 'src/app/services/title.service';
 import { RestaurantService } from '../../../../../services/restaurant.service';
-import { Restaurant } from 'src/app/models/restaurant';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PlaceService } from 'src/app/services/place.service';
+import { Restaurant } from 'src/app/models/restaurant.model';
 
 @Component({
   selector: 'app-restaurants-list',
