@@ -82,12 +82,12 @@ export class ListCategoriesComponent implements OnInit {
       width: '400px',
     });
     dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if (val) {
+      next:(val)=>{
+        if(val){
           this.getListCategories();
         }
-      },
-    });
+      }
+    })
   };
 
   public deleteCategory = (id: string) => {

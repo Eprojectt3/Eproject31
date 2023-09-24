@@ -74,7 +74,7 @@ export class CreateLocationComponent {
 
       }else{
         this.locationService
-        .createLocation(location.state)
+        .createLocation(location)
         .subscribe((val: any) => {
           this.snackBarService.openSnackBar('Create successfully', 'Success');
           this.errorMessage = '';

@@ -46,16 +46,9 @@ export class ServiceService {
 
   // Create Service
   public createService = (
-    name: string | undefined,
-    tour: string | undefined,
-    description: string | undefined
+   data:any
   ): Observable<any> => {
-    return this.httpClient.post(`${AUTH_API}/api/Service/Add`, {
-      name: name,
-      tour_Name:tour,
-      description:description
-
-    });
+    return this.httpClient.post(`${AUTH_API}/api/Service/Add`, data);
   };
 
   // Delete Service

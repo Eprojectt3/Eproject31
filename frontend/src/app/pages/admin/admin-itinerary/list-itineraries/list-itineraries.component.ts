@@ -94,23 +94,23 @@ export class ListItinerariesComponent {
     });
   };
 
-  public isShowCreateitineraries = (): boolean => {
-    const currentUrl: string = this.router.url;
+  // public isShowCreateitineraries = (): boolean => {
+  //   const currentUrl: string = this.router.url;
 
-    return currentUrl.includes('/admin/itineraries/create');
-  };
+  //   return currentUrl.includes('/admin/itineraries/create');
+  // };
 
-  public isShowDetailitineraries = (): boolean => {
-    const currentUrl: string = this.router.url;
+  // public isShowDetailitineraries = (): boolean => {
+  //   const currentUrl: string = this.router.url;
 
-    return currentUrl.includes('/admin/itineraries/detail/');
-  };
+  //   return currentUrl.includes('/admin/itineraries/detail/');
+  // };
 
-  public isUpdateitineraries = (): boolean => {
-    const currentUrl: string = this.router.url;
+  // public isUpdateitineraries = (): boolean => {
+  //   const currentUrl: string = this.router.url;
 
-    return currentUrl.includes('/admin/itineraries/update/');
-  };
+  //   return currentUrl.includes('/admin/itineraries/update/');
+  // };
 
 
 }

@@ -40,12 +40,12 @@ export class DialogCreateComponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.loginForm.patchValue(this.data)
 
-    this.categoryService.categorySubject.subscribe((val: any) => {
-      this.loginForm.controls['name'].setValue(val.name);
+    // this.categoryService.categorySubject.subscribe((val: any) => {
+    //   this.loginForm.controls['name'].setValue(val.name);
 
 
 
-    });
+    // });
   }
 
   onSubmit = async ()  => {

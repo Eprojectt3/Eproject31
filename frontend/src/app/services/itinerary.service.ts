@@ -45,8 +45,14 @@ export class ItineraryService {
   };
 
   // Create Itinerary
-  public createItinerary = (data: any): Observable<any> => {
-    return this.httpClient.post(`${AUTH_API}/api/Itinerary/Add`, data);
+  public createItinerary = (tour_Name: string | undefined , sequence:number | undefined, description:string |undefined
+    ,type:string|undefined): Observable<any> => {
+    return this.httpClient.post(`${AUTH_API}/api/Itinerary/Add`, {
+      tour_Name: tour_Name,
+      sequence:sequence,
+      description:description,
+      type:type
+    }, httpOptions);
   };
 
   // Delete Itinerary
@@ -55,7 +61,7 @@ export class ItineraryService {
   };
 
   // Update Itinerary
-  public updateItinerary = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Itinerary/Update`, data);
+  public updateItinerary = (data: any , id: number): Observable<any> => {
+    return this.httpClient.put(`${AUTH_API}/api/Itinerary/Update/${id}`, data);
   };
 }

@@ -32,6 +32,7 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { LoadingInterceptor } from 'src/app/helpers/interceptor/loading.interceptor';
 import { ImageModule } from 'primeng/image';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { ImageModule } from 'primeng/image';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+    PaginatorModule
   ],
   exports: [UserComponent],
   providers: [

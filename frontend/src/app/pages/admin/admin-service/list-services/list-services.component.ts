@@ -83,12 +83,36 @@ export class ListServicesComponent implements OnInit {
       });
     })
   };
-  // Create FeedBack
+  // Create Service
+
   public openCreateService = () => {
     const dialogRef = this.dialog.open(CreateServiceComponent, {
       height: '230px',
       width: '400px',
     });
+    dialogRef.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.getListServices();
+        }
+      }
+    })
+  };
+
+  // update
+  public openUpdateService = (data:any) => {
+    const dialogRef = this.dialog.open(CreateServiceComponent, {
+      data: data,
+      height: '230px',
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.getListServices();
+        }
+      }
+    })
   };
 
   public isShowCreateServices = (): boolean => {
