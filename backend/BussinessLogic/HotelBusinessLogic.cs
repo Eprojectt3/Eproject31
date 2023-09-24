@@ -238,6 +238,7 @@ namespace backend.BussinessLogic
                 restaurantPage = restaurants.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
             }
+                //Them ảnh
             foreach (var restaurant in restaurantPage)
             {
                 var location = context.Locations.FirstOrDefault(l => l.ID == restaurant.LocationId);

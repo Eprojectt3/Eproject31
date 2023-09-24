@@ -8,7 +8,7 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
 
-const AUTH_API: string = environment.apiUrl;
+const AUTH_API: string = environment.apiLocallHost;
 
 @Injectable({
   providedIn: 'root',

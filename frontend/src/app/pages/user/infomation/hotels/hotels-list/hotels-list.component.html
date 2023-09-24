@@ -32,10 +32,8 @@
       <!-- Card tour -->
       <div class="card-tour mt-[30px] xl:w-[80%] 2xl:w-[65%] m-auto mb-[35px]">
         <div class="flex flex-wrap -mx-4">
-          <div *ngFor="let h of hotels" class="px-4 mb-[40px] xl:w-1/4">
-            <script>
-              console.log(h);
-            </script>
+          <div  *ngFor="let h of hotels" class="px-4 mb-[40px] xl:w-1/4" >
+
             <button [routerLink]="['/user/infomation/hotel-detail', h.id]">
               <div>
                 <mat-card
@@ -45,7 +43,7 @@
                   <img
                     class="xl:p-[10px]"
                     mat-card-image
-                    src="../../../assets/images/Rectangle 19377.jpg"
+                    [src]="h.urlImage"
                   />
                   <!-- Card header -->
                   <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"

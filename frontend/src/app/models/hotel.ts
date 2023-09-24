@@ -40,4 +40,3 @@ export interface Hotel {
 //     transportation: 'plane',
 //     discount: '20%',
 //   },
-
