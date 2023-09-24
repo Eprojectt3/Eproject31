@@ -41,6 +41,7 @@ namespace backend.Extensions
             services.AddTransient<TourDetailBusinessLogic>();
             services.AddTransient<StaffBusinessLogic>();
             services.AddTransient<UserBussinessLogic>();
+            services.AddTransient<InformationController>();
 
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>

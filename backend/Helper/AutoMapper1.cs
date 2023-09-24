@@ -12,6 +12,7 @@ using backend.Dtos.StaffDtos;
 using backend.Dtos.TourDetailDtos;
 using backend.Dtos.TourDtos;
 using backend.Dtos.TransportationDtos;
+using backend.Dtos.OrderDtos;
 using backend.Entity;
 
 namespace backend.Helper
@@ -35,6 +36,8 @@ namespace backend.Helper
                 .ReverseMap();
             CreateMap<Transportation, TransportationDto>()
                 .ForMember(h => h.Name, otp => otp.MapFrom(o => o.Name))
+                .ReverseMap();
+            CreateMap<Order, OrderDtos>()
                 .ReverseMap();
 
             CreateMap<Staff, StaffDto>().ReverseMap();

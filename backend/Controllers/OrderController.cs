@@ -1,4 +1,5 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Specification;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,17 @@ namespace backend.Controllers
             return Ok(output);
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult> ListOrderPagination(SpecParams pagination)
+        {
+            var output = await orderBusinessLogic.SelectAllOrderPagination(pagination);
+            if(output.Data.Count == 0) { 
+            
+                return NotFound();
+            }
+            return Ok(output);
+        }
         //execute add new order
         [HttpPost]
 
