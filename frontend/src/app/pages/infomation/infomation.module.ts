@@ -26,6 +26,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ImageModule } from 'primeng/image';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ImageModule } from 'primeng/image';
     ImageModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatGridListModule,
   ],
 })
 export class InfomationModule {}

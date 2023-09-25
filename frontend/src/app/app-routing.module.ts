@@ -15,8 +15,8 @@ const routes: Routes = [
     component: AboutUsComponent,
   },
   {
-    path :'contact',
-    component: ContactUsComponent
+    path: 'contact',
+    component: ContactUsComponent,
   },
   {
     path: '',
@@ -27,13 +27,19 @@ const routes: Routes = [
     path: 'infomation',
     loadChildren: () =>
       import('./pages/infomation/infomation.module').then(
-        (m) => m.InfomationModule,
+        (m) => m.InfomationModule
       ),
   },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./pages/admin/admin.module').then((m) => m.AdminModule),
+  },
+  { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule) },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

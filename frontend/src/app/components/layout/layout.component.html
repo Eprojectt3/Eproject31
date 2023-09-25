@@ -45,7 +45,26 @@
           </ul>
         </nav>
       </div>
-      <div class="avatar w-[40px] h-[40px] right-20 top-7 absolute lg:right-10">
+      <div *ngIf="!isLogin && !userInfo" class="flex mr-[40px] mt-[25px]">
+        <button
+          mat-raised-button
+          class="font-[600] hover:w-[80px] hover:h-[38px]"
+          (click)="openDialogLogin()"
+        >
+          Login
+        </button>
+        <button
+          mat-stroked-button
+          class="font-[600] ml-[10px] !border-slate-300 !text-white hover:w-[100px] hover:h-[40px] !border-[0.5px]"
+        >
+          Register
+        </button>
+      </div>
+
+      <div
+        *ngIf="isLogin"
+        class="avatar w-[40px] h-[40px] right-20 top-7 absolute lg:right-10"
+      >
         <button type="button">
           <mat-icon class="text-white text-[35px] !w-[100%] !h-[100%]"
             >account_circle</mat-icon

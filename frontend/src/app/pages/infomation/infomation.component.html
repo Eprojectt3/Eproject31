@@ -107,8 +107,10 @@
           [responsiveOptions]="responsiveOptions"
         >
           <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
-            <button type="button"
-            [routerLink]="['/infomation/tour-detail/', tour.id]">
+            <button
+              type="button"
+              [routerLink]="['/infomation/tour-detail/', tour.id]"
+            >
               <div>
                 <mat-card
                   class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"

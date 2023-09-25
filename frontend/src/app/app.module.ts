@@ -14,9 +14,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import {MatInputModule} from '@angular/material/input'
-
-
+import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 
 // Font awesome
@@ -26,27 +25,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgIf } from '@angular/common';
 
-
-// Test
-
-// PrimeNg
-// import { CarouselModule } from 'primeng/carousel';
-
 // PrimeNg
 import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [
-
     AppComponent,
     LayoutComponent,
     HomeComponent,
     AboutUsComponent,
     FooterComponent,
     ContactUsComponent,
-
-
-
   ],
   imports: [
     BrowserModule,
@@ -62,8 +51,7 @@ import { CarouselModule } from 'primeng/carousel';
     MatInputModule,
     ReactiveFormsModule,
     NgIf,
-
-
+    MatDialogModule,
     MatCardModule,
     CarouselModule,
   ],
