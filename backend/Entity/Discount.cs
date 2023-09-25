@@ -13,7 +13,7 @@ namespace backend.Entity
         public DateTime Start_Date { get; set; }
         public DateTime End_Date { get; set; }
         public string? Description { get; set; }
-        public ICollection<Booking>? bookings { get; set; }
-        public ICollection<Tour>? Tours { get; set; }
+        public ICollection<TourDetail>? TourDetails { get; set; }
+       
     }
 }

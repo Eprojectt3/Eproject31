@@ -64,7 +64,6 @@ namespace backend.BussinessLogic
             existingTour.Rating = tour.Rating;
             existingTour.Type = tour.Type;
             existingTour.Transportation_ID = tour.Transportation_ID;
-            existingTour.discount_Id = tour.discount_Id;
             await unitofWork.Repository<Tour>().Update(existingTour);
             var check = await unitofWork.Complete();
             if (check < 1)
