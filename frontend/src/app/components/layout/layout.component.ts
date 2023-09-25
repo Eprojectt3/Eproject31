@@ -9,7 +9,7 @@ const dialogConfigsLogin = {
   disableClose: true,
   closeOnNavigation: true,
   width: '450px',
-  height: '420px',
+  height: '480px',
 };
 
 const dialogConfigsRegister = {

@@ -1,0 +1,11 @@
+<span matSnackBarLabel class="flex items-center bg-white"><mat-icon class="mr-[10px]" [ngClass]="{
+      'text-red-500': getIcon === 'error',
+      'text-green-500': getIcon === 'check_circle'
+    }">{{ getIcon }}}</mat-icon>
+  <div [ngClass]="{
+      'text-red-500': getIcon === 'error',
+      'text-green-500': getIcon === 'check_circle'
+    }">
+    {{ data?.message }}
+  </div>
+</span>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +17,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Font awesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -27,6 +29,14 @@ import { NgIf } from '@angular/common';
 
 // PrimeNg
 import { CarouselModule } from 'primeng/carousel';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import { appInitializer } from './helpers/app.initializer';
+import { AuthService } from './services/auth.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './helpers/interceptor/auth.interceptor';
+import { LoadingInterceptor } from './helpers/interceptor/loading.interceptor';
+import { ErrorInterceptor } from './helpers/interceptor/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,6 +46,8 @@ import { CarouselModule } from 'primeng/carousel';
     AboutUsComponent,
     FooterComponent,
     ContactUsComponent,
+    SnackBarComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,8 +66,33 @@ import { CarouselModule } from 'primeng/carousel';
     MatDialogModule,
     MatCardModule,
     CarouselModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializer,
+      multi: true,
+      deps: [AuthService],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

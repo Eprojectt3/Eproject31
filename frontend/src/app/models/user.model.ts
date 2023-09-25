@@ -1,8 +1,14 @@
 export interface User {
-  username: string;
-  name?: string;
-  password: string;
-  email?: string;
-  roleId?: number;
-  phone?: number;
+  token?: {
+    accessToken: string;
+    refreshToken: string;
+  };
+  userInfo?: {
+    username: string;
+    name?: string;
+    password?: string;
+    email?: string;
+    roleId?: number;
+    phone?: string;
+  };
 }

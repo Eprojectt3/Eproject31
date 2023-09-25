@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { TokenStorageService } from './token-storage.service';
+import { SnackbarService } from './snackbar.service';
 import { User } from '../models/user.model';
 
-// const AUTH_API: string = 'https://localhost:7276/api/Users/';
-const AUTH_API: string = 'http://localhost:5272/api/Users/';
+// const AUTH_API: string = 'https://localhost:7110/api/Users/';
+// const AUTH_API: string = 'http://localhost:5019/api/Users/';
+const AUTH_API: string = 'http://dapury.click/api/Users/';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -16,17 +18,20 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  private userSubject: BehaviorSubject<User | null>;
-  public user: Observable<User | null>;
+  private userSubject!: BehaviorSubject<User | null>;
+  public $user!: Observable<User | null>;
   private refreshTokenTimeout?: NodeJS.Timeout;
+  public $isLoggedInSubject: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private snackBarService: SnackbarService
   ) {
     this.userSubject = new BehaviorSubject<User | null>(null);
-    this.user = this.userSubject.asObservable();
+    this.$user = this.userSubject.asObservable();
   }
 
   public get userValue() {
@@ -39,19 +44,23 @@ export class AuthService {
       .post(
         AUTH_API + 'Login',
         {
-          username: user?.username,
-          password: user?.password,
+          username: user?.userInfo?.username,
+          password: user?.userInfo?.password,
         },
         httpOptions
       )
+
       .pipe(
         map((data: any) => {
-          this.userSubject.next(data?.userInfo);
-          // this.startRefreshTokenTimer();
+          this.userSubject.next(data);
+          this.$isLoggedInSubject.next(true);
+          this.snackBarService.openSnackBar('Login successfully');
 
           return data;
         }),
         catchError((err: any) => {
+          this.snackBarService.openSnackBar(err, 'Error');
+
           return of(err);
         })
       );
@@ -69,6 +78,11 @@ export class AuthService {
         },
         httpOptions
       )
+      .pipe(
+        tap(() => {
+          this.$isLoggedInSubject.next(false);
+        })
+      )
       .subscribe();
     this.stopRefreshTokenTimer();
     this.userSubject.next(null);
@@ -78,7 +92,6 @@ export class AuthService {
   // Refresh token
   refreshToken = (): Observable<any> => {
     const token: any = this.tokenStorage.getToken();
-    console.log(token);
 
     return this.http
       .post<any>(AUTH_API + 'Refresh', {
@@ -86,8 +99,9 @@ export class AuthService {
         accessToken: token?.accessToken,
       })
       .pipe(
-        map((data) => {
+        map((data: any) => {
           this.tokenStorage.saveToken(data);
+          this.$isLoggedInSubject.next(true);
 
           return data;
         }),
@@ -97,21 +111,24 @@ export class AuthService {
 
   // Timer to auto refresh token and stop refresh token
   public startRefreshTokenTimer = () => {
-    const token: any = this.tokenStorage.getToken();
+    const token = this.tokenStorage.getToken();
 
-    const decodeToken = JSON.parse(atob(token?.accessToken.split('.')[1]));
+    if (token) {
+      const decodeToken = JSON.parse(atob(token?.accessToken.split('.')[1]));
 
-    const expires = new Date(decodeToken?.exp * 1000);
+      const expires = new Date(decodeToken?.exp * 1000);
 
-    const timeout: number = expires.getTime() - Date.now() - 60 * 1000;
+      const timeout: number = expires.getTime() - Date.now() - 60 * 1000;
 
-    this.refreshTokenTimeout = setTimeout(
-      () => this.refreshToken().subscribe(),
-      timeout
-    );
+      this.refreshTokenTimeout = setTimeout(
+        () => this.refreshToken().subscribe(),
+        timeout
+      );
+    }
   };
 
   private stopRefreshTokenTimer = () => {
     clearTimeout(this.refreshTokenTimeout);
+    this.tokenStorage.signOut();
   };
 }
