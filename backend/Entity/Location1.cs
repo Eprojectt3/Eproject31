@@ -15,5 +15,6 @@ namespace backend.Entity
 
         public ICollection<Restaurant>? Restaurant { get; set; }
 
+        public ICollection<Itinerary>? Itineraries { get; set; }
     }
 }

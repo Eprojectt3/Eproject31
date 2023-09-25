@@ -7,19 +7,22 @@ namespace backend.Dao.Repository
 {
         public class ResponseCacheService : IResponseCacheService
         {
-            public readonly IConnectionMultiplexer connectionMultiplexer;
+        //IConnectionMultiplexer để kết nối với Redis
+        public readonly IConnectionMultiplexer connectionMultiplexer;
             public ResponseCacheService(IConnectionMultiplexer _connectionMultiplexer)
             {
                 connectionMultiplexer = _connectionMultiplexer; 
             }
-            public async Task<string> GetCacheResponseAsync(string cache)
+
+        public async Task<string> GetCacheResponseAsync(string cache)
             {
                 if (string.IsNullOrWhiteSpace(cache))
                 {
                     return null;
                 }
-
+                //kết nối với Redis
                 var redisDb = connectionMultiplexer.GetDatabase();
+            //lấy dữ liệu
                 var cachedResponse = await redisDb.StringGetAsync(cache);
 
                 return cachedResponse;
@@ -32,6 +35,7 @@ namespace backend.Dao.Repository
                 throw new ArgumentNullException(nameof(pattern));
             }
             var redisDb = connectionMultiplexer.GetDatabase();
+           
             var endpoint = connectionMultiplexer.GetEndPoints().FirstOrDefault();
             if(endpoint != null)
             {

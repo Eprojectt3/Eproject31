@@ -6,9 +6,11 @@ namespace backend.Extensions
 {
     public static class RedisServiecsExtension
     {
+        //Hàm cấu hình Redis
         public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
         {
             var redisConfiguration = new RedisConfiguration();
+            //Truyền dữ liệu từ appsetting sang Object
             configuration.GetSection("RedisConfiguration").Bind(redisConfiguration);
             services.AddSingleton(redisConfiguration);
             if(!redisConfiguration.Enabled)

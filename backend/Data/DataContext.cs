@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace webapi.Data
 {
+<<<<<<< HEAD
   public class DataContext : DbContext
   {
     public DataContext(DbContextOptions<DataContext> options)
@@ -32,6 +33,35 @@ namespace webapi.Data
     public virtual DbSet<TourDetail> TourDetail { get; set; }
 
     public virtual DbSet<Staff> Staff { get; set; }
+=======
+    public class DataContext : DbContext
+    {
+        public DataContext(DbContextOptions<DataContext> options)
+            : base(options) { }
+        public DataContext()
+        {
+            
+        }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRefreshTokens> UserRefreshTokens { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Slug> Slugs { get; set; }
+        public virtual DbSet<ForgotPasswordRequest> ForgotPasswordRequests { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Discount> Discount { get; set; }
+        public virtual DbSet<FeedBack> FeedBack { get; set; }
+        public virtual DbSet<Hotel> Hotels { get; set; }
+        public virtual DbSet<Itinerary> Itinerarie { get; set; }
+        public virtual DbSet<Location1> Locations{ get; set; }
+        public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+        public virtual DbSet<Resorts> Resorts { get; set; }
+        public virtual DbSet<Restaurant> Restaurant { get; set; }
+        public virtual DbSet<Tour> Tour { get; set; }
+        public virtual DbSet<Transportation> Transportation { get; set; }
+        public virtual DbSet<Service> Service { get; set; }
+        public virtual DbSet<Payment> OrderInfo { get; set; }
+>>>>>>> 64a5e53 (son create route for information page)
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -71,8 +101,20 @@ namespace webapi.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
             
-
-           modelBuilder.Entity<OrderDetail>()
+   
+            modelBuilder.Entity<Itinerary>()
+               .HasOne(h => h.Location)
+               .WithMany(b => b.Itineraries)
+               .HasForeignKey(b => b.LocationID)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Booking>()
+               .HasOne(h => h.staff)
+               .WithMany(b => b.Bookings)
+               .HasForeignKey(b => b.StaffId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<OrderDetail>()
                .HasOne(h => h.order)
                .WithMany(b => b.OrderDetails)
                .HasForeignKey(b => b.OrderID)

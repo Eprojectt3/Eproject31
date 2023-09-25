@@ -86,5 +86,14 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
         }
+        public async Task<TourDetail?> GetTourDetailAsync(int id)
+        {
+            var check = await unitofWork.Repository<TourDetail>().GetByIdAsync(id);
+            if(check == null)
+            {
+                return null;
+            }
+            return check;
+        }
     }
 }
