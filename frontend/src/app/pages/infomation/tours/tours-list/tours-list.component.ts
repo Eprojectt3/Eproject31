@@ -12,6 +12,7 @@ export class ToursListComponent implements OnInit {
   filters: Filter[] = filter;
   isGridView: boolean = true;
   isLineView: boolean = false;
+  tours: Tour[] = tours;
 
   constructor(private titleService: TitleService) {}
 
