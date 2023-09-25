@@ -1,11 +1,13 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
+import { TitleService } from 'src/app/services/title.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { ValidatorFormService } from 'src/app/services/validator-form.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -20,16 +22,19 @@ export class LoginComponent {
   user!: User;
 
   constructor(
-    private matDialogRef: MatDialogRef<LoginComponent>,
     private fb: FormBuilder,
     public validatorForm: ValidatorFormService,
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
     private snackBarService: SnackbarService,
-    @Inject(MAT_DIALOG_DATA) public data: User
-  ) {}
+    private titleService: TitleService,
+    private location: Location,
+  ) { }
 
   ngOnInit(): void {
+    // set title
+    this.titleService.setTitleValue('Login');
+
     // Create formgroup and form control
     this.loginForm = this.fb.group({
       username: [
@@ -43,10 +48,6 @@ export class LoginComponent {
       // rememberMe: false,
     });
   }
-
-  onClose = (): void => {
-    this.matDialogRef.close();
-  };
 
   isShowPassword = (): void => {
     this.hide = !this.hide;
@@ -73,7 +74,7 @@ export class LoginComponent {
             this.errorMessage = '';
             this.user = data?.userInfo;
             this.authService.startRefreshTokenTimer();
-            this.matDialogRef.close({ data: this.user });
+            this.location.back();
           }
         },
         (err: any) => {
@@ -81,7 +82,7 @@ export class LoginComponent {
 
           console.log(this.errorMessage);
           this.snackBarService.openSnackBar(this.errorMessage, 'Error');
-        }
+        },
       );
     }
   };

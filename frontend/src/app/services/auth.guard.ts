@@ -6,29 +6,52 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { AuthService } from './auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { User } from '../models/user.model';
+import { Location } from '@angular/common';
+import { TokenStorageService } from './token-storage.service';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private authService: AuthService,
-    public dialog: MatDialog,
-  ) { }
+    private tokenStorage: TokenStorageService,
+    private snackBar: SnackbarService
+  ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const user = this.authService.userValue;
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    const user = this.tokenStorage.getUser();
+    const role: number | undefined = user?.roleId;
+
     if (user) {
-      return true;
-    } else {
-      const dialogConfigsLogin = {
-        disableClose: true,
-        closeOnNavigation: true,
-        width: '450px',
-        height: '420px',
-      };
+      if (route.data['roles'].indexOf(1) !== -1) {
+        if (route.data['roles'].indexOf(role) === -1) {
+          this.tokenStorage.signOut();
+          this.snackBar.openSnackBar(
+            'You do not have access to the admin page',
+            'Error'
+          );
 
-      return false;
+          this.router.navigate(['/auth/login']);
+          return false;
+        }
+        return true;
+      }
+
+      if (
+        (route.data['roles'].indexOf(2) !== -1 &&
+          route.data['roles'].indexOf(1) !== -1) ||
+        route.data['roles'].indexOf(2) !== -1
+      ) {
+        return true;
+      }
     }
+
+    this.router.navigate(['/auth/login']);
+    return false;
   }
 }

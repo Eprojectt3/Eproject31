@@ -6,12 +6,12 @@ import { SnackBarComponent } from '../components/snack-bar/snack-bar.component';
   providedIn: 'root',
 })
 export class SnackbarService {
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar) {}
 
   public openSnackBar = (
     message: string,
     snackType?: any,
-    duration?: number,
+    duration?: number
   ) => {
     const _snackType: any = snackType !== undefined ? snackType : 'Success';
 

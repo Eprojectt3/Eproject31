@@ -1,24 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user.model';
-import { LoginComponent } from 'src/app/pages/auth/login/login.component';
+import { AuthService } from 'src/app/services/auth.service';
 import { TitleService } from 'src/app/services/title.service';
-
-const dialogConfigsLogin = {
-  disableClose: true,
-  closeOnNavigation: true,
-  width: '450px',
-  height: '480px',
-};
-
-const dialogConfigsRegister = {
-  disableClose: true,
-  closeOnNavigation: true,
-  width: '450px',
-  height: '630px',
-  data: '',
-};
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-layout',
@@ -27,25 +12,26 @@ const dialogConfigsRegister = {
 })
 export class LayoutComponent implements OnInit {
   urlImage: string = 'url(../../../assets/images/cat-ba-3553145_1920 1.jpg)';
-  userInfo: User | undefined;
-  isLogin: boolean = false;
+  userInfo!: any;
+  $isLogin!: Observable<boolean | false>;
   titleValue!: Observable<string | null>;
+  isLogin: boolean = false;
 
-  constructor(private titleService: TitleService, public dialog: MatDialog) {}
+  constructor(
+    private titleService: TitleService,
+    private authService: AuthService,
+    private tokenStorage: TokenStorageService,
+  ) { }
 
   ngOnInit(): void {
     this.titleValue = this.titleService.$titleSubject;
+
+    this.$isLogin = this.authService.$isLoggedInSubject;
+    this.$isLogin.subscribe((val) => (this.isLogin = val));
+    this.userInfo = this.tokenStorage.getUser();
   }
 
-  openDialogLogin = (): void => {
-    const dialogRef = this.dialog.open(LoginComponent, dialogConfigsLogin);
-
-    dialogRef.afterClosed().subscribe((rs) => {
-      this.userInfo = rs?.data;
-    });
+  public logout = (): void => {
+    this.authService.logout();
   };
-
-  // openDialogRegister = (): void => {
-  //   this.dialog.open(RegisterComponent, dialogConfigsRegister);
-  // };
 }

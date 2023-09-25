@@ -10,7 +10,7 @@ import { LoadingService } from '../../services/loading.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
-  constructor(private loadingService: LoadingService) { }
+  constructor(private loadingService: LoadingService) {}
 
   intercept(
     request: HttpRequest<unknown>,

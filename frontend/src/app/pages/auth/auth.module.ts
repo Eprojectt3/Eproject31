@@ -32,5 +32,6 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule,
     MatDividerModule,
   ],
+  exports: [LoginComponent],
 })
-export class AuthModule {}
+export class AuthModule { }

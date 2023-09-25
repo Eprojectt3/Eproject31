@@ -1,0 +1,41 @@
+<div>
+  <p>
+    <mat-toolbar color="primary">
+      <button
+        mat-icon-button
+        class="example-icon mr-[20px]"
+        aria-label="Example icon-button with menu icon"
+        matTooltip="Menu"
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="title">Karnel Travels</span>
+    </mat-toolbar>
+  </p>
+
+  <div
+    *ngIf="isLogin"
+    class="avatar w-[40px] h-[40px] right-20 top-4 absolute lg:right-10"
+  >
+    <button type="button" [matMenuTriggerFor]="menu">
+      <mat-icon class="text-white text-[35px] !w-[100%] !h-[100%]"
+        >account_circle</mat-icon
+      >
+    </button>
+  </div>
+
+  <!-- User Menu -->
+  <mat-menu #menu="matMenu" class="!w-[200px]">
+    <h2 class="ml-[20px] text-[19px] font-[500] mb-[10px]">
+      {{ userInfo?.name }}
+    </h2>
+    <button mat-menu-item>
+      <mat-icon class="!text-[#FA5246]">person</mat-icon>
+      <span>Profile</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon class="!text-[#FA5246]">logout</mat-icon><span>Logout</span>
+    </button>
+  </mat-menu>
+</div>
