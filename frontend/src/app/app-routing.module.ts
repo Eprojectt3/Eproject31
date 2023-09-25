@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/form/login/login.component';
-import { UserComponent } from './pages/user/user.component';
+import { AboutUsComponent } from './pages/about-us/about-us.component';
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 
 const routes: Routes = [
   {
@@ -10,22 +11,24 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'login',
-    component: LoginComponent,
+    path: 'about',
+    component: AboutUsComponent,
   },
   {
-    path: 'user',
-    component: UserComponent,
-  },
-  {
-    path: 'form',
-    loadChildren: () =>
-      import('./pages/form/form.module').then((m) => m.FormModule),
+    path :'contact',
+    component: ContactUsComponent
   },
   {
     path: '',
-    redirectTo: 'home',
+    component: HomeComponent,
     pathMatch: 'full',
+  },
+  {
+    path: 'infomation',
+    loadChildren: () =>
+      import('./pages/infomation/infomation.module').then(
+        (m) => m.InfomationModule,
+      ),
   },
 ];
 
@@ -33,4 +36,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

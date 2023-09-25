@@ -1,80 +1,67 @@
-// Angular app
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutComponent } from './components/layout/layout.component';
 
 // Material angular
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatMenuModule } from '@angular/material/menu';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-
-import { appInitializer } from './helpers/app.initializer';
-import { AuthService } from './services/auth.service';
-import { AuthInterceptor } from './helpers/interceptor/auth.interceptor';
-import { LoadingInterceptor } from './helpers/interceptor/loading.interceptor';
-import { ErrorInterceptor } from './helpers/interceptor/error.interceptor';
-import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
-import { LoadingComponent } from './components/loading/loading.component';
 import { HomeComponent } from './pages/home/home.component';
-import { UserComponent } from './pages/user/user.component';
-import { LayoutComponent } from './components/layout/layout/layout.component';
+import { AboutUsComponent } from './pages/about-us/about-us.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatInputModule} from '@angular/material/input'
+
+
+
+// Font awesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgIf } from '@angular/common';
+
+
+// Test
+
+// PrimeNg
+// import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [
+
     AppComponent,
     LayoutComponent,
-    SnackBarComponent,
-    LoadingComponent,
     HomeComponent,
-    UserComponent,
+    AboutUsComponent,
+    FooterComponent,
+    ContactUsComponent,
+
+
+
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
     MatIconModule,
-    MatExpansionModule,
+    FontAwesomeModule,
+    MatDividerModule,
+    MatButtonModule,
     MatMenuModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    NgIf,
+
+
   ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: appInitializer,
-      multi: true,
-      deps: [AuthService],
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoadingInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

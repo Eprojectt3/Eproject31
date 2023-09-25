@@ -1,3 +1,4 @@
+using System.Configuration;
 using System.Text;
 using backend.Extensions;
 using backend.Middleware;
@@ -67,6 +68,7 @@ builder.Services.AddScoped<IJWTManagerService, JWTManagerService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<DataContext>();
 builder.Services.AddAppServices();
+builder.Services.AddRedis(builder.Configuration);
 
 // Cors
 builder.Services.AddCors(

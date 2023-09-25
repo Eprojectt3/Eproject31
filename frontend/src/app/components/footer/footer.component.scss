@@ -1,0 +1,17 @@
+.container {
+  .block-1 {
+    .title-footer {
+      font-family: "Yesteryear", cursive;
+    }
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .container {
+    padding: 10px;
+
+    .block-1 {
+      width: 20%;
+    }
+  }
+}

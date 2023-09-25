@@ -1,7 +1,11 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Repository;
 using backend.Entity;
+using backend.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
+using System;
 
 namespace backend.Controllers
 {
@@ -9,18 +13,24 @@ namespace backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public CategoryBussinessLogic categoryBussinessLogic;
+        public CategoryBusinessLogic categoryBusinessLogic;
+        private readonly IResponseCacheService responseCacheService;
 
-        public CategoryController(CategoryBussinessLogic categoryBussiness)
+        public CategoryController(
+            CategoryBusinessLogic categoryBussiness,
+            IResponseCacheService responseCache
+        )
         {
-            categoryBussinessLogic = categoryBussiness;
+            categoryBusinessLogic = categoryBussiness;
+            responseCacheService = responseCache;
         }
 
         // execute list all category
         [HttpGet]
-        public async Task<ActionResult> ListCategory()
+        [Cache(1400)]
+        public async Task<ActionResult> ListCategory(int id = 1, string hehe = "abc")
         {
-            var output = await categoryBussinessLogic.SelectAllCategory();
+            var output = await categoryBusinessLogic.SelectAllCategory();
             if (output == null)
             {
                 return NotFound();
@@ -30,27 +40,36 @@ namespace backend.Controllers
 
         //execute add new category
         [HttpPost]
+
         public async Task<IActionResult> Add(Category category)
         {
-            await categoryBussinessLogic.Create(category);
+            
+            await categoryBusinessLogic.Create(category);
 
+            var api = "/api/Category/ListCategory*";
+            responseCacheService.RemoveCache(api);
             return Ok(category);
         }
 
         //execute update category
         [HttpPost]
-        public async Task<IActionResult> Update(Category category)
+        public async Task<IActionResult> Update( Category category)
         {
-            await categoryBussinessLogic.Update(category);
+
+            await categoryBusinessLogic.Update(category);
             return Ok(category);
         }
+
+        
 
         //execute delete category
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            await categoryBussinessLogic.Delete(id);
+            await categoryBusinessLogic.Delete(id);
             return Ok();
         }
+
+        
     }
 }

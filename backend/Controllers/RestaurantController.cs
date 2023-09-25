@@ -10,6 +10,7 @@ namespace backend.Controllers
     public class RestaurantController : ControllerBase
     {
         public RestaurantBusinessLogic restaurantBusinessLogic;
+
         public RestaurantController(RestaurantBusinessLogic Bussiness)
         {
             restaurantBusinessLogic = Bussiness;
@@ -29,10 +30,8 @@ namespace backend.Controllers
 
         //execute add new restaurant
         [HttpPost]
-
         public async Task<IActionResult> Add(Restaurant restaurant)
         {
-
             await restaurantBusinessLogic.Create(restaurant);
 
             return Ok(restaurant);
@@ -42,7 +41,6 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(Restaurant restaurant)
         {
-
             await restaurantBusinessLogic.Update(restaurant);
             return Ok(restaurant);
         }
@@ -52,6 +50,14 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await restaurantBusinessLogic.Delete(id);
+            return Ok();
+        }
+
+        //get hotel by id
+        [HttpPost]
+        public async Task<IActionResult> GetByRestaurantId(int id)
+        {
+            await restaurantBusinessLogic.GetByRestaurantId(id);
             return Ok();
         }
     }

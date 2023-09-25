@@ -9,8 +9,8 @@ namespace backend.Controllers
     [ApiController]
     public class HotelController : ControllerBase
     {
-        public HotelBussinessLogic hotelBusinessLogic;
-        public HotelController(HotelBussinessLogic Bussiness)
+        public HotelBusinessLogic hotelBusinessLogic;
+        public HotelController(HotelBusinessLogic Bussiness)
         {
             hotelBusinessLogic = Bussiness;
         }
@@ -52,6 +52,14 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await hotelBusinessLogic.Delete(id);
+            return Ok();
+        }
+
+        //get hotel by id
+        [HttpPost]
+        public async Task<IActionResult> GetByHotelId(int id)
+        {
+            await hotelBusinessLogic.GetByHotelId(id);
             return Ok();
         }
     }
