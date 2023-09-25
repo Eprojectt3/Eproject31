@@ -1,20 +1,21 @@
-<ng-container>
+<ng-container class="tours-list">
   <!-- Filter -->
-  <div class="flex justify-end w-[78%] mt-[50px] ">
-    <div>
-      <mat-form-field>
-        <mat-label>Filter</mat-label>
-        <mat-select [(value)]="selected">
-          <mat-option>None</mat-option>
-          <mat-option value="option1">Option 1</mat-option>
-          <mat-option value="option2">Option 2</mat-option>
-          <mat-option value="option3">Option 3</mat-option>
+  <section id="filter">
+    <!-- select-filter -->
+    <div class="select-filter">
+      <mat-form-field class="">
+        <mat-label class="text-[#A9A9A9]">
+          <mat-icon class="text-[#A9A9A9]">filter_alt</mat-icon>
+          Filter</mat-label
+        >
+        <mat-select>
+          <mat-option *ngFor="let filter of filters" [value]="filter.name">{{
+            filter.name
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-
-
-  </div>
+  </section>
 
   <!-- Hotel List -->
   <section id="most-popular-hotels" class="most-popular text-center">
@@ -28,7 +29,7 @@
       </p>
 
       <!-- Card tour -->
-      <div class="card-tour mt-[30px]  2xl:w-[80%] m-auto mb-[35px]">
+      <div class="card-tour mt-[30px] 2xl:w-[80%] m-auto mb-[35px]">
         <div class="flex flex-wrap -mx-4">
           <div *ngFor="let tour of tours" class="px-4 mb-[40px] xl:w-1/4">
             <button [routerLink]="['/infomation/tour-detail', tour.id]">
