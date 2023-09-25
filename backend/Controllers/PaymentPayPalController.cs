@@ -155,7 +155,7 @@ namespace backend.Controllers
             var responseAsString = await response.Content.ReadAsStringAsync();
 
             var result = JsonConvert.DeserializeObject<PaypalCreateOrderOutput>(responseAsString);
-         
+
             return result;
 
     }
@@ -182,6 +182,7 @@ namespace backend.Controllers
                 return Ok(result);
             }
 
+            return result;
         }
         [HttpGet]
         public async Task<CapturePayment> GetCapturePayment(string json)
@@ -213,7 +214,7 @@ namespace backend.Controllers
         {
             var token = await GetAuthorizationRequest();
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.access_token);
-             
+
             var captureData = new { note_to_payer = "Capture payment for order " + payment.orderid }; // Thay thế bằng thông tin cần thiết
 
           
@@ -274,7 +275,7 @@ namespace backend.Controllers
                 check_duplicate_order.Number_people = totalOrderQuantity;
                 await OrderBusinessLogic.Update(check_duplicate_order);
             }
-                 
+
             return Ok("successfully");
         }
 

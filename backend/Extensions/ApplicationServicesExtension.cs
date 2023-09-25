@@ -39,6 +39,9 @@ namespace backend.Extensions
             services.AddTransient<StaffBusinessLogic>();
             services.AddTransient<UserBussinessLogic>();
 
+            services.AddTransient<PaymentBussinessLogic>();
+            services.AddHttpClient<PaymentPayPalController>();
+
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
             {
