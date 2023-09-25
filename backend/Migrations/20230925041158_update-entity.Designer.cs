@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Data;
 
@@ -11,9 +12,11 @@ using webapi.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230925041158_update-entity")]
+    partial class updateentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -401,8 +404,6 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookigId");
 
                     b.HasIndex("OrderID");
 
@@ -932,12 +933,6 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entity.OrderDetail", b =>
                 {
-                    b.HasOne("backend.Entity.Booking", "booking")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("BookigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("backend.Entity.Order", "order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderID")
