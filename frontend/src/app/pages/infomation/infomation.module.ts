@@ -22,9 +22,16 @@ import { ResortsListComponent } from './resorts/resorts-list/resorts-list.compon
 import { ResortDetailComponent } from './resorts/resort-detail/resort-detail.component';
 import { ToursListComponent } from './tours/tours-list/tours-list.component';
 import { TourDetailComponent } from './tours/tour-detail/tour-detail.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { ImageModule } from 'primeng/image';
+
+
 
 @NgModule({
-  declarations: [InfomationComponent, HotelsListComponent, HotelDetailComponent, RestaurantsListComponent, RestaurantDetailComponent, ResortsListComponent, ResortDetailComponent, ToursListComponent, TourDetailComponent],
+
+    declarations: [InfomationComponent, HotelsListComponent, HotelDetailComponent, RestaurantsListComponent, RestaurantDetailComponent, ResortsListComponent, ResortDetailComponent, ToursListComponent, TourDetailComponent,],
   imports: [
     MatButtonModule,
     CommonModule,
@@ -34,6 +41,12 @@ import { TourDetailComponent } from './tours/tour-detail/tour-detail.component';
     CarouselModule,
     CardModule,
     PipeModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    ImageModule
+
+
   ],
 })
 export class InfomationModule {}
