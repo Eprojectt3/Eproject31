@@ -25,7 +25,7 @@ namespace backend.Model.Paypal.Output
         public string name { get; set; }
         public UnitAmountOutput unit_amount { get; set; }
         public string quantity { get; set; }
-        public string description { get; set; }
+        public string? description { get; set; }
     }
     public class Link
     {

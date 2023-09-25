@@ -42,6 +42,7 @@ namespace backend.Model
             }
 
         }
+        //GET /api/data?name=Dat&age=30
         public static string GenerateCaccheKey(HttpRequest request)
         {
             var keyBuilder = new StringBuilder();
@@ -49,7 +50,8 @@ namespace backend.Model
             foreach(var (key, value) in request.Query.OrderBy(a=> a.Key)) {
                  keyBuilder.Append($"|{key}-{value}");
             }
-            return keyBuilder.ToString();
+            return keyBuilder.ToString(); // /api/data|age-30|name-Dat
+
         }
     }
 }

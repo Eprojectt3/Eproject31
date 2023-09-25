@@ -1,4 +1,5 @@
-﻿using backend.Entity;
+﻿using backend.Dao.Specification.Order1;
+using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
 
@@ -81,6 +82,16 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
+        }
+        public async Task<Order> GetEntityByCondition(int TourDetailID)
+        {
+            var spec = new OrderSpecByTourDetailID(TourDetailID);
+            var check_duplicate_order = await unitofWork.Repository<Entity.Order>().GetEntityWithSpecAsync(spec);
+            if(check_duplicate_order == null)
+            {
+                throw new NotFoundExceptions("Khong tim thay");
+            }
+            return check_duplicate_order;
         }
     }
 }

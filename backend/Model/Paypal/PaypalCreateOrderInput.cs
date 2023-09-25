@@ -21,6 +21,7 @@
         public string name { get; set; }
         public string description { get; set; }
         public string quantity { get; set; }
+
         public UnitAmountInput unit_amount { get; set; }
     }
     public class AmountInput
@@ -37,9 +38,9 @@
     }
     public class BreakdownInput
     {
-        public ItemTotal item_total { get; set; }
+        public ItemTotalInput item_total { get; set; }
     }
-    public class ItemTotal
+    public class ItemTotalInput
     {
         public string currency_code { get; set; }
         public string value { get; set; }

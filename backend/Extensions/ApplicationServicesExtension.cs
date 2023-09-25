@@ -31,12 +31,13 @@ namespace backend.Extensions
             services.AddTransient<ItineraryBusinessLogic>();
             services.AddTransient<OrderDetailBusinessLogic>();
             services.AddTransient<ServiceBusinessLogic>();
-            services.AddTransient<BookingBusinessLogic>();
+            services.AddTransient<TourDetailBusinessLogic>();
             services.AddTransient<StaffBusinessLogic>();
             services.AddTransient<PaymentBussinessLogic>();
             services.AddHttpClient<PaymentPayPalController>();
             services.AddTransient<TourDetailBusinessLogic>();
             services.AddTransient<StaffBusinessLogic>();
+            services.AddTransient<UserBussinessLogic>();
 
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>

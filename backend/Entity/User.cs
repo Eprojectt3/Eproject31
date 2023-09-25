@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using webapi.Base;
 
 namespace backend.Entity
 {
-    public class User
+    public class User : BaseCreateDate
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

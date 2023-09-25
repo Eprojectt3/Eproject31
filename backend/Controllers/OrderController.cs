@@ -54,5 +54,15 @@ namespace backend.Controllers
             await orderBusinessLogic.Delete(id);
             return Ok();
         }
+        [HttpGet]
+        public async Task<ActionResult> GetEntity()
+        {
+            var output = await orderBusinessLogic.GetEntityByCondition(4);
+            if (output == null)
+            {
+                return NotFound();
+            }
+            return Ok(output);
+        }
     }
 }

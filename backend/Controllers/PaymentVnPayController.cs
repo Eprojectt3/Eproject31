@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using backend.BussinessLogic;
+using backend.Dtos.OrderDetailDtos;
 using backend.Dtos.PaymentDtos;
 using backend.Entity;
 using backend.Exceptions;
@@ -19,24 +20,16 @@ namespace backend.Controllers
             mapper = _mapper;
         }
         [HttpGet]
-        public async Task<ActionResult> GetPayment()
+        public async Task<ActionResult> GetPayment(OrderDetailDtos orderDetail)
         {
-            var url = paymentBussinessLogic.GetUrlPayment();
+            var url = paymentBussinessLogic.GetUrlPayment(orderDetail);
             return Ok(url);
         }
         [HttpPost]
-        public async Task<IActionResult> Result([FromQuery] PaymentDtos paymentDtos)
+        public async Task<ActionResult> CreateDataAsync(PaymentVnPayDtos paymentVnPay)
         {
-            if (paymentDtos.Vnp_Response == "00" && paymentDtos.Vnp_TransactionStatus == "00")
-            {
-                var payment = mapper.Map<PaymentDtos, Payment>(paymentDtos);
-                await paymentBussinessLogic.CreatePayment(payment);
-                return Ok("Successfully");
-            }
-            else
-            {
-                throw new BadRequestExceptions("something went wrong");
-            }
+            var result = await paymentBussinessLogic.CreateDataAsync(paymentVnPay);
+            return Ok(result);
         }
 
 
