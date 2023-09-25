@@ -24,13 +24,21 @@ import { ToursListComponent } from './tours/tours-list/tours-list.component';
 import { TourDetailComponent } from './tours/tour-detail/tour-detail.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ImageModule } from 'primeng/image';
 
-
 @NgModule({
-
-    declarations: [InfomationComponent, HotelsListComponent, HotelDetailComponent, RestaurantsListComponent, RestaurantDetailComponent, ResortsListComponent, ResortDetailComponent, ToursListComponent, TourDetailComponent,],
+  declarations: [
+    InfomationComponent,
+    HotelsListComponent,
+    HotelDetailComponent,
+    RestaurantsListComponent,
+    RestaurantDetailComponent,
+    ResortsListComponent,
+    ResortDetailComponent,
+    ToursListComponent,
+    TourDetailComponent,
+  ],
   imports: [
     MatButtonModule,
     CommonModule,
@@ -44,9 +52,8 @@ import { ImageModule } from 'primeng/image';
     MatSelectModule,
     MatButtonToggleModule,
     ImageModule,
-
-
-
+    MatSelectModule,
+    MatFormFieldModule,
   ],
 })
 export class InfomationModule {}
