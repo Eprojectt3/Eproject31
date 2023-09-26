@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using webapi.Base;
 
-namespace backend.Entity
+namespace backend.Model
 {
     public class OrderInfo : BaseCreateDate
     {
@@ -11,7 +11,7 @@ namespace backend.Entity
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string OrderId { get; set; } 
+        public string OrderId { get; set; }
         /// <summary>
         /// Payment amount
         /// </summary>

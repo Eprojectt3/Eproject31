@@ -8,28 +8,22 @@ namespace backend.Entity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        [ForeignKey(nameof(Tour.Id))]
+        public int Id { get; set; } 
         public int? TourId { get; set; }
-        
+        [ForeignKey("TourId")]
+        public Tour? tour { get; set; }
         public DateTime? Start_Date { get; set; }
         public DateTime? End_Date { get; set; }
         public double? Range_time { get; set; }
         public int? Quantity { get; set; }
-        [ForeignKey(nameof(Staff.Id))]
-        public int? StaffId { get;set; }
-        
-        [ForeignKey(nameof(Discount.Id))]
-        public int? DiscountId { get; set;}
-        
-        
+        public int? Staff_Id { get; set; } = 1;
+        [ForeignKey("Staff_Id")]
+        public Staff? Staff { get; set; }
+
         [Column(TypeName = "ntext")]
         public string? Description { get; set; }
-        public Tour? tour { get; set; }
-        public Discount? discount { get; set; }
-        public Staff? staff { get; set; }       
-        public ICollection<Service>? Services { get; set; }
         public ICollection<Order>? Orders { get; set; }
-        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }
+//Them 1 bảng nữa và chạy migratiom

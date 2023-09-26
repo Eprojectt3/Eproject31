@@ -22,7 +22,6 @@ namespace backend.Extensions
             services.AddTransient<RestaurantBusinessLogic>();
             services.AddTransient<HotelBusinessLogic>();
             services.AddTransient<LocationBusinessLogic>();
-            services.AddTransient<DiscountBusinessLogic>();
             services.AddTransient<TransportationBusinessLogic>();
             services.AddTransient<ResortBusinessLogic>();
             services.AddTransient<FeedBackBusinessLogic>();

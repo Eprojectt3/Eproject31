@@ -38,15 +38,11 @@
     }
     public class BreakdownInput
     {
-<<<<<<< HEAD
+
         public ItemTotalInput item_total { get; set; }
     }
     public class ItemTotalInput
-=======
-        public ItemTotal item_total { get; set; }
-    }
-    public class ItemTotal
->>>>>>> 16175b6 (haidang)
+
     {
         public string currency_code { get; set; }
         public string value { get; set; }

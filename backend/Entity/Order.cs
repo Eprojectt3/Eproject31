@@ -11,10 +11,8 @@ namespace backend.Entity
         public int Id { get; set; }
         public double? Price { get; set; }
         public int? Number_people { get; set; }
-        public DateTime Create_Date { get; set; }
-        public DateTime End_Date { get; set; }
-        [ForeignKey(nameof(TourDetail.Id))]
-        public int TourDetailID { get; set; }
+        public int Tour_Detail_ID { get; set; }
+        [ForeignKey("Tour_Detail_ID")]
         public TourDetail? tourDetail { get; set; }
         public ICollection<OrderDetail>? OrderDetails { get; set; }
     }

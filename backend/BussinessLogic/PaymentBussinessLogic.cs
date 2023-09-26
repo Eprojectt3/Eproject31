@@ -104,7 +104,7 @@ namespace backend.BussinessLogic
         public async Task<string> CreateDataAsync(PaymentVnPayDtos paymentVnPay)
         {
             VnPayLibrary vnpay = new VnPayLibrary();
-            
+            try { 
                 if (paymentVnPay.vnp_ResponseCode == "00" && paymentVnPay.vnp_TransactionStatus == "00")
                 {
                     var tour_detail = await TourDetailBusinessLogic.GetTourDetailAsync(paymentVnPay.TourDetailID);
@@ -132,15 +132,29 @@ namespace backend.BussinessLogic
                         Tour_Detail_ID = paymentVnPay.TourDetailID
                     };
                     await OrderDetailBusinessLogic.Create(oderdetail);
-                    var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2();
-                    var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);
-                    var totalOrderQuantity = list_orderdetail.Sum(orderDetail => orderDetail.Quantity);
+                //CẬP NHẬT LẠI TOURDetail
+                    tour_detail.Quantity -= oderdetail.Quantity;
+                    await TourDetailBusinessLogic.Update(tour_detail);
 
-                    check_duplicate_order.Price = totalOrderPrice;
-                    check_duplicate_order.Number_people = totalOrderQuantity;
-                    await OrderBusinessLogic.Update(check_duplicate_order);
+                // Lấy danh sách orderDetail liên quan đến tour_detail đã được thanh toán
+                var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(paymentVnPay.TourDetailID);
+
+                // Tính toán lại totalOrderPrice và totalOrderQuantity dựa trên danh sách orderDetail
+                var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);
+                var totalOrderQuantity = list_orderdetail.Sum(orderDetail => orderDetail.Quantity);
+
+                // Cập nhật lại thông tin cho check_duplicate_order
+                check_duplicate_order.Price = totalOrderPrice;
+                check_duplicate_order.Number_people = totalOrderQuantity;
+                await OrderBusinessLogic.Update(check_duplicate_order);
+                //
                 return "Successfully";
 
+            }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("You have successfully paid but encounter problems during processing, please contact management");
             }
             return "Payment failed";
 

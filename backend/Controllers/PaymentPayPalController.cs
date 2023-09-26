@@ -226,11 +226,12 @@ namespace backend.Controllers
 
             var responseAsString = await response.Content.ReadAsStringAsync();
             var check = JsonConvert.DeserializeObject<CapturePayment>(responseAsString);
-
+            try
+            {          
             if (check.status == "COMPLETED")
             {
                 //var user = UserBussinessLogic.GetUserByCondition(payment.UserID);
-                var tour_detail = TourDetailBusinessLogic.GetTourDetailAsync(payment.TourDetailID);
+                var tour_detail = await TourDetailBusinessLogic.GetTourDetailAsync(payment.TourDetailID);
                 /*
                 if (user == null || tour_detail == null)
                 {
@@ -258,7 +259,7 @@ namespace backend.Controllers
                 {
                     OrderID = check_duplicate_order.Id,
                     Quantity = int.Parse(result.purchase_units[0].items[0].quantity),
-                    Price = Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.net_amount.value)*23000,
+                    Price = Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.net_amount.value)* 24380,
                     UserID = payment.UserID,
                     Description = result.purchase_units[0].items[0].description + " |Paypal fee: " + Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.paypal_fee.value)*23000,
                     Type_Payment = "PayPal",
@@ -266,16 +267,31 @@ namespace backend.Controllers
                     Tour_Detail_ID = payment.TourDetailID
                 };
                 await OrderDetailBusinessLogic.Create(oderdetail);
-                var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2();
+                //CẬP NHẬT LẠI TOURDetail
+                tour_detail.Quantity -= oderdetail.Quantity;
+                await TourDetailBusinessLogic.Update(tour_detail);
+
+                // Lấy danh sách orderDetail liên quan đến tour_detail đã được thanh toán
+                var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(payment.TourDetailID);
+
+                // Tính toán lại totalOrderPrice và totalOrderQuantity dựa trên danh sách orderDetail
                 var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);
                 var totalOrderQuantity = list_orderdetail.Sum(orderDetail => orderDetail.Quantity);
 
+                // Cập nhật lại thông tin cho check_duplicate_order
                 check_duplicate_order.Price = totalOrderPrice;
                 check_duplicate_order.Number_people = totalOrderQuantity;
                 await OrderBusinessLogic.Update(check_duplicate_order);
+                    //
+                    return Ok("successfully");
+                }
             }
-                 
-            return Ok("successfully");
+            catch (Exception ex)
+            {
+                throw new Exception("You have successfully paid but encounter problems during processing, please contact management");
+            }
+
+            return Ok("This order has been confirmed");
         }
 
     }
