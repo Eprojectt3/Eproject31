@@ -57,8 +57,7 @@ namespace backend.BussinessLogic
             existingOrder.Price = order.Price;
             existingOrder.IsActive = order.IsActive;
             existingOrder.Number_people = order.Number_people;
-            existingOrder.Create_Date = order.Create_Date;
-            existingOrder.End_Date = order.End_Date;
+     
             await unitofWork.Repository<Order>().Update(existingOrder);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -89,7 +88,7 @@ namespace backend.BussinessLogic
             var check_duplicate_order = await unitofWork.Repository<Entity.Order>().GetEntityWithSpecAsync(spec);
             if(check_duplicate_order == null)
             {
-                throw new NotFoundExceptions("Khong tim thay");
+                return null;
             }
             return check_duplicate_order;
         }

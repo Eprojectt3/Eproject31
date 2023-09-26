@@ -11,9 +11,8 @@ namespace backend.Entity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        [ForeignKey(nameof(Tour.Id))]
         public int? TourID { get; set; }
+        [ForeignKey("TourID")]
         public Tour? tour { get; set; }
 
         // Thứ tự lịch trình trong tour

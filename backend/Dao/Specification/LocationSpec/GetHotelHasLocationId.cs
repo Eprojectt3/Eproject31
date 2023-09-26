@@ -6,7 +6,7 @@ namespace backend.Dao.Specification.LocationSpec
     public class GetHotelHasLocationId : BaseSpecification<Hotel>
     {
         public GetHotelHasLocationId(int locationId)
-        : base(hotel => hotel.LocatinId == locationId)
+        : base(hotel => hotel.LocationId == locationId)
         {
         }
     }

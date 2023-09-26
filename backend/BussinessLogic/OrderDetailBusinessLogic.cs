@@ -1,4 +1,5 @@
 ﻿using backend.Dao.Specification.Order1;
+using backend.Dao.Specification.OrderDetail1;
 using backend.Entity;
 using backend.Exceptions;
 using webapi.Dao.UnitofWork;
@@ -20,9 +21,10 @@ namespace backend.BussinessLogic
             var data = await unitofWork.Repository<OrderDetail>().GetAllAsync();
             return data;
         }
-        public async Task<IEnumerable<OrderDetail>> SelectAllOrderDetail2()
+        public async Task<IEnumerable<OrderDetail>> SelectAllOrderDetail2(int id)
         {
-            var data = await unitofWork.Repository<OrderDetail>().GetAllAsync();
+            var spec = new OrderDetailSpec(id);
+            var data = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(spec);
             return data;
         }
 
@@ -65,7 +67,7 @@ namespace backend.BussinessLogic
             existingOrderDetail.Price = orderDetail.Price;
             existingOrderDetail.Rating = orderDetail.Rating;          
             existingOrderDetail.UserID = orderDetail.UserID;
-            existingOrderDetail.Payment_Id = orderDetail.Payment_Id;
+            existingOrderDetail.Payment_ID = orderDetail.Payment_ID;
             existingOrderDetail.Type_Payment = orderDetail.Type_Payment;
 
             
@@ -92,6 +94,15 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
+        }
+        public async Task<OrderDetail> GetOrderDetailById(int Id)
+        {
+            var result = await unitofWork.Repository<OrderDetail>().GetByIdAsync(Id);
+            if(result == null)
+            {
+                return null;
+            }
+            return result;
         }
       
     }
