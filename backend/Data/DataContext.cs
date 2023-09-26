@@ -3,56 +3,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace webapi.Data
 {
-<<<<<<< HEAD
-  public class DataContext : DbContext
-  {
-    public DataContext(DbContextOptions<DataContext> options)
-        : base(options) { }
 
-    public DataContext() { }
-
-    public virtual DbSet<User> Users { get; set; }
-    public virtual DbSet<UserRefreshTokens> UserRefreshTokens { get; set; }
-    public virtual DbSet<Role> Roles { get; set; }
-    public virtual DbSet<Slug> Slugs { get; set; }
-    public virtual DbSet<ForgotPasswordRequest> ForgotPasswordRequests { get; set; }
-    public virtual DbSet<Category> Category { get; set; }
-    public virtual DbSet<Discount> Discount { get; set; }
-    public virtual DbSet<FeedBack> FeedBack { get; set; }
-    public virtual DbSet<Hotel> Hotels { get; set; }
-    public virtual DbSet<Itinerary> Itinerarie { get; set; }
-    public virtual DbSet<Location1> Locations { get; set; }
-    public virtual DbSet<Order> Order { get; set; }
-    public virtual DbSet<OrderDetail> OrderDetail { get; set; }
-    public virtual DbSet<Resorts> Resorts { get; set; }
-    public virtual DbSet<Restaurant> Restaurant { get; set; }
-    public virtual DbSet<Tour> Tour { get; set; }
-    public virtual DbSet<Transportation> Transportation { get; set; }
-    public virtual DbSet<Service> Service { get; set; }
-
-    public virtual DbSet<TourDetail> TourDetail { get; set; }
-
-    public virtual DbSet<Staff> Staff { get; set; }
-=======
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options) { }
-        public DataContext()
-        {
-            
-        }
+
+        public DataContext() { }
+
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserRefreshTokens> UserRefreshTokens { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Slug> Slugs { get; set; }
         public virtual DbSet<ForgotPasswordRequest> ForgotPasswordRequests { get; set; }
         public virtual DbSet<Category> Category { get; set; }
-        public virtual DbSet<Discount> Discount { get; set; }
         public virtual DbSet<FeedBack> FeedBack { get; set; }
         public virtual DbSet<Hotel> Hotels { get; set; }
         public virtual DbSet<Itinerary> Itinerarie { get; set; }
-        public virtual DbSet<Location1> Locations{ get; set; }
+        public virtual DbSet<Location1> Locations { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
         public virtual DbSet<Resorts> Resorts { get; set; }
@@ -60,20 +28,24 @@ namespace webapi.Data
         public virtual DbSet<Tour> Tour { get; set; }
         public virtual DbSet<Transportation> Transportation { get; set; }
         public virtual DbSet<Service> Service { get; set; }
-        public virtual DbSet<Payment> OrderInfo { get; set; }
->>>>>>> 64a5e53 (son create route for information page)
+
+        public virtual DbSet<TourDetail> TourDetail { get; set; }
+
+        public virtual DbSet<Staff> Staff { get; set; }
+        public virtual DbSet<Information> Information { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasIndex(ul => new { ul.Username }).IsUnique();
 
-            modelBuilder.Entity<Order>().HasIndex(ul => new {ul.TourDetailID}).IsUnique();
+            modelBuilder.Entity<Order>().HasIndex(ul => new { ul.Tour_Detail_ID }).IsUnique();
 
-            //delete cascade
             modelBuilder.Entity<Hotel>()
                .HasOne(h => h.location1)
                .WithMany(l => l.Hotels)
-               .HasForeignKey(h => h.LocatinId)
+               .HasForeignKey(h => h.LocationId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Resorts>()
@@ -89,43 +61,45 @@ namespace webapi.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<TourDetail>()
-                .HasOne(h => h.discount)
-                .WithMany(l => l.TourDetails)
-                .HasForeignKey(h => h.DiscountId)
+                .HasOne(h => h.tour)
+                .WithMany(l => l.TourDetail)
+                .HasForeignKey(h => h.TourId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<TourDetail>()
-                .HasOne(h => h.staff)
+                .HasOne(h => h.Staff)
                 .WithMany(b => b.TourDetails)
-                .HasForeignKey(b => b.StaffId)
+                .HasForeignKey(b => b.Staff_Id)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
-            
-   
+
+
             modelBuilder.Entity<Itinerary>()
-               .HasOne(h => h.Location)
-               .WithMany(b => b.Itineraries)
-               .HasForeignKey(b => b.LocationID)
+               .HasOne(h => h.tour)
+               .WithMany(b => b.Itinerary)
+               .HasForeignKey(b => b.TourID)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Booking>()
-               .HasOne(h => h.staff)
-               .WithMany(b => b.Bookings)
-               .HasForeignKey(b => b.StaffId)
+           
+            modelBuilder.Entity<Order>()
+               .HasOne(h => h.tourDetail)
+               .WithMany(b => b.Orders)
+               .HasForeignKey(b => b.Tour_Detail_ID)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<OrderDetail>()
                .HasOne(h => h.order)
                .WithMany(b => b.OrderDetails)
                .HasForeignKey(b => b.OrderID)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<OrderDetail>()
-               .HasOne(h => h.TourDetails)
-               .WithMany(b => b.OrderDetails)
-               .HasForeignKey(b => b.TourDetailId)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<OrderDetail>()
+            //   .HasOne(h => h.TourDetails)
+            //   .WithMany(b => b.OrderDetails)
+            //   .HasForeignKey(b => b.Tour_Detail_ID)
+            //   .IsRequired()
+            //   .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<OrderDetail>()
                .HasOne(h => h.Users)
@@ -134,12 +108,9 @@ namespace webapi.Data
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Service>()
-
-
-               .HasOne(h => h.tourDetail)
+               .HasOne(h => h.Tour)
                .WithMany(b => b.Services)
-               .HasForeignKey(b => b.TourDetailId)
-
+               .HasForeignKey(b => b.Tour_ID)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Tour>()
@@ -154,6 +125,7 @@ namespace webapi.Data
                .HasForeignKey(b => b.Transportation_ID)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
+
 
         }
     }

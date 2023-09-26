@@ -18,15 +18,16 @@ namespace backend.Entity
         public double? Price { get; set; }
         public int? Rating { get; set; } = 0;
 
-        [ForeignKey(nameof(User.Id))]
         public int? UserID { get; set; }
+
+        [ForeignKey("UserID")]
         public User? Users { get; set; }
         public string? Description { get; set; }
-        [ForeignKey(nameof(TourDetail.Id))]
-        public int? TourDetailId { get; set; }
+        public int? Tour_Detail_ID { get; set; }
+        [ForeignKey("Tour_Detail_ID")]
         public TourDetail? TourDetails { get; set; }
         public string? Type_Payment { get; set; } //VNPAY PAYPAL
-        public string? Payment_Id { get; set; }
+        public string? Payment_ID { get; set; }
     }
 
 

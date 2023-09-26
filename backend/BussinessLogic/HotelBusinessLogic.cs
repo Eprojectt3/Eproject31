@@ -72,7 +72,7 @@ namespace backend.BussinessLogic
             existingHotel.IsActive = hotel.IsActive;
             existingHotel.Address = hotel.Address;
             existingHotel.PhoneNumber = hotel.PhoneNumber;
-            existingHotel.LocatinId = hotel.LocatinId;
+            existingHotel.LocationId = hotel.LocationId;
             existingHotel.Image = hotel.Image;
             existingHotel.ImageDetail = hotel.ImageDetail;
             existingHotel.Price_range = hotel.Price_range;

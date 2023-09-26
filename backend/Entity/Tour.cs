@@ -21,12 +21,16 @@ namespace backend.Entity
     public int Rating { get; set; } = 0;
     //Xác định tour theo yêu cầu hay tour theo lộ trình
     public bool? Type { get; set; } = false;
-
-    [ForeignKey(nameof(Transportation.Id))]
+    public double Discount { get; set; }
+    public double Price_After_Discount { get; set; }
     public int Transportation_ID { get; set; }
+    public string Transportation { get; set; }
+        [ForeignKey("Transportation_ID")]
     public Transportation? transportation { get; set; }
+        public string Departure_location { get; set; }
+        public ICollection<Itinerary> Itinerary { get; set; }
+        public ICollection<TourDetail> TourDetail { get; set; }
+        public ICollection<Service> Services { get; set; }
 
-    public ICollection<OrderDetail>? OrderDetails { get; set; }
-       public ICollection<Itinerary>? Itineraries { get; set; }
   }
 }

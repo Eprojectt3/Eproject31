@@ -14,9 +14,10 @@ namespace backend.Entity
     public string? Price_range { get; set; }
     public int? Rating { get; set; }
 
-    [ForeignKey(nameof(Location1.ID))]
-    public int? LocatinId { get; set; }
-    public Location1? location1 { get; set; }
+    public int? LocationId { get; set; }
+        [ForeignKey("LocationId")]
+
+        public Location1? location1 { get; set; }
 
     [Column(TypeName = "ntext")]
     public string? Description { get; set; }
@@ -25,6 +26,6 @@ namespace backend.Entity
     public string? Image { get; set; }
     public int? PhoneNumber { get; set; }
     public string? Links { get; set; }
-        //public ICollection<Itinerary>? Itineraries { get; set; }
-  }
+        public ICollection<Itinerary>? Itineraries { get; set; }
+    }
 }

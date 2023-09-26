@@ -43,7 +43,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingTourDetail = await unitofWork.Repository<TourDetail>().GetByIdAsync(tourDetail.Id);
+            var existingTourDetail = await GetTourDetailAsync(tourDetail.Id);
 
             if (existingTourDetail is null)
             {
@@ -59,8 +59,7 @@ namespace backend.BussinessLogic
             existingTourDetail.End_Date = tourDetail.End_Date;
             existingTourDetail.Range_time = tourDetail.Range_time;
             existingTourDetail.Quantity = tourDetail.Quantity;
-            existingTourDetail.StaffId = tourDetail.StaffId;
-            existingTourDetail.DiscountId = tourDetail.DiscountId;
+            existingTourDetail.Staff_Id = tourDetail.Staff_Id;
             existingTourDetail.Description = tourDetail.Description;
             await unitofWork.Repository<TourDetail>().Update(existingTourDetail);
             var check = await unitofWork.Complete();
