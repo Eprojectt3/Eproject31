@@ -373,6 +373,7 @@ namespace backend.Migrations
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ParentId = table.Column<int>(type: "int", nullable: false),
+                    Location1ID = table.Column<int>(type: "int", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -388,6 +389,11 @@ namespace backend.Migrations
                         principalTable: "Hotels",
                         principalColumn: "Id");
                     
+                    table.ForeignKey(
+                        name: "FK_Itinerarie_Locations_Location1ID",
+                        column: x => x.Location1ID,
+                        principalTable: "Locations",
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Itinerarie_Resorts_ParentId",
                         column: x => x.ParentId,
@@ -539,7 +545,7 @@ namespace backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Hotels_LocationId",
                 table: "Hotels",
-                column: "LocationId");
+                column: "LocatinId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Itinerarie_ParentId",
