@@ -542,11 +542,6 @@ namespace backend.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Itinerarie_Location1ID",
-                table: "Itinerarie",
-                column: "Location1ID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Itinerarie_ParentId",
                 table: "Itinerarie",
                 column: "ParentId");
