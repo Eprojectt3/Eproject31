@@ -1,6 +1,13 @@
-﻿using backend.Dao.Specification.Order1;
+﻿using AutoMapper;
+using backend.Dao.Specification;
+using backend.Dao.Specification.HotelSpec;
+using backend.Dao.Specification.Order1;
+using backend.Dao.Specification.OrderSpec;
+using backend.Dtos.HotelDtos;
+using backend.Dtos.OrderDtos;
 using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -8,10 +15,12 @@ namespace backend.BussinessLogic
     public class OrderBusinessLogic
     {
         public IUnitofWork unitofWork;
+        public IMapper mapper;
 
-        public OrderBusinessLogic(IUnitofWork _unitofWork)
+        public OrderBusinessLogic(IUnitofWork _unitofWork ,IMapper _mapper)
         {
             unitofWork = _unitofWork;
+            mapper = _mapper;
         }
 
         //list order
@@ -79,7 +88,7 @@ namespace backend.BussinessLogic
             var check = await unitofWork.Complete();
             if (check < 1)
             {
-                throw new BadRequestExceptions("chua dc thuc thi");
+                throw new BadRequestExceptions("chua dc thuc thi"); 
             }
         }
         public async Task<Order> GetEntityByCondition(int TourDetailID)
@@ -91,6 +100,26 @@ namespace backend.BussinessLogic
                 return null;
             }
             return check_duplicate_order;
+        }
+
+        //Page
+
+        public async Task <Pagination<OrderDtos>> SelectAllOrderPagination (SpecParams specParams)
+        {
+            var spec = new SearchOrderSpec(specParams);
+            var orders = await unitofWork.Repository<Order>().GetAllWithAsync(spec);
+
+            var data = mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderDtos>>(orders);
+            var locationPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+
+            //var countSpec = new SearchOrderSpec(specParams);
+            var count = await unitofWork.Repository<Order>().GetCountWithSpecAsync(spec);
+            //làm tròn
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+
+            var pagination = new Pagination<OrderDtos>(specParams.PageIndex, specParams.PageSize, locationPage, count, totalPageIndex);
+
+            return pagination;
         }
     }
 }
