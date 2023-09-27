@@ -1,5 +1,10 @@
-﻿using backend.Entity;
+﻿using AutoMapper;
+using backend.Dao.Specification.ServiceSpec;
+using backend.Dao.Specification;
+using backend.Dtos.ServiceDtos;
+using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -7,10 +12,11 @@ namespace backend.BussinessLogic
     public class ServiceBusinessLogic
     {
         public IUnitofWork unitofWork;
-
-        public ServiceBusinessLogic(IUnitofWork _unitofWork)
+        public IMapper mapper;
+        public ServiceBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            this.mapper = mapper;
         }
 
         //list service
@@ -81,6 +87,24 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
+        }
+        public async Task<Pagination<ServiceDto>> SelectAllServicePagination(SpecParams specParams)
+        {
+
+            var spec = new SearchServiceSpec(specParams);
+            var service = await unitofWork.Repository<Service>().GetAllWithAsync(spec);
+
+            var data = mapper.Map<IReadOnlyList<Service>, IReadOnlyList<ServiceDto>>(service);
+            var servicePage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+
+            var countSpec = new SearchServiceSpec(specParams);
+            var count = await unitofWork.Repository<Service>().GetCountWithSpecAsync(countSpec);
+
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+
+            var pagination = new Pagination<ServiceDto>(specParams.PageIndex, specParams.PageSize, servicePage, count, totalPageIndex);
+
+            return pagination;
         }
     }
 }

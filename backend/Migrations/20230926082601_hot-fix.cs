@@ -300,6 +300,7 @@ namespace backend.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -372,7 +373,6 @@ namespace backend.Migrations
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ParentId = table.Column<int>(type: "int", nullable: false),
-                    Location1ID = table.Column<int>(type: "int", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -387,11 +387,7 @@ namespace backend.Migrations
                         column: x => x.ParentId,
                         principalTable: "Hotels",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Itinerarie_Locations_Location1ID",
-                        column: x => x.Location1ID,
-                        principalTable: "Locations",
-                        principalColumn: "ID");
+                    
                     table.ForeignKey(
                         name: "FK_Itinerarie_Resorts_ParentId",
                         column: x => x.ParentId,
