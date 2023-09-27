@@ -1,7 +1,10 @@
-﻿using backend.Dao.Specification;
+﻿using AutoMapper;
+using backend.Dao.Specification;
 using backend.Dao.Specification.CategorySpec;
+using backend.Dtos.CategoryDtos;
 using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Web.Http.ModelBinding;
 using webapi.Dao.Specification;
@@ -12,8 +15,11 @@ namespace backend.BussinessLogic
     public class CategoryBusinessLogic
     {
         public IUnitofWork unitofWork;
-        public CategoryBusinessLogic(IUnitofWork _unitofWork) {
+        public IMapper mapper;
+        public CategoryBusinessLogic(IUnitofWork _unitofWork, IMapper mapper = null)
+        {
             unitofWork = _unitofWork;
+            this.mapper = mapper;
         }
 
         //list category
@@ -99,6 +105,24 @@ namespace backend.BussinessLogic
                 .GetEntityWithSpecAsync(new CategoryByNameSpecification(categoryName));
 
             return duplicateCategory != null;
+        }
+        public async Task<Pagination<CategoryDtos>> SelectAllCategoryPagination(SpecParams specParams)
+        {
+
+            var spec = new SearchCategorySpec(specParams);
+            var resorts = await unitofWork.Repository<Category>().GetAllWithAsync(spec);
+
+            var data = mapper.Map<IReadOnlyList<Category>, IReadOnlyList<CategoryDtos>>(resorts);
+            var categoryPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+
+            var countSpec = new SearchCategorySpec(specParams);
+            var count = await unitofWork.Repository<Category>().GetCountWithSpecAsync(countSpec);
+
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+
+            var pagination = new Pagination<CategoryDtos>(specParams.PageIndex, specParams.PageSize, categoryPage, count, totalPageIndex);
+
+            return pagination;
         }
     }
 }
