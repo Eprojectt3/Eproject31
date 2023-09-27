@@ -1,8 +1,17 @@
 ﻿
 using AutoMapper;
 using backend.Dtos.CategoryDtos;
+using backend.Dtos.FeedBackDtos;
 using backend.Dtos.HotelDtos;
+using backend.Dtos.ItineraryDtos;
 using backend.Dtos.LocationDtos;
+using backend.Dtos.OrderDetaiDtos;
+using backend.Dtos.RestaurantDtos;
+using backend.Dtos.ServiceDtos;
+using backend.Dtos.StaffDtos;
+using backend.Dtos.TourDetailDtos;
+using backend.Dtos.TourDtos;
+using backend.Dtos.TransportationDtos;
 using backend.Entity;
 
 namespace backend.Helper
@@ -11,7 +20,7 @@ namespace backend.Helper
     {
         public AutoMapper1()
         {
-            CreateMap<CategoryDtos, Category>().ReverseMap();
+            CreateMap<Category, CategoryDtos>().ReverseMap();
             CreateMap<Location1, LocationDtos>()
                 .ForMember(l => l.State, otp => otp.MapFrom(o => o.State))
                 .ReverseMap();
@@ -21,10 +30,28 @@ namespace backend.Helper
             CreateMap<Resorts, Dtos.ResortDtos.ResortDto>()
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
                 .ReverseMap();
+            CreateMap<Restaurant, RestaurantDto>()
+                .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
+                .ReverseMap();
+            CreateMap<Transportation, TransportationDto>()
+                .ForMember(h => h.Name, otp => otp.MapFrom(o => o.Name))
+                .ReverseMap();
 
+            CreateMap<Staff, StaffDto>().ReverseMap();
 
+            CreateMap<FeedBack, FeedBackDto>().ReverseMap();
 
+            CreateMap<Itinerary, ItineraryDto>()
+                .ForMember(i => i.Tour_Name, otp => otp.MapFrom(o => o.tour.Name));
 
+            CreateMap<Service, ServiceDto>()
+                .ForMember(s => s.Tour_Name, otp => otp.MapFrom(o => o.Tour.Name));
+            CreateMap<Tour, TourDto>()
+                .ForMember(s => s.Category_Name, otp => otp.MapFrom(o => o.category.Name));
+            CreateMap<TourDetail, TourDetailDto>()
+                .ForMember(s => s.Tour_Name, otp => otp.MapFrom(o => o.tour.Name));
+            CreateMap<OrderDetail, OrderDetailDto>()
+                .ForMember(s => s.User_Name, otp => otp.MapFrom(o => o.Users.Name));
         }
     }
 }

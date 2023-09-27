@@ -1,4 +1,5 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao.Specification;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,20 @@ namespace backend.Controllers
         {
             await serviceBusinessLogic.Delete(id);
             return Ok();
+        }
+        [HttpPost]
+        public async Task<ActionResult> ListServicePagination(SpecParams pagination)
+        {
+            var output = await serviceBusinessLogic.SelectAllServicePagination(pagination);
+
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
         }
     }
 }
