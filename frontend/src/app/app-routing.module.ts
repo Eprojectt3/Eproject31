@@ -1,34 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './pages/home/home.component';
-import { AboutUsComponent } from './pages/about-us/about-us.component';
-import { ContactUsComponent } from './pages/contact-us/contact-us.component';
+import { AuthGuard } from './services/auth.guard';
+import { Role } from './models/role.model';
 
 const routes: Routes = [
   {
-    path: 'home',
-    component: HomeComponent,
+    path: 'admin',
+    loadChildren: () =>
+      import('./pages/admin/admin.module').then((m) => m.AdminModule),
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] },
   },
   {
-    path: 'about',
-    component: AboutUsComponent,
+    path: 'auth',
+    loadChildren: () =>
+      import('./pages/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path :'contact',
-    component: ContactUsComponent
+    path: 'user',
+    loadChildren: () =>
+      import('./pages/user/user.module').then((m) => m.UserModule),
+    canActivate: [AuthGuard],
+    data: { roles: [Role.User] },
   },
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'user',
     pathMatch: 'full',
-  },
-  {
-    path: 'infomation',
-    loadChildren: () =>
-      import('./pages/infomation/infomation.module').then(
-        (m) => m.InfomationModule,
-      ),
   },
 ];
 
@@ -36,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

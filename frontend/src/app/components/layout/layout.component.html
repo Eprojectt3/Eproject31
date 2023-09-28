@@ -3,8 +3,6 @@
   <section id="img">
     <div class="w-[100%] h-[500px] absolute z-[-1000]">
       <div class="h-[100%] w-[100%] relative">
-
-
         <div
           class="w-[100%] h-[100%] absolute bg-black opacity-[0.2] top-0 left-0"
         ></div>
@@ -13,8 +11,6 @@
           alt="error"
           class="w-[100%] h-[100%] bg-cover object-cover"
         />
-
-
       </div>
     </div>
   </section>
@@ -23,44 +19,81 @@
   <section class="2xl:visible xl:visible lg:visible invisible" id="navbar ">
     <div class="navbar flex">
       <div
-
         class="nav text-white lg:w-[60%] lg:ml-[20%] mt-[15px] xl:ml-[50%] xl:translate-x-[-45%] 2xl:translate-x-[-45%] 2xl:ml-[50%] xl:w-[45%] 2xl:w-[45%]"
       >
-
-
-
-
         <nav class="w-[100%]">
           <ul class="flex justify-between items-center">
             <li>
-              <a class="text-[20px]" routerLink="/home/">Home</a>
+              <a class="text-[20px]" routerLink="/user/home/">Home</a>
             </li>
             <li>
-              <a class="text-[20px]" routerLink="/about/">About</a>
+              <a class="text-[20px]" routerLink="/user/about/">About</a>
             </li>
             <li>
-              <a class="logo text-[35px]" routerLink="/home/">Karnel Travels</a>
+              <a class="logo text-[35px]" routerLink="/user/home/"
+                >Karnel Travels</a
+              >
             </li>
             <li class="flex items-center">
-              <a class="text-[20px]" routerLink="/infomation">Infomation </a>
+              <a class="text-[20px]" routerLink="/user/infomation"
+                >Infomation
+              </a>
               <button class="mt-[10px]" [matMenuTriggerFor]="menuInfo">
                 <mat-icon>arrow_drop_down</mat-icon>
               </button>
             </li>
 
             <li>
-              <a class="text-[20px]" routerLink="/contact/">Contact</a>
+              <a class="text-[20px]" routerLink="/user/contact/">Contact</a>
             </li>
           </ul>
         </nav>
       </div>
-      <div class="avatar w-[40px] h-[40px] right-20 top-7 absolute lg:right-10">
-        <button type="button">
+      <div *ngIf="!isLogin" class="flex mr-[40px] mt-[25px]">
+        <button
+          mat-raised-button
+          class="font-[600] hover:w-[80px] hover:h-[38px]"
+          routerLink="/auth/login"
+        >
+          Login
+        </button>
+        <button
+          mat-stroked-button
+          class="font-[600] ml-[10px] !border-slate-300 !text-white hover:w-[100px] hover:h-[40px] !border-[0.5px]"
+          routerLink="/auth/register"
+        >
+          Register
+        </button>
+      </div>
+
+      <div
+        *ngIf="isLogin"
+        class="avatar w-[40px] h-[40px] right-20 top-7 absolute lg:right-10"
+      >
+        <button type="button" [matMenuTriggerFor]="menu">
           <mat-icon class="text-white text-[35px] !w-[100%] !h-[100%]"
             >account_circle</mat-icon
           >
         </button>
       </div>
+
+      <!-- User Menu -->
+      <mat-menu #menu="matMenu" class="!w-[200px]">
+        <h2 class="ml-[20px] text-[19px] font-[500] mb-[10px]">
+          {{ userInfo?.name }}
+        </h2>
+        <button mat-menu-item>
+          <mat-icon class="!text-[#FA5246]">person</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon class="!text-[#FA5246]">shopping_cart</mat-icon
+          ><span>My Orders</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon class="!text-[#FA5246]">logout</mat-icon><span>Logout</span>
+        </button>
+      </mat-menu>
 
       <!-- <div class="title"></div> -->
     </div>
@@ -69,15 +102,21 @@
   <!-- infomation menu -->
   <div id="information-menu ">
     <mat-menu #menuInfo="matMenu">
-      <button mat-menu-item routerLink="infomation/tours/">Tours</button>
-      <button mat-menu-item routerLink="infomation/hotels/">Hotels</button>
-      <button mat-menu-item routerLink="infomation/resorts/">Resorts</button>
-      <button mat-menu-item routerLink="infomation/restaurants/">Restaurants</button>
+      <button mat-menu-item routerLink="/user/infomation/tours">Tours</button>
+      <button mat-menu-item routerLink="/user/infomation/hotels">Hotels</button>
+      <button mat-menu-item routerLink="/user/infomation/resorts">
+        Resorts
+      </button>
+      <button mat-menu-item routerLink="/user/infomation/restaurants">
+        Restaurants
+      </button>
     </mat-menu>
   </div>
 
   <!-- navbar mobile -->
-  <div class="nav-mobile absolute top-[20px] left-[15px] lg:invisible xl:invisible 2xl:invisible">
+  <div
+    class="nav-mobile absolute top-[20px] left-[15px] lg:invisible xl:invisible 2xl:invisible"
+  >
     <div>
       <button aria-label="menu" class="" [matMenuTriggerFor]="menu">
         <mat-icon class="text-white">menu</mat-icon>
@@ -96,15 +135,20 @@
   <!-- menu mobile -->
   <div>
     <mat-menu class="w-[150px] -0" #menu="matMenu">
-      <button type="button" class="" routerLink="/home/" mat-menu-item>
+      <button type="button" class="" routerLink="/user/home/" mat-menu-item>
         <mat-icon>home</mat-icon>
         <span>Home</span>
       </button>
-      <button type="button" class="" routerLink="/about/" mat-menu-item>
+      <button type="button" class="" routerLink="/user/about/" mat-menu-item>
         <mat-icon>density_medium</mat-icon>
         <span>About us</span>
       </button>
-      <button type="button" routerLink="/infomation" class="" mat-menu-item>
+      <button
+        type="button"
+        routerLink="/user/infomation"
+        class=""
+        mat-menu-item
+      >
         <mat-icon class="text-[21px]">info</mat-icon>
         <span>Infomation</span>
       </button>

@@ -105,7 +105,8 @@ namespace webapi.Controllers
                 Username = validUser.Username,
                 Name = validUser.Name,
                 Email = validUser.Email,
-                RoleId = validUser.RoleId
+                RoleId = validUser.RoleId,
+                Phone = validUser.Phone,
             };
 
             return Ok(new { token, userInfo });
@@ -190,6 +191,12 @@ namespace webapi.Controllers
                     newUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
                     newUser.Username = user.Username;
                     newUser.RoleId = user.RoleId;
+                    newUser.Phone = user.Phone;
+                    newUser.IsActive = user.IsActive;
+                    newUser.CreateBy = user?.CreateBy;
+                    newUser.CreateDate = user?.CreateDate;
+                    newUser.UpdateDate = user?.UpdateDate;
+                    newUser.UpdateBy = user?.UpdateBy;
 
                     if (!existedUsername)
                     {
