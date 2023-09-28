@@ -199,7 +199,7 @@ namespace backend.Controllers
         }
 
         /// <summary>
-        /// kiểm tra xem TOURDETAILID,UserID này có trongdatabase chưa
+        /// kiểm tra xem TOURDETAILID này có trongdatabase chưa theo StartDate và Name nếu chưa thì Create
         /// Tìm kiếm xem có order này theo TourDetailID chưa
         /// nếu chưa thì
         ///       Tạo Order trước dựa trên TourDetailID: Tour_Detail_ID,

@@ -1,6 +1,10 @@
 ﻿
+using AutoMapper;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
+using Microsoft.AspNetCore.Http;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -8,25 +12,51 @@ namespace backend.BussinessLogic
     public class TourBusinessLogic
     {
         public IUnitofWork unitofWork;
+        private ImageService Image;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private IMapper mapper;
 
-        public TourBusinessLogic(IUnitofWork _unitofWork)
+
+        public TourBusinessLogic(IUnitofWork _unitofWork, ImageService imageService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            Image = imageService;
+            _httpContextAccessor = httpContextAccessor;
+            this.mapper = mapper; 
         }
 
         //list tour
-        public async Task<IReadOnlyList<Tour>> SelectAllTour()
+        public async Task<IEnumerable<object>> SelectAllTour()
         {
             var data = await unitofWork.Repository<Tour>().GetAllAsync();
-            return data;
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new List<object>();
+
+            foreach (var tour in data)
+            {
+                var tourInfo = new 
+                {
+                     tour.Id,
+                     tour.Name,           
+                     //Thêm các trường cần thêm
+                    UrlImage = Image.GetUrlImage(tour.Name, "tour", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                };
+
+                result.Add(tourInfo);
+            }
+            return result;
         }
 
         //create tour
-        public async Task Create(Tour tour)
+        public async Task Create(TourDto tourdto)
         {
-            if (tour is null)
+          
+            var tour = mapper.Map<TourDto, Tour>(tourdto);
+
+            var images = Image.Upload_Image(tourdto.Name, "tour", tourdto.fileCollection);
+            foreach (var image in images)
             {
-                throw new NotFoundExceptions("Cattegory not found");
+                tour.AddImage(image);
             }
             await unitofWork.Repository<Tour>().AddAsync(tour);
             var check = await unitofWork.Complete();
@@ -37,18 +67,21 @@ namespace backend.BussinessLogic
         }
 
         //update tour
-        public async Task Update(Tour tour)
+        public async Task Update(TourDto tourdto)
         {
-            if (tour is null)
-            {
-                throw new NotFoundExceptions("not found");
-            }
+
+            var tour = mapper.Map<TourDto, Tour>(tourdto);
 
             var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(tour.Id);
 
             if (existingTour is null)
             {
                 throw new NotFoundExceptions("not found");
+            }
+            var images = Image.Upload_Image(tourdto.Name, "tour", tourdto.fileCollection);
+            foreach (var image in images)
+            {
+                tour.AddImage(image);
             }
             existingTour.UpdateDate = tour.UpdateDate;
             existingTour.CreateDate = tour.CreateDate;
@@ -63,9 +96,9 @@ namespace backend.BussinessLogic
             existingTour.quantity_limit = tour.quantity_limit;
             existingTour.Rating = tour.Rating;
             existingTour.Type = tour.Type;
-            existingTour.Price_After_Discount = tour.Price_After_Discount;
             existingTour.Transportation_ID = tour.Transportation_ID;
             existingTour.Departure_location = tour.Departure_location;
+            existingTour.Range_time = tour.Range_time;
             await unitofWork.Repository<Tour>().Update(existingTour);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -92,13 +125,24 @@ namespace backend.BussinessLogic
         }
 
         //get restaurant by id
-        public async Task GetByTourId(int id)
+        public async Task<object> GetByTourId(int id)
         {
             var existingHotel = await unitofWork.Repository<Tour>().GetByIdAsync(id);
             if (existingHotel == null)
             {
                 throw new NotFoundExceptions("not found");
             }
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new
+            {
+                existingHotel.Id,
+                existingHotel.Name,
+                //thêm cách cột còn lại
+                urlImage = Image.GetUrlImage(existingHotel.Name, "tour", httpRequest)
+            };
+             
+          
+            return result;
         }
     }
 }
