@@ -1,6 +1,10 @@
 ﻿
+using AutoMapper;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
+using backend.Helper;
+using Microsoft.AspNetCore.Http;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -16,6 +20,9 @@ namespace backend.BussinessLogic
         public TourBusinessLogic(IUnitofWork _unitofWork, ImageService imageService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            Image = imageService;
+            _httpContextAccessor = httpContextAccessor;
+            this.mapper = mapper; 
         }
 
         //list tour
@@ -51,17 +58,6 @@ namespace backend.BussinessLogic
             {
                 tour.AddImage(image);
             }
-            // Kiểm tra nếu Discount = 0 thì cập nhật Price_After_Discount = Price
-            if (tour.Discount == 0)
-            {
-                tour.Price_After_Discount = tour.Price;
-            }
-            else
-            {
-                // Tính giá sau khi giảm giá dựa trên Discount
-                // Giá sau giảm giá = Giá ban đầu - (Giá ban đầu * (Discount / 100))
-                tour.Price_After_Discount = tour.Price - (tour.Price * (tour.Discount / 100));
-            }
             await unitofWork.Repository<Tour>().AddAsync(tour);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -81,6 +77,11 @@ namespace backend.BussinessLogic
             if (existingTour is null)
             {
                 throw new NotFoundExceptions("not found");
+            }
+            var images = Image.Upload_Image(tourdto.Name, "tour", tourdto.fileCollection);
+            foreach (var image in images)
+            {
+                tour.AddImage(image);
             }
             existingTour.UpdateDate = tour.UpdateDate;
             existingTour.CreateDate = tour.CreateDate;
