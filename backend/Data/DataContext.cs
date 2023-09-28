@@ -35,7 +35,7 @@ namespace webapi.Data
         public virtual DbSet<Information> Information { get; set; }
 
 
-
+/*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasIndex(ul => new { ul.Username }).IsUnique();
@@ -128,5 +128,6 @@ namespace webapi.Data
 
 
         }
+*/
     }
 }
