@@ -1,9 +1,13 @@
-﻿using backend.Dtos.OrderDetailDtos;
+﻿using AutoMapper;
+using backend.Dao;
+using backend.Dtos.OrderDetailDtos;
 using backend.Dtos.PaymentDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Model;
+using Microsoft.EntityFrameworkCore;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -15,7 +19,10 @@ namespace backend.BussinessLogic
         private TourDetailBusinessLogic TourDetailBusinessLogic;
         private OrderBusinessLogic OrderBusinessLogic;
         private OrderDetailBusinessLogic OrderDetailBusinessLogic;
-        public PaymentBussinessLogic(IUnitofWork _unitofWork, IConfiguration configuration, UserBussinessLogic userBussinessLogic, TourDetailBusinessLogic tourDetailBusinessLogic, OrderBusinessLogic orderBusinessLogic, OrderDetailBusinessLogic orderDetailBusinessLogic)
+        public Search_TourDetail_Dao searchDao;
+        public IMapper mapper;
+        public DataContext context;
+        public PaymentBussinessLogic(IUnitofWork _unitofWork, IConfiguration configuration, UserBussinessLogic userBussinessLogic, TourDetailBusinessLogic tourDetailBusinessLogic, OrderBusinessLogic orderBusinessLogic, OrderDetailBusinessLogic orderDetailBusinessLogic,Search_TourDetail_Dao search_TourDetail_Dao, IMapper mapper, DataContext dataContext)
         {
             unitofWork = _unitofWork;
             _configuration = configuration;
@@ -23,6 +30,9 @@ namespace backend.BussinessLogic
             this.TourDetailBusinessLogic = tourDetailBusinessLogic;
             OrderBusinessLogic = orderBusinessLogic;
             OrderDetailBusinessLogic = orderDetailBusinessLogic;
+            searchDao = search_TourDetail_Dao;
+            this.mapper = mapper;
+            context = dataContext;
         }
         public async Task<IReadOnlyList<OrderInfo>> SelectAllCategory()
         {
@@ -104,58 +114,63 @@ namespace backend.BussinessLogic
         public async Task<string> CreateDataAsync(PaymentVnPayDtos paymentVnPay)
         {
             VnPayLibrary vnpay = new VnPayLibrary();
-            try { 
-                if (paymentVnPay.vnp_ResponseCode == "00" && paymentVnPay.vnp_TransactionStatus == "00")
+           
+                try
                 {
-                    var tour_detail = await TourDetailBusinessLogic.GetTourDetailAsync(paymentVnPay.TourDetailID);
-                    if ( tour_detail == null)
+                    if (paymentVnPay.vnp_ResponseCode == "00" && paymentVnPay.vnp_TransactionStatus == "00")
                     {
-                        throw new NotFoundExceptions("You have successfully paid but encounter problems during processing, please contact management");
+
+                        var exist_tour_detail = await searchDao.QueryDao(paymentVnPay.Tour_Detail_Payment_Dto.Start_Date, paymentVnPay.Tour_Detail_Payment_Dto.TourId);
+
+                        if (exist_tour_detail == null)
+                        {
+                            var tour_detail = mapper.Map<Tour_Detail_PaymentPaypal_Dto, TourDetail>(paymentVnPay.Tour_Detail_Payment_Dto);
+                            exist_tour_detail = await TourDetailBusinessLogic.Create(tour_detail);
+                        }
+                        var check_duplicate_order = await OrderBusinessLogic.GetEntityByCondition(exist_tour_detail.Id);
+                        if (check_duplicate_order == null)
+                        {
+                            var order = new Entity.Order();
+                            order.Tour_Detail_ID = exist_tour_detail.Id;
+                            check_duplicate_order = await OrderBusinessLogic.Create(order);
+                        }
+                        var oderdetail = new OrderDetail
+                        {
+                            OrderID = check_duplicate_order.Id,
+                            Quantity = paymentVnPay.quantity,
+                            Price = paymentVnPay.Amount / 100,
+                            UserID = paymentVnPay.UserID,
+                            Description = paymentVnPay.Description,
+                            Type_Payment = "VNPAY",
+                            Payment_ID = paymentVnPay.orderid,
+                            Tour_Detail_ID = exist_tour_detail.Id
+                        };
+                        await OrderDetailBusinessLogic.Create(oderdetail);
+                        //CẬP NHẬT LẠI TOURDetail
+                        exist_tour_detail.Quantity -= oderdetail.Quantity;
+                        await TourDetailBusinessLogic.Update(exist_tour_detail);
+
+                        // Lấy danh sách orderDetail liên quan đến tour_detail đã được thanh toán
+                        var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(exist_tour_detail.Id);
+
+                        // Tính toán lại totalOrderPrice và totalOrderQuantity dựa trên danh sách orderDetail
+                        var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);
+                        var totalOrderQuantity = list_orderdetail.Sum(orderDetail => orderDetail.Quantity);
+
+                        // Cập nhật lại thông tin cho check_duplicate_order
+                        check_duplicate_order.Price = totalOrderPrice;
+                        check_duplicate_order.Number_people = totalOrderQuantity;
+                        await OrderBusinessLogic.Update(check_duplicate_order);
+                        //
+                        return "Successfully";
+
                     }
-                    var check_duplicate_order = await OrderBusinessLogic.GetEntityByCondition(paymentVnPay.TourDetailID);
-                    if (check_duplicate_order == null)
-                    {
-                        var order = new Entity.Order();
-                        order.Tour_Detail_ID = paymentVnPay.TourDetailID;
-                        var check_create_order = OrderBusinessLogic.Create(order);
-                        check_duplicate_order = order;
-                    }
-                    var oderdetail = new OrderDetail
-                    {
-                        OrderID = check_duplicate_order.Id,
-                        Quantity = paymentVnPay.quantity,
-                        Price = paymentVnPay.Amount/100,
-                        UserID = paymentVnPay.UserID,
-                        Description = paymentVnPay.Description,
-                        Type_Payment = "VNPAY",
-                        Payment_ID = paymentVnPay.orderid,
-                        Tour_Detail_ID = paymentVnPay.TourDetailID
-                    };
-                    await OrderDetailBusinessLogic.Create(oderdetail);
-                //CẬP NHẬT LẠI TOURDetail
-                    tour_detail.Quantity -= oderdetail.Quantity;
-                    await TourDetailBusinessLogic.Update(tour_detail);
-
-                // Lấy danh sách orderDetail liên quan đến tour_detail đã được thanh toán
-                var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(paymentVnPay.TourDetailID);
-
-                // Tính toán lại totalOrderPrice và totalOrderQuantity dựa trên danh sách orderDetail
-                var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);
-                var totalOrderQuantity = list_orderdetail.Sum(orderDetail => orderDetail.Quantity);
-
-                // Cập nhật lại thông tin cho check_duplicate_order
-                check_duplicate_order.Price = totalOrderPrice;
-                check_duplicate_order.Number_people = totalOrderQuantity;
-                await OrderBusinessLogic.Update(check_duplicate_order);
-                //
-                return "Successfully";
-
-            }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("You have successfully paid but encounter problems during processing, please contact management");
-            }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("You have successfully paid but encounter problems during processing, please contact management");
+                }
+            
             return "Payment failed";
 
         }

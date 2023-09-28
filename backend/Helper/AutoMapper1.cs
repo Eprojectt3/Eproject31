@@ -3,6 +3,8 @@ using AutoMapper;
 using backend.Dtos.CategoryDtos;
 using backend.Dtos.HotelDtos;
 using backend.Dtos.LocationDtos;
+using backend.Dtos.PaymentDtos;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 
 namespace backend.Helper
@@ -22,9 +24,9 @@ namespace backend.Helper
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
                 .ReverseMap();
 
+            CreateMap<TourDto, Tour>().ReverseMap();
 
-
-
+            CreateMap<Tour_Detail_PaymentPaypal_Dto, TourDetail>().ReverseMap();
         }
     }
 }

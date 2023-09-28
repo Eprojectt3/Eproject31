@@ -1,4 +1,6 @@
-﻿using backend.BussinessLogic;
+﻿using AutoMapper;
+using backend.BussinessLogic;
+using backend.Dao;
 using backend.Dao.Specification.Order1;
 using backend.Dtos.OrderDetailDtos;
 using backend.Dtos.PaymentDtos;
@@ -16,6 +18,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using webapi.Dao.UnitofWork;
+using static StackExchange.Redis.Role;
 
 namespace backend.Controllers
 {
@@ -30,9 +33,11 @@ namespace backend.Controllers
         public OrderDetailBusinessLogic OrderDetailBusinessLogic;
         public UserBussinessLogic UserBussinessLogic;
         public TourDetailBusinessLogic TourDetailBusinessLogic;
+        public IMapper mapper;
+        public Search_TourDetail_Dao searchDao;
         public PaymentPayPalController(IConfiguration _configuration, HttpClient _httpClient, 
             IUnitofWork _unitofWork, OrderBusinessLogic _OrderBusinessLogic, OrderDetailBusinessLogic _OrderDetailBusinessLogic
-            , UserBussinessLogic userBussinessLogic, TourDetailBusinessLogic tourDetailBusinessLogic)
+            , UserBussinessLogic userBussinessLogic, TourDetailBusinessLogic tourDetailBusinessLogic, IMapper mapper, Search_TourDetail_Dao searchDao)
         {
             configuration = _configuration;
             this._client = _httpClient;
@@ -41,6 +46,8 @@ namespace backend.Controllers
             OrderDetailBusinessLogic = _OrderDetailBusinessLogic;
             UserBussinessLogic = userBussinessLogic;
             TourDetailBusinessLogic = tourDetailBusinessLogic;
+            this.mapper = mapper;
+            this.searchDao = searchDao;
         }
         [HttpGet]
         public async Task<AuthorizationResponseData?> GetAuthorizationRequest()
@@ -199,7 +206,7 @@ namespace backend.Controllers
         }
 
         /// <summary>
-        /// kiểm tra xem TOURDETAILID,UserID này có trongdatabase chưa
+        /// kiểm tra xem TOURDETAILID này có trongdatabase chưa theo StartDate và Name nếu chưa thì Create
         /// Tìm kiếm xem có order này theo TourDetailID chưa
         /// nếu chưa thì
         ///       Tạo Order trước dựa trên TourDetailID: Tour_Detail_ID,
@@ -230,49 +237,44 @@ namespace backend.Controllers
             {          
             if (check.status == "COMPLETED")
             {
-                //var user = UserBussinessLogic.GetUserByCondition(payment.UserID);
-                var tour_detail = await TourDetailBusinessLogic.GetTourDetailAsync(payment.TourDetailID);
-                /*
-                if (user == null || tour_detail == null)
+
+                    var exist_tour_detail = await searchDao.QueryDao(payment.Tour_Detail_Payment_Dto.Start_Date, payment.Tour_Detail_Payment_Dto.TourId);
+               
+                if (exist_tour_detail == null)
                 {
-                    throw new NotFoundExceptions("You have successfully paid but encounter problems during processing, please contact management");
-                }
-                */
-                if ( tour_detail == null)
-                {
-                    throw new NotFoundExceptions("You have successfully paid but encounter problems during processing, please contact management");
+                       var tour_detail = mapper.Map<Tour_Detail_PaymentPaypal_Dto, TourDetail>(payment.Tour_Detail_Payment_Dto);
+                        exist_tour_detail = await TourDetailBusinessLogic.Create(tour_detail);
                 }
 
                 var response_capture = await _client.GetAsync($"https://api-m.sandbox.paypal.com/v2/checkout/orders/{payment.orderid}"); 
                 var responseAsString_capture = await response_capture.Content.ReadAsStringAsync();
                 var result = await GetCapturePayment(responseAsString_capture);
 
-                var check_duplicate_order = await OrderBusinessLogic.GetEntityByCondition(payment.TourDetailID);
+                var check_duplicate_order = await OrderBusinessLogic.GetEntityByCondition(exist_tour_detail.Id);
                 if (check_duplicate_order == null)
                 {
                     var order = new Entity.Order();
-                    order.Tour_Detail_ID = payment.TourDetailID;
-                    var check_create_order = OrderBusinessLogic.Create(order);
-                    check_duplicate_order = order;
+                    order.Tour_Detail_ID = exist_tour_detail.Id;
+                    check_duplicate_order = await OrderBusinessLogic.Create(order);                
                 }
-                var oderdetail = new OrderDetail
-                {
-                    OrderID = check_duplicate_order.Id,
-                    Quantity = int.Parse(result.purchase_units[0].items[0].quantity),
-                    Price = Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.net_amount.value)* 24380,
-                    UserID = payment.UserID,
-                    Description = result.purchase_units[0].items[0].description + " |Paypal fee: " + Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.paypal_fee.value)*23000,
-                    Type_Payment = "PayPal",
-                    Payment_ID = result.id,
-                    Tour_Detail_ID = payment.TourDetailID
+                    var oderdetail = new OrderDetail
+                    {
+                        OrderID = check_duplicate_order.Id,
+                        Quantity = int.Parse(result.purchase_units[0].items[0].quantity),
+                        Price = Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.net_amount.value) * 24380,
+                        UserID = payment.UserID,
+                        Description = result.purchase_units[0].items[0].description + " |Paypal fee: " + Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.paypal_fee.value) * 23000,
+                        Type_Payment = "PayPal",
+                        Payment_ID = result.id,
+                        Tour_Detail_ID = exist_tour_detail.Id
                 };
                 await OrderDetailBusinessLogic.Create(oderdetail);
-                //CẬP NHẬT LẠI TOURDetail
-                tour_detail.Quantity -= oderdetail.Quantity;
-                await TourDetailBusinessLogic.Update(tour_detail);
+                    //CẬP NHẬT LẠI TOURDetail
+                exist_tour_detail.Quantity -= oderdetail.Quantity;
+                await TourDetailBusinessLogic.Update(exist_tour_detail);
 
                 // Lấy danh sách orderDetail liên quan đến tour_detail đã được thanh toán
-                var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(payment.TourDetailID);
+                var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(exist_tour_detail.Id);
 
                 // Tính toán lại totalOrderPrice và totalOrderQuantity dựa trên danh sách orderDetail
                 var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);

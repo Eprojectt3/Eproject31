@@ -1,4 +1,7 @@
 ﻿using backend.BussinessLogic;
+using backend.Dao;
+using backend.Dtos.TourDetailDtos;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +13,11 @@ namespace backend.Controllers
     public class TourDetailController : ControllerBase
     {
         public TourDetailBusinessLogic tourDetailBusinessLogic;
-        public TourDetailController(TourDetailBusinessLogic Bussiness)
+        public Search_Tour_Dao tourDetailSearch;
+        public TourDetailController(TourDetailBusinessLogic Bussiness, Search_Tour_Dao search_Tour_Dao)
         {
             tourDetailBusinessLogic = Bussiness;
+            tourDetailSearch = search_Tour_Dao;
         }
 
         // execute list all tourDetail
@@ -33,9 +38,9 @@ namespace backend.Controllers
         public async Task<IActionResult> Add(TourDetail tourDetail)
         {
 
-            await tourDetailBusinessLogic.Create(tourDetail);
+           var test =  await tourDetailBusinessLogic.Create(tourDetail);
 
-            return Ok(tourDetail);
+            return Ok(test);
         }
 
         //execute update tourDetail
@@ -53,6 +58,18 @@ namespace backend.Controllers
         {
             await tourDetailBusinessLogic.Delete(id);
             return Ok();
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update_User(TourDetail_By_Update_UserDto tourDetail_By_Update_UserDto)
+        {
+            await tourDetailBusinessLogic.Update_User(tourDetail_By_Update_UserDto);
+            return Ok("Success");
+        }
+        [HttpPost]
+        public async Task<IActionResult> SearchTour(Search_Tour_Dto search_Tour_Dto)
+        {
+            var result = await tourDetailSearch.Search_Tour(search_Tour_Dto);
+            return Ok(result);
         }
     }
 }

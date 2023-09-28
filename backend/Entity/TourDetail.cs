@@ -14,7 +14,6 @@ namespace backend.Entity
         public Tour? tour { get; set; }
         public DateTime? Start_Date { get; set; }
         public DateTime? End_Date { get; set; }
-        public double? Range_time { get; set; }
         public int? Quantity { get; set; }
         public int? Staff_Id { get; set; } = 1;
         [ForeignKey("Staff_Id")]
@@ -26,4 +25,3 @@ namespace backend.Entity
         public ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }
-//Them 1 bảng nữa và chạy migratiom
