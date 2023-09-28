@@ -45,9 +45,9 @@ namespace backend.Controllers
         public async Task<IActionResult> Add(Order order)
         {
 
-            await orderBusinessLogic.Create(order);
+           var check_order =  await orderBusinessLogic.Create(order);
 
-            return Ok(order);
+            return Ok(check_order);
         }
 
         //execute update order

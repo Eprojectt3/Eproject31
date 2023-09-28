@@ -5,6 +5,8 @@ using backend.Dtos.FeedBackDtos;
 using backend.Dtos.HotelDtos;
 using backend.Dtos.ItineraryDtos;
 using backend.Dtos.LocationDtos;
+using backend.Dtos.PaymentDtos;
+using backend.Dtos.TourDtos;
 using backend.Dtos.OrderDetaiDtos;
 using backend.Dtos.RestaurantDtos;
 using backend.Dtos.ServiceDtos;
@@ -41,7 +43,9 @@ namespace backend.Helper
                 .ReverseMap();
 
             CreateMap<Staff, StaffDto>().ReverseMap();
+            CreateMap<TourDto, Tour>().ReverseMap();
 
+            CreateMap<Tour_Detail_PaymentPaypal_Dto, TourDetail>().ReverseMap();
             CreateMap<FeedBack, FeedBackDto>().ReverseMap();
 
             CreateMap<Itinerary, ItineraryDto>()

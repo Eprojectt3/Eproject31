@@ -1,11 +1,6 @@
 ﻿
-using AutoMapper;
-using backend.Dao.Specification.TourSpec;
-using backend.Dao.Specification;
-using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
-using backend.Helper;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -13,11 +8,14 @@ namespace backend.BussinessLogic
     public class TourBusinessLogic
     {
         public IUnitofWork unitofWork;
-        public IMapper mapper;
-        public TourBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        private ImageService Image;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private IMapper mapper;
+
+
+        public TourBusinessLogic(IUnitofWork _unitofWork, ImageService imageService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             unitofWork = _unitofWork;
-            this.mapper = mapper;
         }
 
         //list tour
@@ -83,17 +81,6 @@ namespace backend.BussinessLogic
             if (existingTour is null)
             {
                 throw new NotFoundExceptions("not found");
-            }
-            // Kiểm tra nếu Discount = 0 thì cập nhật Price_After_Discount = Price
-            if (tour.Discount == 0)
-            {
-                existingTour.Price_After_Discount = existingTour.Price;
-            }
-            else
-            {
-                // Tính giá sau khi giảm giá dựa trên Discount
-                // Giá sau giảm giá = Giá ban đầu - (Giá ban đầu * (Discount / 100))
-                existingTour.Price_After_Discount = existingTour.Price - (existingTour.Price * (tour.Discount / 100));
             }
             existingTour.UpdateDate = tour.UpdateDate;
             existingTour.CreateDate = tour.CreateDate;
