@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using backend.Dao.Specification;
-using backend.Dtos.TourDtos;
-using backend.Entity;
+﻿using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
@@ -64,7 +61,6 @@ namespace backend.BussinessLogic
             existingTourDetail.TourId = tourDetail.TourId;
             existingTourDetail.Start_Date = tourDetail.Start_Date;
             existingTourDetail.End_Date = tourDetail.End_Date;
-            existingTourDetail.Range_time = tourDetail.Range_time;
             existingTourDetail.Quantity = tourDetail.Quantity;
             existingTourDetail.Staff_Id = tourDetail.Staff_Id;
             existingTourDetail.Description = tourDetail.Description;
@@ -101,6 +97,40 @@ namespace backend.BussinessLogic
             }
             return check;
         }
+        public async Task Update_User(TourDetail_By_Update_UserDto tourDetail)
+        {
+            if (tourDetail == null)
+            {
+                throw new ArgumentNullException(nameof(tourDetail), "Tour detail cannot be null.");
+            }
+
+            var existingTourDetail = await GetTourDetailAsync(tourDetail.Id);
+
+            if (existingTourDetail == null)
+            {
+                throw new NotFoundExceptions($"Tour detail with Id {tourDetail.Id} not found.");
+            }
+
+            try
+            {
+                existingTourDetail.Start_Date = tourDetail.Start_Date;
+                existingTourDetail.End_Date = tourDetail.Start_Date.AddDays(tourDetail.Range_time);
+
+                await unitofWork.Repository<TourDetail>().Update(existingTourDetail);
+                var check = await unitofWork.Complete();
+
+                if (check < 1)
+                {
+                    throw new BadRequestExceptions("Operation failed.");
+                }
+            }
+            catch (Exception ex)
+            {
+              
+                throw new Exception("Some thing went wrong"); 
+            }
+        }
+
         public async Task<Pagination<TourDetailDto>> SelectAllTourDetailPagination(SpecParams specParams)
         {
 

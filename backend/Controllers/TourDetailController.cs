@@ -1,5 +1,6 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
+using backend.Dtos.TourDetailDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -68,6 +69,12 @@ namespace backend.Controllers
 
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update_User(TourDetail_By_Update_UserDto tourDetail_By_Update_UserDto)
+        {
+            await tourDetailBusinessLogic.Update_User(tourDetail_By_Update_UserDto);
+            return Ok("Success");
         }
     }
 }
