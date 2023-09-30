@@ -9,6 +9,14 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class ListUsersComponent implements OnInit {
   users!: User[];
+  displayedColumns: string[] = [
+    'username',
+    'email',
+    'name',
+    'phone',
+    'roleid',
+    'action',
+  ];
 
   constructor(private userService: UsersService) {}
 

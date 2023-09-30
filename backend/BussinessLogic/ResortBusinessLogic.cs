@@ -7,29 +7,57 @@ using backend.Helper;
 using webapi.Dao.UnitofWork;
 using backend.Dtos.ResortDtos;
 
+
 namespace backend.BussinessLogic
 {
     public class ResortBusinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
-        public ResortBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        private ImageService Image;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public ResortBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, ImageService Image, IHttpContextAccessor _httpContextAccessor)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.Image = Image;
+            this._httpContextAccessor = _httpContextAccessor;
         }
 
-        //list category
-        public async Task<IReadOnlyList<Resorts>> SelectAllResorts()
+        //list resort
+        public async Task<IEnumerable<object>> SelectAllResorts()
         {
             var data = await unitofWork.Repository<Resorts>().GetAllAsync();
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new List<object>();
 
-            return data;
+            foreach (var resort in data)
+            {
+                var resortInfo = new
+                {
+                    resort.Id,
+                    resort.Name,
+                    resort.Price_range,
+                    resort.Rating,
+                    resort.LocationId,
+                    resort.Description,
+                    resort.Image,
+                    resort.Address,
+                    resort.PhoneNumber,
+                    resort.Links,
+                    UrlImage = Image.GetUrlImage(resort.Name, "resort", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                };
+
+                result.Add(resortInfo);
+            }
+            return result;
         }
 
-        //create category
-        public async Task Create(Resorts resort)
+        //create resort
+        public async Task Create(ResortImageDto resortDto)
         {
+            var resort = mapper.Map<ResortImageDto, Resorts>(resortDto);
             if (resort is null)
             {
                 throw new NotFoundExceptions("Cattegory not found");
@@ -39,7 +67,11 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Resorts Address is exist.");
             }
-
+            var images = Image.Upload_Image(resortDto.Name, "resort", resortDto.fileCollection);
+            foreach (var image in images)
+            {
+                resort.AddImage(image);
+            }
             await unitofWork.Repository<Resorts>().AddAsync(resort);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -49,8 +81,9 @@ namespace backend.BussinessLogic
         }
 
         //update resort
-        public async Task Update(Resorts resort)
+        public async Task Update(ResortImageDto resortDto)
         {
+            var resort = mapper.Map<ResortImageDto, Resorts>(resortDto);
             if (resort is null)
             {
                 throw new NotFoundExceptions("not found");
@@ -61,6 +94,11 @@ namespace backend.BussinessLogic
             if (existingResorts is null)
             {
                 throw new NotFoundExceptions("not found");
+            }
+            var images = Image.Upload_Image(resortDto.Name, "resort", resortDto.fileCollection);
+            foreach (var image in images)
+            {
+                resort.AddImage(image);
             }
             existingResorts.UpdateDate = resort.UpdateDate;
             existingResorts.CreateDate = resort.CreateDate;
@@ -93,9 +131,14 @@ namespace backend.BussinessLogic
         public async Task Delete(int id)
         {
             var existingResorts = await unitofWork.Repository<Resorts>().GetByIdAsync(id);
+            var itineraryHaveResortId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new ResortDeleteItinerarySpec(id));
             if (existingResorts == null)
             {
                 throw new NotFoundExceptions("not found");
+            }
+            foreach (var iteam in itineraryHaveResortId)
+            {
+                await unitofWork.Repository<Itinerary>().Delete(iteam);
             }
             await unitofWork.Repository<Resorts>().Delete(existingResorts);
             var check = await unitofWork.Complete();
@@ -106,13 +149,29 @@ namespace backend.BussinessLogic
         }
 
         //get resort by id
-        public async Task GetByResortId(int id)
+        public async Task<object> GetByResortId(int id)
         {
-            var existingResorts = await unitofWork.Repository<Resorts>().GetByIdAsync(id);
-            if (existingResorts == null)
+            var resort = await unitofWork.Repository<Resorts>().GetByIdAsync(id);
+            if (resort == null)
             {
                 throw new NotFoundExceptions("not found");
             }
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new
+            {
+                resort.Id,
+                resort.Name,
+                resort.Price_range,
+                resort.Rating,
+                resort.LocationId,
+                resort.Description,
+                resort.Image,
+                resort.Address,
+                resort.PhoneNumber,
+                resort.Links,
+                urlImage = Image.GetUrlImage(resort.Name, "resort", httpRequest)
+            };
+            return result;
         }
 
         //duplicate name

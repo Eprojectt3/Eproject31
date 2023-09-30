@@ -1,6 +1,7 @@
 ﻿using backend.Base;
 using backend.BussinessLogic;
 using backend.Controllers;
+using backend.Dao;
 using backend.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -30,19 +31,18 @@ namespace backend.Extensions
             services.AddTransient<ItineraryBusinessLogic>();
             services.AddTransient<OrderDetailBusinessLogic>();
             services.AddTransient<ServiceBusinessLogic>();
-            services.AddTransient<TourDetailBusinessLogic>();
             services.AddTransient<StaffBusinessLogic>();
             services.AddTransient<PaymentBussinessLogic>();
             services.AddHttpClient<PaymentPayPalController>();
             services.AddTransient<TourDetailBusinessLogic>();
-            services.AddTransient<StaffBusinessLogic>();
-            services.AddTransient<PaymentBussinessLogic>();
-            services.AddHttpClient<PaymentPayPalController>();
-            services.AddTransient<TourDetailBusinessLogic>();
-            services.AddTransient<StaffBusinessLogic>();
             services.AddTransient<UserBussinessLogic>();
+            services.AddTransient<ImageService>();
+           
             services.AddTransient<InformationBusinessLogic>();
-
+            services.AddTransient<ImageService>();
+            services.AddTransient<Search_TourDetail_Dao>();
+            services.AddTransient<Search_Tour_Dao>();
+            services.AddTransient<Top_10_Tour_Dao>();
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
             {

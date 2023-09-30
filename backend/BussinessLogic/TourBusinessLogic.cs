@@ -6,6 +6,7 @@ using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
+using Microsoft.AspNetCore.Http;
 using webapi.Dao.UnitofWork;
 
 namespace backend.BussinessLogic
@@ -13,37 +14,89 @@ namespace backend.BussinessLogic
     public class TourBusinessLogic
     {
         public IUnitofWork unitofWork;
-        public IMapper mapper;
-        public TourBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        private ImageService Image;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private IMapper mapper;
+
+
+        public TourBusinessLogic(IUnitofWork _unitofWork, ImageService imageService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             unitofWork = _unitofWork;
+            Image = imageService;
+            _httpContextAccessor = httpContextAccessor;
             this.mapper = mapper;
         }
 
         //list tour
-        public async Task<IReadOnlyList<Tour>> SelectAllTour()
+        public async Task<IEnumerable<object>> SelectAllTour()
         {
             var data = await unitofWork.Repository<Tour>().GetAllAsync();
-            return data;
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new List<object>();
+
+            foreach (var tour in data)
+            {
+                var tourInfo = new
+                {
+                    tour.Id,
+                    tour.Name,
+                    tour.Price,
+                    tour.category_id,
+                    tour.Description,
+                    tour.quantity_limit,
+                    tour.Rating,
+                    tour.Type,
+                    tour.Range_time,
+                    tour.Discount,
+                    tour.Transportation_ID,
+                    tour.Departure_location,
+                    //Thêm các trường cần thêm
+                    UrlImage = Image.GetUrlImage(tour.Name, "tour", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                };
+
+                result.Add(tourInfo);
+            }
+            return result;
         }
 
         //create tour
-        public async Task Create(Tour tour)
+        public async Task Create(TourDto tourdto)
+        {
+
+            var tour = mapper.Map<TourDto, Tour>(tourdto);
+
+            var images = Image.Upload_Image(tourdto.Name, "tour", tourdto.fileCollection);
+            foreach (var image in images)
+            {
+                tour.AddImage(image);
+            }
+            await unitofWork.Repository<Tour>().AddAsync(tour);
+            var check = await unitofWork.Complete();
+            if (check < 1)
+            {
+                throw new BadRequestExceptions("chua dc thuc thi");
+            }
+        }
+        public async Task CreateWithRating(Tour tour)
         {
             if (tour is null)
             {
                 throw new NotFoundExceptions("Cattegory not found");
             }
-            // Kiểm tra nếu Discount = 0 thì cập nhật Price_After_Discount = Price
-            if (tour.Discount == 0)
+            var orderDetail = await unitofWork.Repository<OrderDetail>().GetAllAsync();
+            if (orderDetail != null && orderDetail.Any())
             {
-                tour.Price_After_Discount = tour.Price;
-            }
-            else
-            {
-                // Tính giá sau khi giảm giá dựa trên Discount
-                // Giá sau giảm giá = Giá ban đầu - (Giá ban đầu * (Discount / 100))
-                tour.Price_After_Discount = tour.Price - (tour.Price * (tour.Discount / 100));
+                var ratings = orderDetail.Select(od => od.Rating).ToList();
+
+                if (ratings.Any())
+                {
+                    double averageRating = (double)ratings.Average();
+                    tour.Rating = (int)averageRating;
+                }
+                else
+                {
+                    throw new BadRequestExceptions("Rating is null");
+                }
             }
             await unitofWork.Repository<Tour>().AddAsync(tour);
             var check = await unitofWork.Complete();
@@ -54,12 +107,10 @@ namespace backend.BussinessLogic
         }
 
         //update tour
-        public async Task Update(Tour tour)
+        public async Task Update(TourDto tourdto)
         {
-            if (tour is null)
-            {
-                throw new NotFoundExceptions("not found");
-            }
+
+            var tour = mapper.Map<TourDto, Tour>(tourdto);
 
             var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(tour.Id);
 
@@ -67,16 +118,10 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
-            // Kiểm tra nếu Discount = 0 thì cập nhật Price_After_Discount = Price
-            if (tour.Discount == 0)
+            var images = Image.Upload_Image(tourdto.Name, "tour", tourdto.fileCollection);
+            foreach (var image in images)
             {
-                existingTour.Price_After_Discount = existingTour.Price;
-            }
-            else
-            {
-                // Tính giá sau khi giảm giá dựa trên Discount
-                // Giá sau giảm giá = Giá ban đầu - (Giá ban đầu * (Discount / 100))
-                existingTour.Price_After_Discount = existingTour.Price - (existingTour.Price * (tour.Discount / 100));
+                tour.AddImage(image);
             }
             existingTour.UpdateDate = tour.UpdateDate;
             existingTour.CreateDate = tour.CreateDate;
@@ -91,8 +136,10 @@ namespace backend.BussinessLogic
             existingTour.quantity_limit = tour.quantity_limit;
             existingTour.Rating = tour.Rating;
             existingTour.Type = tour.Type;
+
             existingTour.Transportation_ID = tour.Transportation_ID;
             existingTour.Departure_location = tour.Departure_location;
+            existingTour.Range_time = tour.Range_time;
             await unitofWork.Repository<Tour>().Update(existingTour);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -118,16 +165,37 @@ namespace backend.BussinessLogic
             }
         }
 
-        //get restaurant by id
-        public async Task GetByTourId(int id)
+        //get tour by id
+        public async Task<object> GetByTourId(int id)
         {
-            var existingHotel = await unitofWork.Repository<Tour>().GetByIdAsync(id);
-            if (existingHotel == null)
+            var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(id);
+            if (existingTour == null)
             {
                 throw new NotFoundExceptions("not found");
             }
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new
+            {
+                existingTour.Id,
+                existingTour.Name,
+                existingTour.Price,
+                existingTour.category_id,
+                existingTour.Description,
+                existingTour.quantity_limit,
+                existingTour.Rating,
+                existingTour.Type,
+                existingTour.Range_time,
+                existingTour.Discount,
+                existingTour.Transportation_ID,
+                existingTour.Departure_location,
+                //thêm cách cột còn lại
+                urlImage = Image.GetUrlImage(existingTour.Name, "tour", httpRequest)
+            };
+
+
+            return result;
         }
-        public async Task<Pagination<TourDto>> SelectAllTourPagination(SpecParams specParams)
+        public async Task<Pagination<TourDto>> SelectAllTourPagination(TourSpecParams specParams)
         {
 
             var spec = new SearchTourSpec(specParams);

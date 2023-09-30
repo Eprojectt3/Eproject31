@@ -7,8 +7,10 @@ namespace backend.Dao.Specification.RestaurantSpec
     {
         public SearchRestaurantSpec(SpecParams param)
             : base(l =>
-            string.IsNullOrEmpty(param.Search) ||
-            param.Search.ToLower().Contains(l.Name.ToLower())
+            (string.IsNullOrEmpty(param.Search) ||
+            l.Name.ToLower().Contains(param.Search)) &&
+                (param.Location == null || l.Location.State.ToLower().Contains(param.Location)) &&
+                (param.Rating == null || l.Rating == param.Rating)
         )
         {
             Includes.Add(s => s.Location);

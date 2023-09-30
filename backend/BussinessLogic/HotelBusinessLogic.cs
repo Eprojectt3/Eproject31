@@ -2,12 +2,18 @@
 using backend.Dao.Specification;
 using backend.Dao.Specification.HotelSpec;
 using backend.Dao.Specification.LocationSpec;
+using backend.Dao.Specification.RestaurantSpec;
 using backend.Dtos.HotelDtos;
 using backend.Dtos.LocationDtos;
+using backend.Dtos.RestaurantDtos;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
+using Microsoft.EntityFrameworkCore;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace backend.BussinessLogic
 {
@@ -15,31 +21,67 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
+        private ImageService Image;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private DataContext context;
 
-        public HotelBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        public HotelBusinessLogic(IUnitofWork _unitofWork, IMapper mapper , ImageService Image, IHttpContextAccessor _httpContextAccessor,DataContext dataContext)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.Image = Image;
+            this._httpContextAccessor = _httpContextAccessor;
+            context = dataContext;
         }
 
-        //list category
-        public async Task<IReadOnlyList<Hotel>> SelectAllHotel()
+        //list hotel
+        public async Task<IEnumerable<object>> SelectAllHotel()
         {
             var data = await unitofWork.Repository<Hotel>().GetAllAsync();
-            return data;
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new List<object>();
+
+            foreach (var hotel in data)
+            {
+                var hotelInfo = new
+                {
+                    hotel.Id,
+                    hotel.Name,
+                    hotel.Price_range,
+                    hotel.Rating,
+                    hotel.LocationId,
+                    hotel.Description,
+                    hotel.Image,
+                    hotel.Address,
+                    hotel.PhoneNumber,
+                    hotel.Links,
+                    UrlImage = Image.GetUrlImage(hotel.Name, "hotel", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                };
+
+                result.Add(hotelInfo);
+            }
+            return result;
         }
 
-        //create category
-        public async Task Create(Hotel hotel)
+        //create hotel
+        public async Task Create(HotelImageDto hotelDto)
         {
+            var hotel = mapper.Map<HotelImageDto, Hotel>(hotelDto);
             if (hotel is null)
             {
-                throw new NotFoundExceptions("Cattegory not found");
+                throw new NotFoundExceptions("Hotel not found");
             }
 
             if (await IsHotelAddressDuplicate(hotel.Address))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
+            }
+            
+
+            var images = Image.Upload_Image(hotelDto.Name, "hotel", hotelDto.fileCollection);
+            foreach (var image in images)
+            {
+                hotel.AddImage(image);
             }
 
             await unitofWork.Repository<Hotel>().AddAsync(hotel);
@@ -51,8 +93,9 @@ namespace backend.BussinessLogic
         }
 
         //update hotel
-        public async Task Update(Hotel hotel)
+        public async Task Update(HotelImageDto hotelDto)
         {
+            var hotel = mapper.Map<HotelImageDto, Hotel>(hotelDto);
             if (hotel is null)
             {
                 throw new NotFoundExceptions("not found");
@@ -64,6 +107,11 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
+            var images = Image.Upload_Image(hotelDto.Name, "hotel", hotelDto.fileCollection);
+            foreach (var image in images)
+            {
+                hotel.AddImage(image);
+            }
             existingHotel.UpdateDate = hotel.UpdateDate;
             existingHotel.CreateDate = hotel.CreateDate;
             existingHotel.UpdateBy = hotel.UpdateBy;
@@ -74,7 +122,7 @@ namespace backend.BussinessLogic
             existingHotel.PhoneNumber = hotel.PhoneNumber;
             existingHotel.LocationId = hotel.LocationId;
             existingHotel.Image = hotel.Image;
-            existingHotel.ImageDetail = hotel.ImageDetail;
+            //existingHotel.ImageDetail = hotel.ImageDetail;
             existingHotel.Price_range = hotel.Price_range;
             existingHotel.Rating = hotel.Rating;
             existingHotel.Description = hotel.Description;
@@ -96,9 +144,14 @@ namespace backend.BussinessLogic
         public async Task Delete(int id)
         {
             var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
+            var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(id));
             if (existingHotel == null)
             {
                 throw new NotFoundExceptions("not found");
+            }
+            foreach (var iteam in itineraryHaveHotelId)
+            {
+                await unitofWork.Repository<Itinerary>().Delete(iteam);
             }
             await unitofWork.Repository<Hotel>().Delete(existingHotel);
             var check = await unitofWork.Complete();
@@ -108,13 +161,29 @@ namespace backend.BussinessLogic
             }
         }
 
-        public async Task GetByHotelId(int id)
+        public async Task<object> GetByHotelId(int id)
         {
-            var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
-            if (existingHotel == null)
+            var hotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
+            if (hotel == null)
             {
                 throw new NotFoundExceptions("not found");
             }
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new
+            {
+                hotel.Id,
+                hotel.Name,
+                hotel.Price_range,
+                hotel.Rating,
+                hotel.LocationId,
+                hotel.Description,
+                hotel.Image,
+                hotel.Address,
+                hotel.PhoneNumber,
+                hotel.Links,
+                urlImage = Image.GetUrlImage(hotel.Name, "hotel", httpRequest)
+            };
+            return result;
         }
 
         //duplicate name
@@ -127,21 +196,43 @@ namespace backend.BussinessLogic
 
             return duplicateHotel != null;
         }
+        
         public async Task<Pagination<HotelDto>> SelectAllHotelPagination(SpecParams specParams)
         {
 
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
             var spec = new SearchHotelSpec(specParams);
-            var hotels = await unitofWork.Repository<Hotel>().GetAllWithAsync(spec);
+            var result = new List<HotelDto>();
+            int count = await unitofWork.Repository<Hotel>().GetCountWithSpecAsync(spec);
+            var restaurantPage = new List<Hotel>();
+            if (string.IsNullOrEmpty(specParams.Search) && string.IsNullOrEmpty(specParams.Location) && specParams.Rating == null)
+            {
+                restaurantPage = await context.Hotels.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
+            }
+            else
+            {
+                var restaurants = await unitofWork.Repository<Hotel>().GetAllWithAsync(spec);
 
-            var data = mapper.Map<IReadOnlyList<Hotel>, IReadOnlyList<HotelDto>>(hotels);
-            var locationPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+                restaurantPage = restaurants.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
-            var countSpec = new SearchHotelSpec(specParams);
-            var count = await unitofWork.Repository<Hotel>().GetCountWithSpecAsync(countSpec);
-
+            }
+            foreach (var restaurant in restaurantPage)
+            {
+                var restaurantInfo = new HotelDto
+                {
+                    Id = restaurant.Id,
+                    Name = restaurant.Name,
+                    Price_range = restaurant.Price_range,
+                    Rating = restaurant.Rating,
+                    PhoneNumber = restaurant.PhoneNumber,
+                    Location = restaurant.location1.State,
+                    UrlImage = Image.GetUrlImage(restaurant.Name, "restaurant", httpRequest)
+                };
+                result.Add(restaurantInfo);
+            }
             var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
 
-            var pagination = new Pagination<HotelDto>(specParams.PageIndex, specParams.PageSize, locationPage, count, totalPageIndex);
+            var pagination = new Pagination<HotelDto>(specParams.PageIndex, specParams.PageSize, result, count, totalPageIndex);
 
             return pagination;
         }
