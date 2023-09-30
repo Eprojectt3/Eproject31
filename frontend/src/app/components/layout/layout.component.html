@@ -49,7 +49,7 @@
           </ul>
         </nav>
       </div>
-      <div *ngIf="!isLogin" class="flex mr-[40px] mt-[25px]">
+      <div *ngIf="!isLogin && !userInfo" class="flex mr-[40px] mt-[25px]">
         <button
           mat-raised-button
           class="font-[600] hover:w-[80px] hover:h-[38px]"
@@ -67,7 +67,7 @@
       </div>
 
       <div
-        *ngIf="isLogin"
+        *ngIf="userInfo"
         class="avatar w-[40px] h-[40px] right-20 top-7 absolute lg:right-10"
       >
         <button type="button" [matMenuTriggerFor]="menu">
