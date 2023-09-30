@@ -1,0 +1,442 @@
+<ng-container>
+  <!-- Most popular tour -->
+  <section id="most-popular-tour" class="most-popular text-center mt-[35px]">
+    <div>
+      <h1 class="font-[600] text-[#585555] text-[25px]">Most Popular Tours</h1>
+      <p class="mt-[17px] text-[#999999]">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+        sollicitudin, tellus vitae condimentum egestas, libero dolor auctor
+        tellus, eu consectetur neque elit quis nunc. Cras elementum pretium.
+      </p>
+
+      <!-- Card tour -->
+      <div class="card-tour mt-[30px] xl:w-[59%] 2xl:w-[59%] m-auto mb-[35px]">
+        <p-carousel
+          [value]="tours"
+          [numVisible]="3"
+          [numScroll]="1"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
+            <button
+              type="button"
+              [routerLink]="['/infomation/tour-detail/', tour.id]"
+            >
+              <div>
+                <mat-card
+                  class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
+                >
+                  <!-- Image -->
+                  <img
+                    class="xl:p-[10px]"
+                    mat-card-image
+                    src="../../../assets/images/Rectangle 19377.jpg"
+                  />
+                  <!-- Card header -->
+                  <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
+                    ><mat-card-title
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
+                      >{{ tour.name }}</mat-card-title
+                    >
+                  </mat-card-header>
+
+                  <!-- Card Content -->
+                  <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
+                    <p class="text-[10px] text-[#181E4B] xl:!text-[13px]">
+                      {{ tour.description | truncate }}
+                    </p>
+                  </mat-card-content>
+
+                  <!-- Card footer -->
+                  <mat-card-footer
+                    class="px-[15px] pt-[10px] !pl-[5px] xl:!pl-[15px]"
+                  >
+                    <div class="flex">
+                      <span class="!text-[9px] xl:!text-[13px] xl:mr-[20px]">{{
+                        tour.price | currency
+                      }}</span>
+                      <div
+                        class="rating text-[10px] flex xl:!text-[13px] xl:w-[25px]"
+                      >
+                        <mat-icon
+                          class="text-[10px] xl:!text-[13px] xl:pt-[1px] text-[#DF6951]"
+                          >star</mat-icon
+                        >
+                        {{ tour.rating }}
+                      </div>
+                    </div>
+                  </mat-card-footer>
+                </mat-card>
+              </div>
+            </button>
+          </ng-template>
+        </p-carousel>
+      </div>
+
+      <!-- View more -->
+      <div>
+        <button
+          mat-flat-button
+          class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+          routerLink="/infomation/tours"
+        >
+          View more
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Most Popular Travels -->
+  <section id="most-popular-travels" class="most-popular text-center mt-[65px]">
+    <div>
+      <h1 class="font-[600] text-[#585555] text-[25px]">
+        Most Popular Travels
+      </h1>
+      <p class="mt-[17px] text-[#999999]">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+        sollicitudin, tellus vitae condimentum egestas, libero dolor auctor
+        tellus, eu consectetur neque elit quis nunc. Cras elementum pretium.
+      </p>
+
+      <!-- Card tour -->
+      <div class="card-tour mt-[30px] xl:w-[59%] 2xl:w-[59%] m-auto mb-[35px]">
+        <p-carousel
+          [value]="tours"
+          [numVisible]="3"
+          [numScroll]="1"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
+            <button type="button"
+            [routerLink]="['/infomation/tour-detail/', tour.id]">
+              <div>
+                <mat-card
+                  class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
+                >
+                  <!-- Image -->
+                  <img
+                    class="xl:p-[10px]"
+                    mat-card-image
+                    src="../../../assets/images/Rectangle 19377.jpg"
+                  />
+                  <!-- Card header -->
+                  <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
+                    ><mat-card-title
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
+                      >{{ tour.name }}</mat-card-title
+                    >
+                  </mat-card-header>
+
+                  <!-- Card Content -->
+                  <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
+                    <p class="text-[10px] text-[#181E4B] xl:!text-[13px]">
+                      {{ tour.description | truncate }}
+                    </p>
+                  </mat-card-content>
+
+                  <!-- Card footer -->
+                  <mat-card-footer
+                    class="px-[15px] pt-[10px] !pl-[5px] xl:!pl-[15px]"
+                  >
+                    <div class="flex">
+                      <span class="!text-[9px] xl:!text-[13px] xl:mr-[20px]">{{
+                        tour.price | currency
+                      }}</span>
+                      <div
+                        class="rating text-[10px] flex xl:!text-[13px] xl:w-[25px]"
+                      >
+                        <mat-icon
+                          class="text-[10px] xl:!text-[13px] xl:pt-[1px] text-[#DF6951]"
+                          >star</mat-icon
+                        >
+                        {{ tour.rating }}
+                      </div>
+                    </div>
+                  </mat-card-footer>
+                </mat-card>
+              </div>
+            </button>
+          </ng-template>
+        </p-carousel>
+      </div>
+
+      <!-- View more -->
+      <div>
+        <button
+          mat-flat-button
+          class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+        >
+          View more
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Most Popular Resorts -->
+  <section id="most-popular-resorts" class="most-popular text-center mt-[65px]">
+    <div>
+      <h1 class="font-[600] text-[#585555] text-[25px]">
+        Most Popular Resorts
+      </h1>
+      <p class="mt-[17px] text-[#999999]">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+        sollicitudin, tellus vitae condimentum egestas, libero dolor auctor
+        tellus, eu consectetur neque elit quis nunc. Cras elementum pretium.
+      </p>
+
+      <!-- Card tour -->
+      <div class="card-tour mt-[30px] xl:w-[59%] 2xl:w-[59%] m-auto mb-[35px]">
+        <p-carousel
+          [value]="tours"
+          [numVisible]="3"
+          [numScroll]="1"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
+            <button
+              type="button"
+              [routerLink]="['/infomation/resort-detail/', tour.id]"
+            >
+              <div>
+                <mat-card
+                  class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
+                >
+                  <!-- Image -->
+                  <img
+                    class="xl:p-[10px]"
+                    mat-card-image
+                    src="../../../assets/images/Rectangle 19377.jpg"
+                  />
+                  <!-- Card header -->
+                  <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
+                    ><mat-card-title
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
+                      >{{ tour.name }}</mat-card-title
+                    >
+                  </mat-card-header>
+
+                  <!-- Card Content -->
+                  <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
+                    <p class="text-[10px] text-[#181E4B] xl:!text-[13px]">
+                      {{ tour.description | truncate }}
+                    </p>
+                  </mat-card-content>
+
+                  <!-- Card footer -->
+                  <mat-card-footer
+                    class="px-[15px] pt-[10px] !pl-[5px] xl:!pl-[15px]"
+                  >
+                    <div class="flex">
+                      <span class="!text-[9px] xl:!text-[13px] xl:mr-[20px]">{{
+                        tour.price | currency
+                      }}</span>
+                      <div
+                        class="rating text-[10px] flex xl:!text-[13px] xl:w-[25px]"
+                      >
+                        <mat-icon
+                          class="text-[10px] xl:!text-[13px] xl:pt-[1px] text-[#DF6951]"
+                          >star</mat-icon
+                        >
+                        {{ tour.rating }}
+                      </div>
+                    </div>
+                  </mat-card-footer>
+                </mat-card>
+              </div>
+            </button>
+          </ng-template>
+        </p-carousel>
+      </div>
+
+      <!-- View more -->
+      <div>
+        <button
+          mat-flat-button
+          class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+          routerLink="/infomation/resorts"
+        >
+          View more
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Most Popular Restaurants -->
+  <section
+    id="most-popular-restaurants"
+    class="most-popular text-center mt-[65px]"
+  >
+    <div>
+      <h1 class="font-[600] text-[#585555] text-[25px]">
+        Most Popular Restaurants
+      </h1>
+      <p class="mt-[17px] text-[#999999]">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+        sollicitudin, tellus vitae condimentum egestas, libero dolor auctor
+        tellus, eu consectetur neque elit quis nunc. Cras elementum pretium.
+      </p>
+
+      <!-- Card tour -->
+      <div class="card-tour mt-[30px] xl:w-[59%] 2xl:w-[59%] m-auto mb-[35px]">
+        <p-carousel
+          [value]="tours"
+          [numVisible]="3"
+          [numScroll]="1"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
+            <button
+              type="button"
+              [routerLink]="['/infomation/restaurant-detail/', tour.id]"
+            >
+              <div>
+                <mat-card
+                  class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
+                >
+                  <!-- Image -->
+                  <img
+                    class="xl:p-[10px]"
+                    mat-card-image
+                    src="../../../assets/images/Rectangle 19377.jpg"
+                  />
+                  <!-- Card header -->
+                  <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
+                    ><mat-card-title
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
+                      >{{ tour.name }}</mat-card-title
+                    >
+                  </mat-card-header>
+
+                  <!-- Card Content -->
+                  <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
+                    <p class="text-[10px] text-[#181E4B] xl:!text-[13px]">
+                      {{ tour.description | truncate }}
+                    </p>
+                  </mat-card-content>
+
+                  <!-- Card footer -->
+                  <mat-card-footer
+                    class="px-[15px] pt-[10px] !pl-[5px] xl:!pl-[15px]"
+                  >
+                    <div class="flex">
+                      <span class="!text-[9px] xl:!text-[13px] xl:mr-[20px]">{{
+                        tour.price | currency
+                      }}</span>
+                      <div
+                        class="rating text-[10px] flex xl:!text-[13px] xl:w-[25px]"
+                      >
+                        <mat-icon
+                          class="text-[10px] xl:!text-[13px] xl:pt-[1px] text-[#DF6951]"
+                          >star</mat-icon
+                        >
+                        {{ tour.rating }}
+                      </div>
+                    </div>
+                  </mat-card-footer>
+                </mat-card>
+              </div>
+            </button>
+          </ng-template>
+        </p-carousel>
+      </div>
+
+      <!-- View more -->
+      <div>
+        <button
+          mat-flat-button
+          class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+          routerLink="/infomation/restaurants"
+        >
+          View more
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Most Popular Hotels -->
+  <section id="most-popular-hotels" class="most-popular text-center mt-[65px]">
+    <div>
+      <h1 class="font-[600] text-[#585555] text-[25px]">Most Popular Hotels</h1>
+      <p class="mt-[17px] text-[#999999]">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+        sollicitudin, tellus vitae condimentum egestas, libero dolor auctor
+        tellus, eu consectetur neque elit quis nunc. Cras elementum pretium.
+      </p>
+
+      <!-- Card tour -->
+      <div class="card-tour mt-[30px] xl:w-[59%] 2xl:w-[59%] m-auto mb-[35px]">
+        <p-carousel
+          [value]="tours"
+          [numVisible]="3"
+          [numScroll]="1"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
+            <button
+              href=""
+              [routerLink]="['/infomation/hotel-detail', tour.id]"
+            >
+              <div>
+                <mat-card
+                  class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
+                >
+                  <!-- Image -->
+                  <img
+                    class="xl:p-[10px]"
+                    mat-card-image
+                    src="../../../assets/images/Rectangle 19377.jpg"
+                  />
+                  <!-- Card header -->
+                  <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
+                    ><mat-card-title
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !truncate !w-[220px]"
+                      >{{ tour.name }}</mat-card-title
+                    >
+                  </mat-card-header>
+
+                  <!-- Card Content -->
+                  <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
+                    <p class="text-[10px] text-[#181E4B] xl:!text-[13px]">
+                      {{ tour.description | truncate }}
+                    </p>
+                  </mat-card-content>
+
+                  <!-- Card footer -->
+                  <mat-card-footer
+                    class="px-[15px] pt-[10px] !pl-[5px] xl:!pl-[15px]"
+                  >
+                    <div class="flex">
+                      <span class="!text-[9px] xl:!text-[13px] xl:mr-[20px]">{{
+                        tour.price | currency
+                      }}</span>
+                      <div
+                        class="rating text-[10px] flex xl:!text-[13px] xl:w-[25px]"
+                      >
+                        <mat-icon
+                          class="text-[10px] xl:!text-[13px] xl:pt-[1px] text-[#DF6951]"
+                          >star</mat-icon
+                        >
+                        {{ tour.rating }}
+                      </div>
+                    </div>
+                  </mat-card-footer>
+                </mat-card>
+              </div>
+            </button>
+          </ng-template>
+        </p-carousel>
+      </div>
+
+      <!-- View more -->
+      <div>
+        <button
+          mat-flat-button
+          class="!bg-[#FA5246] !text-[#ffffff] !rounded-[20px]"
+          routerLink="/infomation/hotels"
+        >
+          View more
+        </button>
+      </div>
+    </div>
+  </section>
+</ng-container>

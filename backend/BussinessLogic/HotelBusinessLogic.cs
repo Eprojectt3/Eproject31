@@ -4,10 +4,12 @@ using backend.Dao.Specification.HotelSpec;
 using backend.Dao.Specification.LocationSpec;
 using backend.Dtos.HotelDtos;
 using backend.Dtos.LocationDtos;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace backend.BussinessLogic
 {
@@ -15,31 +17,65 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
+        private ImageService Image;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HotelBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        public HotelBusinessLogic(IUnitofWork _unitofWork, IMapper mapper , ImageService Image, IHttpContextAccessor _httpContextAccessor)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.Image = Image;
+            this._httpContextAccessor = _httpContextAccessor;
         }
 
-        //list category
-        public async Task<IReadOnlyList<Hotel>> SelectAllHotel()
+        //list hotel
+        public async Task<IEnumerable<object>> SelectAllHotel()
         {
             var data = await unitofWork.Repository<Hotel>().GetAllAsync();
-            return data;
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new List<object>();
+
+            foreach (var hotel in data)
+            {
+                var hotelInfo = new
+                {
+                    hotel.Id,
+                    hotel.Name,
+                    hotel.Price_range,
+                    hotel.Rating,
+                    hotel.LocationId,
+                    hotel.Description,
+                    hotel.Image,
+                    hotel.Address,
+                    hotel.PhoneNumber,
+                    hotel.Links,
+                    UrlImage = Image.GetUrlImage(hotel.Name, "hotel", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                };
+
+                result.Add(hotelInfo);
+            }
+            return result;
         }
 
-        //create category
-        public async Task Create(Hotel hotel)
+        //create hotel
+        public async Task Create(HotelImageDto hotelDto)
         {
+            var hotel = mapper.Map<HotelImageDto, Hotel>(hotelDto);
             if (hotel is null)
             {
-                throw new NotFoundExceptions("Cattegory not found");
+                throw new NotFoundExceptions("Hotel not found");
             }
 
             if (await IsHotelAddressDuplicate(hotel.Address))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
+            }
+            
+
+            var images = Image.Upload_Image(hotelDto.Name, "hotel", hotelDto.fileCollection);
+            foreach (var image in images)
+            {
+                hotel.AddImage(image);
             }
 
             await unitofWork.Repository<Hotel>().AddAsync(hotel);
@@ -51,8 +87,9 @@ namespace backend.BussinessLogic
         }
 
         //update hotel
-        public async Task Update(Hotel hotel)
+        public async Task Update(HotelImageDto hotelDto)
         {
+            var hotel = mapper.Map<HotelImageDto, Hotel>(hotelDto);
             if (hotel is null)
             {
                 throw new NotFoundExceptions("not found");
@@ -64,6 +101,11 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
+            var images = Image.Upload_Image(hotelDto.Name, "hotel", hotelDto.fileCollection);
+            foreach (var image in images)
+            {
+                hotel.AddImage(image);
+            }
             existingHotel.UpdateDate = hotel.UpdateDate;
             existingHotel.CreateDate = hotel.CreateDate;
             existingHotel.UpdateBy = hotel.UpdateBy;
@@ -74,7 +116,7 @@ namespace backend.BussinessLogic
             existingHotel.PhoneNumber = hotel.PhoneNumber;
             existingHotel.LocationId = hotel.LocationId;
             existingHotel.Image = hotel.Image;
-            existingHotel.ImageDetail = hotel.ImageDetail;
+            //existingHotel.ImageDetail = hotel.ImageDetail;
             existingHotel.Price_range = hotel.Price_range;
             existingHotel.Rating = hotel.Rating;
             existingHotel.Description = hotel.Description;
@@ -96,9 +138,14 @@ namespace backend.BussinessLogic
         public async Task Delete(int id)
         {
             var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
+            var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(id));
             if (existingHotel == null)
             {
                 throw new NotFoundExceptions("not found");
+            }
+            foreach (var iteam in itineraryHaveHotelId)
+            {
+                await unitofWork.Repository<Itinerary>().Delete(iteam);
             }
             await unitofWork.Repository<Hotel>().Delete(existingHotel);
             var check = await unitofWork.Complete();
@@ -108,13 +155,29 @@ namespace backend.BussinessLogic
             }
         }
 
-        public async Task GetByHotelId(int id)
+        public async Task<object> GetByHotelId(int id)
         {
-            var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
-            if (existingHotel == null)
+            var hotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
+            if (hotel == null)
             {
                 throw new NotFoundExceptions("not found");
             }
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var result = new
+            {
+                hotel.Id,
+                hotel.Name,
+                hotel.Price_range,
+                hotel.Rating,
+                hotel.LocationId,
+                hotel.Description,
+                hotel.Image,
+                hotel.Address,
+                hotel.PhoneNumber,
+                hotel.Links,
+                urlImage = Image.GetUrlImage(hotel.Name, "hotel", httpRequest)
+            };
+            return result;
         }
 
         //duplicate name

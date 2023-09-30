@@ -15,6 +15,9 @@
 
         private string? search;
 
+        public string? Location { get; set; }
+
+        public int? Rating { get; set; }
         public string? Search
         {
             get { return search; }

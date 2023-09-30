@@ -2,7 +2,7 @@
 
 namespace backend.Entity
 {
-    public class Information:BaseCreateDate
+    public class Information : BaseCreateDate
     {
         public int Id { get; set; }
         public string Location { get; set; }

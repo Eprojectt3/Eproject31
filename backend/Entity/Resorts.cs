@@ -25,5 +25,16 @@ namespace backend.Entity
     public Location1? Location { get; set; }
     public string? Links { get; set; }
         public ICollection<Itinerary>? Itineraries { get; set; }
+        public void AddImage(string imageName)
+        {
+            if (string.IsNullOrEmpty(Image))
+            {
+                Image = imageName;
+            }
+            else
+            {
+                Image += "," + imageName;
+            }
+        }
     }
 }
