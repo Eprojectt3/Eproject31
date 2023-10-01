@@ -165,23 +165,6 @@ namespace backend.BussinessLogic
 
             return pagination;
         }
-        public async Task<Pagination<StaffDto>> SelectAllStaffPagination(SpecParams specParams)
-        {
-
-            var spec = new SearchStaffSpec(specParams);
-            var resorts = await unitofWork.Repository<Staff>().GetAllWithAsync(spec);
-
-            var data = mapper.Map<IReadOnlyList<Staff>, IReadOnlyList<StaffDto>>(resorts);
-            var staffPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
-
-            var countSpec = new SearchStaffSpec(specParams);
-            var count = await unitofWork.Repository<Staff>().GetCountWithSpecAsync(countSpec);
-
-            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
-
-            var pagination = new Pagination<StaffDto>(specParams.PageIndex, specParams.PageSize, staffPage, count, totalPageIndex);
-
-            return pagination;
-        }
+     
     }
 }

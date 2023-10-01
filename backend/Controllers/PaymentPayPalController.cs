@@ -256,6 +256,7 @@ namespace backend.Controllers
                         var order = new Entity.Order();
                         order.Tour_Detail_ID = exist_tour_detail.Id;
                         order.Tour_ID = exist_tour_detail.TourId;
+
                         check_duplicate_order = await OrderBusinessLogic.Create(order);
                     }
                     var oderdetail = new OrderDetail

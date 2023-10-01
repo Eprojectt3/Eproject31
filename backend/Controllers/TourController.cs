@@ -67,7 +67,7 @@ namespace backend.Controllers
             return Ok(result);
         }
         [HttpGet]
-        public async Task<IActionResult> Gget_Top_10_Tour()
+        public async Task<IActionResult> Get_Top_10_Tour()
         {
             var result = await top_10_Tour_Dao.Top_10_Tour();
             return Ok(result);

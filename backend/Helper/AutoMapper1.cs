@@ -40,9 +40,7 @@ namespace backend.Helper
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
                 .ReverseMap();
             CreateMap<RestaurantImageDto, Restaurant>().ReverseMap();
-            CreateMap<Transportation, TransportationDto>()
-                .ForMember(h => h.Name, otp => otp.MapFrom(o => o.Name))
-                .ReverseMap();
+  
 
             CreateMap<Staff, StaffDto>().ReverseMap();
             CreateMap<StaffImageDto, Staff>().ReverseMap();
