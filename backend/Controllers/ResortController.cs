@@ -56,7 +56,7 @@ namespace backend.Controllers
             return Ok();
         }
         //get hotel by id
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> GetByResortId(int id)
         {
             await resortBusinessLogic.GetByResortId(id);
