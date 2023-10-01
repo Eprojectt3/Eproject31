@@ -42,6 +42,8 @@ namespace backend.BussinessLogic
             }
             else
             {
+                await unitofWork.Complete();
+                return tourDetail;
                 return tourDetail;
             }
         }

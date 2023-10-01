@@ -19,50 +19,13 @@ namespace webapi.Dao.UnitofWork
 
         public async Task<int> Complete()
         {
-            try
-            {
-                if (_transaction != null)
-                {
-                    // Nếu giao dịch tồn tại và không có lỗi, thực hiện lưu thay đổi
+           
                     await context.SaveChangesAsync();
-                    _transaction.Commit();
-                }
-                return 1; // Hoàn thành thành công
-            }
-            catch (Exception)
-            {
-                if (_transaction != null)
-                {
-                    // Nếu có lỗi, thực hiện rollback
-                    _transaction.Rollback();
-                }
-                return 0; // Có lỗi xảy ra
-            }
-            finally
-            {
-                if (_transaction != null)
-                {
-                    // Dọn dẹp tài nguyên sau khi hoàn thành
-                    _transaction.Dispose();
-                    _transaction = null;
-                }
-            }
+
+            return 1;
         }
 
-        public void BeginTransaction()
-        {
-            // Bắt đầu giao dịch
-            _transaction = context.Database.BeginTransaction();
-        }
-
-        public void RollbackTransaction()
-        {
-            // Rollback giao dịch nếu cần
-            if (_transaction != null)
-            {
-                _transaction.Rollback();
-            }
-        }
+    
 
         public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseCreateDate
         {

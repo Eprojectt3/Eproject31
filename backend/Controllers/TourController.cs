@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using backend.BussinessLogic;
 using backend.Dao;
+using backend.Dao.Specification.TourSpec;
 using backend.Dtos.TourDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
