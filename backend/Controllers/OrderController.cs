@@ -55,9 +55,9 @@ namespace backend.Controllers
             return Ok();
         }
         [HttpGet]
-        public async Task<ActionResult> GetEntity()
+        public async Task<ActionResult> GetOrderByTourDetailId(int TourDetailID)
         {
-            var output = await orderBusinessLogic.GetEntityByCondition(4);
+            var output = await orderBusinessLogic.GetEntityByCondition(TourDetailID);
             if (output == null)
             {
                 return NotFound();
