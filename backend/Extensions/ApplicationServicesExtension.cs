@@ -39,7 +39,7 @@ namespace backend.Extensions
             services.AddTransient<ImageService>();
             services.AddTransient<Search_TourDetail_Dao>();
             services.AddTransient<Search_Tour_Dao>();
-
+            services.AddTransient<Top_10_Tour_Dao>();
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
             {

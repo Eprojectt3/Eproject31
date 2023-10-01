@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using backend.BussinessLogic;
+using backend.Dao;
 using backend.Dtos.TourDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +13,11 @@ namespace backend.Controllers
     public class TourController : ControllerBase
     {
         public TourBusinessLogic tourBusinessLogic;
-
-        public TourController(TourBusinessLogic Bussiness)
+        public Top_10_Tour_Dao top_10_Tour_Dao;
+        public TourController(TourBusinessLogic Bussiness, Top_10_Tour_Dao top_10_Tour_Dao)
         {
             tourBusinessLogic = Bussiness;
+            this.top_10_Tour_Dao = top_10_Tour_Dao;
         }
 
         // execute list all tour
@@ -61,6 +63,12 @@ namespace backend.Controllers
         public async Task<IActionResult> GetByTourId(int id)
         {
            var result =  await tourBusinessLogic.GetByTourId(id);
+            return Ok(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Gget_Top_10_Tour()
+        {
+            var result = await top_10_Tour_Dao.Top_10_Tour();
             return Ok(result);
         }
     }

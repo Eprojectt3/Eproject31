@@ -9,7 +9,7 @@ namespace backend.Entity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } 
-        public int? TourId { get; set; }
+        public int TourId { get; set; }
         [ForeignKey("TourId")]
         public Tour? tour { get; set; }
         public DateTime? Start_Date { get; set; }
