@@ -117,36 +117,37 @@ namespace backend.BussinessLogic
            
                 try
                 {
-                if (paymentVnPay.vnp_ResponseCode == "00" && paymentVnPay.vnp_TransactionStatus == "00")
-                {
+                    if (paymentVnPay.vnp_ResponseCode == "00" && paymentVnPay.vnp_TransactionStatus == "00")
+                    {
 
                         var exist_tour_detail = await searchDao.QueryDao(paymentVnPay.Tour_Detail_Payment_Dto.Start_Date, paymentVnPay.Tour_Detail_Payment_Dto.TourId);
 
                         if (exist_tour_detail == null)
-                    {
+                        {
                             var tour_detail = mapper.Map<Tour_Detail_PaymentPaypal_Dto, TourDetail>(paymentVnPay.Tour_Detail_Payment_Dto);
                             exist_tour_detail = await TourDetailBusinessLogic.Create(tour_detail);
-                    }
+                        }
                         var check_duplicate_order = await OrderBusinessLogic.GetEntityByCondition(exist_tour_detail.Id);
-                    if (check_duplicate_order == null)
-                    {
-                        var order = new Entity.Order();
+                        if (check_duplicate_order == null)
+                        {
+                            var order = new Entity.Order();
                             order.Tour_Detail_ID = exist_tour_detail.Id;
+                            order.Tour_ID = exist_tour_detail.TourId;
                             check_duplicate_order = await OrderBusinessLogic.Create(order);
-                    }
-                    var oderdetail = new OrderDetail
-                    {
-                        OrderID = check_duplicate_order.Id,
-                        Quantity = paymentVnPay.quantity,
+                        }
+                        var oderdetail = new OrderDetail
+                        {
+                            OrderID = check_duplicate_order.Id,
+                            Quantity = paymentVnPay.quantity,
                             Price = paymentVnPay.Amount / 100,
-                        UserID = paymentVnPay.UserID,
-                        Description = paymentVnPay.Description,
-                        Type_Payment = "VNPAY",
-                        Payment_ID = paymentVnPay.orderid,
+                            UserID = paymentVnPay.UserID,
+                            Description = paymentVnPay.Description,
+                            Type_Payment = "VNPAY",
+                            Payment_ID = paymentVnPay.orderid,
                             Tour_Detail_ID = exist_tour_detail.Id
-                    };
-                    await OrderDetailBusinessLogic.Create(oderdetail);
-                //CẬP NHẬT LẠI TOURDetail
+                        };
+                        await OrderDetailBusinessLogic.Create(oderdetail);
+                        //CẬP NHẬT LẠI TOURDetail
                         exist_tour_detail.Quantity -= oderdetail.Quantity;
                         await TourDetailBusinessLogic.Update(exist_tour_detail);
 
