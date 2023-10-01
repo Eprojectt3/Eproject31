@@ -13,10 +13,13 @@ namespace backend.Controllers
     {
         public TourDetailBusinessLogic tourDetailBusinessLogic;
         public Search_Tour_Dao tourDetailSearch;
-        public TourDetailController(TourDetailBusinessLogic Bussiness, Search_Tour_Dao search_Tour_Dao)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public TourDetailController(TourDetailBusinessLogic Bussiness, Search_Tour_Dao search_Tour_Dao, IHttpContextAccessor httpContextAccessor)
         {
             tourDetailBusinessLogic = Bussiness;
             tourDetailSearch = search_Tour_Dao;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // execute list all tourDetail
@@ -63,6 +66,12 @@ namespace backend.Controllers
         {
             await tourDetailBusinessLogic.Update_User(tourDetail_By_Update_UserDto);
             return Ok("Success");
+        }
+        [HttpPost]
+        public async Task<IActionResult> SearchTour(Search_Tour_Dto_Input search_Tour_Dto)
+        {
+            var result = await tourDetailSearch.Search_Tour(search_Tour_Dto);        
+            return Ok(result);
         }
     }
 }
