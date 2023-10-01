@@ -22,7 +22,7 @@ namespace backend.BussinessLogic
         }
 
         //create tourDetail
-        public async Task Create(TourDetail tourDetail)
+        public async Task<TourDetail> Create(TourDetail tourDetail)
         {
             if (tourDetail is null)
             {
@@ -33,6 +33,10 @@ namespace backend.BussinessLogic
             if (check < 1)
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
+            }
+            else
+            {
+                return tourDetail;
             }
         }
 

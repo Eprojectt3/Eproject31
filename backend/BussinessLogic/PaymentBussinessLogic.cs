@@ -1,9 +1,13 @@
-﻿using backend.Dtos.OrderDetailDtos;
+﻿using AutoMapper;
+using backend.Dao;
+using backend.Dtos.OrderDetailDtos;
 using backend.Dtos.PaymentDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Model;
+using Microsoft.EntityFrameworkCore;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -15,7 +19,10 @@ namespace backend.BussinessLogic
         private TourDetailBusinessLogic TourDetailBusinessLogic;
         private OrderBusinessLogic OrderBusinessLogic;
         private OrderDetailBusinessLogic OrderDetailBusinessLogic;
-        public PaymentBussinessLogic(IUnitofWork _unitofWork, IConfiguration configuration, UserBussinessLogic userBussinessLogic, TourDetailBusinessLogic tourDetailBusinessLogic, OrderBusinessLogic orderBusinessLogic, OrderDetailBusinessLogic orderDetailBusinessLogic)
+        public Search_TourDetail_Dao searchDao;
+        public IMapper mapper;
+        public DataContext context;
+        public PaymentBussinessLogic(IUnitofWork _unitofWork, IConfiguration configuration, UserBussinessLogic userBussinessLogic, TourDetailBusinessLogic tourDetailBusinessLogic, OrderBusinessLogic orderBusinessLogic, OrderDetailBusinessLogic orderDetailBusinessLogic,Search_TourDetail_Dao search_TourDetail_Dao, IMapper mapper, DataContext dataContext)
         {
             unitofWork = _unitofWork;
             _configuration = configuration;
@@ -23,6 +30,9 @@ namespace backend.BussinessLogic
             this.TourDetailBusinessLogic = tourDetailBusinessLogic;
             OrderBusinessLogic = orderBusinessLogic;
             OrderDetailBusinessLogic = orderDetailBusinessLogic;
+            searchDao = search_TourDetail_Dao;
+            this.mapper = mapper;
+            context = dataContext;
         }
         public async Task<IReadOnlyList<OrderInfo>> SelectAllCategory()
         {

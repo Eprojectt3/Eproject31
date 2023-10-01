@@ -30,6 +30,8 @@ namespace backend.Entity
         public ICollection<Itinerary>? Itinerary { get; set; }
         public ICollection<TourDetail>? TourDetail { get; set; }
         public ICollection<Service>? Services { get; set; }
+        public ICollection<Order>? Orders { get; set; }
+
         public void AddImage(string imageName)
         {
             if (string.IsNullOrEmpty(image))

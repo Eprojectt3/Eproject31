@@ -1,4 +1,6 @@
-﻿using backend.BussinessLogic;
+﻿using AutoMapper;
+using backend.BussinessLogic;
+using backend.Dao;
 using backend.Dao.Specification.Order1;
 using backend.Dtos.OrderDetailDtos;
 using backend.Dtos.PaymentDtos;
@@ -16,6 +18,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using webapi.Dao.UnitofWork;
+using static StackExchange.Redis.Role;
 
 namespace backend.Controllers
 {
@@ -30,9 +33,11 @@ namespace backend.Controllers
         public OrderDetailBusinessLogic OrderDetailBusinessLogic;
         public UserBussinessLogic UserBussinessLogic;
         public TourDetailBusinessLogic TourDetailBusinessLogic;
+        public IMapper mapper;
+        public Search_TourDetail_Dao searchDao;
         public PaymentPayPalController(IConfiguration _configuration, HttpClient _httpClient, 
             IUnitofWork _unitofWork, OrderBusinessLogic _OrderBusinessLogic, OrderDetailBusinessLogic _OrderDetailBusinessLogic
-            , UserBussinessLogic userBussinessLogic, TourDetailBusinessLogic tourDetailBusinessLogic)
+            , UserBussinessLogic userBussinessLogic, TourDetailBusinessLogic tourDetailBusinessLogic, IMapper mapper, Search_TourDetail_Dao searchDao)
         {
             configuration = _configuration;
             this._client = _httpClient;
@@ -41,6 +46,8 @@ namespace backend.Controllers
             OrderDetailBusinessLogic = _OrderDetailBusinessLogic;
             UserBussinessLogic = userBussinessLogic;
             TourDetailBusinessLogic = tourDetailBusinessLogic;
+            this.mapper = mapper;
+            this.searchDao = searchDao;
         }
         [HttpGet]
         public async Task<AuthorizationResponseData?> GetAuthorizationRequest()
@@ -235,25 +242,20 @@ namespace backend.Controllers
                 /*
                 if (user == null || tour_detail == null)
                 {
-                    throw new NotFoundExceptions("You have successfully paid but encounter problems during processing, please contact management");
-                }
-                */
-                if ( tour_detail == null)
-                {
-                    throw new NotFoundExceptions("You have successfully paid but encounter problems during processing, please contact management");
+                       var tour_detail = mapper.Map<Tour_Detail_PaymentPaypal_Dto, TourDetail>(payment.Tour_Detail_Payment_Dto);
+                        exist_tour_detail = await TourDetailBusinessLogic.Create(tour_detail);
                 }
 
                 var response_capture = await _client.GetAsync($"https://api-m.sandbox.paypal.com/v2/checkout/orders/{payment.orderid}"); 
                 var responseAsString_capture = await response_capture.Content.ReadAsStringAsync();
                 var result = await GetCapturePayment(responseAsString_capture);
 
-                var check_duplicate_order = await OrderBusinessLogic.GetEntityByCondition(payment.TourDetailID);
+                var check_duplicate_order = await OrderBusinessLogic.GetEntityByCondition(exist_tour_detail.Id);
                 if (check_duplicate_order == null)
                 {
                     var order = new Entity.Order();
-                    order.Tour_Detail_ID = payment.TourDetailID;
-                    var check_create_order = OrderBusinessLogic.Create(order);
-                    check_duplicate_order = order;
+                    order.Tour_Detail_ID = exist_tour_detail.Id;
+                    check_duplicate_order = await OrderBusinessLogic.Create(order);                
                 }
                 var oderdetail = new OrderDetail
                 {

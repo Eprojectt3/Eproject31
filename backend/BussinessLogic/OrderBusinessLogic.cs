@@ -22,7 +22,7 @@ namespace backend.BussinessLogic
         }
 
         //create order
-        public async Task Create(Order order)
+        public async Task<Order> Create(Order order)
         {
             if (order is null)
             {
@@ -33,7 +33,10 @@ namespace backend.BussinessLogic
             if (check < 1)
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
-            }
+            }else
+            {
+                return order;
+            }    
         }
 
         //update order

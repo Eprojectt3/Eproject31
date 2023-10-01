@@ -14,6 +14,9 @@ namespace backend.Entity
         public int Tour_Detail_ID { get; set; }
         [ForeignKey("Tour_Detail_ID")]
         public TourDetail? tourDetail { get; set; }
+        public int Tour_ID { get; set; }
+        [ForeignKey("Tour_ID")]
+        public Tour? Tour { get; set; }
         public ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }

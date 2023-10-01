@@ -1,6 +1,7 @@
 ﻿using backend.Base;
 using backend.BussinessLogic;
 using backend.Controllers;
+using backend.Dao;
 using backend.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -36,7 +37,9 @@ namespace backend.Extensions
             services.AddTransient<TourDetailBusinessLogic>();
             services.AddTransient<UserBussinessLogic>();
             services.AddTransient<ImageService>();
-           
+            services.AddTransient<Search_TourDetail_Dao>();
+            services.AddTransient<Search_Tour_Dao>();
+
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
             {
