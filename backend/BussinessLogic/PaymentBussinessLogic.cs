@@ -152,7 +152,7 @@ namespace backend.BussinessLogic
                         await TourDetailBusinessLogic.Update(exist_tour_detail);
 
                 // Lấy danh sách orderDetail liên quan đến tour_detail đã được thanh toán
-                var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(paymentVnPay.TourDetailID);
+                var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(exist_tour_detail.Id);
 
                 // Tính toán lại totalOrderPrice và totalOrderQuantity dựa trên danh sách orderDetail
                 var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);
