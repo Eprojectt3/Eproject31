@@ -265,7 +265,7 @@ namespace backend.Controllers
                         Quantity = int.Parse(result.purchase_units[0].items[0].quantity),
                         Price = Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.net_amount.value) * 24380,
                         UserID = payment.UserID,
-                        Description = result.purchase_units[0].items[0].description + " |Paypal fee: " + Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.paypal_fee.value) * 23000,
+                        Description = result.purchase_units[0].items[0].description + " |Paypal fee: " + Double.Parse(result.purchase_units[0].payments.captures[0].seller_receivable_breakdown.paypal_fee.value) * 24380,
                         Type_Payment = "PayPal",
                         Payment_ID = result.id,
                         Tour_Detail_ID = exist_tour_detail.Id

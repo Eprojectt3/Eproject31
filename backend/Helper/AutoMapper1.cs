@@ -32,6 +32,10 @@ namespace backend.Helper
             CreateMap<Resorts, Dtos.ResortDtos.ResortDto>()
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
                 .ReverseMap();
+            CreateMap<ResortImageDto, Resorts>().ReverseMap();
+            CreateMap<Restaurant, RestaurantDto>()
+                .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
+                .ReverseMap();
             CreateMap<Restaurant, RestaurantDto>()
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
                 .ReverseMap();
