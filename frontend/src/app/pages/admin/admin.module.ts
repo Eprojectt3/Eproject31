@@ -25,6 +25,7 @@ import { ListRolesComponent } from './admin-role/list-roles/list-roles.component
 import { ListServicesComponent } from './admin-service/list-services/list-services.component';
 import { ListToursComponent } from './admin-tour/list-tours/list-tours.component';
 import { ListTransportationsComponent } from './admin-transportation/list-transportations/list-transportations.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ListTransportationsComponent } from './admin-transportation/list-transp
     MatSidenavModule,
     MatButtonModule,
     MatTableModule,
+    MatPaginatorModule,
   ],
   exports: [AdminComponent],
 })
