@@ -2,6 +2,7 @@
 using backend.Dao;
 using backend.Dao.Specification;
 using backend.Dtos.TourDetailDtos;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -81,6 +82,12 @@ namespace backend.Controllers
 
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SearchTour(Search_Tour_Dto_Input search_Tour_Dto_Input)
+        {
+            var result = await tourDetailSearch.Search_Tour(search_Tour_Dto_Input);
+            return Ok(result);
         }
         
     }
