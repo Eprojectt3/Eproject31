@@ -53,14 +53,14 @@ namespace backend.Controllers
         }
 
         //execute delete tour
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await tourBusinessLogic.Delete(id);
             return Ok();
         }
         //get tour by id
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByTourId(int id)
         {
            var result =  await tourBusinessLogic.GetByTourId(id);

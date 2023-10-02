@@ -55,7 +55,7 @@ namespace backend.Controllers
         }
 
         //execute update hotel
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update([FromForm] HotelImageDto hotel)
         {
 
@@ -64,7 +64,7 @@ namespace backend.Controllers
         }
 
         //execute delete hotel
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await hotelBusinessLogic.Delete(id);
@@ -72,11 +72,15 @@ namespace backend.Controllers
         }
 
         //get hotel by id
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByHotelId(int id)
         {
-            await hotelBusinessLogic.GetByHotelId(id);
-            return Ok();
+            var hotel = await hotelBusinessLogic.GetByHotelId(id);
+            if (hotel == null)
+            {
+                return NotFound("not found hotel");
+            }
+            return Ok(hotel);
         }
     }
 }

@@ -166,7 +166,7 @@ namespace backend.Controllers
             return result;
 
     }
-        [HttpGet]
+        [HttpGet("{orderid}")]
         public async Task<ActionResult> GetOrderID(string orderid)
         {
             var token = await GetAuthorizationRequest();
@@ -190,7 +190,7 @@ namespace backend.Controllers
             }
 
         }
-        [HttpGet]
+        [HttpGet("{json}")]
         public async Task<CapturePayment> GetCapturePayment(string json)
         {
             var result_complete = JsonConvert.DeserializeObject<CapturePayment>(json);

@@ -54,7 +54,7 @@ namespace backend.Controllers
         }
 
         //execute update location
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(Location1 location)
         {
 
@@ -63,7 +63,7 @@ namespace backend.Controllers
         }
 
         //execute delete location
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await locationBussinessLogic.Delete(id);

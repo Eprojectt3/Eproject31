@@ -51,7 +51,7 @@ namespace backend.Controllers
         }
 
         //execute update order
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(Order order)
         {
 
@@ -60,13 +60,13 @@ namespace backend.Controllers
         }
 
         //execute delete order
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await orderBusinessLogic.Delete(id);
             return Ok();
         }
-        [HttpGet]
+        [HttpGet("{TourDetailID}")]
         public async Task<ActionResult> GetOrderByTourDetailId(int TourDetailID)
         {
             var output = await orderBusinessLogic.GetEntityByCondition(TourDetailID);

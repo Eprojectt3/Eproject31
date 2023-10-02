@@ -17,16 +17,16 @@ namespace backend.Controllers
         }
 
         // execute list all information
-        //[HttpGet]
-        //public async Task<ActionResult> ListInformation()
-        //{
-        //    var output = await informationBusinessLogic.SelectAllInformation();
-        //    if (output == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(output);
-        //}
+        [HttpGet]
+        public async Task<ActionResult> ListInformation()
+        {
+            var output = await informationBusinessLogic.SelectAllInformation();
+            if (output == null)
+            {
+                return NotFound();
+            }
+            return Ok(output);
+        }
 
         //[HttpPost]
         //public async Task<ActionResult> ListInformationPagination(int pageIndex = 1, int pageSize = 10)
@@ -55,7 +55,7 @@ namespace backend.Controllers
         }
 
         //execute update information
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(Information information)
         {
 
@@ -64,7 +64,7 @@ namespace backend.Controllers
         }
 
         //execute delete information
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await informationBusinessLogic.Delete(id);
