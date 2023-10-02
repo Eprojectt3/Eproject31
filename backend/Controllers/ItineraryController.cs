@@ -55,7 +55,7 @@ namespace backend.Controllers
         }
 
         //execute update itinerary
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(Itinerary itinerary)
         {
 
@@ -64,7 +64,7 @@ namespace backend.Controllers
         }
 
         //execute delete itinerary
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await itineraryBusinessLogic.Delete(id);

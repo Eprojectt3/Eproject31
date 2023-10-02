@@ -41,7 +41,7 @@ namespace backend.Controllers
         }
 
         //execute update staff
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update([FromForm] StaffImageDto staff)
         {
 
@@ -50,7 +50,7 @@ namespace backend.Controllers
         }
 
         //execute delete staff
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await staffBusinessLogic.Delete(id);
@@ -69,6 +69,17 @@ namespace backend.Controllers
 
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
+        }
+        //get staff by id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByStaffId(int id)
+        {
+            var staff = await staffBusinessLogic.GetByStaffId(id);
+            if (staff == null)
+            {
+                return NotFound("not found staff");
+            }
+            return Ok(staff);
         }
     }
 }

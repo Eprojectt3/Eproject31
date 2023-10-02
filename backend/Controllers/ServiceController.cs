@@ -40,7 +40,7 @@ namespace backend.Controllers
         }
 
         //execute update service
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(Service service)
         {
 
@@ -49,7 +49,7 @@ namespace backend.Controllers
         }
 
         //execute delete service
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await serviceBusinessLogic.Delete(id);

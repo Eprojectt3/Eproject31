@@ -41,7 +41,7 @@ namespace backend.Controllers
         }
 
         //execute update restaurant
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update([FromForm] RestaurantImageDto restaurant)
         {
 
@@ -50,18 +50,18 @@ namespace backend.Controllers
         }
 
         //execute delete restaurant
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await restaurantBusinessLogic.Delete(id);
             return Ok();
         }
         //get hotel by id
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByRestaurantId(int id)
         {
-            await restaurantBusinessLogic.GetByRestaurantId(id);
-            return Ok();
+            var res = await restaurantBusinessLogic.GetByRestaurantId(id);
+            return Ok(res);
         }
         [HttpPost]
         public async Task<ActionResult> ListRestaurantPagination(SpecParams pagination)

@@ -49,7 +49,7 @@ namespace backend.Controllers
         }
 
         //execute update category
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update( Category category)
         {
 
@@ -60,7 +60,7 @@ namespace backend.Controllers
         
 
         //execute delete category
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await categoryBussinessLogic.Delete(id);

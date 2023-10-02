@@ -48,7 +48,7 @@ namespace backend.Controllers
         }
 
         //execute update tourDetail
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(TourDetail tourDetail)
         {
 
@@ -57,7 +57,7 @@ namespace backend.Controllers
         }
 
         //execute delete tourDetail
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await tourDetailBusinessLogic.Delete(id);

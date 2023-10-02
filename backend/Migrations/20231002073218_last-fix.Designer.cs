@@ -12,7 +12,7 @@ using webapi.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231002080531_last-fix")]
+    [Migration("20231002073218_last-fix")]
     partial class lastfix
     {
         /// <inheritdoc />
@@ -149,6 +149,7 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("LocationId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -261,6 +262,7 @@ namespace backend.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("TourID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
@@ -349,7 +351,8 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Tour_Detail_ID");
+                    b.HasIndex("Tour_Detail_ID")
+                        .IsUnique();
 
                     b.HasIndex("Tour_ID");
 
@@ -377,6 +380,7 @@ namespace backend.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("OrderID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Payment_ID")
@@ -404,6 +408,7 @@ namespace backend.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("UserID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -447,6 +452,7 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("LocationId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -504,6 +510,7 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("LocationId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -572,6 +579,7 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Tour_ID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UpdateBy")
@@ -752,6 +760,7 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("Staff_Id")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("Start_Date")
@@ -856,11 +865,14 @@ namespace backend.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -896,7 +908,9 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Entity.Location1", "location1")
                         .WithMany("Hotels")
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("location1");
                 });
@@ -923,7 +937,9 @@ namespace backend.Migrations
 
                     b.HasOne("backend.Entity.Tour", "tour")
                         .WithMany("Itinerary")
-                        .HasForeignKey("TourID");
+                        .HasForeignKey("TourID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Hotel");
 
@@ -957,7 +973,9 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Entity.Order", "order")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("OrderID");
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("backend.Entity.TourDetail", "TourDetails")
                         .WithMany("OrderDetails")
@@ -965,7 +983,9 @@ namespace backend.Migrations
 
                     b.HasOne("backend.Entity.User", "Users")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("TourDetails");
 
@@ -978,7 +998,9 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Entity.Location1", "Location")
                         .WithMany("Resorts")
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Location");
                 });
@@ -987,7 +1009,9 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Entity.Location1", "Location")
                         .WithMany("Restaurant")
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Location");
                 });
@@ -996,7 +1020,9 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Entity.Tour", "Tour")
                         .WithMany("Services")
-                        .HasForeignKey("Tour_ID");
+                        .HasForeignKey("Tour_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Tour");
                 });
@@ -1035,7 +1061,9 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Entity.Staff", "Staff")
                         .WithMany("TourDetails")
-                        .HasForeignKey("Staff_Id");
+                        .HasForeignKey("Staff_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("backend.Entity.Tour", "tour")
                         .WithMany("TourDetail")
