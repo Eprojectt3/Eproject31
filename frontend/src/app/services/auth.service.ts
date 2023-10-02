@@ -68,6 +68,7 @@ export class AuthService {
   // Logout
   logout = () => {
     const token: any = this.tokenStorage.getToken();
+
     this.http
       .post(
         `${AUTH_API}/api/Users/Logout`,

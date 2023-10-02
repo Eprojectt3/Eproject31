@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { faFacebook ,faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { Hotel,hotels } from 'src/app/models/hotel';
+import { Hotel } from 'src/app/models/hotel';
 import { TitleService } from 'src/app/services/title.service';
 
 
@@ -10,7 +10,7 @@ import { TitleService } from 'src/app/services/title.service';
   styleUrls: ['./resort-detail.component.scss']
 })
 export class ResortDetailComponent {
-  hotels: Hotel[] = hotels;
+  hotels!: Hotel[];
   constructor(private titleService: TitleService) {}
 
   fatwitter = faTwitter;
