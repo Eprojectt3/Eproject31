@@ -36,5 +36,9 @@ export class LayoutComponent implements OnInit {
 
   public logout = (): void => {
     this.authService.logout();
+    this.$isLogin = this.authService.$isLoggedInSubject;
+    this.$isLogin.subscribe((val) => {
+      this.isLogin = val;
+    });
   };
 }

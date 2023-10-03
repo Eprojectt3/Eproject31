@@ -4,6 +4,8 @@ import { AdminComponent } from './admin.component';
 import { ListUsersComponent } from './admin-user/list-users/list-users.component';
 import { ListCategoriesComponent } from './admin-category/list-categories/list-categories.component';
 import { ListToursComponent } from './admin-tour/list-tours/list-tours.component';
+import { ListHotelsComponent } from './admin-hotel/list-hotels/list-hotels.component';
+import { CreateHotelComponent } from './admin-hotel/create-hotel/create-hotel.component';
 
 const routes: Routes = [
   {
@@ -23,7 +25,16 @@ const routes: Routes = [
     path: 'tours',
     component: ListToursComponent,
   },
-
+  {
+    path: 'hotels',
+    component: ListHotelsComponent,
+    children: [
+      {
+        path: 'create',
+        component: CreateHotelComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({

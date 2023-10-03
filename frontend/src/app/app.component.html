@@ -1,3 +1,6 @@
+<!-- Loading -->
+<app-loading></app-loading>
+
 <div *ngIf="isShowUserLayout()">
   <!-- <app-user></app-user> -->
   <app-layout></app-layout>
@@ -6,7 +9,7 @@
 </div>
 
 <div *ngIf="isShowLogin()">
-  <app-login> </app-login>
+  <router-outlet></router-outlet>
 </div>
 
 <div *ngIf="isShowAdmin()">

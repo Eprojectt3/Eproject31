@@ -26,10 +26,21 @@ import { ListServicesComponent } from './admin-service/list-services/list-servic
 import { ListToursComponent } from './admin-tour/list-tours/list-tours.component';
 import { ListTransportationsComponent } from './admin-transportation/list-transportations/list-transportations.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { UpdateCateComponent } from './admin-category/update-cate/update-cate.component';
+import { CreateHotelComponent } from './admin-hotel/create-hotel/create-hotel.component';
+import { MatSelectModule } from '@angular/material/select';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { FileUploadModule } from 'primeng/fileupload';
+import { DialogCreateComponent } from './admin-category/dialog-create/dialog-create.component';
 
 @NgModule({
-  declarations: [ AdminComponent,
+  declarations: [
+    AdminComponent,
     ListUsersComponent,
     ListCategoriesComponent,
     ListFeedbacksComponent,
@@ -42,7 +53,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ListRolesComponent,
     ListServicesComponent,
     ListToursComponent,
-    ListTransportationsComponent,],
+    ListTransportationsComponent,
+    DialogCreateComponent,
+    UpdateCateComponent,
+    CreateHotelComponent,
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -56,6 +71,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
+    HttpClientModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    CKEditorModule,
+    FileUploadModule,
   ],
   exports: [AdminComponent],
 })
