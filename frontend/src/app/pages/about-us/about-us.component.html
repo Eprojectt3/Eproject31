@@ -1,0 +1,229 @@
+<div>
+  <div class="w-full py-12 mr-auto ml-auto">
+    <div
+      class="w-full bg-[#D9D9D9] justify-between items-center flex h-[100px] px-[20px]"
+    >
+      <h2
+        class="lg:text-[35px] xl:text-[35px] 2xl:text-[35px] text-[19px] title-footer text-[#F44336]"
+      >
+        Karnel Travels
+      </h2>
+      <div>
+        <a href="" class="p-[20px] font-bold"
+          ><fa-icon
+            class="xl:text-[23px] 2xl:text-[23px] lg:text-[23px] text-[15px] text-[#F44336] pr-[5px]"
+            [icon]="faFace"
+          ></fa-icon
+          >FaceBook</a
+        >
+        <a href="" class="p-[20px] font-bold"
+          ><fa-icon
+            class="xl:text-[23px] 2xl:text-[23px] lg:text-[23px] text-[15px] text-[#F44336] pr-[5px]"
+            [icon]="fatwitter"
+          ></fa-icon
+          >Twitter</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- About Us -->
+  <div class="container flex justify-between w-[100%] m-auto sm:px-[40px]">
+    <div class="lg:w-8/12 flex-grow sm:w-full px-[15px]">
+      <div>
+        <h2 class="text-gray-800 leading-relaxed text-[45px]">About Us</h2>
+      </div>
+      <div class="text-[#777777]">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+          sollicitudin, tellus vitae condimentum egestas, libero dolor auctor
+          tellus, eu consectetur neque elit quis nunc. Cras elementum pretium
+          est. Nullam ac justo efficitur, tristique ligula a, pellentesque
+          ipsum. Quisque augue ipsum, vehicula et tellus nec, maximus viverra
+          metus. Nullam elementum nibh nec pellentesque finibus. Suspendisse
+          laoreet velit at eros eleifend, a pellentesque urna ornare. In sed
+          viverra dui. Duis ultricies mi sed lorem blandit, non sodales sapien
+          fermentum.&nbsp;Pellentesque sodales ipsum nisi.
+        </p>
+        <br>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+          sollicitudin, tellus vitae condimentum egestas, libero dolor auctor
+          tellus, eu consectetur neque elit quis nunc. Cras elementum pretium
+          est. Nullam ac justo efficitur, tristique ligula a, pellentesque
+          ipsum. Quisque augue ipsum, vehicula et tellus nec, maximus viverra
+          metus.
+        </p>
+        <br>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+          sollicitudin, tellus vitae condimentum egestas, libero dolor auctor
+          tellus, eu consectetur neque elit quis nunc. Cras elementum pretium
+          est. Nullam ac justo efficitur, tristique ligula a, pellentesque
+          ipsum. Quisque augue ipsum, vehicula et tellus nec, maximus viverra
+          metus. Nullam elementum nibh nec pellentesque finibus. Suspendisse
+          laoreet velit at eros eleifend, a pellentesque urna ornare. In sed
+          viverra dui. Duis ultricies mi sed lorem blandit, non sodales sapien
+          fermentum. Suspendisse ultrices nulla eu volutpat volutpat.
+        </p>
+      </div>
+    </div>
+    <div class="lg:w-4/12 flex-grow sm:w-full px-[15px]">
+      <!-- Map -->
+      <div>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9264334058234!2d105.81637567500066!3d21.03562938754305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab0d6e603741%3A0x208a848932ac2109!2sAptech%20Computer%20Education!5e0!3m2!1svi!2s!4v1695372390417!5m2!1svi!2s"
+          width="413"
+          height="275"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+      <div >
+        <div class="pt-[15px]">
+          <h2 class="text-gray-800 leading-relaxed text-[20px]">
+            VietNam Office
+          </h2>
+        </div>
+        <div class="text-[#999999]">
+          <p class="pt-[5px]">285-Doi Can-Lieu Giai-Ba Dinh-Ha Noi</p>
+          <p class="pt-[5px]">Phone: +88 (0) 101 0000 000</p>
+          <p class="pt-[5px]">Fax: +88 (0) 202 0000 001</p>
+          <p class="pt-[5px]">Email: voyage@qodeinteractive.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recomend -->
+  <div class="w-[100%] m-auto sm:px-[40px]">
+    <div class="pb-3">
+      <h2 class="mt-4 text-[45px] font-bold">Recommended</h2>
+    </div>
+    <div class="mt-[20px] mb-[45px] w-[100%]">
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="row">
+      <div class="md:w-1/3 float-left px-[16px] mt-[16px]">
+        <img
+          src="../../../assets/images/Ha Long.jpg"
+          alt=""
+          class="w-full block hover:opacity-60"
+        />
+        <div class="bg-white text-sm">
+          <div class="flex justify-between items-center">
+            <h3 class="text-[27px] font-bold py-[15px]">Nha Trang</h3>
+            <div class="text-[#FFBA0A] flex">
+              <div *ngFor="let item of [1, 2, 3, 4, 5]">
+                <mat-icon>star</mat-icon>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="text-[25px] text-orange-400 pt-[20px] font-bold"
+              >$1,100</span
+            >
+            <span
+              class="text-gray-700 mt-4 line-through text-[20px] pl-[15px] font-bold"
+              >$1,200</span
+            >
+          </div>
+          <div>
+            <p class="mt-4 leading-5">
+              Nam exercitationem commodi et ducimus quia in dolore animi sit
+              mollitia amet id quod eligendi. Et labore harum non nobis ipsum
+              eum molestias mollitia et corporis praesentium a laudantium
+              internos.
+            </p>
+          </div>
+          <button
+            class="bg-orange-500 text-white text-center block mt-4 px-4 py-3 text-sm no-underline hover:bg-gray-400"
+          >
+            Explore Now
+          </button>
+        </div>
+      </div>
+      <div class="md:w-1/3 float-left px-[16px] mt-[16px]">
+        <img
+          src="../../../assets/images/Nha Trang.jpg"
+          alt=""
+          class="w-full block hover:opacity-60"
+        />
+        <div class="bg-white text-sm">
+          <div class="flex justify-between items-center">
+            <h3 class="text-[27px] font-bold py-[15px]">Nha Trang</h3>
+            <div class="text-[#FFBA0A] flex">
+              <div *ngFor="let item of [1, 2, 3, 4, 5]">
+                <mat-icon>star</mat-icon>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="text-[25px] text-orange-400 pt-[20px] font-bold"
+              >$1,180</span
+            >
+            <span
+              class="text-gray-700 mt-4 line-through text-[20px] pl-[15px] font-bold"
+              >$1,280</span
+            >
+          </div>
+          <div>
+            <p class="mt-4 leading-5">
+              Nam exercitationem commodi et ducimus quia in dolore animi sit
+              mollitia amet id quod eligendi. Et labore harum non nobis ipsum
+              eum molestias mollitia et corporis praesentium a laudantium
+              internos.
+            </p>
+          </div>
+          <button
+            class="bg-orange-500 text-white text-center block mt-4 px-4 py-3 text-sm no-underline hover:bg-gray-400"
+          >
+            Explore Now
+          </button>
+        </div>
+      </div>
+      <div class="md:w-1/3 float-left px-[16px] mt-[16px]">
+        <img
+          src="../../../assets/images/Nha Trang.jpg"
+          alt=""
+          class="w-full block hover:opacity-60"
+        />
+        <div class="bg-white text-sm">
+          <div class="flex justify-between items-center">
+            <h3 class="text-[27px] font-bold py-[15px]">Nha Trang</h3>
+            <div class="text-[#FFBA0A] flex">
+              <div *ngFor="let item of [1, 2, 3, 4, 5]">
+                <mat-icon>star</mat-icon>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="text-[25px] text-orange-400 pt-[20px] font-bold"
+              >$1,180</span
+            >
+            <span
+              class="text-gray-700 mt-4 line-through text-[20px] pl-[15px] font-bold"
+              >$1,300</span
+            >
+          </div>
+          <div>
+            <p class="mt-4 leading-5">
+              Nam exercitationem commodi et ducimus quia in dolore animi sit
+              mollitia amet id quod eligendi. Et labore harum non nobis ipsum
+              eum molestias mollitia et corporis praesentium a laudantium
+              internos.
+            </p>
+          </div>
+          <button
+            class="bg-orange-500 text-white text-center block mt-4 px-4 py-3 text-sm no-underline hover:bg-gray-400"
+          >
+            Explore Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

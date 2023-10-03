@@ -9,12 +9,11 @@ namespace backend.Entity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } 
-        public int? TourId { get; set; }
+        public int TourId { get; set; }
         [ForeignKey("TourId")]
         public Tour? tour { get; set; }
         public DateTime? Start_Date { get; set; }
         public DateTime? End_Date { get; set; }
-        public double? Range_time { get; set; }
         public int? Quantity { get; set; }
         public int? Staff_Id { get; set; } = 1;
         [ForeignKey("Staff_Id")]

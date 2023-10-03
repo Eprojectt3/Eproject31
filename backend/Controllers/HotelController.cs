@@ -1,5 +1,6 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
+using backend.Dtos.HotelDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +46,7 @@ namespace backend.Controllers
         //execute add new hotel
         [HttpPost]
 
-        public async Task<IActionResult> Add(Hotel hotel)
+        public async Task<IActionResult> Add([FromForm]HotelImageDto hotel)
         {
 
             await hotelBusinessLogic.Create(hotel);
@@ -54,8 +55,8 @@ namespace backend.Controllers
         }
 
         //execute update hotel
-        [HttpPost]
-        public async Task<IActionResult> Update(Hotel hotel)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm] HotelImageDto hotel)
         {
 
             await hotelBusinessLogic.Update(hotel);
@@ -63,7 +64,7 @@ namespace backend.Controllers
         }
 
         //execute delete hotel
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await hotelBusinessLogic.Delete(id);
@@ -71,11 +72,15 @@ namespace backend.Controllers
         }
 
         //get hotel by id
-        [HttpPost]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByHotelId(int id)
         {
-            await hotelBusinessLogic.GetByHotelId(id);
-            return Ok();
+            var hotel = await hotelBusinessLogic.GetByHotelId(id);
+            if (hotel == null)
+            {
+                return NotFound("not found hotel");
+            }
+            return Ok(hotel);
         }
     }
 }

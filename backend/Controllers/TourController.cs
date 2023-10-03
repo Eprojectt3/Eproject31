@@ -1,5 +1,8 @@
-﻿using backend.BussinessLogic;
-using backend.Dao.Specification;
+﻿using AutoMapper;
+using backend.BussinessLogic;
+using backend.Dao;
+using backend.Dao.Specification.TourSpec;
+using backend.Dtos.TourDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +14,11 @@ namespace backend.Controllers
     public class TourController : ControllerBase
     {
         public TourBusinessLogic tourBusinessLogic;
-        public TourController(TourBusinessLogic Bussiness)
+        public Top_10_Tour_Dao top_10_Tour_Dao;
+        public TourController(TourBusinessLogic Bussiness, Top_10_Tour_Dao top_10_Tour_Dao)
         {
             tourBusinessLogic = Bussiness;
+            this.top_10_Tour_Dao = top_10_Tour_Dao;
         }
 
         // execute list all tour
@@ -31,40 +36,45 @@ namespace backend.Controllers
         //execute add new tour
         [HttpPost]
 
-        public async Task<IActionResult> Add(Tour tour)
+        public async Task<IActionResult> Add([FromForm] TourDto tourdto)
         {
+            await tourBusinessLogic.Create(tourdto);
 
-            await tourBusinessLogic.Create(tour);
-
-            return Ok(tour);
+            return Ok(tourdto);
         }
 
         //execute update tour
-        [HttpPost]
-        public async Task<IActionResult> Update(Tour tour)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm] TourDto tourdto)
         {
 
-            await tourBusinessLogic.Update(tour);
-            return Ok(tour);
+            await tourBusinessLogic.Update(tourdto);
+            return Ok(tourdto);
         }
 
         //execute delete tour
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await tourBusinessLogic.Delete(id);
             return Ok();
         }
         //get tour by id
-        [HttpPost]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByTourId(int id)
         {
-            await tourBusinessLogic.GetByTourId(id);
-            return Ok();
+           var result =  await tourBusinessLogic.GetByTourId(id);
+            return Ok(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Get_Top_10_Tour()
+        {
+            var result = await top_10_Tour_Dao.Top_10_Tour();
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult> ListTourPagination(SpecParams pagination)
+        public async Task<ActionResult> ListTourPagination(TourSpecParams pagination)
         {
             var output = await tourBusinessLogic.SelectAllTourPagination(pagination);
 
@@ -77,5 +87,7 @@ namespace backend.Controllers
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
         }
+
+        
     }
 }

@@ -5,10 +5,9 @@ import { TokenStorageService } from './token-storage.service';
 import { SnackbarService } from './snackbar.service';
 import { User } from '../models/user.model';
 import { Location } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
-const AUTH_API: string = 'https://localhost:7110/api/Users/';
-// const AUTH_API: string = 'http://localhost:5019/api/Users/';
-// const AUTH_API: string = 'http://dapury.click/api/Users/';
+const AUTH_API = environment.apiUrl;
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -28,7 +27,7 @@ export class AuthService {
     private http: HttpClient,
     private tokenStorage: TokenStorageService,
     private snackBarService: SnackbarService,
-    private location: Location,
+    private location: Location
   ) {
     this.userSubject = new BehaviorSubject<User | null>(null);
     this.$user = this.userSubject.asObservable();
@@ -42,12 +41,12 @@ export class AuthService {
   Login = (user: User): Observable<any> => {
     return this.http
       .post(
-        AUTH_API + 'Login',
+        AUTH_API + '/api/Users/Login',
         {
           username: user?.userInfo?.username,
           password: user?.userInfo?.password,
         },
-        httpOptions,
+        httpOptions
       )
 
       .pipe(
@@ -62,26 +61,27 @@ export class AuthService {
           this.snackBarService.openSnackBar(err, 'Error');
 
           return of(err);
-        }),
+        })
       );
   };
 
   // Logout
   logout = () => {
     const token: any = this.tokenStorage.getToken();
+
     this.http
       .post(
-        `${AUTH_API}Logout`,
+        `${AUTH_API}/api/Users/Logout`,
         {
           accessToken: token?.accessToken,
           refreshToken: token?.refreshToken,
         },
-        httpOptions,
+        httpOptions
       )
       .pipe(
         tap(() => {
           this.$isLoggedInSubject.next(false);
-        }),
+        })
       )
       .subscribe();
     this.stopRefreshTokenTimer();
@@ -93,7 +93,7 @@ export class AuthService {
     const token: any = this.tokenStorage.getToken();
 
     return this.http
-      .post<any>(AUTH_API + 'Refresh', {
+      .post<any>(AUTH_API + '/api/Users/Refresh', {
         refreshToken: token?.refreshToken,
         accessToken: token?.accessToken,
       })
@@ -104,7 +104,7 @@ export class AuthService {
 
           return data;
         }),
-        tap(() => this.startRefreshTokenTimer()),
+        tap(() => this.startRefreshTokenTimer())
       );
   };
 
@@ -121,7 +121,7 @@ export class AuthService {
 
       this.refreshTokenTimeout = setTimeout(
         () => this.refreshToken().subscribe(),
-        timeout,
+        timeout
       );
     }
   };

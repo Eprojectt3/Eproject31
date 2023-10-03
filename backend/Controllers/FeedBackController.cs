@@ -40,7 +40,7 @@ namespace backend.Controllers
         }
 
         //execute update tour
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(FeedBack tour)
         {
 
@@ -49,7 +49,7 @@ namespace backend.Controllers
         }
 
         //execute delete tour
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await feedBackBusinessLogic.Delete(id);

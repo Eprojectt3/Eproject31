@@ -20,15 +20,18 @@ export class LayoutComponent implements OnInit {
   constructor(
     private titleService: TitleService,
     private authService: AuthService,
-    private tokenStorage: TokenStorageService,
-  ) { }
+    private tokenStorage: TokenStorageService
+  ) {}
 
   ngOnInit(): void {
     this.titleValue = this.titleService.$titleSubject;
 
     this.$isLogin = this.authService.$isLoggedInSubject;
-    this.$isLogin.subscribe((val) => (this.isLogin = val));
+    this.$isLogin.subscribe((val) => {
+      this.isLogin = val;
+    });
     this.userInfo = this.tokenStorage.getUser();
+    console.log(this.isLogin);
   }
 
   public logout = (): void => {

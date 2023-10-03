@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { AdminUser,user } from 'src/app/models/admin_user';
 import { User } from 'src/app/models/user.model';
 import { UsersService } from 'src/app/services/users.service';
 
@@ -9,6 +12,14 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class ListUsersComponent implements OnInit {
   users!: User[];
+  displayedColumns: string[] = [
+    'username',
+    'email',
+    'name',
+    'phone',
+    'roleid',
+    'action',
+  ];
 
   constructor(private userService: UsersService) {}
 
@@ -17,4 +28,11 @@ export class ListUsersComponent implements OnInit {
       this.users = val;
     });
   }
+
+
+
+
+
+
+
 }

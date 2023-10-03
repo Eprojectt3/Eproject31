@@ -21,11 +21,22 @@ namespace backend.Entity
 
     [Column(TypeName = "ntext")]
     public string? Description { get; set; }
-    public string? ImageDetail { get; set; }
+    //public string? ImageDetail { get; set; }
     public string? Address { get; set; }
     public string? Image { get; set; }
     public int? PhoneNumber { get; set; }
     public string? Links { get; set; }
         public ICollection<Itinerary>? Itineraries { get; set; }
+        public void AddImage(string imageName)
+        {
+            if (string.IsNullOrEmpty(Image))
+            {
+                Image = imageName;
+            }
+            else
+            {
+                Image += "," + imageName;
+            }
+        }
     }
 }

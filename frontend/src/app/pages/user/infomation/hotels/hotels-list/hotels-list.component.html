@@ -32,8 +32,11 @@
       <!-- Card tour -->
       <div class="card-tour mt-[30px] xl:w-[80%] 2xl:w-[65%] m-auto mb-[35px]">
         <div class="flex flex-wrap -mx-4">
-          <div *ngFor="let tour of tours" class="px-4 mb-[40px] xl:w-1/4">
-            <button [routerLink]="['/user/infomation/hotel-detail', tour.id]">
+          <div  *ngFor="let h of hotels" class="px-4 mb-[40px] xl:w-1/4" >
+            <script>
+              console.log(h);
+            </script>
+            <button [routerLink]="['/user/infomation/hotel-detail', h.id]">
               <div>
                 <mat-card
                   class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
@@ -48,14 +51,14 @@
                   <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
                     ><mat-card-title
                       class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
-                      >{{ tour.name }}</mat-card-title
+                      >{{ h.name }}</mat-card-title
                     >
                   </mat-card-header>
 
                   <!-- Card Content -->
                   <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
                     <p class="text-[10px] text-[#181E4B] xl:!text-[13px]">
-                      {{ tour.description | truncate }}
+                      {{ h.description | truncate }}
                     </p>
                   </mat-card-content>
 
@@ -65,7 +68,7 @@
                   >
                     <div class="flex">
                       <span class="!text-[9px] xl:!text-[13px] xl:mr-[20px]">{{
-                        tour.price | currency
+                        h.price_range
                       }}</span>
                       <div
                         class="rating text-[10px] flex xl:!text-[13px] xl:w-[25px]"
@@ -74,7 +77,7 @@
                           class="text-[10px] xl:!text-[13px] xl:pt-[1px] text-[#DF6951]"
                           >star</mat-icon
                         >
-                        {{ tour.rating }}
+                        {{ h.rating }}
                       </div>
                     </div>
                   </mat-card-footer>

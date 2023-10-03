@@ -45,13 +45,13 @@ namespace backend.Controllers
         public async Task<IActionResult> Add(Order order)
         {
 
-            await orderBusinessLogic.Create(order);
+           var check_order =  await orderBusinessLogic.Create(order);
 
-            return Ok(order);
+            return Ok(check_order);
         }
 
         //execute update order
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(Order order)
         {
 
@@ -60,16 +60,16 @@ namespace backend.Controllers
         }
 
         //execute delete order
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await orderBusinessLogic.Delete(id);
             return Ok();
         }
-        [HttpGet]
-        public async Task<ActionResult> GetEntity()
+        [HttpGet("{TourDetailID}")]
+        public async Task<ActionResult> GetOrderByTourDetailId(int TourDetailID)
         {
-            var output = await orderBusinessLogic.GetEntityByCondition(4);
+            var output = await orderBusinessLogic.GetEntityByCondition(TourDetailID);
             if (output == null)
             {
                 return NotFound();

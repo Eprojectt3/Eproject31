@@ -1,5 +1,6 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
+using backend.Dtos.RestaurantDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace backend.Controllers
         //execute add new restaurant
         [HttpPost]
 
-        public async Task<IActionResult> Add(Restaurant restaurant)
+        public async Task<IActionResult> Add([FromForm]RestaurantImageDto restaurant)
         {
 
             await restaurantBusinessLogic.Create(restaurant);
@@ -40,8 +41,8 @@ namespace backend.Controllers
         }
 
         //execute update restaurant
-        [HttpPost]
-        public async Task<IActionResult> Update(Restaurant restaurant)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm] RestaurantImageDto restaurant)
         {
 
             await restaurantBusinessLogic.Update(restaurant);
@@ -49,18 +50,18 @@ namespace backend.Controllers
         }
 
         //execute delete restaurant
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await restaurantBusinessLogic.Delete(id);
             return Ok();
         }
         //get hotel by id
-        [HttpPost]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByRestaurantId(int id)
         {
-            await restaurantBusinessLogic.GetByRestaurantId(id);
-            return Ok();
+            var res = await restaurantBusinessLogic.GetByRestaurantId(id);
+            return Ok(res);
         }
         [HttpPost]
         public async Task<ActionResult> ListRestaurantPagination(SpecParams pagination)
