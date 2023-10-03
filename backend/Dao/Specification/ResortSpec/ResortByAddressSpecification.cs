@@ -5,8 +5,8 @@ namespace backend.Dao.Specification.ResortSpec
 {
     public class ResortByAddressSpecification : BaseSpecification<Resorts>
     {
-        public ResortByAddressSpecification(string resortAddress)
-        : base(resort => resort.Address.ToLower() == resortAddress.ToLower())
+        public ResortByAddressSpecification(string resortAddress,int id)
+        : base(resort => resort.Address.ToLower() == resortAddress.ToLower() && resort.Id != id)
         {
         }
     }

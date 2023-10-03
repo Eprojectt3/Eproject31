@@ -16,7 +16,7 @@ namespace backend.BussinessLogic
         public IUnitofWork unitofWork;
         public IMapper mapper;
         public DataContext context;
-        public OrderBusinessLogic(IUnitofWork _unitofWork ,IMapper _mapper , DataContext context)
+        public OrderBusinessLogic(IUnitofWork _unitofWork, IMapper _mapper, DataContext context)
         {
             unitofWork = _unitofWork;
             mapper = _mapper;
@@ -42,10 +42,11 @@ namespace backend.BussinessLogic
             if (check < 1)
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
-            }else
+            }
+            else
             {
                 return order;
-            }    
+            }
         }
 
         //update order
@@ -69,7 +70,7 @@ namespace backend.BussinessLogic
             existingOrder.Price = order.Price;
             existingOrder.IsActive = order.IsActive;
             existingOrder.Number_people = order.Number_people;
-     
+
             await unitofWork.Repository<Order>().Update(existingOrder);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -119,7 +120,7 @@ namespace backend.BussinessLogic
         {
             var spec = new OrderSpecByTourDetailID(TourDetailID);
             var check_duplicate_order = await unitofWork.Repository<Entity.Order>().GetEntityWithSpecAsync(spec);
-            if(check_duplicate_order == null)
+            if (check_duplicate_order == null)
             {
                 return null;
             }
@@ -128,7 +129,7 @@ namespace backend.BussinessLogic
 
         //Page
 
-        public async Task <Pagination<OrderDtos>> SelectAllOrderPagination (SpecParams specParams)
+        public async Task<Pagination<OrderDtos>> SelectAllOrderPagination(SpecParams specParams)
         {
             var spec = new SearchOrderSpec(specParams);
             var orders = await unitofWork.Repository<Order>().GetAllWithAsync(spec);
@@ -144,6 +145,45 @@ namespace backend.BussinessLogic
             var pagination = new Pagination<OrderDtos>(specParams.PageIndex, specParams.PageSize, locationPage, count, totalPageIndex);
 
             return pagination;
+        }
+        public async Task<double> CalculateRevenueByMonth(int year, int month)
+        {
+            var orders = await unitofWork.Repository<Order>().GetAllWithAsync(new RevenueByMonth(year, month));
+
+            double totalRevenue = 0;
+
+            var groupedOrders = orders
+                .GroupBy(order => order.CreateDate.Value.Month)
+                .ToList();
+            totalRevenue = groupedOrders.Sum(group => group.Sum(order => order.Price ?? 0));
+
+            return totalRevenue;
+        }
+        public async Task<double> CalculateRevenueByDay(int year, int month,int day)
+        {
+            var orders = await unitofWork.Repository<Order>().GetAllWithAsync(new RevenueByDay(year, month,day));
+
+            double totalRevenue = 0;
+
+            var groupedOrders = orders
+                .GroupBy(order => order.CreateDate.Value.Day)
+                .ToList();
+            totalRevenue = groupedOrders.Sum(group => group.Sum(order => order.Price ?? 0));
+
+            return totalRevenue;
+        }
+        public async Task<double> CalculateRevenueByYear(int year)
+        {
+            var orders = await unitofWork.Repository<Order>().GetAllWithAsync(new RevenueByYear(year));
+
+            double totalRevenue = 0;
+
+            var groupedOrders = orders
+                .GroupBy(order => order.CreateDate.Value.Year)
+                .ToList();
+            totalRevenue = groupedOrders.Sum(group => group.Sum(order => order.Price ?? 0));
+
+            return totalRevenue;
         }
     }
 }

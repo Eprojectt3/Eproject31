@@ -76,5 +76,54 @@ namespace backend.Controllers
             }
             return Ok(output);
         }
+        [HttpGet]
+        [Route("{year}/{month}")]
+        public async Task<IActionResult> GetRevenueByMonth(int year, int month)
+        {
+            try
+            {
+                double revenueForMonth = await orderBusinessLogic.CalculateRevenueByMonth(year, month);
+
+                return Ok(new { revenueForMonth = revenueForMonth });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                return StatusCode(500, "Đã xảy ra lỗi trong quá trình tính toán");
+            }
+        }
+
+        [HttpGet]
+        [Route("{year}/{month}/{day}")]
+        public async Task<IActionResult> GetRevenueByDay(int year, int month,int day)
+        {
+            try
+            {
+                double revenueForDay = await orderBusinessLogic.CalculateRevenueByDay(year, month,day);
+
+                return Ok(new { revenueForDay = revenueForDay });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                return StatusCode(500, "Đã xảy ra lỗi trong quá trình tính toán");
+            }
+        }
+        [HttpGet]
+        [Route("{year}")]
+        public async Task<IActionResult> GetRevenueByYear(int year)
+        {
+            try
+            {
+                double revenueForYear = await orderBusinessLogic.CalculateRevenueByYear(year);
+
+                return Ok(new { revenueForYear = revenueForYear });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                return StatusCode(500, "Đã xảy ra lỗi trong quá trình tính toán");
+            }
+        }
     }
 }

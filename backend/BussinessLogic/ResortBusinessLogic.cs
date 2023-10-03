@@ -66,7 +66,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("Cattegory not found");
             }
 
-            if (await IsResortsAddressDuplicate(resort.Address))
+            if (await IsResortsAddressDuplicate(resort.Address,resort.Id))
             {
                 throw new BadRequestExceptions("Resorts Address is exist.");
             }
@@ -117,7 +117,7 @@ namespace backend.BussinessLogic
             existingResorts.IsActive = resort.IsActive;
             existingResorts.LocationId = resort.LocationId;
             existingResorts.Links = resort.Links;
-            if (await IsResortsAddressDuplicate(resort.Address))
+            if (await IsResortsAddressDuplicate(resort.Address,resort.Id))
             {
                 throw new BadRequestExceptions("Resorts Address is exist.");
             }
@@ -195,12 +195,12 @@ namespace backend.BussinessLogic
         }
 
         //duplicate name
-        private async Task<bool> IsResortsAddressDuplicate(string resortAddress)
+        private async Task<bool> IsResortsAddressDuplicate(string resortAddress,int id)
         {
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateResorts = await unitofWork
                 .Repository<Resorts>()
-                .GetEntityWithSpecAsync(new ResortByAddressSpecification(resortAddress));
+                .GetEntityWithSpecAsync(new ResortByAddressSpecification(resortAddress, id));
 
             return duplicateResorts != null;
         }
