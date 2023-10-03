@@ -24,7 +24,7 @@ namespace backend.Entity
     //public string? ImageDetail { get; set; }
     public string? Address { get; set; }
     public string? Image { get; set; }
-    public int? PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
     public string? Links { get; set; }
         public ICollection<Itinerary>? Itineraries { get; set; }
         public void AddImage(string imageName)

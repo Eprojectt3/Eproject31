@@ -76,8 +76,8 @@ namespace backend.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Phone")
-                        .HasColumnType("int");
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -151,8 +151,8 @@ namespace backend.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Price_range")
                         .HasColumnType("nvarchar(max)");
@@ -356,7 +356,8 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Tour_Detail_ID");
+                    b.HasIndex("Tour_Detail_ID")
+                        .IsUnique();
 
                     b.HasIndex("Tour_ID");
 
@@ -459,8 +460,8 @@ namespace backend.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Price_range")
                         .HasColumnType("nvarchar(max)");
@@ -516,8 +517,8 @@ namespace backend.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PhoneNumbber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumbber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Price_range")
                         .HasColumnType("nvarchar(max)");
@@ -649,8 +650,8 @@ namespace backend.Migrations
                     b.Property<string>("PersonId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Phone")
-                        .HasColumnType("int");
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdateBy")
                         .HasColumnType("nvarchar(max)");
@@ -863,11 +864,14 @@ namespace backend.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

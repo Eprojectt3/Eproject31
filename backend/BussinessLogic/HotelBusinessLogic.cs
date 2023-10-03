@@ -232,7 +232,7 @@ namespace backend.BussinessLogic
             }
             foreach (var restaurant in restaurantPage)
             {
-                var location = context.Locations.FirstOrDefault(l => l.ID == restaurant.Id);
+                var location = context.Locations.FirstOrDefault(l => l.ID == restaurant.LocationId);
                 var restaurantInfo = new HotelDto
                 {
                     Id = restaurant.Id,

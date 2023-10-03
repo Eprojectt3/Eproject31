@@ -46,9 +46,9 @@
               <mat-label>Location</mat-label>
               <mat-select formControlName="location">
                 <mat-option
-                  *ngFor="let hotel of hotels"
-                  [value]="hotel.location"
-                  >{{ hotel.location }}</mat-option
+                  *ngFor="let location of locations"
+                  [value]="location.id"
+                  >{{ location.state }}</mat-option
                 >
               </mat-select>
               <mat-error
@@ -115,8 +115,9 @@
         <!--        Image Upload-->
         <div class="mb-[20px]">
           <p-fileUpload
+            url="https://localhost:7110/api/Hotel/Add"
             chooseLabel="Choose"
-            name="image[]"
+            name="fileCollection"
             [multiple]="true"
             accept="image/*"
             (onSelect)="onSelect($event)"

@@ -209,7 +209,7 @@ namespace backend.BussinessLogic
             var result = new List<TourPageDto>();
             int count = await unitofWork.Repository<Tour>().GetCountWithSpecAsync(spec);
             var tourPage = new List<Tour>();
-            if (string.IsNullOrEmpty(specParams.Search) && specParams.Rating == null)
+            if (string.IsNullOrEmpty(specParams.Search) && specParams.Rating == null && specParams.Location == null)
             {
                 tourPage = await context.Tour.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
             }
@@ -222,8 +222,8 @@ namespace backend.BussinessLogic
             }
             foreach (var tour in tourPage)
             {
-                var cat = context.Category.FirstOrDefault(l => l.Id == tour.Id);
-                var trans = context.Transportation.FirstOrDefault(l => l.Id == tour.Id);
+                var cat = context.Category.FirstOrDefault(l => l.Id == tour.category_id);
+                var trans = context.Transportation.FirstOrDefault(l => l.Id == tour.Transportation_ID);
                 var tourInfo = new TourPageDto
                 {
                     Id = tour.Id,
