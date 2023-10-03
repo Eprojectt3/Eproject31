@@ -8,7 +8,7 @@ namespace backend.Dao.Specification.OrderSpec
         public SearchOrderSpec(SpecParams param)
           : base(l =>
           string.IsNullOrEmpty(param.Search) ||
-           (l.Price).ToString() == param.Search && (l.IsActive == true)
+           (l.Price).ToString() == param.Search && (param.IsActive == null || l.IsActive == param.IsActive)
       )
         {
             

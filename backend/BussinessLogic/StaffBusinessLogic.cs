@@ -117,16 +117,38 @@ namespace backend.BussinessLogic
         public async Task Delete(int id)
         {
 
-            var existingStaff = await unitofWork.Repository<Staff>().GetByIdAsync(id);
-            if (existingStaff == null)
+            using (var transaction = context.Database.BeginTransaction())
             {
-                throw new NotFoundExceptions("not found");
-            }
-            await unitofWork.Repository<Staff>().Delete(existingStaff);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
+                try
+                {
+                    var existingStaff = await unitofWork.Repository<Staff>().GetByIdAsync(id);
+                    if (existingStaff == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+
+                    var StaffHaveTourDetailId = await unitofWork.Repository<TourDetail>().GetAllWithAsync(new StaffDeleteTourDetailSpec(id));
+                    if (StaffHaveTourDetailId.Any())
+                    {
+                        await unitofWork.Repository<TourDetail>().DeleteRange(StaffHaveTourDetailId);
+                    }
+
+
+                    await unitofWork.Repository<Staff>().Delete(existingStaff);
+
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
         }
         //get staff by id
