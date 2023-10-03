@@ -226,7 +226,7 @@ namespace backend.BussinessLogic
                     Rating = restaurant.Rating,
                     PhoneNumber = restaurant.PhoneNumber,
                     Location = restaurant.location1.State,
-                    UrlImage = Image.GetUrlImage(restaurant.Name, "restaurant", httpRequest)
+                    UrlImage = Image.GetUrlImage(restaurant.Name, "hotel", httpRequest)
                 };
                 result.Add(restaurantInfo);
             }

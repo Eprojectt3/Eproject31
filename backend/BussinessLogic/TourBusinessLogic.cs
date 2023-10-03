@@ -8,6 +8,8 @@ using backend.Exceptions;
 using backend.Helper;
 using Microsoft.AspNetCore.Http;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.BussinessLogic
 {
@@ -17,14 +19,15 @@ namespace backend.BussinessLogic
         private ImageService Image;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private IMapper mapper;
+        private DataContext context;
 
-
-        public TourBusinessLogic(IUnitofWork _unitofWork, ImageService imageService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public TourBusinessLogic(IUnitofWork _unitofWork, ImageService imageService, IHttpContextAccessor httpContextAccessor, IMapper mapper ,DataContext context)
         {
             unitofWork = _unitofWork;
             Image = imageService;
             _httpContextAccessor = httpContextAccessor;
             this.mapper = mapper;
+            this.context = context;
         }
 
         //list tour
@@ -195,21 +198,48 @@ namespace backend.BussinessLogic
 
             return result;
         }
-        public async Task<Pagination<TourDto>> SelectAllTourPagination(TourSpecParams specParams)
+        public async Task<Pagination<TourPageDto>> SelectAllTourPagination(SpecParams specParams)
         {
 
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
             var spec = new SearchTourSpec(specParams);
-            var resorts = await unitofWork.Repository<Tour>().GetAllWithAsync(spec);
+            var result = new List<TourPageDto>();
+            int count = await unitofWork.Repository<Tour>().GetCountWithSpecAsync(spec);
+            var tourPage = new List<Tour>();
+            if (string.IsNullOrEmpty(specParams.Search)  && specParams.Rating == null)
+            {
+                tourPage = await context.Tour.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
+            }
+            else
+            {
+                var tours = await unitofWork.Repository<Tour>().GetAllWithAsync(spec);
 
-            var data = mapper.Map<IReadOnlyList<Tour>, IReadOnlyList<TourDto>>(resorts);
-            var staffPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+                tourPage = tours.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
-            var countSpec = new SearchTourSpec(specParams);
-            var count = await unitofWork.Repository<Tour>().GetCountWithSpecAsync(countSpec);
-
+            }
+            foreach (var tour in tourPage)
+            {
+                var tourInfo = new TourPageDto
+                {
+                    Id = tour.Id,
+                    Name = tour.Name,
+                    Price = tour.Price,
+                    category_Name = tour.category.Name,
+                    Description = tour.Description,
+                    quantity_limit = tour.quantity_limit,
+                    Rating = tour.Rating , // Sử dụng giá trị mặc định nếu tour.Rating là null
+                    Type = tour.Type , // Sử dụng giá trị mặc định nếu tour.Type là null
+                    Range_time = tour.Range_time ?? 4, // Sử dụng giá trị mặc định nếu tour.Range_time là null
+                    Discount = tour.Discount,
+                    Transportation_Name = tour.transportation.Name,
+                    Departure_location = tour.Departure_location,
+                    UrlImage = Image.GetUrlImage(tour.Name, "tour", httpRequest)
+                };
+                result.Add(tourInfo);
+            }
             var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
 
-            var pagination = new Pagination<TourDto>(specParams.PageIndex, specParams.PageSize, staffPage, count, totalPageIndex);
+            var pagination = new Pagination<TourPageDto>(specParams.PageIndex, specParams.PageSize, result, count, totalPageIndex);
 
             return pagination;
         }

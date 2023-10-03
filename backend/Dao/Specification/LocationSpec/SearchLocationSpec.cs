@@ -9,7 +9,7 @@ namespace backend.Dao.Specification.LocationSpec
         public SearchLocationSpec(SpecParams param)
             :base(l =>
             string.IsNullOrEmpty(param.Search) ||
-            param.Search.ToLower().Contains(l.State.ToLower())
+            l.State.ToLower().Contains(param.Search.ToLower())
         )
         {
             //ApplyPagination(param.PageSize * (param.PageIndex - 1), param.PageSize);

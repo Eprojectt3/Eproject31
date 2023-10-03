@@ -6,7 +6,8 @@ using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
 using backend.Dtos.ResortDtos;
-
+using webapi.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.BussinessLogic
 {
@@ -16,13 +17,15 @@ namespace backend.BussinessLogic
         public IMapper mapper;
         private ImageService Image;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private DataContext context;
 
-        public ResortBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, ImageService Image, IHttpContextAccessor _httpContextAccessor)
+        public ResortBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, ImageService Image, IHttpContextAccessor _httpContextAccessor , DataContext context)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
             this.Image = Image;
             this._httpContextAccessor = _httpContextAccessor;
+            this.context = context;
         }
 
         //list resort
@@ -187,18 +190,38 @@ namespace backend.BussinessLogic
         public async Task<Pagination<ResortDto>> SelectAllResortsPagination(SpecParams specParams)
         {
 
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
             var spec = new SearchResortSpec(specParams);
-            var resorts = await unitofWork.Repository<Resorts>().GetAllWithAsync(spec);
+            var result = new List<ResortDto>();
+            int count = await unitofWork.Repository<Resorts>().GetCountWithSpecAsync(spec);
+            var resortPage = new List<Resorts>();
+            if (string.IsNullOrEmpty(specParams.Search) && string.IsNullOrEmpty(specParams.Location) && specParams.Rating == null)
+            {
+                resortPage = await context.Resorts.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
+            }
+            else
+            {
+                var resorts = await unitofWork.Repository<Resorts>().GetAllWithAsync(spec);
 
-            var data = mapper.Map<IReadOnlyList<Resorts>, IReadOnlyList<ResortDto>>(resorts);
-            var resortPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+                resortPage = resorts.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
-            var countSpec = new SearchResortSpec(specParams);
-            var count = await unitofWork.Repository<Resorts>().GetCountWithSpecAsync(countSpec);
-
+            }
+            foreach (var resort in resortPage)
+            {
+                var resortInfo = new ResortDto
+                {
+                    Id = resort.Id,
+                    Name = resort.Name,
+                    Price_range = resort.Price_range,
+                    Rating = resort.Rating,
+                    LocationId = resort.LocationId,
+                    UrlImage = Image.GetUrlImage(resort.Name, "resort", httpRequest)
+                };
+                result.Add(resortInfo);
+            }
             var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
 
-            var pagination = new Pagination<ResortDto>(specParams.PageIndex, specParams.PageSize, resortPage, count, totalPageIndex);
+            var pagination = new Pagination<ResortDto>(specParams.PageIndex, specParams.PageSize, result, count, totalPageIndex);
 
             return pagination;
         }

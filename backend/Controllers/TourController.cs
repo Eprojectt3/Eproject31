@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using backend.BussinessLogic;
 using backend.Dao;
+using backend.Dao.Specification;
 using backend.Dao.Specification.TourSpec;
 using backend.Dtos.TourDtos;
 using backend.Entity;
@@ -74,7 +75,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ListTourPagination(TourSpecParams pagination)
+        public async Task<ActionResult> ListTourPagination(SpecParams pagination)
         {
             var output = await tourBusinessLogic.SelectAllTourPagination(pagination);
 

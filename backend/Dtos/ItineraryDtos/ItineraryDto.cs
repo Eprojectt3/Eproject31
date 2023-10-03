@@ -5,6 +5,7 @@ namespace backend.Dtos.ItineraryDtos
 {
     public class ItineraryDto
     {
+        public int? Id { get; set; }
         public string? Tour_Name { get; set; }
         public int? Sequence { get; set; }
         public string? Description { get; set; }
