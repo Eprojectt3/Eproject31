@@ -17,6 +17,7 @@ namespace webapi.Dao.Repository
         Task Delete( T entity);
         Task<T> GetEntityWithSpecAsync(ISpecification<T> spec);
         Task<int> GetCountWithSpecAsync(ISpecification<T> spec);
-        
+        Task DeleteRange(IReadOnlyList<T> entity);
+
     }
 }

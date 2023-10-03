@@ -9,6 +9,7 @@ using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace backend.BussinessLogic
@@ -19,13 +20,15 @@ namespace backend.BussinessLogic
         public IMapper mapper;
         private ImageService Image;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private DataContext context;
 
-        public HotelBusinessLogic(IUnitofWork _unitofWork, IMapper mapper , ImageService Image, IHttpContextAccessor _httpContextAccessor)
+        public HotelBusinessLogic(IUnitofWork _unitofWork, IMapper mapper , ImageService Image, IHttpContextAccessor _httpContextAccessor, DataContext dataContext)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
             this.Image = Image;
             this._httpContextAccessor = _httpContextAccessor;
+            context = dataContext;
         }
 
         //list hotel
@@ -137,23 +140,40 @@ namespace backend.BussinessLogic
         //delete hotel
         public async Task Delete(int id)
         {
-            var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
-            var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(id));
-            if (existingHotel == null)
+            using (var transaction = context.Database.BeginTransaction())
             {
-                throw new NotFoundExceptions("not found");
-            }
-            foreach (var iteam in itineraryHaveHotelId)
-            {
-                await unitofWork.Repository<Itinerary>().Delete(iteam);
-            }
-            await unitofWork.Repository<Hotel>().Delete(existingHotel);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
+                try
+                {
+                    var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
+                    if (existingHotel == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+
+                    var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(id));
+                    if (itineraryHaveHotelId.Any())
+                    {
+                        await unitofWork.Repository<Itinerary>().DeleteRange(itineraryHaveHotelId);
+                    }
+
+                    await unitofWork.Repository<Hotel>().Delete(existingHotel);
+
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
         }
+
 
         public async Task<object> GetByHotelId(int id)
         {

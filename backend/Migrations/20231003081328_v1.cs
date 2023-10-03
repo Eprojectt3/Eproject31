@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class lastfix : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,7 +186,7 @@ namespace backend.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price_range = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: true),
-                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "ntext", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -205,8 +205,7 @@ namespace backend.Migrations
                         name: "FK_Hotels_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -222,7 +221,7 @@ namespace backend.Migrations
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price_range = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<int>(type: "int", nullable: true),
-                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: true),
                     Links = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -237,8 +236,7 @@ namespace backend.Migrations
                         name: "FK_Resorts_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -254,7 +252,7 @@ namespace backend.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumbber = table.Column<int>(type: "int", nullable: true),
-                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: true),
                     Links = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -269,8 +267,7 @@ namespace backend.Migrations
                         name: "FK_Restaurant_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -300,7 +297,7 @@ namespace backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -370,13 +367,15 @@ namespace backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TourID = table.Column<int>(type: "int", nullable: false),
+                    TourID = table.Column<int>(type: "int", nullable: true),
                     Sequence = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParentId = table.Column<int>(type: "int", nullable: false),
+                    HotelId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantID = table.Column<int>(type: "int", nullable: false),
+                    ResortID = table.Column<int>(type: "int", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -387,26 +386,28 @@ namespace backend.Migrations
                 {
                     table.PrimaryKey("PK_Itinerarie", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Itinerarie_Hotels_ParentId",
-                        column: x => x.ParentId,
+                        name: "FK_Itinerarie_Hotels_HotelId",
+                        column: x => x.HotelId,
                         principalTable: "Hotels",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Itinerarie_Resorts_ParentId",
-                        column: x => x.ParentId,
+                        name: "FK_Itinerarie_Resorts_ResortID",
+                        column: x => x.ResortID,
                         principalTable: "Resorts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Itinerarie_Restaurant_ParentId",
-                        column: x => x.ParentId,
+                        name: "FK_Itinerarie_Restaurant_RestaurantID",
+                        column: x => x.RestaurantID,
                         principalTable: "Restaurant",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Itinerarie_Tour_TourID",
                         column: x => x.TourID,
                         principalTable: "Tour",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -417,7 +418,7 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "ntext", nullable: true),
-                    Tour_ID = table.Column<int>(type: "int", nullable: false),
+                    Tour_ID = table.Column<int>(type: "int", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -431,8 +432,7 @@ namespace backend.Migrations
                         name: "FK_Service_Tour_Tour_ID",
                         column: x => x.Tour_ID,
                         principalTable: "Tour",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -445,7 +445,7 @@ namespace backend.Migrations
                     Start_Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     End_Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: true),
-                    Staff_Id = table.Column<int>(type: "int", nullable: false),
+                    Staff_Id = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "ntext", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -460,8 +460,7 @@ namespace backend.Migrations
                         name: "FK_TourDetail_Staff_Staff_Id",
                         column: x => x.Staff_Id,
                         principalTable: "Staff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TourDetail_Tour_TourId",
                         column: x => x.TourId,
@@ -493,8 +492,7 @@ namespace backend.Migrations
                         name: "FK_Order_TourDetail_Tour_Detail_ID",
                         column: x => x.Tour_Detail_ID,
                         principalTable: "TourDetail",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Order_Tour_Tour_ID",
                         column: x => x.Tour_ID,
@@ -508,11 +506,11 @@ namespace backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    OrderID = table.Column<int>(type: "int", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: true),
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Tour_Detail_ID = table.Column<int>(type: "int", nullable: true),
                     Type_Payment = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -530,8 +528,7 @@ namespace backend.Migrations
                         name: "FK_OrderDetail_Order_OrderID",
                         column: x => x.OrderID,
                         principalTable: "Order",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_OrderDetail_TourDetail_Tour_Detail_ID",
                         column: x => x.Tour_Detail_ID,
@@ -541,8 +538,7 @@ namespace backend.Migrations
                         name: "FK_OrderDetail_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -551,9 +547,19 @@ namespace backend.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Itinerarie_ParentId",
+                name: "IX_Itinerarie_HotelId",
                 table: "Itinerarie",
-                column: "ParentId");
+                column: "HotelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Itinerarie_ResortID",
+                table: "Itinerarie",
+                column: "ResortID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Itinerarie_RestaurantID",
+                table: "Itinerarie",
+                column: "RestaurantID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Itinerarie_TourID",
@@ -563,8 +569,7 @@ namespace backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Order_Tour_Detail_ID",
                 table: "Order",
-                column: "Tour_Detail_ID",
-                unique: true);
+                column: "Tour_Detail_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_Tour_ID",
@@ -630,12 +635,6 @@ namespace backend.Migrations
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Username",
-                table: "Users",
-                column: "Username",
-                unique: true);
         }
 
         /// <inheritdoc />
