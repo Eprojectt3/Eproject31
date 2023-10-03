@@ -54,5 +54,10 @@ namespace webapi.Dao.Repository
         {
             return SpecificationEvaluator<T>.GetQuery(context.Set<T>(), spec);
         }
+
+        public async Task DeleteRange(IReadOnlyList<T> entity)
+        {
+            context.Set<T>().RemoveRange(entity); 
+        }
     }
 }

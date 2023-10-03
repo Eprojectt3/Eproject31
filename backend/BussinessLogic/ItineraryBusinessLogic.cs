@@ -47,6 +47,20 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("Cattegory not found");
             }
+            if (itinerary.Type.Contains("Hotel"))
+            {
+                itinerary.ResortID = 1;
+                itinerary.RestaurantID = 1;
+            }else if (itinerary.Type.Contains("Restaurant"))
+            {
+                itinerary.ResortID = 1;
+                itinerary.HotelId = 1;
+            }
+            else if(itinerary.Type.Contains("Resort"))
+            {
+                itinerary.HotelId = 1;
+                itinerary.RestaurantID= 1;
+            }
             await unitofWork.Repository<Itinerary>().AddAsync(itinerary);
             var check = await unitofWork.Complete();
             if (check < 1)
@@ -78,9 +92,25 @@ namespace backend.BussinessLogic
             existingItinerary.Sequence = itinerary.Sequence;
             existingItinerary.Description = itinerary.Description;
             existingItinerary.StartTime = itinerary.StartTime;
-            existingItinerary.EndTime = itinerary.EndTime;
-            existingItinerary.ParentId = itinerary.ParentId;
-            
+            existingItinerary.EndTime = itinerary.EndTime;        
+            if (itinerary.Type.Contains("Hotel"))
+            {
+                existingItinerary.ResortID = 1;
+                existingItinerary.RestaurantID = 1;
+                existingItinerary.HotelId = itinerary.HotelId;
+            }
+            else if (itinerary.Type.Contains("Restaurant"))
+            {
+                existingItinerary.ResortID = 1;
+                existingItinerary.HotelId = 1;
+                existingItinerary.RestaurantID = itinerary.RestaurantID;
+            }
+            else if (itinerary.Type.Contains("Resort"))
+            {
+                existingItinerary.HotelId = 1;
+                existingItinerary.RestaurantID = 1;
+                existingItinerary.ResortID = itinerary.ResortID;
+            }
             await unitofWork.Repository<Itinerary>().Update(existingItinerary);
             var check = await unitofWork.Complete();
             if (check < 1)

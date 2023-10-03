@@ -6,7 +6,7 @@ namespace backend.Dao.Specification.HotelSpec
     public class HotelDeleteItinerarySpec : BaseSpecification<Itinerary>
     {
         public HotelDeleteItinerarySpec( int HotelId)
-        : base(l =>l.ParentId == HotelId && l.Type == "Hotel")         
+        : base(query => query.HotelId == HotelId && query.Type.Contains("Hotel"))         
         {
         }
     }

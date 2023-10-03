@@ -22,15 +22,15 @@ namespace backend.Entity
         public DateTime? EndTime { get; set; }
 
         public string? Type { get; set; }
-        
-        public int ParentId { get; set; }
-        [ForeignKey("ParentId")]
-        public Hotel? Hotel { get; set; }
 
-        [ForeignKey("ParentId")]
-        public Resorts? Resort { get; set; }
-
-        [ForeignKey("ParentId")]
-        public Restaurant? Restaurant { get; set; }
+        public int HotelId { get; set; } = 1;
+        [ForeignKey("HotelId")]
+        public Hotel? hotel { get; set; }
+        public int RestaurantID { get; set; } = 1;
+        [ForeignKey("RestaurantID")]
+        public Restaurant? restaurant { get; set;}
+        public int ResortID { get; set; } = 1;
+        [ForeignKey("ResortID")]
+        public Resorts? Resorts { get; set; }
     }
 }
