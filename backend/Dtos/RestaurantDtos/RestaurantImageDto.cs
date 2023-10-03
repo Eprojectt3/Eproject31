@@ -12,7 +12,7 @@ namespace backend.Dtos.RestaurantDtos
         public int? Rating { get; set; }
         public string? Description { get; set; }
         public string? Address { get; set; }
-        public int? PhoneNumbber { get; set; }
+        public string? PhoneNumbber { get; set; }
         public int? LocationId { get; set; }  
         public string? Links { get; set; }
         public IFormFileCollection fileCollection { get; set; }

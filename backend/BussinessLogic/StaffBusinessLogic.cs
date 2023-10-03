@@ -180,7 +180,7 @@ namespace backend.BussinessLogic
             var result = new List<StaffDto>();
             int count = await unitofWork.Repository<Staff>().GetCountWithSpecAsync(spec);
             var staffPage = new List<Staff>();
-            if (string.IsNullOrEmpty(specParams.Search) && string.IsNullOrEmpty(specParams.Location) && specParams.Rating == null)
+            if (string.IsNullOrEmpty(specParams.Search))
             {
                 staffPage = await context.Staff.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
             }

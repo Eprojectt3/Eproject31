@@ -11,7 +11,7 @@
         public int? LocationId { get; set; }
 
         public string? Location { get; set; }
-        public int? PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         public List<string> UrlImage { get; set; }
     }
 }
