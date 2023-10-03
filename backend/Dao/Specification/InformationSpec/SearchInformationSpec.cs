@@ -1,6 +1,17 @@
-﻿namespace backend.Dao.Specification.InformationSpec
+﻿using backend.Entity;
+using webapi.Dao.Specification;
+
+namespace backend.Dao.Specification.InformationSpec
 {
-    public class SearchInformationSpec
+    public class SearchInformationSpec : BaseSpecification<Information>
     {
+        public SearchInformationSpec(SpecParams param)
+            : base(l =>
+            string.IsNullOrEmpty(param.Search) ||
+            l.Location.ToLower().Contains(param.Search.ToLower()) && (l.IsActive == true)
+        )
+        {
+
+        }
     }
 }

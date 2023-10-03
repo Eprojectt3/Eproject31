@@ -7,6 +7,8 @@ using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
 using backend.Dtos.ResortDtos;
+using webapi.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.BussinessLogic
 {
@@ -16,13 +18,14 @@ namespace backend.BussinessLogic
         public IMapper mapper;
         private ImageService Image;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public StaffBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, ImageService Image, IHttpContextAccessor _httpContextAccessor)
+        private DataContext context;
+        public StaffBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, ImageService Image, IHttpContextAccessor _httpContextAccessor , DataContext context)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
             this.Image = Image;
             this._httpContextAccessor = _httpContextAccessor;
+            this.context = context;
         }
 
         //list staff
@@ -150,18 +153,38 @@ namespace backend.BussinessLogic
         public async Task<Pagination<StaffDto>> SelectAllStaffPagination(SpecParams specParams)
         {
 
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
             var spec = new SearchStaffSpec(specParams);
-            var staffs = await unitofWork.Repository<Staff>().GetAllWithAsync(spec);
+            var result = new List<StaffDto>();
+            int count = await unitofWork.Repository<Staff>().GetCountWithSpecAsync(spec);
+            var staffPage = new List<Staff>();
+            if (string.IsNullOrEmpty(specParams.Search) && string.IsNullOrEmpty(specParams.Location) && specParams.Rating == null)
+            {
+                staffPage = await context.Staff.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
+            }
+            else
+            {
+                var staffs = await unitofWork.Repository<Staff>().GetAllWithAsync(spec);
 
-            var data = mapper.Map<IReadOnlyList<Staff>, IReadOnlyList<StaffDto>>(staffs);
-            var staffPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+                staffPage = staffs.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
-            var countSpec = new SearchStaffSpec(specParams);
-            var count = await unitofWork.Repository<Staff>().GetCountWithSpecAsync(countSpec);
-
+            }
+            foreach (var staff in staffPage)
+            {
+                var staffInfo = new StaffDto
+                {
+                    Id = staff.Id,
+                    Name = staff.Name,
+                    Phone = staff.Phone,
+                    Email = staff.Email,
+                    PersonId = staff.PersonId,
+                    UrlImage = Image.GetUrlImage(staff.Name, "staff", httpRequest)
+                };
+                result.Add(staffInfo);
+            }
             var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
 
-            var pagination = new Pagination<StaffDto>(specParams.PageIndex, specParams.PageSize, staffPage, count, totalPageIndex);
+            var pagination = new Pagination<StaffDto>(specParams.PageIndex, specParams.PageSize, result, count, totalPageIndex);
 
             return pagination;
         }

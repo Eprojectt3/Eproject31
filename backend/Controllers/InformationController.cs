@@ -70,19 +70,19 @@ namespace backend.Controllers
             await informationBusinessLogic.Delete(id);
             return Ok();
         }
-        //[HttpPost]
-        //public async Task<ActionResult> ListInformationPagination(SpecParams pagination)
-        //{
-        //    var output = await informationBusinessLogic.SelectAllInformationPagination(pagination);
+        [HttpPost]
+        public async Task<ActionResult> ListInformationPagination(SpecParams pagination)
+        {
+            var output = await informationBusinessLogic.SelectAllInformationPagination(pagination);
 
-        //    // Kiểm tra xem trang có dữ liệu hay không
-        //    if (output.Data.Count == 0)
-        //    {
-        //        return NotFound();
-        //    }
+            // Kiểm tra xem trang có dữ liệu hay không
+            if (output.Data.Count == 0)
+            {
+                return NotFound();
+            }
 
-        //    // Trả về dữ liệu phân trang và thông tin về trang
-        //    return Ok(output);
-        //}
+            // Trả về dữ liệu phân trang và thông tin về trang
+            return Ok(output);
+        }
     }
 }
