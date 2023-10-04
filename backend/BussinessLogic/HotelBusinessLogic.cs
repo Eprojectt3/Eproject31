@@ -8,6 +8,7 @@ using backend.Dtos.TourDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
+using Microsoft.EntityFrameworkCore;
 using webapi.Dao.UnitofWork;
 using webapi.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -213,18 +214,40 @@ namespace backend.BussinessLogic
         public async Task<Pagination<HotelDto>> SelectAllHotelPagination(SpecParams specParams)
         {
 
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
             var spec = new SearchHotelSpec(specParams);
-            var hotels = await unitofWork.Repository<Hotel>().GetAllWithAsync(spec);
+            var result = new List<HotelDto>();
+            int count = await unitofWork.Repository<Hotel>().GetCountWithSpecAsync(spec);
+            var restaurantPage = new List<Hotel>();
+            if (string.IsNullOrEmpty(specParams.Search) && string.IsNullOrEmpty(specParams.Location) && specParams.Rating == null)
+            {
+                restaurantPage = await context.Hotels.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
+            }
+            else
+            {
+                var restaurants = await unitofWork.Repository<Hotel>().GetAllWithAsync(spec);
 
-            var data = mapper.Map<IReadOnlyList<Hotel>, IReadOnlyList<HotelDto>>(hotels);
-            var locationPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+                restaurantPage = restaurants.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
-            var countSpec = new SearchHotelSpec(specParams);
-            var count = await unitofWork.Repository<Hotel>().GetCountWithSpecAsync(countSpec);
-
+            }
+            foreach (var restaurant in restaurantPage)
+            {
+                var location = context.Locations.FirstOrDefault(l => l.ID == restaurant.Id);
+                var restaurantInfo = new HotelDto
+                {
+                    Id = restaurant.Id,
+                    Name = restaurant.Name,
+                    Price_range = restaurant.Price_range,
+                    Rating = restaurant.Rating,
+                    PhoneNumber = restaurant.PhoneNumber,
+                    Location = location.State,
+                    UrlImage = Image.GetUrlImage(restaurant.Name, "hotel", httpRequest)
+                };
+                result.Add(restaurantInfo);
+            }
             var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
 
-            var pagination = new Pagination<HotelDto>(specParams.PageIndex, specParams.PageSize, locationPage, count, totalPageIndex);
+            var pagination = new Pagination<HotelDto>(specParams.PageIndex, specParams.PageSize, result, count, totalPageIndex);
 
             return pagination;
         }

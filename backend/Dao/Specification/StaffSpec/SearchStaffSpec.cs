@@ -8,7 +8,7 @@ namespace backend.Dao.Specification.StaffSpec
         public SearchStaffSpec(SpecParams param)
             : base(l =>
             string.IsNullOrEmpty(param.Search) ||
-            param.Search.ToLower().Contains(l.Name.ToLower())
+            l.Name.ToLower().Contains(param.Search.ToLower()) && (l.IsActive == true)
         )
         {
            

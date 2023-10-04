@@ -102,23 +102,23 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
         }
-        //public async Task<Pagination<InformationDto>> SelectAllInformationPagination(SpecParams specParams)
-        //{
+        public async Task<Pagination<InformationDto>> SelectAllInformationPagination(SpecParams specParams)
+        {
 
-        //    var spec = new SearchInformationSpec(specParams);
-        //    var resorts = await unitofWork.Repository<Information>().GetAllWithAsync(spec);
+            var spec = new SearchInformationSpec(specParams);
+            var resorts = await unitofWork.Repository<Information>().GetAllWithAsync(spec);
 
-        //    var data = mapper.Map<IReadOnlyList<Information>, IReadOnlyList<InformationDto>>(resorts);
-        //    var staffPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+            var data = mapper.Map<IReadOnlyList<Information>, IReadOnlyList<InformationDto>>(resorts);
+            var staffPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
-        //    var countSpec = new SearchInformationSpec(specParams);
-        //    var count = await unitofWork.Repository<Information>().GetCountWithSpecAsync(countSpec);
+            var countSpec = new SearchInformationSpec(specParams);
+            var count = await unitofWork.Repository<Information>().GetCountWithSpecAsync(countSpec);
 
-        //    var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
 
-        //    var pagination = new Pagination<InformationDto>(specParams.PageIndex, specParams.PageSize, staffPage, count, totalPageIndex);
+            var pagination = new Pagination<InformationDto>(specParams.PageIndex, specParams.PageSize, staffPage, count, totalPageIndex);
 
-        //    return pagination;
-        //}
+            return pagination;
+        }
     }
 }

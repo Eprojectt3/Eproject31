@@ -8,7 +8,8 @@ namespace backend.Dao.Specification.ServiceSpec
         public SearchServiceSpec(SpecParams param)
             : base(l =>
             string.IsNullOrEmpty(param.Search) ||
-            param.Search.ToLower().Contains(l.Name.ToLower())
+            l.Name.ToLower().Contains(param.Search.ToLower()) && (l.IsActive == true)
+
         )
         {
             Includes.Add(s => s.Tour);

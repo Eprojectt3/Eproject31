@@ -62,6 +62,10 @@ namespace backend.Helper
                 .ForMember(s => s.User_Name, otp => otp.MapFrom(o => o.Users.Name));
 
             CreateMap<Tour_Detail_PaymentPaypal_Dto, TourDetail>().ReverseMap();
+            CreateMap<Tour, TourPageDto>()
+                .ForMember(s => s.category_Name, otp => otp.MapFrom(o => o.category.Name))
+                .ForMember(s => s.Transportation_Name, otp => otp.MapFrom(o => o.transportation.Name));
+            CreateMap<Transportation, TransportationDto>().ReverseMap();
         }
     }
 }
