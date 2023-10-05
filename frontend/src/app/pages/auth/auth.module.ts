@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 
 import { MatSelectModule } from '@angular/material/select';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AuthComponent, LoginComponent],
@@ -31,7 +32,8 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatSelectModule,
     MatDividerModule,
+    HttpClientModule,
   ],
   exports: [LoginComponent],
 })
-export class AuthModule { }
+export class AuthModule {}

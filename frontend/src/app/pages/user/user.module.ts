@@ -30,8 +30,6 @@ import { CarouselModule } from 'primeng/carousel';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AboutUsComponent } from './about-us/about-us.component';
-import { LayoutComponent } from 'src/app/components/layout/layout.component';
-import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { LoadingInterceptor } from 'src/app/helpers/interceptor/loading.interceptor';
 
 @NgModule({
@@ -40,8 +38,6 @@ import { LoadingInterceptor } from 'src/app/helpers/interceptor/loading.intercep
     HomeComponent,
     ContactUsComponent,
     AboutUsComponent,
-    LayoutComponent,
-    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -63,7 +59,7 @@ import { LoadingInterceptor } from 'src/app/helpers/interceptor/loading.intercep
     MatProgressSpinnerModule,
     HttpClientModule,
   ],
-  exports: [UserComponent, LayoutComponent, FooterComponent],
+  exports: [UserComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

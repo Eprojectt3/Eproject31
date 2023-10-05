@@ -37,10 +37,12 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/interceptor/auth.interceptor';
 import { LoadingInterceptor } from './helpers/interceptor/loading.interceptor';
 import { ErrorInterceptor } from './helpers/interceptor/error.interceptor';
-import { UserModule } from './pages/user/user.module';
-import { AuthModule } from './pages/auth/auth.module';
-import { AdminModule } from './pages/admin/admin.module';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
+
+import { LayoutComponent } from './components/layout/layout.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { InterceptorModule } from './interceptor.module';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -48,11 +50,14 @@ import { AdminLayoutComponent } from './components/admin-layout/admin-layout.com
     SnackBarComponent,
     LoadingComponent,
     AdminLayoutComponent,
+    LayoutComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    InterceptorModule,
     MatIconModule,
     FontAwesomeModule,
     MatDividerModule,
@@ -69,36 +74,34 @@ import { AdminLayoutComponent } from './components/admin-layout/admin-layout.com
     MatSnackBarModule,
     MatProgressSpinnerModule,
     HttpClientModule,
-    UserModule,
-    AuthModule,
-    AdminModule,
     MatToolbarModule,
     MatExpansionModule,
     MatListModule,
     MatTooltipModule,
     MatSidenavModule,
+    CKEditorModule,
   ],
   providers: [
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true,
+    // },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: LoadingInterceptor,
+    //   multi: true,
+    // },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: ErrorInterceptor,
+    //   multi: true,
+    // },
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializer,
       multi: true,
       deps: [AuthService],
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoadingInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true,
     },
   ],
   bootstrap: [AppComponent],

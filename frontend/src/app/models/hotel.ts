@@ -38,4 +38,8 @@ export interface Hotel {
 //     transportation: 'plane',
 //     discount: '20%',
 //   },
+<<<<<<< HEAD
 // ]
+=======
+// ];
+>>>>>>> d1c9547 (category fe son)

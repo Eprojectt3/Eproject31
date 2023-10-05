@@ -4,22 +4,35 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
+  HttpResponse,
 } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError, tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) { }
+  constructor(
+    private tokenStorage: TokenStorageService,
+    private authService: AuthService,
+  ) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
+      tap((event) => {
+        if (event instanceof HttpResponse) {
+          // Check the status code and navigate to login if it's 401
+          if (event.status === 401) {
+            this.tokenStorage.signOut();
+          }
+        }
+      }),
       catchError((err) => {
         if ([401, 403].includes(err.status) && this.authService.userValue) {
-          this.authService.logout();
+          this.tokenStorage.signOut();
         }
 
         const error = (err && err.error && err.error.message) || err.statusText;
