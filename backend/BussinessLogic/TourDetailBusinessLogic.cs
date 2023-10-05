@@ -7,6 +7,8 @@ using backend.Helper;
 using webapi.Dao.UnitofWork;
 using backend.Dtos.TourDetailDtos;
 using backend.Dao.Specification.TourDetailSpec;
+using backend.Dao.Specification.StaffSpec;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -14,10 +16,12 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
-        public TourDetailBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        public DataContext context;
+        public TourDetailBusinessLogic(IUnitofWork _unitofWork, IMapper mapper , DataContext context)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.context = context;
         }
 
         //list tourDetail
@@ -84,17 +88,42 @@ namespace backend.BussinessLogic
         //delete tourDetail
         public async Task Delete(int id)
         {
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var existingTourDetail = await unitofWork.Repository<TourDetail>().GetByIdAsync(id);
+                    if (existingTourDetail == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
 
-            var existingTourDetail = await unitofWork.Repository<TourDetail>().GetByIdAsync(id);
-            if (existingTourDetail == null)
-            {
-                throw new NotFoundExceptions("not found");
-            }
-            await unitofWork.Repository<TourDetail>().Delete(existingTourDetail);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
+                    var TourDetailHaveOrderId = await unitofWork.Repository<Order>().GetAllWithAsync(new TourDetailDeleteOrderSpec(id));
+                    var TourDetailHaveOrderDetailId = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(new TourDetailDeleteOrderDetailSpec(id));
+                    if (TourDetailHaveOrderId.Any())
+                    {
+                        await unitofWork.Repository<Order>().DeleteRange(TourDetailHaveOrderId);
+                    }
+                    if (TourDetailHaveOrderDetailId.Any())
+                    {
+                        await unitofWork.Repository<OrderDetail>().DeleteRange(TourDetailHaveOrderDetailId);
+                    }
+
+                    await unitofWork.Repository<TourDetail>().Delete(existingTourDetail);
+
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
         }
         public async Task<TourDetail?> GetTourDetailAsync(int id)

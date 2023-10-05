@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using backend.Dao.Specification;
-using backend.Dao.Specification.HotelSpec;
-using backend.Dao.Specification.Order1;
 using backend.Dao.Specification.OrderSpec;
-using backend.Dtos.HotelDtos;
+using backend.Dao.Specification.Order1;
 using backend.Dtos.OrderDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -16,11 +15,12 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
-
-        public OrderBusinessLogic(IUnitofWork _unitofWork ,IMapper _mapper)
+        public DataContext context;
+        public OrderBusinessLogic(IUnitofWork _unitofWork ,IMapper _mapper , DataContext context)
         {
             unitofWork = _unitofWork;
             mapper = _mapper;
+            this.context = context;
         }
 
         //list order
@@ -82,16 +82,37 @@ namespace backend.BussinessLogic
         public async Task Delete(int id)
         {
 
-            var existingOrder = await unitofWork.Repository<Order>().GetByIdAsync(id);
-            if (existingOrder == null)
+            using (var transaction = context.Database.BeginTransaction())
             {
-                throw new NotFoundExceptions("not found");
-            }
-            await unitofWork.Repository<Order>().Delete(existingOrder);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi"); 
+                try
+                {
+                    var existingOrder = await unitofWork.Repository<Order>().GetByIdAsync(id);
+                    if (existingOrder == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+
+                    var orderDetailHaveOrderId = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(new OrderDeleteOrderDetailSpec(id));
+                    if (orderDetailHaveOrderId.Any())
+                    {
+                        await unitofWork.Repository<OrderDetail>().DeleteRange(orderDetailHaveOrderId);
+                    }
+
+                    await unitofWork.Repository<Order>().Delete(existingOrder);
+
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
         }
         public async Task<Order> GetEntityByCondition(int TourDetailID)

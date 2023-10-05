@@ -8,7 +8,7 @@ namespace backend.Dao.Specification.ItinerarySpec
         public SearchItinerarySpec(SpecParams param)
             : base(l =>
             string.IsNullOrEmpty(param.Search) ||
-            param.Search.ToLower().Contains(l.tour.Name.ToLower())
+            l.tour.Name.ToLower().Contains(param.Search.ToLower()) && (param.IsActive == null || l.IsActive == param.IsActive)
         )
         {
             Includes.Add(s => s.tour);

@@ -5,15 +5,15 @@ namespace backend.Dao.Specification.TourSpec
 {
     public class SearchTourSpec : BaseSpecification<Tour>
     {
-        public SearchTourSpec(TourSpecParams param)
+        public SearchTourSpec(SpecParams param)
             : base(l =>
             (string.IsNullOrEmpty(param.Search) ||
-            param.Search.ToLower().Contains(l.Name.ToLower())) &&
-                (param.Category_Tour == null || l.category.Name.Contains(param.Category_Tour)) &&
-                (param.Rating == null || l.Rating == param.Rating) &&
-                (param.Price == null || l.Price == param.Price) 
-            //&&
-            //    (param.Departure_Time == null || l.TourDetail == param.Rating)
+            l.Name.ToLower().Contains(param.Search.ToLower())) &&
+
+                (param.Rating == null || l.Rating == param.Rating) && (param.IsActive == null || l.IsActive == param.IsActive)
+
+        //&&
+        //    (param.Departure_Time == null || l.TourDetail == param.Rating)
         )
         {
             Includes.Add(s => s.category);

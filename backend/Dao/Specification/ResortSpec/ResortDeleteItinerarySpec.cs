@@ -6,7 +6,7 @@ namespace backend.Dao.Specification.ResortSpec
     public class ResortDeleteItinerarySpec : BaseSpecification<Itinerary>
     {
         public ResortDeleteItinerarySpec(int resortId)
-        : base(l => l.ParentId == resortId && l.Type == "Resort")
+        : base(query => query.ResortID == resortId && query.Type.Contains("Resort"))
         {
         }
     }

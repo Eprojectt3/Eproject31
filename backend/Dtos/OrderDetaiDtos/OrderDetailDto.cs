@@ -5,6 +5,7 @@ namespace backend.Dtos.OrderDetaiDtos
 {
     public class OrderDetailDto
     {
+        public int? Id { get; set; }
         public int? OrderID { get; set; }
         public int? Quantity { get; set; }
         public double? Price { get; set; }

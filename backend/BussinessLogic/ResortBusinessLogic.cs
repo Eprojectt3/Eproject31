@@ -6,7 +6,9 @@ using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
 using backend.Dtos.ResortDtos;
-
+using webapi.Data;
+using backend.Dao.Specification.RestaurantSpec;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.BussinessLogic
 {
@@ -16,13 +18,14 @@ namespace backend.BussinessLogic
         public IMapper mapper;
         private ImageService Image;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public ResortBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, ImageService Image, IHttpContextAccessor _httpContextAccessor)
+        private DataContext context;
+        public ResortBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, ImageService Image, IHttpContextAccessor _httpContextAccessor, DataContext dataContext)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
             this.Image = Image;
             this._httpContextAccessor = _httpContextAccessor;
+            context = dataContext;
         }
 
         //list resort
@@ -130,22 +133,39 @@ namespace backend.BussinessLogic
         //delete resort
         public async Task Delete(int id)
         {
-            var existingResorts = await unitofWork.Repository<Resorts>().GetByIdAsync(id);
-            var itineraryHaveResortId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new ResortDeleteItinerarySpec(id));
-            if (existingResorts == null)
+
+            using (var transaction = context.Database.BeginTransaction())
             {
-                throw new NotFoundExceptions("not found");
+                try
+                {
+                    var existingResorts = await unitofWork.Repository<Resorts>().GetByIdAsync(id);
+                    if (existingResorts == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+                    var itineraryHaveResortId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new ResortDeleteItinerarySpec(id));
+                    if (itineraryHaveResortId.Any())
+                    {
+                        await unitofWork.Repository<Itinerary>().DeleteRange(itineraryHaveResortId);
+                    }
+
+                    await unitofWork.Repository<Resorts>().Delete(existingResorts);
+
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
-            foreach (var iteam in itineraryHaveResortId)
-            {
-                await unitofWork.Repository<Itinerary>().Delete(iteam);
-            }
-            await unitofWork.Repository<Resorts>().Delete(existingResorts);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
-            }
+       
         }
 
         //get resort by id
@@ -187,18 +207,41 @@ namespace backend.BussinessLogic
         public async Task<Pagination<ResortDto>> SelectAllResortsPagination(SpecParams specParams)
         {
 
+            var httpRequest = _httpContextAccessor.HttpContext.Request;
             var spec = new SearchResortSpec(specParams);
-            var resorts = await unitofWork.Repository<Resorts>().GetAllWithAsync(spec);
+            var result = new List<ResortDto>();
+            int count = await unitofWork.Repository<Resorts>().GetCountWithSpecAsync(spec);
+            var resortPage = new List<Resorts>();
+            if (string.IsNullOrEmpty(specParams.Search) && string.IsNullOrEmpty(specParams.Location) && specParams.Rating == null)
+            {
+                resortPage = await context.Resorts.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
+            }
+            else
+            {
+                var resorts = await unitofWork.Repository<Resorts>().GetAllWithAsync(spec);
 
-            var data = mapper.Map<IReadOnlyList<Resorts>, IReadOnlyList<ResortDto>>(resorts);
-            var resortPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+                resortPage = resorts.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
 
-            var countSpec = new SearchResortSpec(specParams);
-            var count = await unitofWork.Repository<Resorts>().GetCountWithSpecAsync(countSpec);
-
+            }
+            foreach (var resort in resortPage)
+            {
+                var location = context.Locations.FirstOrDefault(l => l.ID == resort.Id);
+                var resortInfo = new ResortDto
+                {
+                    Id = resort.Id,
+                    Name = resort.Name,
+                    Price_range = resort.Price_range,
+                    Rating = resort.Rating,
+                    LocationId = resort.LocationId,
+                    Location = location.State,
+                    PhoneNumber = resort.PhoneNumber,
+                    UrlImage = Image.GetUrlImage(resort.Name, "resort", httpRequest)
+                };
+                result.Add(resortInfo);
+            }
             var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
 
-            var pagination = new Pagination<ResortDto>(specParams.PageIndex, specParams.PageSize, resortPage, count, totalPageIndex);
+            var pagination = new Pagination<ResortDto>(specParams.PageIndex, specParams.PageSize, result, count, totalPageIndex);
 
             return pagination;
         }

@@ -6,6 +6,7 @@ using backend.Dtos.HotelDtos;
 using backend.Dtos.ItineraryDtos;
 using backend.Dtos.LocationDtos;
 using backend.Dtos.OrderDetaiDtos;
+using backend.Dtos.OrderDtos;
 using backend.Dtos.PaymentDtos;
 using backend.Dtos.ResortDtos;
 using backend.Dtos.RestaurantDtos;
@@ -62,6 +63,11 @@ namespace backend.Helper
                 .ForMember(s => s.User_Name, otp => otp.MapFrom(o => o.Users.Name));
 
             CreateMap<Tour_Detail_PaymentPaypal_Dto, TourDetail>().ReverseMap();
+            CreateMap<Tour, TourPageDto>()
+                .ForMember(s => s.category_Name, otp => otp.MapFrom(o => o.category.Name))
+                .ForMember(s => s.Transportation_Name, otp => otp.MapFrom(o => o.transportation.Name));
+            CreateMap<Transportation, TransportationDto>().ReverseMap();
+            CreateMap<Order, OrderDtos>().ReverseMap();
         }
     }
 }
