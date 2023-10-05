@@ -10,7 +10,7 @@ namespace backend.Dao.Specification.TourSpec
             (string.IsNullOrEmpty(param.Search) ||
             l.Name.ToLower().Contains(param.Search.ToLower())) &&
 
-                (param.Rating == null || l.Rating == param.Rating) && (l.IsActive == true)
+                (param.Rating == null || l.Rating == param.Rating) && (param.IsActive == null || l.IsActive == param.IsActive)
 
         //&&
         //    (param.Departure_Time == null || l.TourDetail == param.Rating)
