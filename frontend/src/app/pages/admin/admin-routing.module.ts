@@ -6,6 +6,7 @@ import { ListCategoriesComponent } from './admin-category/list-categories/list-c
 import { ListToursComponent } from './admin-tour/list-tours/list-tours.component';
 import { ListHotelsComponent } from './admin-hotel/list-hotels/list-hotels.component';
 import { CreateHotelComponent } from './admin-hotel/create-hotel/create-hotel.component';
+import { DetailHotelComponent } from './admin-hotel/detail-hotel/detail-hotel.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'create',
         component: CreateHotelComponent,
+      },
+      {
+        path: 'detail/:id',
+        component: DetailHotelComponent,
       },
     ],
   },

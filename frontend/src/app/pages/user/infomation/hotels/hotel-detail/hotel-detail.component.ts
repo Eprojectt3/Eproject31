@@ -1,34 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { faFacebook ,faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { Hotel } from 'src/app/models/hotel';
+import { faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
+
 import { HotelService } from 'src/app/services/hotel.service';
 import { TitleService } from 'src/app/services/title.service';
+import { Hotel } from '../../../../../models/hotel';
 
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
-  styleUrls: ['./hotel-detail.component.scss']
+  styleUrls: ['./hotel-detail.component.scss'],
 })
 export class HotelDetailComponent implements OnInit {
-  hotels!: Hotel[] ;
+  hotel!: Hotel;
   selectedHotelId: number | null = null;
-  constructor(private titleService: TitleService , private hotelService:HotelService) {}
+
+  constructor(
+    private titleService: TitleService,
+    private hotelService: HotelService,
+  ) {}
 
   fatwitter = faTwitter;
   faFace = faFacebook;
 
   ngOnInit(): void {
     this.titleService.setTitleValue('Hotels Detail');
-
   }
-  }
+}
 
-
-  // Hàm để chọn khách sạn và lấy thông tin chi tiết
-  // selectHotel(hotelId: number): void {
-  //   this.selectedHotelId = hotelId;
-  //   this.getHotelDetail();
-  // }
-
-
-
+// Hàm để chọn khách sạn và lấy thông tin chi tiết
+// selectHotel(hotelId: number): void {
+//   this.selectedHotelId = hotelId;
+//   this.getHotelDetail();
+// }

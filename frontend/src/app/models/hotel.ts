@@ -1,28 +1,30 @@
 export interface Hotel {
-  id?: number;
-  name?: string;
-  rating?: number | null;
-  price_range?: string;
-  createDate? : Date;
-  description: string;
-  image?: string;
-  imageDetail?: string;
-  address? : string;
-  createBy?: string;
-  isActive? : boolean;
-  intineraries?: any;
-  links? :string;
-  location1? :any;
-  locationId?: number;
-  phoneNumber?: number;
-  updateBy?: string;
-  updateDate?: Date;
+    id?: number;
+    name?: string;
+    rating?: number | null;
+    price_range?: string;
+    createDate?: Date;
+    description: string;
+    image?: string;
+    imageDetail?: string;
+    address?: string;
+    createBy?: string;
+    isActive?: boolean;
+    intineraries?: any;
+    links?: string;
+    location1?: any;
+    locationId?: number;
+    phoneNumber?: number;
+    updateBy?: string;
+    updateDate?: Date;
+    urlImage?: string[]
 
-  // quantityLimit?: number;
-  // type?: boolean | false;
-  // transportation?: string;
-  // discount?: string;
+    // quantityLimit?: number;
+    // type?: boolean | false;
+    // transportation?: string;
+    // discount?: string;
 }
+
 // export const hotels: Hotel[] = [
 //   {
 //     id: 1,
@@ -38,8 +40,4 @@ export interface Hotel {
 //     transportation: 'plane',
 //     discount: '20%',
 //   },
-<<<<<<< HEAD
-// ]
-=======
-// ];
->>>>>>> d1c9547 (category fe son)
+

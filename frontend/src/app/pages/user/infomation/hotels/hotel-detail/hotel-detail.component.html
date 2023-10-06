@@ -9,24 +9,24 @@
         Karnel Travels
       </h2>
       <!-- <div>
-        <a href="" class="p-[20px] font-bold"
-          ><fa-icon
-            class="xl:text-[23px] 2xl:text-[23px] lg:text-[23px] text-[15px] text-[#F44336] pr-[5px]"
-            [icon]="faFace"
-          ></fa-icon
-          >FaceBook</a
-        >
-        <a href="" class="p-[20px] font-bold"
-          ><fa-icon
-            class="xl:text-[23px] 2xl:text-[23px] lg:text-[23px] text-[15px] text-[#F44336] pr-[5px]"
-            [icon]="fatwitter"
-          ></fa-icon
-          >Twitter</a
-        >
-      </div> -->
+                          <a href="" class="p-[20px] font-bold"
+                            ><fa-icon
+                              class="xl:text-[23px] 2xl:text-[23px] lg:text-[23px] text-[15px] text-[#F44336] pr-[5px]"
+                              [icon]="faFace"
+                            ></fa-icon
+                            >FaceBook</a
+                          >
+                          <a href="" class="p-[20px] font-bold"
+                            ><fa-icon
+                              class="xl:text-[23px] 2xl:text-[23px] lg:text-[23px] text-[15px] text-[#F44336] pr-[5px]"
+                              [icon]="fatwitter"
+                            ></fa-icon
+                            >Twitter</a
+                          >
+                        </div> -->
     </div>
   </div>
-  <div *ngFor="let hotel of hotels" class="w-full pr-4 pl-4 mr-auto ml-auto">
+  <div class="w-full pr-4 pl-4 mr-auto ml-auto">
     <!-- Image -->
     <img
       class="xl:p-[10px] w-[100%] h-[563px]"
@@ -36,11 +36,11 @@
     <div class="text-center mb-12 pb-3 pt-7">
       <div>
         <h2 class="text-gray-800 leading-relaxed text-[45px]">
-          {{ hotel.name }}
+          {{ hotel?.name }}
         </h2>
       </div>
       <p class="text-[20px] text-[#999999] pt-[15px]">
-        {{ hotel.createDate }}
+        {{ hotel?.createDate }}
       </p>
     </div>
 
@@ -52,7 +52,7 @@
             Price range:
           </h2>
           <p class="text-orange-500 text-[25px] pl-[10px]">
-            {{ hotel.price_range }} - 2000
+            {{ hotel?.price_range }} - 2000
           </p>
         </div>
         <!-- Info -->
