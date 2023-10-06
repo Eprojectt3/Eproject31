@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorFormService } from '../../../../services/validator-form.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../../../../services/hotel.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FileSelectEvent } from 'primeng/fileupload';
 import { SnackbarService } from '../../../../services/snackbar.service';
+import { LocationService } from '../../../../services/location.service';
+import { Location } from '../../../../models/location.model';
 
 @Component({
   selector: 'app-create-hotel',
@@ -18,8 +20,8 @@ export class CreateHotelComponent implements OnInit {
   Editor = ClassicEditor;
   description!: any;
   uploadedImages: File[] = [];
-  dataForm: any;
-  formData :FormData = new FormData();
+  public locations!: Location[];
+  formData: FormData = new FormData();
 
   constructor(
     private fb: FormBuilder,
@@ -27,12 +29,17 @@ export class CreateHotelComponent implements OnInit {
     private route: ActivatedRoute,
     private hotelService: HotelService,
     private snackBar: SnackbarService,
+    private locationService: LocationService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.hotelService.hotelsSubject.subscribe(
       (val: any) => (this.hotels = val?.data),
     );
+
+    // Get list locations
+    this.getListLocations();
 
     this.loginForm = this.fb.group({
       name: [
@@ -64,18 +71,21 @@ export class CreateHotelComponent implements OnInit {
   }
 
   // Submit
-  onSubmit =async () => {
+  onSubmit = async () => {
     for (const uploadImage of this.uploadedImages) {
       this.formData.append('fileCollection', uploadImage, uploadImage.name);
-      // this.dataForm.fileCollection.push(uploadImage);
     }
     this.formData.append('Name', this.loginForm.controls['name'].value);
+    this.formData.append('Rating', '0');
     this.formData.append('Price_range', this.loginForm.controls['price'].value);
-    this.formData.append('Location', this.loginForm.controls['location'].value);
+    this.formData.append(
+      'LocationId',
+      this.loginForm.controls['location'].value,
+    );
+    console.log(this.loginForm.controls['location'].value);
     this.formData.append('Description', this.description);
     this.formData.append('Address', this.loginForm.controls['address'].value);
     this.formData.append('PhoneNumber', this.loginForm.controls['phone'].value);
-
 
     if (
       !this.loginForm.controls['name'].errors &&
@@ -88,12 +98,14 @@ export class CreateHotelComponent implements OnInit {
       this.hotelService.createHotel(this.formData).subscribe(
         (val) => {
           this.snackBar.openSnackBar('Create success', 'Success');
-          console.log(this.formData)
+          this.router.navigate(['/admin/hotels'], {
+            queryParams: { refresh: 'true' },
+          });
         },
         (err) => {
           console.log(err);
           this.snackBar.openSnackBar(err, 'Error');
-          console.log(this.formData)
+          console.log(this.formData);
         },
       );
     }
@@ -105,5 +117,13 @@ export class CreateHotelComponent implements OnInit {
     const uploadedImage = $event.files[0];
 
     this.uploadedImages.push(uploadedImage);
+  };
+
+  // Get List Location
+  public getListLocations = () => {
+    this.locationService.getListLocation().subscribe((val: any) => {
+      this.locations = val;
+      console.log(this.locations);
+    });
   };
 }

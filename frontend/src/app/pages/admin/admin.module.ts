@@ -37,6 +37,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DialogCreateComponent } from './admin-category/dialog-create/dialog-create.component';
+import { DetailHotelComponent } from './admin-hotel/detail-hotel/detail-hotel.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { ImageModule } from 'primeng/image';
 
 @NgModule({
   declarations: [
@@ -57,6 +60,7 @@ import { DialogCreateComponent } from './admin-category/dialog-create/dialog-cre
     DialogCreateComponent,
     UpdateCateComponent,
     CreateHotelComponent,
+    DetailHotelComponent,
   ],
   imports: [
     CommonModule,
@@ -79,6 +83,8 @@ import { DialogCreateComponent } from './admin-category/dialog-create/dialog-cre
     MatSelectModule,
     CKEditorModule,
     FileUploadModule,
+    MatDividerModule,
+    ImageModule,
   ],
   exports: [AdminComponent],
 })
