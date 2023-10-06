@@ -18,7 +18,7 @@ namespace backend.Entity
     public string? Description { get; set; }
     public string? Image { get; set; }
     public string? Price_range { get; set; }
-    public int? PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
     [ForeignKey(nameof(Location1.ID))]
     public int? LocationId { get; set; }

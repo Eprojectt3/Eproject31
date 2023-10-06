@@ -225,7 +225,7 @@ namespace backend.BussinessLogic
             }
             foreach (var resort in resortPage)
             {
-                var location = context.Locations.FirstOrDefault(l => l.ID == resort.Id);
+                var location = context.Locations.FirstOrDefault(l => l.ID == resort.LocationId);
                 var resortInfo = new ResortDto
                 {
                     Id = resort.Id,

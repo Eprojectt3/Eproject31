@@ -11,7 +11,7 @@ namespace backend.Entity
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Image { get; set; }
-        public int? Phone { get; set; }
+        public string? Phone { get; set; }
         public string? Email { get; set; }
         public string? PersonId { get; set; }
         public ICollection<TourDetail>? TourDetails { get; set; }
