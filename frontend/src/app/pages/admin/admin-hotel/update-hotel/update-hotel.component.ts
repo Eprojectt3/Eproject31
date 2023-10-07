@@ -1,43 +1,52 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ValidatorFormService } from '../../../../services/validator-form.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../../../../services/hotel.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { FileSelectEvent } from 'primeng/fileupload';
+import { ValidatorFormService } from '../../../../services/validator-form.service';
 import { SnackbarService } from '../../../../services/snackbar.service';
-import { LocationService } from '../../../../services/location.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '../../../../models/location.model';
+import { LocationService } from '../../../../services/location.service';
+import { FileSelectEvent } from 'primeng/fileupload';
+import { Hotel } from '../../../../models/hotel';
 
 @Component({
-  selector: 'app-create-hotel',
-  templateUrl: './create-hotel.component.html',
-  styleUrls: ['./create-hotel.component.scss'],
+  selector: 'app-update-hotel',
+  templateUrl: './update-hotel.component.html',
+  styleUrls: ['./update-hotel.component.scss'],
 })
-export class CreateHotelComponent implements OnInit {
+export class UpdateHotelComponent implements OnInit {
+  formData: FormData = new FormData();
   loginForm!: FormGroup;
-  hotels!: any;
   Editor = ClassicEditor;
   description!: any;
   uploadedImages: File[] = [];
-  public locations!: Location[];
-  formData: FormData = new FormData();
-  dataForm: any;
+  locations!: Location[];
+  hotel!: Hotel;
+  id!: number;
+  location!: any;
+  hotelDetail!: any;
+  urlImages: string[] = [];
 
   constructor(
+    private hotelService: HotelService,
     private fb: FormBuilder,
     public validatorForm: ValidatorFormService,
-    private route: ActivatedRoute,
-    private hotelService: HotelService,
-    private snackBar: SnackbarService,
-    private locationService: LocationService,
-    private router: Router
+    public snackBar: SnackbarService,
+    public router: Router,
+    public locationService: LocationService,
+    public route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.hotelService.hotelsSubject.subscribe(
-      (val: any) => (this.hotels = val?.data)
-    );
+    // Get Hotel
+
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.hotelService.getDetailHotel(this.id).subscribe((val: any) => {
+      this.hotel = val;
+      this.formData.append('Id', val.id);
+    });
 
     // Get list locations
     this.getListLocations();
@@ -69,13 +78,29 @@ export class CreateHotelComponent implements OnInit {
       ],
       images: [null],
     });
+
+    this.hotelService.hotelsSubject.subscribe((val: any) => {
+      this.loginForm.controls['name'].setValue(val.name);
+      this.loginForm.controls['price'].setValue(val.price_range);
+      this.loginForm.controls['location'].setValue(val.locationId);
+      this.loginForm.controls['phone'].setValue(val.phoneNumber);
+      this.loginForm.controls['address'].setValue(val.address);
+      this.loginForm.controls['description'].setValue(val.description);
+      this.location = val.locationId;
+
+      for (let urlImage of val.urlImage) {
+        this.urlImages.push(urlImage);
+        console.log(this.urlImages);
+      }
+    });
   }
 
-  // Submit
   onSubmit = async () => {
     for (const uploadImage of this.uploadedImages) {
       this.formData.append('fileCollection', uploadImage, uploadImage.name);
+      console.log(uploadImage);
     }
+
     this.formData.append('Name', this.loginForm.controls['name'].value);
     this.formData.append('Rating', '0');
     this.formData.append('Price_range', this.loginForm.controls['price'].value);
@@ -87,17 +112,6 @@ export class CreateHotelComponent implements OnInit {
     this.formData.append('Address', this.loginForm.controls['address'].value);
     this.formData.append('PhoneNumber', this.loginForm.controls['phone'].value);
 
-    this.dataForm = {
-      Name: this.loginForm.controls['name'].value,
-      Rating: '0',
-      Price_range: this.loginForm.controls['price'].value,
-      LocationId: this.loginForm.controls['location'].value,
-      Description: this.description,
-      Address: this.loginForm.controls['address'].value,
-      PhoneNumber: this.loginForm.controls['phone'].value,
-      fileCollection: this.uploadedImages,
-    };
-
     if (
       !this.loginForm.controls['name'].errors &&
       !this.loginForm.controls['price'].errors &&
@@ -106,7 +120,7 @@ export class CreateHotelComponent implements OnInit {
       !this.loginForm.controls['description'].errors &&
       !this.loginForm.controls['address'].errors
     ) {
-      this.hotelService.createHotel(this.formData).subscribe(
+      this.hotelService.updateHotel(this.formData).subscribe(
         (val) => {
           this.snackBar.openSnackBar('Create success', 'Success');
           this.router.navigate(['/admin/hotels'], {
@@ -122,19 +136,10 @@ export class CreateHotelComponent implements OnInit {
     }
   };
 
-  // Upload Image
-
-  onSelect = ($event: FileSelectEvent) => {
-    const uploadedImage = $event.files[0];
-
-    this.uploadedImages.push(uploadedImage);
-  };
-
   // Get List Location
   public getListLocations = () => {
     this.locationService.getListLocation().subscribe((val: any) => {
       this.locations = val;
-      console.log(this.locations);
     });
   };
 
@@ -143,5 +148,12 @@ export class CreateHotelComponent implements OnInit {
     this.uploadedImages = this.uploadedImages.filter((val: File) => {
       return val !== event.file;
     });
+  };
+
+  // Upload Image
+  public onSelect = ($event: FileSelectEvent) => {
+    const uploadedImage = $event.files[0];
+
+    this.uploadedImages.push(uploadedImage);
   };
 }

@@ -14,12 +14,15 @@ export class ToursListComponent implements OnInit {
 
   tours: Tour[] = tours;
 
-  constructor(private titleService: TitleService, private tourService:TourService) {}
+  constructor(
+    private titleService: TitleService,
+    private tourService: TourService
+  ) {}
 
   ngOnInit(): void {
     this.titleService.setTitleValue('Tours list');
-    this.tourService.getListTour().subscribe((val)=>{
-      console.log(val)
-    })
+    this.tourService.getListTour().subscribe((val) => {
+      console.log(val);
+    });
   }
 }

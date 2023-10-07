@@ -36,7 +36,7 @@ export class ListHotelsComponent implements OnInit {
     private hotelService: HotelService,
     private router: Router,
     private snackBar: SnackbarService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +80,7 @@ export class ListHotelsComponent implements OnInit {
       (err) => {
         this.snackBar.openSnackBar(err, 'Error');
         console.log(err);
-      },
+      }
     );
   };
 
@@ -94,5 +94,11 @@ export class ListHotelsComponent implements OnInit {
     const currentUrl: string = this.router.url;
 
     return currentUrl.includes('/admin/hotels/detail/');
+  };
+
+  public isUpdateHotel = (): boolean => {
+    const currentUrl: string = this.router.url;
+
+    return currentUrl.includes('/admin/hotels/update/');
   };
 }

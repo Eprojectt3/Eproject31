@@ -55,8 +55,11 @@
 
                   <!-- Card Content -->
                   <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
-                    <p class="text-[10px] text-[#181E4B] xl:!text-[13px]">
-                      {{ res.description | truncate }}
+                    <p
+                      [innerHTML]="res.description"
+                      class="text-[10px] text-[#181E4B] xl:!text-[12px] h-[50px] overflow-hidden"
+                    >
+                      <!-- {{ res.description | truncate }} -->
                     </p>
                   </mat-card-content>
 

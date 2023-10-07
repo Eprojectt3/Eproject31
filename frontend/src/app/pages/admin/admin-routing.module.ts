@@ -7,6 +7,8 @@ import { ListToursComponent } from './admin-tour/list-tours/list-tours.component
 import { ListHotelsComponent } from './admin-hotel/list-hotels/list-hotels.component';
 import { CreateHotelComponent } from './admin-hotel/create-hotel/create-hotel.component';
 import { DetailHotelComponent } from './admin-hotel/detail-hotel/detail-hotel.component';
+import { UpdateHotelComponent } from './admin-hotel/update-hotel/update-hotel.component';
+import { CreateTourComponent } from './admin-tour/create-tour/create-tour.component';
 
 const routes: Routes = [
   {
@@ -17,14 +19,10 @@ const routes: Routes = [
     path: 'categories',
     component: ListCategoriesComponent,
   },
-  { path: '', component: AdminComponent, pathMatch: 'full' },
-  {
-    path: 'categories',
-    component: ListCategoriesComponent,
-  },
   {
     path: 'tours',
     component: ListToursComponent,
+    children: [{ path: 'create', component: CreateTourComponent }],
   },
   {
     path: 'hotels',
@@ -38,8 +36,14 @@ const routes: Routes = [
         path: 'detail/:id',
         component: DetailHotelComponent,
       },
+      {
+        path: 'update/:id',
+        component: UpdateHotelComponent,
+      },
     ],
   },
+
+  { path: '', component: AdminComponent, pathMatch: 'full' },
 ];
 
 @NgModule({

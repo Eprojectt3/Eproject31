@@ -40,6 +40,8 @@ import { DialogCreateComponent } from './admin-category/dialog-create/dialog-cre
 import { DetailHotelComponent } from './admin-hotel/detail-hotel/detail-hotel.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { ImageModule } from 'primeng/image';
+import { UpdateHotelComponent } from './admin-hotel/update-hotel/update-hotel.component';
+import { CreateTourComponent } from './admin-tour/create-tour/create-tour.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,8 @@ import { ImageModule } from 'primeng/image';
     UpdateCateComponent,
     CreateHotelComponent,
     DetailHotelComponent,
+    UpdateHotelComponent,
+    CreateTourComponent,
   ],
   imports: [
     CommonModule,

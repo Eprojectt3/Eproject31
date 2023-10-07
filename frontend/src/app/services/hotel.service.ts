@@ -26,7 +26,7 @@ export class HotelService {
   // Get list hotels pagination
   public getListHotelPagination = (
     pageIndex?: number,
-    pageSize: number = 10,
+    pageSize: number = 10
   ): Observable<Hotel[]> => {
     return this.httpClient
       .post<Hotel[]>(
@@ -35,17 +35,16 @@ export class HotelService {
           pageIndex: pageIndex,
           pageSize: pageSize,
         },
-        httpOptions,
+        httpOptions
       )
       .pipe(tap((val) => this.hotelsSubject.next(val)));
   };
 
   // Get detail hotel
   public getDetailHotel = (id: number): Observable<any> => {
-    return this.httpClient.get(
-      `${AUTH_API}/api/Hotel/GetByHotelId/${id}`,
-      httpOptions,
-    );
+    return this.httpClient
+      .get(`${AUTH_API}/api/Hotel/GetByHotelId/${id}`, httpOptions)
+      .pipe(tap((val: any) => this.hotelsSubject.next(val)));
   };
 
   // Create hotel
@@ -56,5 +55,10 @@ export class HotelService {
   // Delete hotel
   public deleteHotel = (id: number): Observable<any> => {
     return this.httpClient.delete(`${AUTH_API}/api/Hotel/Delete/${id}`);
+  };
+
+  // Update hotel
+  public updateHotel = (data: any): Observable<any> => {
+    return this.httpClient.put(`${AUTH_API}/api/Hotel/Update`, data);
   };
 }
