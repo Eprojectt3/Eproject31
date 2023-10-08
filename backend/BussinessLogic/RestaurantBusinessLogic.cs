@@ -68,7 +68,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("Restaurant not found");
             }
 
-            if (await IsRestaurantNameDuplicate(restaurant.Address))
+            if (await IsRestaurantNameDuplicate(restaurant.Address,restaurant.Id))
             {
                 throw new BadRequestExceptions("Restaurant Address is exist.");
             }
@@ -121,7 +121,7 @@ namespace backend.BussinessLogic
             existingRestaurant.Description = restaurant.Description;
             existingRestaurant.Links = restaurant.Links;
             existingRestaurant.LocationId = restaurant.LocationId;
-            if (await IsRestaurantNameDuplicate(restaurant.Address))
+            if (await IsRestaurantNameDuplicate(restaurant.Address,restaurant.Id))
             {
                 throw new BadRequestExceptions("Restaurant Address is exist.");
             }
@@ -199,12 +199,12 @@ namespace backend.BussinessLogic
         }
 
         //duplicate name
-        private async Task<bool> IsRestaurantNameDuplicate(string restaurantName)
+        private async Task<bool> IsRestaurantNameDuplicate(string restaurantName,int id)
         {
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateRestaurant = await unitofWork
                 .Repository<Restaurant>()
-                .GetEntityWithSpecAsync(new RestaurantByAddressSpecification(restaurantName));
+                .GetEntityWithSpecAsync(new RestaurantByAddressSpecification(restaurantName, id));
 
             return duplicateRestaurant != null;
         }

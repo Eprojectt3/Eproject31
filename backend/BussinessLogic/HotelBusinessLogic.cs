@@ -70,7 +70,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("Hotel not found");
             }
 
-            if (await IsHotelAddressDuplicate(hotel.Address))
+            if (await IsHotelAddressDuplicate(hotel.Address,hotel.Id))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
@@ -125,7 +125,7 @@ namespace backend.BussinessLogic
             existingHotel.Rating = hotel.Rating;
             existingHotel.Description = hotel.Description;
             existingHotel.Links = hotel.Links;
-            if (await IsHotelAddressDuplicate(hotel.Address))
+            if (await IsHotelAddressDuplicate(hotel.Address,hotel.Id))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
@@ -202,12 +202,12 @@ namespace backend.BussinessLogic
         }
 
         //duplicate name
-        private async Task<bool> IsHotelAddressDuplicate(string hotelName)
+        private async Task<bool> IsHotelAddressDuplicate(string hotelName,int id)
         {
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateHotel = await unitofWork
                 .Repository<Hotel>()
-                .GetEntityWithSpecAsync(new HotelByAddressSpecification(hotelName));
+                .GetEntityWithSpecAsync(new HotelByAddressSpecification(hotelName,id));
 
             return duplicateHotel != null;
         }
