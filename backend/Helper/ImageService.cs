@@ -1,4 +1,5 @@
-﻿using backend.Entity;
+﻿using System.Runtime.InteropServices;
+using backend.Entity;
 
 namespace backend.Helper
 {
@@ -12,6 +13,10 @@ namespace backend.Helper
         }
         private string GetFilepath(string productcode, string type)
         {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return this.environment.WebRootPath + $"/Upload/{type}/" + productcode;
+            }
             return this.environment.WebRootPath + $"\\Upload\\{type}\\" + productcode;
         }
         public List<string> GetUrlImage(string productcode, string type, HttpRequest httpRequest)
@@ -29,12 +34,27 @@ namespace backend.Helper
                     foreach (FileInfo fileInfo in fileInfos)
                     {
                         string filename = fileInfo.Name;
-                        string imagepath = Filepath + "\\" + filename;
-                        if (System.IO.File.Exists(imagepath))
+                        string imagepath;
+
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                         {
-                            string _Imageurl = hosturl + "/Upload/" + type + "/" + productcode + "/" + filename;
-                            Imageurl.Add(_Imageurl);
+                            imagepath = Filepath + "/" + filename;
+                            if (System.IO.File.Exists(imagepath))
+                            {
+                                string _Imageurl = hosturl + "/Upload/" + type + "/" + productcode + "/" + filename;
+                                Imageurl.Add(_Imageurl);
+                            }
+                        }else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                             imagepath = Filepath + "\\" + filename;
+                             if (System.IO.File.Exists(imagepath))
+                             {
+                                 string _Imageurl = hosturl + "/Upload/" + type + "/" + productcode + "/" + filename;
+                                 Imageurl.Add(_Imageurl);
+                             }
                         }
+                        // string imagepath = Filepath + "\\" + filename;
+
                     }
                 }
                 return Imageurl;
@@ -57,17 +77,35 @@ namespace backend.Helper
                 var result = new List<string>();
                 foreach (var file in fileCollection)
                 {
-                    string imagepath = Filepath + "\\" + file.FileName;
-                    if (System.IO.File.Exists(imagepath))
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     {
-                        System.IO.File.Delete(imagepath);
-                    }
-                    using (FileStream stream = System.IO.File.Create(imagepath))
-                    {
-                         file.CopyToAsync(stream);
+                        string imagepath = Filepath + "\\" + file.FileName;
+                        if (System.IO.File.Exists(imagepath))
+                        {
+                            System.IO.File.Delete(imagepath);
+                        }
+                        using (FileStream stream = System.IO.File.Create(imagepath))
+                        {
+                            file.CopyToAsync(stream);
 
+                        }
+                        result.Add(file.FileName);
+                    } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    {
+                        string imagepath = Filepath + "/" + file.FileName;
+                        if (System.IO.File.Exists(imagepath))
+                        {
+                            System.IO.File.Delete(imagepath);
+                        }
+                        using (FileStream stream = System.IO.File.Create(imagepath))
+                        {
+                            file.CopyToAsync(stream);
+
+                        }
+                        result.Add(file.FileName);
                     }
-                    result.Add(file.FileName);
+
+
                 }
                 return result;
             }
