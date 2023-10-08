@@ -14,17 +14,27 @@ import { TitleService } from 'src/app/services/title.service';
 export class ResortsListComponent {
   filters: Filter[] = filter;
 
-  resorts!: Resort[]
+  resorts!: Resort[];
   selected = 'none';
 
-  constructor(private titleService: TitleService, private resortSecvice :ResortService) {}
+  constructor(
+    private titleService: TitleService,
+    private resortSecvice: ResortService
+  ) {}
 
   ngOnInit(): void {
-
     this.titleService.setTitleValue('Resort List');
-    this.resortSecvice.getListResort().subscribe((val:any)=>{
+    this.resortSecvice.getListResort().subscribe((val: any) => {
       this.resorts = val;
-      console.log( this.resorts = val)
-    })
+      for (let resort of this.resorts) {
+        const firstPeriodIndex = resort.description.indexOf('.');
+        if (firstPeriodIndex !== -1) {
+          resort.description = resort.description.slice(
+            0,
+            firstPeriodIndex + 1
+          );
+        }
+      }
+    });
   }
 }

@@ -2,7 +2,7 @@
   <div class="px-5">
     <!--        Title-->
     <div class="mb-[20px]">
-      <h1 class="font-bold text-[25px]">Create hotel</h1>
+      <h1 class="font-bold text-[25px]">Update hotel</h1>
     </div>
 
     <!--        Form-->
@@ -122,12 +122,13 @@
             (onSelect)="onSelect($event)"
             (onRemove)="onRemove($event)"
           ></p-fileUpload>
-          <!-- <input
-            type="file"
-            accept="image/*"
-            multiple
-            (change)="uploadFile($event)"
-          /> -->
+
+          <!--          <input type="file" (change)="uploadFile($event)" />-->
+          <div class="list-img">
+            <ul *ngFor="let urlImage of urlImages">
+              <li><img [src]="urlImage" alt="error" /></li>
+            </ul>
+          </div>
         </div>
 
         <!--        Button create-->

@@ -17,22 +17,29 @@ export class HotelsListComponent implements OnInit {
   hotels!: Hotel[];
   selected = 'none';
 
-
   constructor(
     private titleService: TitleService,
-    private hotelService: HotelService,
+    private hotelService: HotelService
   ) {}
 
   ngOnInit(): void {
-    this.titleService.setTitleValue('HoTel List');
-    this.hotelService.getListHotel().subscribe((val: any) => {
-      this.hotels = val;
-      console.log( this.hotels = val)
-    },
-    (error) => {
+    this.titleService.setTitleValue('Hotel List');
+    this.hotelService.getListHotel().subscribe(
+      (val: any) => {
+        this.hotels = val;
+        for (let hotel of this.hotels) {
+          const firstPeriodIndex = hotel.description.indexOf('.');
+          if (firstPeriodIndex !== -1) {
+            hotel.description = hotel.description.slice(
+              0,
+              firstPeriodIndex + 1
+            );
+          }
+        }
+      },
+      (error) => {
         console.error('Error fetching hotels:', error);
-      });
-
+      }
+    );
   }
-
 }

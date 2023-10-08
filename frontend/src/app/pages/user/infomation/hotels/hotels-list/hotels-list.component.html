@@ -32,7 +32,7 @@
       <!-- Card tour -->
       <div class="card-tour mt-[30px] xl:w-[80%] 2xl:w-[65%] m-auto mb-[35px]">
         <div class="flex flex-wrap -mx-4">
-          <div  *ngFor="let h of hotels" class="px-4 mb-[40px] xl:w-1/4" >
+          <div *ngFor="let h of hotels" class="px-4 mb-[40px] xl:w-1/4">
             <script>
               console.log(h);
             </script>
@@ -57,8 +57,11 @@
 
                   <!-- Card Content -->
                   <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
-                    <p class="text-[10px] text-[#181E4B] xl:!text-[13px]">
-                      {{ h.description | truncate }}
+                    <p
+                      [innerHTML]="h.description"
+                      class="text-[10px] text-[#181E4B] xl:!text-[12px] h-[50px] overflow-hidden"
+                    >
+                      <!-- {{ h.description | truncate }} -->
                     </p>
                   </mat-card-content>
 

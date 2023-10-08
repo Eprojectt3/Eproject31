@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Hotel } from '../models/hotel';
 
+const AUTH_API: string = environment.apiUrl;
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
@@ -24,10 +25,40 @@ export class LocationService {
     return this.http
       .get<Location>(
         `${environment.apiUrl}/api/Location/ListLocation1`,
-        httpOptions,
+        httpOptions
       )
       .pipe(tap((val: any) => this.locationsSubject.next(val)));
   };
 
-  // Get list location pagination
+  // Get List Location Pagination
+  public getListLocationPagination = (
+    pageIndex?: number,
+    pageSize: number = 10
+  ): Observable<any> => {
+    return this.http
+      .post<Location[]>(
+        `${AUTH_API}/api/Location/ListLocation1Pagination`,
+        {
+          pageIndex: pageIndex,
+          pageSize: pageSize,
+        },
+        httpOptions
+      )
+      .pipe(tap((val) => this.locationsSubject.next(val)));
+  };
+
+  // Create Location
+  public createLocation = (data: any): Observable<any> => {
+    return this.http.post(`${AUTH_API}/api/Location/Add`, data);
+  };
+
+  // Delete Location
+  public deleteLocation = (id: number): Observable<any> => {
+    return this.http.delete(`${AUTH_API}/api/Location/Delete/${id}`);
+  };
+
+  // Update Location
+  public updateLocation = (data: any): Observable<any> => {
+    return this.http.put(`${AUTH_API}/api/Location/Update`, data);
+  };
 }
