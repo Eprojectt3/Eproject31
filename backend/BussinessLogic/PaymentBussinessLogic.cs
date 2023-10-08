@@ -114,7 +114,8 @@ namespace backend.BussinessLogic
         public async Task<string> CreateDataAsync(PaymentVnPayDtos paymentVnPay)
         {
             VnPayLibrary vnpay = new VnPayLibrary();
-           
+            using (var transaction = context.Database.BeginTransaction())
+            {
                 try
                 {
                     if (paymentVnPay.vnp_ResponseCode == "00" && paymentVnPay.vnp_TransactionStatus == "00")
@@ -151,27 +152,29 @@ namespace backend.BussinessLogic
                         exist_tour_detail.Quantity -= oderdetail.Quantity;
                         await TourDetailBusinessLogic.Update(exist_tour_detail);
 
-                // Lấy danh sách orderDetail liên quan đến tour_detail đã được thanh toán
+                        // Lấy danh sách orderDetail liên quan đến tour_detail đã được thanh toán
                         var list_orderdetail = await OrderDetailBusinessLogic.SelectAllOrderDetail2(exist_tour_detail.Id);
 
-                // Tính toán lại totalOrderPrice và totalOrderQuantity dựa trên danh sách orderDetail
-                var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);
-                var totalOrderQuantity = list_orderdetail.Sum(orderDetail => orderDetail.Quantity);
+                        // Tính toán lại totalOrderPrice và totalOrderQuantity dựa trên danh sách orderDetail
+                        var totalOrderPrice = list_orderdetail.Sum(orderDetail => orderDetail.Price);
+                        var totalOrderQuantity = list_orderdetail.Sum(orderDetail => orderDetail.Quantity);
 
-                // Cập nhật lại thông tin cho check_duplicate_order
-                check_duplicate_order.Price = totalOrderPrice;
-                check_duplicate_order.Number_people = totalOrderQuantity;
-                await OrderBusinessLogic.Update(check_duplicate_order);
-                //
-                return "Successfully";
+                        // Cập nhật lại thông tin cho check_duplicate_order
+                        check_duplicate_order.Price = totalOrderPrice;
+                        check_duplicate_order.Number_people = totalOrderQuantity;
+                        await OrderBusinessLogic.Update(check_duplicate_order);
+                        //
+                        transaction.Commit();
+                        return "Successfully";
 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("You have successfully paid but encounter problems during processing, please contact management");
+                }
             }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("You have successfully paid but encounter problems during processing, please contact management");
-            }
-            
             return "Payment failed";
 
         }
