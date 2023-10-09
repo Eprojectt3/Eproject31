@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Http;
 using webapi.Dao.UnitofWork;
 using webapi.Data;
 using Microsoft.EntityFrameworkCore;
+using backend.Dtos.HotelDtos;
+using backend.Dtos.RestaurantDtos;
+using backend.Dtos.StaffDtos;
 
 namespace backend.BussinessLogic
 {
@@ -54,7 +57,7 @@ namespace backend.BussinessLogic
                     tour.Transportation_ID,
                     tour.Departure_location,
                     //Thêm các trường cần thêm
-                    UrlImage = Image.GetUrlImage(tour.Name, "tour", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                    UrlImage = Image.GetUrlImage(tour.Name, "tour", httpRequest) // Gọi phương thức GetUrlImage11 cho từng bản ghi
                 };
 
                 result.Add(tourInfo);
@@ -67,8 +70,9 @@ namespace backend.BussinessLogic
         {
 
             var tour = mapper.Map<TourDto, Tour>(tourdto);
-
-            var images = Image.Upload_Image(tourdto.Name, "tour", tourdto.fileCollection);
+            var Name_replace = tourdto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + tour.CreateDate;
+            var images = Image.Upload_Image(image_folder, "tour", tourdto.fileCollection);
             foreach (var image in images)
             {
                 tour.AddImage(image);
@@ -113,10 +117,10 @@ namespace backend.BussinessLogic
 
 
         //update tour
-        public async Task Update(TourDto tourdto)
+        public async Task Update(Tour_Update_Dto tourdto)
         {
 
-            var tour = mapper.Map<TourDto, Tour>(tourdto);
+            var tour = mapper.Map<Tour_Update_Dto, Tour>(tourdto);
 
             var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(tour.Id);
 
@@ -124,7 +128,10 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
-            var images = Image.Upload_Image(tourdto.Name, "tour", tourdto.fileCollection);
+            var Name_replace = tourdto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + existingTour.CreateDate;
+            var images = Image.Update_Image(image_folder, existingTour.Name, "restaurant", tourdto.path, tourdto.fileCollection);
+            images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 tour.AddImage(image);

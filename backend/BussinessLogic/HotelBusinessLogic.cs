@@ -54,7 +54,6 @@ namespace backend.BussinessLogic
                     hotel.Address,
                     hotel.PhoneNumber,
                     hotel.Links,
-                    UrlImage = Image.GetUrlImage(hotel.Name, "hotel", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
                 };
 
                 result.Add(hotelInfo);
@@ -75,8 +74,9 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
-            var Name = hotelDto.Name.Replace(" ", "-");
-            var images = Image.Upload_Image(hotelDto.Name, "hotel", hotelDto.fileCollection);
+            var Name_replace = hotelDto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + hotel.CreateDate;
+            var images = Image.Upload_Image(image_folder, "hotel", hotelDto.fileCollection);
             foreach (var image in images)
             {
                 hotel.AddImage(image);
@@ -105,9 +105,9 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
-            var Name = hotelDto.Name.Replace(" ", "-");
-
-            var images = Image.Update_Image(hotelDto.Name, existingHotel.Name, "hotel", hotelDto.path, hotelDto.fileCollection) ;
+            var Name_replace = hotelDto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + existingHotel.CreateDate;
+            var images = Image.Update_Image(image_folder, existingHotel.Name, "hotel", hotelDto.path, hotelDto.fileCollection) ;
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
@@ -142,19 +142,19 @@ namespace backend.BussinessLogic
         }
 
         //delete hotel
-        public async Task<List<string>> Delete(DeleteDto delete)
+        public async Task<string> Delete(int Id)
         {
             using (var transaction = context.Database.BeginTransaction())
             {
                 try
                 {
-                    var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(delete.Id);
+                    var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(Id);
                     if (existingHotel == null)
                     {
                         throw new NotFoundExceptions("not found");
                     }
 
-                    var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(delete.Id));
+                    var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(Id));
                     if (itineraryHaveHotelId.Any())
                     {
                         await unitofWork.Repository<Itinerary>().DeleteRange(itineraryHaveHotelId);
@@ -167,7 +167,7 @@ namespace backend.BussinessLogic
                     {
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
-                    var delete_image = Image.DeleteImage(delete.Path);
+                    var delete_image = Image.DeleteImage(existingHotel.Name,"hotel");
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
                     return delete_image;
                 }
@@ -200,7 +200,7 @@ namespace backend.BussinessLogic
                 hotel.Address,
                 hotel.PhoneNumber,
                 hotel.Links,
-                urlImage = Image.GetUrlImage1(hotel.Name, "hotel", httpRequest)
+                urlImage = Image.GetUrlImage(hotel.Name, "hotel", httpRequest)
             };
             return result;
         }
@@ -245,7 +245,7 @@ namespace backend.BussinessLogic
                     Rating = restaurant.Rating,
                     PhoneNumber = restaurant.PhoneNumber,
                     Location = location.State,
-                    UrlImage = Image.GetUrlImage1(restaurant.Name, "hotel", httpRequest)
+                    UrlImage = Image.GetUrlImage(restaurant.Name, "hotel", httpRequest)
                 };
                 result.Add(restaurantInfo);
             }

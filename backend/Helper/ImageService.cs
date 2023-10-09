@@ -21,52 +21,6 @@ namespace backend.Helper
             }
             return this.environment.WebRootPath + $"\\Upload\\{type}\\" + productcode;
         }
-        public List<string> GetUrlImage(string productcode, string type, HttpRequest httpRequest)
-        {
-            List<string> Imageurl = new List<string>();
-            string hosturl = $"{httpRequest.Scheme}://{httpRequest.Host}{httpRequest.PathBase}";
-            try
-            {
-                string Filepath = GetFilepath(productcode, type);
-
-                if (System.IO.Directory.Exists(Filepath))
-                {
-                    DirectoryInfo directoryInfo = new DirectoryInfo(Filepath);
-                    FileInfo[] fileInfos = directoryInfo.GetFiles();
-                    foreach (FileInfo fileInfo in fileInfos)
-                    {
-                        string filename = fileInfo.Name;
-                        string imagepath;
-
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                        {
-                            imagepath = Filepath + "/" + filename;
-                            if (System.IO.File.Exists(imagepath))
-                            {
-                                string _Imageurl = hosturl + "/Upload/" + type + "/" + productcode + "/" + filename;
-                                Imageurl.Add(_Imageurl);
-                            }
-                        } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        {
-                            imagepath = Filepath + "\\" + filename;
-                            if (System.IO.File.Exists(imagepath))
-                            {
-                                string _Imageurl = hosturl + "/Upload/" + type + "/" + productcode + "/" + filename;
-                                Imageurl.Add(_Imageurl);
-                            }
-                        }
-                        // string imagepath = Filepath + "\\" + filename;
-
-                    }
-                }
-                return Imageurl;
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
         public List<string> Upload_Image(string productcode, string type, IFormFileCollection fileCollection)
         {
             try
@@ -124,7 +78,7 @@ namespace backend.Helper
         /// <param name="type"></param>
         /// <param name="httpRequest"></param>
         /// <returns></returns>
-        public List<ImageDto> GetUrlImage1(string productcode, string type, HttpRequest httpRequest)
+        public List<ImageDto> GetUrlImage(string productcode, string type, HttpRequest httpRequest)
         {
             var Imageurl = new List<ImageDto>();
             string hosturl = $"{httpRequest.Scheme}://{httpRequest.Host}{httpRequest.PathBase}";
@@ -188,6 +142,19 @@ namespace backend.Helper
             
             return result;
         }
+        public string DeleteImage(string productcode, string type)
+        {
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","Upload", type, productcode);
+                Directory.Delete(path, true);
+                return "Xóa Thành Công";
+            }catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         public List<string> Update_Image(string objectdto,string? object1,string type,List<string> paths,IFormFileCollection fileCollection)
         {
             List<string> result = new List<string>();
@@ -217,7 +184,7 @@ namespace backend.Helper
 
                 string get_curren_folder;
                 string subFolder = String.Equals(objectdto, object1, StringComparison.OrdinalIgnoreCase) ? objectdto : object1;
-                get_curren_folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Upload", type, subFolder);
+                get_curren_folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "C:\\C#\\Project3\\Eproject31\\backend\\wwwroot\\hotel\\test doi ten KHACH SAN TRANG VIET123", type, subFolder);
                 var get_curren_folde_img = Directory.GetFiles(get_curren_folder);
                 //lấy ảnh trong hệ thống và đưa vào trong mảng
                 foreach(var image_sever in get_curren_folde_img)
@@ -245,6 +212,7 @@ namespace backend.Helper
                                     file_image.CopyToAsync(fileStream);
                                 }
                             }
+
                         }
                         //khác tên productcode                
                         else

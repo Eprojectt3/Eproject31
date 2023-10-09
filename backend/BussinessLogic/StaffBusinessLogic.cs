@@ -9,6 +9,7 @@ using webapi.Dao.UnitofWork;
 using backend.Dtos.ResortDtos;
 using webapi.Data;
 using Microsoft.EntityFrameworkCore;
+using backend.Dtos.RestaurantDtos;
 
 namespace backend.BussinessLogic
 {
@@ -45,7 +46,7 @@ namespace backend.BussinessLogic
                     staff.Phone,
                     staff.Email,
                     staff.PersonId,
-                    UrlImage = Image.GetUrlImage(staff.Name, "staff", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                    UrlImage = Image.GetUrlImage(staff.Name, "staff", httpRequest) // Gọi phương thức GetUrlImage11 cho từng bản ghi
                 };
 
                 result.Add(staffInfo);
@@ -61,7 +62,9 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("Staff not found");
             }
-            var images = Image.Upload_Image(staffDto.Name, "staff", staffDto.fileCollection);
+            var Name_replace = staffDto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + staff.CreateDate;
+            var images = Image.Upload_Image(image_folder, "staff", staffDto.fileCollection);
             foreach (var image in images)
             {
                 staff.AddImage(image);
@@ -75,9 +78,9 @@ namespace backend.BussinessLogic
         }
 
         //update staff
-        public async Task Update(StaffImageDto staffDto)
+        public async Task Update(Staff_Update_Dto staffDto)
         {
-            var staff = mapper.Map<StaffImageDto, Staff>(staffDto);
+            var staff = mapper.Map<Staff_Update_Dto, Staff>(staffDto);
             if (staff is null)
             {
                 throw new NotFoundExceptions("not found");
@@ -89,7 +92,10 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
-            var images = Image.Upload_Image(staffDto.Name, "staff", staffDto.fileCollection);
+            var Name_replace = staffDto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + existingStaff.CreateDate;
+            var images = Image.Update_Image(image_folder, existingStaff.Name, "staff", staffDto.path, staffDto.fileCollection);
+            images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 staff.AddImage(image);

@@ -21,4 +21,9 @@ namespace backend.Dtos.TourDtos
 
         public IFormFileCollection fileCollection { get; set; }
     }
+    public class Tour_Update_Dto : TourDto
+    {
+        public List<string>? path { get; set; }
+
+    }
 }

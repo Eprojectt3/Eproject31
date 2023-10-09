@@ -42,7 +42,7 @@ namespace backend.Controllers
 
         //execute update staff
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] StaffImageDto staff)
+        public async Task<IActionResult> Update([FromForm] Staff_Update_Dto staff)
         {
 
             await staffBusinessLogic.Update(staff);
