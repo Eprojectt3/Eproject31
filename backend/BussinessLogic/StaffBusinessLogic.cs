@@ -63,7 +63,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("Staff not found");
             }
             var Name_replace = staffDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + staff.CreateDate;
+            var image_folder = Name_replace + "-" + staff.PersonId;
             var images = Image.Upload_Image(image_folder, "staff", staffDto.fileCollection);
             foreach (var image in images)
             {
@@ -93,15 +93,14 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var Name_replace = staffDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + existingStaff.CreateDate;
-            var images = Image.Update_Image(image_folder, existingStaff.Name, "staff", staffDto.path, staffDto.fileCollection);
+            var image_folder = Name_replace + "-" + existingStaff.PersonId;
+            var images = Image.Update_Image(image_folder, existingStaff.Name +"-" + existingStaff.PersonId, "staff", staffDto.path, staffDto.fileCollection);
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 staff.AddImage(image);
             }
             existingStaff.UpdateDate = staff.UpdateDate;
-            existingStaff.CreateDate = staff.CreateDate;
             existingStaff.UpdateBy = staff.UpdateBy;
             existingStaff.CreateBy = staff.CreateBy;
             existingStaff.IsActive = staff.IsActive;
@@ -148,7 +147,7 @@ namespace backend.BussinessLogic
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
                     var Name_replace = existingStaff.Name.Replace(" ", "-");
-                    var image_folder = Name_replace + "-" + existingStaff.CreateDate;
+                    var image_folder = Name_replace + "-" + existingStaff.PersonId;
                     var delete_image = Image.DeleteImage(image_folder, "staff");
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
                 }
@@ -167,6 +166,8 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
+            var Name_replace = staff.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + staff.PersonId;
             var httpRequest = _httpContextAccessor.HttpContext.Request;
             var result = new
             {
@@ -176,7 +177,7 @@ namespace backend.BussinessLogic
                 staff.Phone,
                 staff.Email,
                 staff.PersonId,
-                urlImage = Image.GetUrlImage(staff.Name, "staff", httpRequest)
+                urlImage = Image.GetUrlImage(image_folder, "staff", httpRequest)
             };
             return result;
         }
@@ -201,6 +202,8 @@ namespace backend.BussinessLogic
             }
             foreach (var staff in staffPage)
             {
+                var Name_replace = staff.Name.Replace(" ", "-");
+                var image_folder = Name_replace + "-" + staff.PersonId;
                 var staffInfo = new StaffDto
                 {
                     Id = staff.Id,
@@ -208,7 +211,7 @@ namespace backend.BussinessLogic
                     Phone = staff.Phone,
                     Email = staff.Email,
                     PersonId = staff.PersonId,
-                    UrlImage = Image.GetUrlImage(staff.Name, "staff", httpRequest)
+                    UrlImage = Image.GetUrlImage(image_folder, "staff", httpRequest)
                 };
                 result.Add(staffInfo);
             }

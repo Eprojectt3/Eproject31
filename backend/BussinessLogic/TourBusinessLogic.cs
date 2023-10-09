@@ -71,7 +71,7 @@ namespace backend.BussinessLogic
 
             var tour = mapper.Map<TourDto, Tour>(tourdto);
             var Name_replace = tourdto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + tour.CreateDate;
+            var image_folder = Name_replace + "-" + tour.Departure_location.Replace(" ", "-");
             var images = Image.Upload_Image(image_folder, "tour", tourdto.fileCollection);
             foreach (var image in images)
             {
@@ -129,15 +129,14 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var Name_replace = tourdto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + existingTour.CreateDate;
-            var images = Image.Update_Image(image_folder, existingTour.Name, "tour", tourdto.path, tourdto.fileCollection);
+            var image_folder = Name_replace + "-" + existingTour.Departure_location.Replace(" ", "-");
+            var images = Image.Update_Image(image_folder, existingTour.Name + "-" + existingTour.Departure_location.Replace(" ", "-"), "tour", tourdto.path, tourdto.fileCollection);
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 tour.AddImage(image);
             }
             existingTour.UpdateDate = tour.UpdateDate;
-            existingTour.CreateDate = tour.CreateDate;
             existingTour.UpdateBy = tour.UpdateBy;
             existingTour.CreateBy = tour.CreateBy;
             existingTour.IsActive = tour.IsActive;
@@ -177,7 +176,7 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
             var Name_replace = existingTour.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + existingTour.CreateDate;
+            var image_folder = Name_replace + "-" + existingTour.Departure_location.Replace(" ", "-");
             var delete_image = Image.DeleteImage(image_folder, "tour");
         }
 
@@ -190,6 +189,8 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var Name_replace = existingTour.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + existingTour.Departure_location.Replace(" ", "-");
             var result = new
             {
                 existingTour.Id,
@@ -205,7 +206,7 @@ namespace backend.BussinessLogic
                 existingTour.Transportation_ID,
                 existingTour.Departure_location,
                 //thêm cách cột còn lại
-                urlImage = Image.GetUrlImage(existingTour.Name, "tour", httpRequest)
+                urlImage = Image.GetUrlImage(image_folder, "tour", httpRequest)
             };
 
 
@@ -232,6 +233,8 @@ namespace backend.BussinessLogic
             }
             foreach (var tour in tourPage)
             {
+                var Name_replace = tour.Name.Replace(" ", "-");
+                var image_folder = Name_replace + "-" + tour.Departure_location.Replace(" ", "-");
                 var cat = context.Category.FirstOrDefault(l => l.Id == tour.category_id);
                 var trans = context.Transportation.FirstOrDefault(l => l.Id == tour.Transportation_ID);
                 var tourInfo = new TourPageDto
@@ -248,7 +251,7 @@ namespace backend.BussinessLogic
                     Discount = tour.Discount,
                     Transportation_Name = trans.Name,
                     Departure_location = tour.Departure_location,
-                    UrlImage = Image.GetUrlImage(tour.Name, "tour", httpRequest)
+                    UrlImage = Image.GetUrlImage(image_folder, "tour", httpRequest)
                 };
                 result.Add(tourInfo);
             }

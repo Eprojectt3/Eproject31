@@ -75,9 +75,7 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
             var Name_replace = hotelDto.Name.Replace(" ", "-");
-
-            var image_folder = Name_replace + "-" + hotel.Address;
-
+            var image_folder = Name_replace + "-" + hotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
             var images = Image.Upload_Image(image_folder, "hotel", hotelDto.fileCollection);
             foreach (var image in images)
             {
@@ -108,15 +106,14 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var Name_replace = hotelDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + existingHotel.CreateDate;
-            var images = Image.Update_Image(image_folder, existingHotel.Name, "hotel", hotelDto.path, hotelDto.fileCollection) ;
+            var image_folder = Name_replace + "-" + existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
+            var images = Image.Update_Image(image_folder, existingHotel.Name.Replace(" ", "-") + "-"+ existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"), "hotel", hotelDto.path, hotelDto.fileCollection) ;
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 hotel.AddImage(image);
             }
             existingHotel.UpdateDate = hotel.UpdateDate;
-            existingHotel.CreateDate = hotel.CreateDate;
             existingHotel.UpdateBy = hotel.UpdateBy;
             existingHotel.CreateBy = hotel.CreateBy;
             existingHotel.Name = hotel.Name;
@@ -170,7 +167,7 @@ namespace backend.BussinessLogic
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
                     var Name_replace = existingHotel.Name.Replace(" ", "-");
-                    var image_folder = Name_replace + "-" + existingHotel.CreateDate;
+                    var image_folder = Name_replace + "-" + existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
                     var delete_image = Image.DeleteImage(image_folder, "hotel");
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
                     return delete_image;
@@ -191,6 +188,8 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
+            var Name_replace = hotel.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + hotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
             var httpRequest = _httpContextAccessor.HttpContext.Request;
             var result = new
             {
@@ -204,7 +203,7 @@ namespace backend.BussinessLogic
                 hotel.Address,
                 hotel.PhoneNumber,
                 hotel.Links,
-                urlImage = Image.GetUrlImage1(hotel.Name, "hotel", httpRequest)
+                urlImage = Image.GetUrlImage(image_folder, "hotel", httpRequest)
             };
             return result;
         }
@@ -241,6 +240,8 @@ namespace backend.BussinessLogic
                 //Them ảnh
             foreach (var restaurant in restaurantPage)
             {
+                var Name_replace = restaurant.Name.Replace(" ", "-");
+                var image_folder = Name_replace + "-" + restaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
                 var location = context.Locations.FirstOrDefault(l => l.ID == restaurant.LocationId);
                 var restaurantInfo = new HotelDto
                 {
@@ -250,7 +251,7 @@ namespace backend.BussinessLogic
                     Rating = restaurant.Rating,
                     PhoneNumber = restaurant.PhoneNumber,
                     Location = location.State,
-                    UrlImage = Image.GetUrlImage1(restaurant.Name, "hotel", httpRequest)
+                    UrlImage = Image.GetUrlImage(image_folder, "hotel", httpRequest)
                 };
                 result.Add(restaurantInfo);
             }
