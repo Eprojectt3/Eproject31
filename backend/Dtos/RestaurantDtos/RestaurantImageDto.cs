@@ -17,4 +17,9 @@ namespace backend.Dtos.RestaurantDtos
         public string? Links { get; set; }
         public IFormFileCollection fileCollection { get; set; }
     }
+    public class Restaurant_Update_Dto : RestaurantImageDto
+    {
+        public List<string>? path { get; set; }
+
+    }
 }

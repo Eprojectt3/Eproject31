@@ -3,6 +3,8 @@ using backend.Dao.Specification;
 using backend.Dao.Specification.HotelSpec;
 using backend.Dao.Specification.ResortSpec;
 using backend.Dao.Specification.RestaurantSpec;
+using backend.Dtos.HotelDtos;
+using backend.Dtos.ResortDtos;
 using backend.Dtos.RestaurantDtos;
 using backend.Entity;
 using backend.Exceptions;
@@ -51,7 +53,7 @@ namespace backend.BussinessLogic
                     restaurant.Address,
                     restaurant.PhoneNumbber,
                     restaurant.Links,
-                    UrlImage = Image.GetUrlImage(restaurant.Name, "restaurant", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                    UrlImage = Image.GetUrlImage(restaurant.Name, "restaurant", httpRequest) // Gọi phương thức GetUrlImage11 cho từng bản ghi
                 };
 
                 result.Add(restaurantInfo);
@@ -72,7 +74,9 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Restaurant Address is exist.");
             }
-            var images = Image.Upload_Image(restaurantDto.Name, "restaurant", restaurantDto.fileCollection);
+            var Name_replace = restaurantDto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + restaurant.CreateDate;
+            var images = Image.Upload_Image(image_folder, "restaurant", restaurantDto.fileCollection);
             foreach (var image in images)
             {
                 restaurant.AddImage(image);
@@ -86,9 +90,9 @@ namespace backend.BussinessLogic
         }
 
         //update restaurant
-        public async Task Update(RestaurantImageDto restaurantDto)
+        public async Task Update(Restaurant_Update_Dto restaurantDto)
         {
-            var restaurant = mapper.Map<RestaurantImageDto, Restaurant>(restaurantDto);
+            var restaurant = mapper.Map<Restaurant_Update_Dto, Restaurant>(restaurantDto);
             if (restaurant is null)
             {
                 throw new NotFoundExceptions("not found");
@@ -102,7 +106,10 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
-            var images = Image.Upload_Image(restaurantDto.Name, "restaurant", restaurantDto.fileCollection);
+            var Name_replace = restaurantDto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + existingRestaurant.CreateDate;
+            var images = Image.Update_Image(image_folder, existingRestaurant.Name, "restaurant", restaurantDto.path, restaurantDto.fileCollection);
+            images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 restaurant.AddImage(image);
