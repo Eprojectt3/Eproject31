@@ -162,7 +162,7 @@ namespace backend.BussinessLogic
         }
 
         //delete tour
-        public async Task Delete(int id)
+        public async Task<string> Delete(int id)
         {
 
             var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(id);
@@ -176,6 +176,10 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
+            var Name_replace = existingTour.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + existingTour.CreateDate;
+            var delete_image = Image.DeleteImage(image_folder, "tour");
+            return delete_image.ToString();
         }
 
         //get tour by id
