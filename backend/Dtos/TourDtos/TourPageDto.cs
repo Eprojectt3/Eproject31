@@ -1,4 +1,6 @@
-﻿namespace backend.Dtos.TourDtos
+﻿using backend.Helper;
+
+namespace backend.Dtos.TourDtos
 {
     public class TourPageDto
     {
@@ -15,6 +17,6 @@
         public double? Discount { get; set; }
         public string? Transportation_Name { get; set; }
         public string? Departure_location { get; set; }
-        public List<string> UrlImage { get; set; }
+        public List<ImageDto> UrlImage { get; set; }
     }
 }

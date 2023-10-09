@@ -46,7 +46,7 @@ namespace backend.Controllers
 
         //execute update tour
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] TourDto tourdto)
+        public async Task<IActionResult> Update([FromForm] Tour_Update_Dto tourdto)
         {
 
             await tourBusinessLogic.Update(tourdto);
