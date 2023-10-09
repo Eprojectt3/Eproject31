@@ -184,7 +184,7 @@ namespace backend.Helper
 
                 string get_curren_folder;
                 string subFolder = String.Equals(objectdto, object1, StringComparison.OrdinalIgnoreCase) ? objectdto : object1;
-                get_curren_folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "C:\\C#\\Project3\\Eproject31\\backend\\wwwroot\\hotel\\test doi ten KHACH SAN TRANG VIET123", type, subFolder);
+                get_curren_folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Upload", type, subFolder);
                 var get_curren_folde_img = Directory.GetFiles(get_curren_folder);
                 //lấy ảnh trong hệ thống và đưa vào trong mảng
                 foreach(var image_sever in get_curren_folde_img)

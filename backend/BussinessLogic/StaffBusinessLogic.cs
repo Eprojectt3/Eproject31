@@ -147,7 +147,9 @@ namespace backend.BussinessLogic
                     {
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
-
+                    var Name_replace = existingStaff.Name.Replace(" ", "-");
+                    var image_folder = Name_replace + "-" + existingStaff.CreateDate;
+                    var delete_image = Image.DeleteImage(image_folder, "staff");
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
                 }
                 catch (Exception ex)
