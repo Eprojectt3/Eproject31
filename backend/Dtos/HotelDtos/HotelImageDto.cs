@@ -18,4 +18,8 @@ namespace backend.Dtos.HotelDtos
         public string? Links { get; set; }
         public IFormFileCollection fileCollection { get; set; }
     }
+    public class Hotel_Update_Dto : HotelImageDto
+    {
+        public List<string>? path { get; set;}
+    }
 }

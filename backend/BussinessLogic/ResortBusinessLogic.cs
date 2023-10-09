@@ -9,6 +9,7 @@ using backend.Dtos.ResortDtos;
 using webapi.Data;
 using backend.Dao.Specification.RestaurantSpec;
 using Microsoft.EntityFrameworkCore;
+using backend.Dtos.HotelDtos;
 
 namespace backend.BussinessLogic
 {
@@ -49,7 +50,7 @@ namespace backend.BussinessLogic
                     resort.Address,
                     resort.PhoneNumber,
                     resort.Links,
-                    UrlImage = Image.GetUrlImage(resort.Name, "resort", httpRequest) // Gọi phương thức GetUrlImage cho từng bản ghi
+                    UrlImage = Image.GetUrlImage(resort.Name, "resort", httpRequest) // Gọi phương thức GetUrlImage11 cho từng bản ghi
                 };
 
                 result.Add(resortInfo);
@@ -70,7 +71,9 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Resorts Address is exist.");
             }
-            var images = Image.Upload_Image(resortDto.Name, "resort", resortDto.fileCollection);
+            var Name_replace = resortDto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + resort.CreateDate;
+            var images = Image.Upload_Image(image_folder, "resort", resortDto.fileCollection);
             foreach (var image in images)
             {
                 resort.AddImage(image);
@@ -84,9 +87,9 @@ namespace backend.BussinessLogic
         }
 
         //update resort
-        public async Task Update(ResortImageDto resortDto)
+        public async Task Update(Resort_Update_Dto resortDto)
         {
-            var resort = mapper.Map<ResortImageDto, Resorts>(resortDto);
+            var resort = mapper.Map<Resort_Update_Dto, Resorts>(resortDto);
             if (resort is null)
             {
                 throw new NotFoundExceptions("not found");
@@ -98,7 +101,10 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
-            var images = Image.Upload_Image(resortDto.Name, "resort", resortDto.fileCollection);
+            var Name_replace = resortDto.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + existingResorts.CreateDate;
+            var images = Image.Update_Image(image_folder, existingResorts.Name, "resort", resortDto.path, resortDto.fileCollection);
+            images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 resort.AddImage(image);
@@ -156,7 +162,9 @@ namespace backend.BussinessLogic
                     {
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
-
+                    var Name_replace = existingResorts.Name.Replace(" ", "-");
+                    var image_folder = Name_replace + "-" + existingResorts.CreateDate;
+                    var delete_image = Image.DeleteImage(image_folder, "resort");
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
                 }
                 catch (Exception ex)

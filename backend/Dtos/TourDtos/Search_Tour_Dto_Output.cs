@@ -1,4 +1,5 @@
 ﻿using backend.Entity;
+using backend.Helper;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Dtos.TourDtos
@@ -17,6 +18,6 @@ namespace backend.Dtos.TourDtos
         public int? Range_time { get; set; } = 4;
         public double Discount { get; set; }
         public int Transportation_ID { get; set; }
-        public List<string> UrlImage { get; set; }
+        public List<ImageDto> UrlImage { get; set; }
     }
 }

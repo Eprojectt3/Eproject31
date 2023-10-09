@@ -1,4 +1,6 @@
-﻿namespace backend.Dtos.StaffDtos
+﻿using backend.Helper;
+
+namespace backend.Dtos.StaffDtos
 {
     public class StaffDto
     {
@@ -7,7 +9,7 @@
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public string? PersonId { get; set; }
-        public List<string> UrlImage { get; set; }
+        public List<ImageDto> UrlImage { get; set; }
 
     }
 }
