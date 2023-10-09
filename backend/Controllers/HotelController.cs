@@ -1,5 +1,6 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
+using backend.Dtos;
 using backend.Dtos.HotelDtos;
 using backend.Entity;
 using Microsoft.AspNetCore.Http;
@@ -56,7 +57,7 @@ namespace backend.Controllers
 
         //execute update hotel
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] HotelImageDto hotel)
+        public async Task<IActionResult> Update([FromForm] Hotel_Update_Dto hotel)
         {
 
             await hotelBusinessLogic.Update(hotel);
@@ -64,11 +65,11 @@ namespace backend.Controllers
         }
 
         //execute delete hotel
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(DeleteDto delete)
         {
-            await hotelBusinessLogic.Delete(id);
-            return Ok();
+             var result = await hotelBusinessLogic.Delete(delete);
+            return Ok(result);
         }
 
         //get hotel by id
