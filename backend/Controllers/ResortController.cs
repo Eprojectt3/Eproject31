@@ -42,7 +42,7 @@ namespace backend.Controllers
 
         //execute update resort
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] ResortImageDto resort)
+        public async Task<IActionResult> Update([FromForm] Resort_Update_Dto resort)
         {
             await resortBusinessLogic.Update(resort);
             return Ok(resort);

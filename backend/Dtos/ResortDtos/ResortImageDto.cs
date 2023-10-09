@@ -17,4 +17,8 @@ namespace backend.Dtos.ResortDtos
         public string? Links { get; set; }
         public IFormFileCollection fileCollection { get; set; }
     }
+    public class Resort_Update_Dto : ResortImageDto {
+        public List<string>? path { get; set; }
+
+    }
 }
