@@ -73,7 +73,7 @@ namespace backend.BussinessLogic
             }
             var Name_replace = resortDto.Name.Replace(" ", "-");
             var image_folder = Name_replace + "-" + resort.CreateDate.ToString("yyyy-MM-dd");
-            var images = Image.Upload_Image(image_folder, "resort", resortDto.fileCollection);
+            var images = await Image.Upload_Image(image_folder, "resort", resortDto.fileCollection);
             foreach (var image in images)
             {
                 resort.AddImage(image);
@@ -103,7 +103,7 @@ namespace backend.BussinessLogic
             }
             var Name_replace = resortDto.Name.Replace(" ", "-");
             var image_folder = Name_replace + "-" + existingResorts.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
-            var images = Image.Update_Image(image_folder, existingResorts.Name.Replace(" ", "-") + "-" + existingResorts.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"), "resort", resortDto.path, resortDto.fileCollection);
+            var images = await Image.Update_Image(image_folder, existingResorts.Name.Replace(" ", "-") + "-" + existingResorts.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"), "resort", resortDto.path, resortDto.fileCollection);
             images.Add("JPG.JPG");
             foreach (var image in images)
             {

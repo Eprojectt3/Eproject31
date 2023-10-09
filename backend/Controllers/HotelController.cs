@@ -66,7 +66,7 @@ namespace backend.Controllers
 
         //execute delete hotel
         [HttpDelete]
-        public async Task<IActionResult> Delete(DeleteDto delete)
+        public async Task<IActionResult> Delete(int id)
         {
              var result = await hotelBusinessLogic.Delete(id);
             return Ok(result);
