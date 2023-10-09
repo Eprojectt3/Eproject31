@@ -2,6 +2,7 @@
 using backend.Dao.Specification;
 using backend.Dao.Specification.HotelSpec;
 using backend.Dao.Specification.LocationSpec;
+using backend.Dtos;
 using backend.Dtos.HotelDtos;
 using backend.Dtos.LocationDtos;
 using backend.Dtos.TourDtos;
@@ -74,8 +75,7 @@ namespace backend.BussinessLogic
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
-            
-
+            var Name = hotelDto.Name.Replace(" ", "-");
             var images = Image.Upload_Image(hotelDto.Name, "hotel", hotelDto.fileCollection);
             foreach (var image in images)
             {
@@ -91,7 +91,7 @@ namespace backend.BussinessLogic
         }
 
         //update hotel
-        public async Task Update(HotelImageDto hotelDto)
+        public async Task Update(Hotel_Update_Dto hotelDto)
         {
             var hotel = mapper.Map<HotelImageDto, Hotel>(hotelDto);
             if (hotel is null)
@@ -105,7 +105,10 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("not found");
             }
-            var images = Image.Upload_Image(hotelDto.Name, "hotel", hotelDto.fileCollection);
+            var Name = hotelDto.Name.Replace(" ", "-");
+
+            var images = Image.Update_Image(hotelDto.Name, existingHotel.Name, "hotel", hotelDto.path, hotelDto.fileCollection) ;
+            images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 hotel.AddImage(image);
@@ -139,19 +142,19 @@ namespace backend.BussinessLogic
         }
 
         //delete hotel
-        public async Task Delete(int id)
+        public async Task<List<string>> Delete(DeleteDto delete)
         {
             using (var transaction = context.Database.BeginTransaction())
             {
                 try
                 {
-                    var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
+                    var existingHotel = await unitofWork.Repository<Hotel>().GetByIdAsync(delete.Id);
                     if (existingHotel == null)
                     {
                         throw new NotFoundExceptions("not found");
                     }
 
-                    var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(id));
+                    var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(delete.Id));
                     if (itineraryHaveHotelId.Any())
                     {
                         await unitofWork.Repository<Itinerary>().DeleteRange(itineraryHaveHotelId);
@@ -164,8 +167,9 @@ namespace backend.BussinessLogic
                     {
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
-
+                    var delete_image = Image.DeleteImage(delete.Path);
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                    return delete_image;
                 }
                 catch (Exception ex)
                 {
@@ -196,7 +200,7 @@ namespace backend.BussinessLogic
                 hotel.Address,
                 hotel.PhoneNumber,
                 hotel.Links,
-                urlImage = Image.GetUrlImage(hotel.Name, "hotel", httpRequest)
+                urlImage = Image.GetUrlImage1(hotel.Name, "hotel", httpRequest)
             };
             return result;
         }
@@ -241,7 +245,7 @@ namespace backend.BussinessLogic
                     Rating = restaurant.Rating,
                     PhoneNumber = restaurant.PhoneNumber,
                     Location = location.State,
-                    UrlImage = Image.GetUrlImage(restaurant.Name, "hotel", httpRequest)
+                    UrlImage = Image.GetUrlImage1(restaurant.Name, "hotel", httpRequest)
                 };
                 result.Add(restaurantInfo);
             }
