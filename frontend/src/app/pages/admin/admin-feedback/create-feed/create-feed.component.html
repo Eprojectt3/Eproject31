@@ -1,0 +1,50 @@
+<ng-container>
+  <div>
+    <!-- Title  -->
+    <h1 class="mb-[15px] text-[20px] font-[600] px-5 pt-7">Create category</h1>
+
+    <!-- Form Create -->
+    <div class="">
+      <form class="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div>
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>Title</mat-label>
+            <input class="" type="text" matInput formControlName="title" [errorStateMatcher]="validatorForm" />
+            <mat-error *ngIf="loginForm.controls['title'].errors?.['whitespace']">Title is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>Name</mat-label>
+            <input class="" type="text" matInput formControlName="name" [errorStateMatcher]="validatorForm" />
+            <mat-error *ngIf="loginForm.controls['name'].errors?.['whitespace']">Name is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>Email</mat-label>
+            <input class="" type="text" matInput formControlName="email" [errorStateMatcher]="validatorForm" />
+            <mat-error *ngIf="loginForm.controls['email'].errors?.['whitespace']">Email is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>Phone</mat-label>
+            <input class="" type="text" matInput formControlName="phone" [errorStateMatcher]="validatorForm" />
+            <mat-error *ngIf="loginForm.controls['phone'].errors?.['whitespace']">Phone is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="mt-[15px]">
+          <button type="submit" class="ml-5" mat-raised-button color="primary">
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>

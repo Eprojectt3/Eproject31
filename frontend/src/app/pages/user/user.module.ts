@@ -31,6 +31,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { LoadingInterceptor } from 'src/app/helpers/interceptor/loading.interceptor';
+import { ImageModule } from 'primeng/image';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { LoadingInterceptor } from 'src/app/helpers/interceptor/loading.intercep
     MatSnackBarModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+
   ],
   exports: [UserComponent],
   providers: [

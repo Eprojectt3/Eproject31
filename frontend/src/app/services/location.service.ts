@@ -24,8 +24,8 @@ export class LocationService {
   public getListLocation = (): Observable<any> => {
     return this.http
       .get<Location>(
-        `${environment.apiUrl}/api/Location/ListLocation1`,
-        httpOptions
+        `${environment.apiLocallHost}/api/Location/ListLocation1`,
+        httpOptions,
       )
       .pipe(tap((val: any) => this.locationsSubject.next(val)));
   };

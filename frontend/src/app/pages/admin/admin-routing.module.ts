@@ -9,6 +9,8 @@ import { CreateHotelComponent } from './admin-hotel/create-hotel/create-hotel.co
 import { DetailHotelComponent } from './admin-hotel/detail-hotel/detail-hotel.component';
 import { UpdateHotelComponent } from './admin-hotel/update-hotel/update-hotel.component';
 import { CreateTourComponent } from './admin-tour/create-tour/create-tour.component';
+import { ListFeedbacksComponent } from './admin-feedback/list-feedbacks/list-feedbacks.component';
+import { UpdateFeedComponent } from './admin-feedback/update-feed/update-feed.component';
 
 const routes: Routes = [
   {
@@ -18,6 +20,16 @@ const routes: Routes = [
   {
     path: 'categories',
     component: ListCategoriesComponent,
+  },
+  { path: '', component: AdminComponent, pathMatch: 'full' },
+
+  {
+    path: 'feedbacks',
+    component: ListFeedbacksComponent,
+  },
+  {
+    path: 'update-feed/:id',
+    component: UpdateFeedComponent,
   },
   {
     path: 'tours',

@@ -1,4 +1,4 @@
-import { Tour, tours } from 'src/app/models/tour';
+import { Tour } from 'src/app/models/tour';
 import { Component, OnInit } from '@angular/core';
 import { Filter, filter } from 'src/app/models/filter.model';
 import { TitleService } from 'src/app/services/title.service';
@@ -12,7 +12,7 @@ import { TourService } from '../../../../../services/tour.service';
 export class ToursListComponent implements OnInit {
   filters: Filter[] = filter;
 
-  tours: Tour[] = tours;
+  tours!: Tour[] ;
 
   constructor(
     private titleService: TitleService,
@@ -21,8 +21,8 @@ export class ToursListComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitleValue('Tours list');
-    this.tourService.getListTour().subscribe((val) => {
-      console.log(val);
+    this.tourService.getListTour().subscribe((val:any) => {
+      this.tours=val;
     });
   }
 }

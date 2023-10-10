@@ -42,6 +42,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ImageModule } from 'primeng/image';
 import { UpdateHotelComponent } from './admin-hotel/update-hotel/update-hotel.component';
 import { CreateTourComponent } from './admin-tour/create-tour/create-tour.component';
+import { UpdateFeedComponent } from './admin-feedback/update-feed/update-feed.component';
+import { DeleteFeedComponent } from './admin-feedback/delete-feed/delete-feed.component';
+import { DetailFeedComponent } from './admin-feedback/detail-feed/detail-feed.component';
+import { CreateFeedComponent } from './admin-feedback/create-feed/create-feed.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +69,10 @@ import { CreateTourComponent } from './admin-tour/create-tour/create-tour.compon
     DetailHotelComponent,
     UpdateHotelComponent,
     CreateTourComponent,
+    UpdateFeedComponent,
+    DeleteFeedComponent,
+    DetailFeedComponent,
+    CreateFeedComponent,
   ],
   imports: [
     CommonModule,

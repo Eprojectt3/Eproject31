@@ -57,6 +57,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatFormFieldModule,
     MatGridListModule,
     MatTabsModule,
+
   ],
 })
 export class InfomationModule {}

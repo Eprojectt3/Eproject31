@@ -7,14 +7,12 @@ export interface Restaurant {
   createDate? : Date;
   description: string;
   image?: string;
-  imageDetail?: string;
+  urlImage? : string
   address? : string;
   createBy?: string;
   isActive? : boolean;
-  intineraries?: any;
   links? :string;
-  location1? :any;
-  locationId?: number;
+  location?: string;
   phoneNumber?: number;
   updateBy?: string;
   updateDate?: Date;

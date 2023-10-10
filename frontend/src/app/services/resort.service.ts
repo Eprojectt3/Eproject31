@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Resort } from '../models/resort';
 
-const AUTH_API: string = environment.apiUrl;
+const AUTH_API: string = environment.apiLocallHost;
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Restaurant } from '../models/restaurant';
 
-const AUTH_API: string = environment.apiUrl;
+const AUTH_API: string = environment.apiLocallHost;
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };

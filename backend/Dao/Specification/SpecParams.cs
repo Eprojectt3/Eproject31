@@ -2,7 +2,7 @@
 {
     public class SpecParams
     {
-        private const int MaxPageSize = 10;
+        private const int MaxPageSize = 12;
         public int PageIndex { get; set; } = 1;
 
         private int pageSize = 5;
