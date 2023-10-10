@@ -44,8 +44,21 @@ import { UpdateHotelComponent } from './admin-hotel/update-hotel/update-hotel.co
 import { CreateTourComponent } from './admin-tour/create-tour/create-tour.component';
 import { UpdateFeedComponent } from './admin-feedback/update-feed/update-feed.component';
 import { DeleteFeedComponent } from './admin-feedback/delete-feed/delete-feed.component';
-import { DetailFeedComponent } from './admin-feedback/detail-feed/detail-feed.component';
 import { CreateFeedComponent } from './admin-feedback/create-feed/create-feed.component';
+import { DeleteCateComponent } from './admin-category/delete-cate/delete-cate.component';
+import { CreateItinerariesComponent } from './admin-itinerary/create-itineraries/create-itineraries.component';
+import { DeleteItinerariesComponent } from './admin-itinerary/delete-itineraries/delete-itineraries.component';
+import { CreateLocationComponent } from './admin-location/create-location/create-location.component';
+import { DeleteLocationComponent } from './admin-location/delete-location/delete-location.component';
+import { CreateOrderComponent } from './admin-order/create-order/create-order.component';
+import { DeleteOrderComponent } from './admin-order/delete-order/delete-order.component';
+import { CreateRoleComponent } from './admin-role/create-role/create-role.component';
+import { DeleteRoleComponent } from './admin-role/delete-role/delete-role.component';
+import { CreateServiceComponent } from './admin-service/create-service/create-service.component';
+import { DeleteServiceComponent } from './admin-service/delete-service/delete-service.component';
+import { CreateTransportationComponent } from './admin-transportation/create-transportation/create-transportation.component';
+import { DeleteTransportationsComponent } from './admin-transportation/delete-transportations/delete-transportations.component';
+
 
 @NgModule({
   declarations: [
@@ -71,8 +84,21 @@ import { CreateFeedComponent } from './admin-feedback/create-feed/create-feed.co
     CreateTourComponent,
     UpdateFeedComponent,
     DeleteFeedComponent,
-    DetailFeedComponent,
     CreateFeedComponent,
+    DeleteCateComponent,
+    CreateItinerariesComponent,
+    DeleteItinerariesComponent,
+    CreateLocationComponent,
+    DeleteLocationComponent,
+    CreateOrderComponent,
+    DeleteOrderComponent,
+    CreateRoleComponent,
+    DeleteRoleComponent,
+    CreateServiceComponent,
+    DeleteServiceComponent,
+    CreateTransportationComponent,
+    DeleteTransportationsComponent,
+
   ],
   imports: [
     CommonModule,
