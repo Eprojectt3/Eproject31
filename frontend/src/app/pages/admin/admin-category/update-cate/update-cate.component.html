@@ -1,1 +1,37 @@
-<p>update-cate works!</p>
+<ng-container>
+    <div class="px-5">
+      <!--        Title-->
+      <div class="mb-[20px]">
+        <h1 class="font-bold text-[25px]">Update Category</h1>
+      </div>
+  
+      <!--        Form-->
+      <div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+       
+  
+          <div class="w-[100%]">
+            <mat-form-field class="!w-[100%]">
+              <mat-label>Category name</mat-label>
+              <input
+                matInput
+                id="name"
+                formControlName="name"
+                [errorStateMatcher]="validatorForm"
+              />
+              <mat-error *ngIf="loginForm.controls['name'].errors?.['whitespace']"
+                >Name Category is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+  
+  
+          <!--        Button create-->
+          <div>
+            <button mat-flat-button color="primary" type="submit">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-container>
+  

@@ -130,7 +130,7 @@ namespace backend.BussinessLogic
             }
             var Name_replace = tourdto.Name.Replace(" ", "-");
             var image_folder = Name_replace + "-" + existingTour.Departure_location.Replace(" ", "-");
-            var images = await Image.Update_Image(image_folder, existingTour.Name + "-" + existingTour.Departure_location.Replace(" ", "-"), "tour", tourdto.path, tourdto.fileCollection);
+            var images = await Image.Update_Image(image_folder, existingTour.Name.Replace(" ", "-") + "-" + existingTour.Departure_location.Replace(" ", "-"), "tour", tourdto.path, tourdto.fileCollection);
             images.Add("JPG.JPG");
             foreach (var image in images)
             {

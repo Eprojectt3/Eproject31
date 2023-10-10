@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Category } from '../models/category.model';
 import { environment } from 'src/environments/environment';
 
@@ -14,6 +14,7 @@ const AUTH_API: string = environment.apiLocallHost;
   providedIn: 'root',
 })
 export class CategoryService {
+  categorySubject!: BehaviorSubject<Category[] | null>;
   constructor(private http: HttpClient) {}
 
   // Get List Category
@@ -40,5 +41,14 @@ export class CategoryService {
       },
       httpOptions
     );
+  };
+  // Delete category
+  public deleteCategory = (id: number): Observable<any> => {
+    return this.http.delete(`${AUTH_API}/api/Category/Delete/${id}`);
+  };
+
+  // Update category
+  public updateCategory = (data: any): Observable<any> => {
+    return this.http.put(`${AUTH_API}/api/Category/Update`, data);
   };
 }
