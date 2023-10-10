@@ -75,7 +75,7 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("Restaurant Address is exist.");
             }
             var Name_replace = restaurantDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + restaurant.CreateDate;
+            var image_folder = Name_replace + "-" + restaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
             var images = Image.Upload_Image(image_folder, "restaurant", restaurantDto.fileCollection);
             foreach (var image in images)
             {
@@ -107,15 +107,14 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var Name_replace = restaurantDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + existingRestaurant.CreateDate;
-            var images = Image.Update_Image(image_folder, existingRestaurant.Name, "restaurant", restaurantDto.path, restaurantDto.fileCollection);
+            var image_folder = Name_replace + "-" + existingRestaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
+            var images = Image.Update_Image(image_folder, existingRestaurant.Name.Replace(" ", "-") +"-" + existingRestaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"), "restaurant", restaurantDto.path, restaurantDto.fileCollection);
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 restaurant.AddImage(image);
             }
             existingRestaurant.UpdateDate = restaurant.UpdateDate;
-            existingRestaurant.CreateDate = restaurant.CreateDate;
             existingRestaurant.UpdateBy = restaurant.UpdateBy;
             existingRestaurant.CreateBy = restaurant.CreateBy;
             existingRestaurant.Name = restaurant.Name;
@@ -168,7 +167,7 @@ namespace backend.BussinessLogic
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
                     var Name_replace = existingRestaurant.Name.Replace(" ", "-");
-                    var image_folder = Name_replace + "-" + existingRestaurant.CreateDate;
+                    var image_folder = Name_replace + "-" + existingRestaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
                     var delete_image = Image.DeleteImage(image_folder, "restaurant");
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
                 }
@@ -190,6 +189,8 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var Name_replace = restaurant.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + restaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
             var result = new
             {
                 restaurant.Id,
@@ -202,7 +203,7 @@ namespace backend.BussinessLogic
                 restaurant.Address,
                 restaurant.PhoneNumbber,
                 restaurant.Links,
-                urlImage = Image.GetUrlImage(restaurant.Name, "restaurant", httpRequest)
+                urlImage = Image.GetUrlImage(image_folder, "restaurant", httpRequest)
             };
             return result;
         }
@@ -238,6 +239,8 @@ namespace backend.BussinessLogic
             }
             foreach (var restaurant in restaurantPage)
             {
+                var Name_replace = restaurant.Name.Replace(" ", "-");
+                var image_folder = Name_replace + "-" + restaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
                 var location = context.Locations.FirstOrDefault(l => l.ID == restaurant.LocationId);
                 var restaurantInfo = new RestaurantDto
                 {
@@ -248,7 +251,7 @@ namespace backend.BussinessLogic
                     LocationId = restaurant.LocationId,
                     Location = location.State,
                     PhoneNumber = restaurant.PhoneNumbber,
-                    UrlImage = Image.GetUrlImage(restaurant.Name, "restaurant", httpRequest)
+                    UrlImage = Image.GetUrlImage(image_folder, "restaurant", httpRequest)
                 };
                 result.Add(restaurantInfo);
             }

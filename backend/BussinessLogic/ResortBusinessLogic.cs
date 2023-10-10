@@ -72,7 +72,7 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("Resorts Address is exist.");
             }
             var Name_replace = resortDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + resort.CreateDate;
+            var image_folder = Name_replace + "-" + resort.CreateDate.ToString("yyyy-MM-dd");
             var images = Image.Upload_Image(image_folder, "resort", resortDto.fileCollection);
             foreach (var image in images)
             {
@@ -102,15 +102,14 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var Name_replace = resortDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + existingResorts.CreateDate;
-            var images = Image.Update_Image(image_folder, existingResorts.Name, "resort", resortDto.path, resortDto.fileCollection);
+            var image_folder = Name_replace + "-" + existingResorts.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
+            var images = Image.Update_Image(image_folder, existingResorts.Name.Replace(" ", "-") + "-" + existingResorts.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"), "resort", resortDto.path, resortDto.fileCollection);
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
                 resort.AddImage(image);
             }
             existingResorts.UpdateDate = resort.UpdateDate;
-            existingResorts.CreateDate = resort.CreateDate;
             existingResorts.UpdateBy = resort.UpdateBy;
             existingResorts.CreateBy = resort.CreateBy;
             existingResorts.Name = resort.Name;
@@ -163,7 +162,7 @@ namespace backend.BussinessLogic
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
                     var Name_replace = existingResorts.Name.Replace(" ", "-");
-                    var image_folder = Name_replace + "-" + existingResorts.CreateDate;
+                    var image_folder = Name_replace + "-" + existingResorts.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
                     var delete_image = Image.DeleteImage(image_folder, "resort");
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
                 }
@@ -185,6 +184,8 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var httpRequest = _httpContextAccessor.HttpContext.Request;
+            var Name_replace = resort.Name.Replace(" ", "-");
+            var image_folder = Name_replace + "-" + resort.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
             var result = new
             {
                 resort.Id,
@@ -197,7 +198,7 @@ namespace backend.BussinessLogic
                 resort.Address,
                 resort.PhoneNumber,
                 resort.Links,
-                urlImage = Image.GetUrlImage(resort.Name, "resort", httpRequest)
+                urlImage = Image.GetUrlImage(image_folder, "resort", httpRequest)
             };
             return result;
         }
@@ -233,6 +234,8 @@ namespace backend.BussinessLogic
             }
             foreach (var resort in resortPage)
             {
+                var Name_replace = resort.Name.Replace(" ", "-");
+                var image_folder = Name_replace + "-" + resort.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
                 var location = context.Locations.FirstOrDefault(l => l.ID == resort.LocationId);
                 var resortInfo = new ResortDto
                 {
@@ -243,7 +246,7 @@ namespace backend.BussinessLogic
                     LocationId = resort.LocationId,
                     Location = location.State,
                     PhoneNumber = resort.PhoneNumber,
-                    UrlImage = Image.GetUrlImage(resort.Name, "resort", httpRequest)
+                    UrlImage = Image.GetUrlImage(image_folder, "resort", httpRequest)
                 };
                 result.Add(resortInfo);
             }

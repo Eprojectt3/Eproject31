@@ -153,7 +153,7 @@ namespace backend.BussinessLogic
             double totalRevenue = 0;
 
             var groupedOrders = orders
-                .GroupBy(order => order.CreateDate.Value.Month)
+                .GroupBy(order => order.CreateDate.Month)
                 .ToList();
             totalRevenue = groupedOrders.Sum(group => group.Sum(order => order.Price ?? 0));
 
@@ -166,7 +166,7 @@ namespace backend.BussinessLogic
             double totalRevenue = 0;
 
             var groupedOrders = orders
-                .GroupBy(order => order.CreateDate.Value.Day)
+                .GroupBy(order => order.CreateDate.Day)
                 .ToList();
             totalRevenue = groupedOrders.Sum(group => group.Sum(order => order.Price ?? 0));
 
@@ -179,7 +179,7 @@ namespace backend.BussinessLogic
             double totalRevenue = 0;
 
             var groupedOrders = orders
-                .GroupBy(order => order.CreateDate.Value.Year)
+                .GroupBy(order => order.CreateDate.Year)
                 .ToList();
             totalRevenue = groupedOrders.Sum(group => group.Sum(order => order.Price ?? 0));
 

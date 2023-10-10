@@ -6,7 +6,7 @@ namespace backend.Dao.Specification.OrderSpec
     public class RevenueByDay : BaseSpecification<Order>
     {
         public RevenueByDay(int year, int month ,int day)
-        : base(query => query.CreateDate.Value.Year == year && query.CreateDate.Value.Month == month && query.CreateDate.Value.Day == day)
+        : base(query => query.CreateDate.Year == year && query.CreateDate.Month == month && query.CreateDate.Day == day)
         {
         }
     }

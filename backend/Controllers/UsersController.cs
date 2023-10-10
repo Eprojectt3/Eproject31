@@ -194,7 +194,7 @@ namespace webapi.Controllers
                     newUser.Phone = user.Phone;
                     newUser.IsActive = user.IsActive;
                     newUser.CreateBy = user?.CreateBy;
-                    newUser.CreateDate = user?.CreateDate;
+                    newUser.CreateDate = user.CreateDate;
                     newUser.UpdateDate = user?.UpdateDate;
                     newUser.UpdateBy = user?.UpdateBy;
 
