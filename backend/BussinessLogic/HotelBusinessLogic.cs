@@ -75,7 +75,9 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
             var Name_replace = hotelDto.Name.Replace(" ", "-");
+
             var image_folder = Name_replace + "-" + hotel.Address;
+
             var images = Image.Upload_Image(image_folder, "hotel", hotelDto.fileCollection);
             foreach (var image in images)
             {
@@ -202,7 +204,7 @@ namespace backend.BussinessLogic
                 hotel.Address,
                 hotel.PhoneNumber,
                 hotel.Links,
-                urlImage = Image.GetUrlImage(hotel.Name, "hotel", httpRequest)
+                urlImage = Image.GetUrlImage1(hotel.Name, "hotel", httpRequest)
             };
             return result;
         }
@@ -247,7 +249,7 @@ namespace backend.BussinessLogic
                     Rating = restaurant.Rating,
                     PhoneNumber = restaurant.PhoneNumber,
                     Location = location.State,
-                    UrlImage = Image.GetUrlImage(restaurant.Name, "hotel", httpRequest)
+                    UrlImage = Image.GetUrlImage1(restaurant.Name, "hotel", httpRequest)
                 };
                 result.Add(restaurantInfo);
             }
