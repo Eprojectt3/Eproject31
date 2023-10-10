@@ -21,48 +21,34 @@ namespace backend.Helper
             }
             return this.environment.WebRootPath + $"\\Upload\\{type}\\" + productcode;
         }
-        public List<string> Upload_Image(string productcode, string type, IFormFileCollection fileCollection)
+        public async Task<List<string>> Upload_Image(string productcode, string type, IFormFileCollection fileCollection)
         {
             try
             {
                 string Filepath = GetFilepath(productcode, type);
-                if (!System.IO.Directory.Exists(Filepath))
+                if (!Directory.Exists(Filepath))
                 {
-                    System.IO.Directory.CreateDirectory(Filepath);
+                    Directory.CreateDirectory(Filepath);
                 }
+                
+                
                 var result = new List<string>();
+                result = await ResizeImage(fileCollection, Filepath);
+                /*
                 foreach (var file in fileCollection)
                 {
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    string imagepath = Path.Combine(Filepath, file.FileName);
+                    if (File.Exists(imagepath))
                     {
-                        string imagepath = Filepath + "\\" + file.FileName;
-                        if (System.IO.File.Exists(imagepath))
-                        {
-                            System.IO.File.Delete(imagepath);
-                        }
-                        using (FileStream stream = System.IO.File.Create(imagepath))
-                        {
-                            file.CopyToAsync(stream);
-
-                        }   
-                        result.Add(file.FileName);
-                    } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                    {
-                        string imagepath = Filepath + "/" + file.FileName;
-                        if (System.IO.File.Exists(imagepath))
-                        {
-                            System.IO.File.Delete(imagepath);
-                        }
-                        using (FileStream stream = System.IO.File.Create(imagepath))
-                        {
-                            file.CopyToAsync(stream);
-
-                        }
-                        result.Add(file.FileName);
+                        File.Delete(imagepath);
                     }
-
-
+                    using (FileStream stream = new FileStream(imagepath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                    result.Add(file.FileName);
                 }
+                */
                 return result;
             }
             catch (Exception ex)
@@ -70,6 +56,7 @@ namespace backend.Helper
                 throw ex;
             }
         }
+
 
         /// <summary>
         /// TEST123
@@ -155,7 +142,7 @@ namespace backend.Helper
             }
 
         }
-        public List<string> Update_Image(string objectdto,string? object1,string type,List<string> paths,IFormFileCollection fileCollection)
+        public async Task<List<string>> Update_Image(string objectdto,string? object1,string type,List<string> paths,IFormFileCollection fileCollection)
         {
             List<string> result = new List<string>();
             string Filepath = GetFilepath(objectdto, type);
@@ -167,7 +154,7 @@ namespace backend.Helper
                 if (paths == null)
                 {
                     Directory.Delete(Filepath,true);
-                    result = Upload_Image(objectdto, type, fileCollection);                 
+                    result = await Upload_Image(objectdto, type, fileCollection);                 
                 }
                 //Update 1 vài ảnh 
                 else
@@ -193,7 +180,7 @@ namespace backend.Helper
                 }
                 //Trường hợp trùng tên
                 if (Directory.Exists(Filepath))
-                        {
+                     {
                     //Tìm kiếm những image khác trong image_path_sever
                     differnce_image = image_path_sever.Except(image_path_fe).ToList();
                     if (differnce_image.Count > 0)
@@ -203,16 +190,7 @@ namespace backend.Helper
                             File.Delete(element);
                         }
                     }
-                    foreach (var file_image in fileCollection)
-                            {
-                                //Thêm dữ liệu vào trong get_curren_folder
-                                string destinationPath = Path.Combine(get_curren_folder, Path.GetFileName(file_image.FileName));
-                                using (var fileStream = new FileStream(destinationPath, FileMode.Append))
-                                {
-                                    file_image.CopyToAsync(fileStream);
-                                }
-                            }
-
+                    result = await Upload_Image(subFolder, type, fileCollection);
                         }
                         //khác tên productcode                
                         else
@@ -240,6 +218,8 @@ namespace backend.Helper
                             File.Copy(element, destinationPath, true);
                         }                     
                     }
+                    result = await Upload_Image(objectdto, type, fileCollection);
+                   /*
                     foreach (var file_image in fileCollection)
                     {
                         string destinationPath2 = Path.Combine(des_Path, Path.GetFileName(file_image.FileName));
@@ -248,12 +228,38 @@ namespace backend.Helper
                             file_image.CopyToAsync(stream);
 
                         }
-                    }                  
+                    }   
+                   */
                     Directory.Delete(get_curren_folder, true);
                     
                 }
                 
                 }
+            return result;
+        }
+        public async Task<List<string>> ResizeImage(IFormFileCollection colllection,string path)
+        {
+            int width = 2000;
+            int height = 2000;
+            var newImage = new Bitmap(width, height);
+            var result = new List<string>();                   
+            foreach(var file in colllection)
+            {
+                
+                //đường dẫn ảnh
+                string imagepath = Path.Combine(path, file.FileName);
+                if (File.Exists(imagepath))
+                {
+                    File.Delete(imagepath);
+                }
+                Image image = Image.FromStream(file.OpenReadStream(), true, true);
+                    using (var a = Graphics.FromImage(newImage))
+                    {
+                        a.DrawImage(image, 0, 0, width, height);
+                        newImage.Save(imagepath);
+                        result.Add(imagepath);
+                    }
+            }
             return result;
         }
     }

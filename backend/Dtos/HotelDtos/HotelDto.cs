@@ -13,4 +13,5 @@ namespace backend.Dtos.HotelDtos
         public int? Rating { get; set; }
         public List<ImageDto> UrlImage { get; set; }
     }
+
 }

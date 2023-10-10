@@ -76,7 +76,7 @@ namespace backend.BussinessLogic
             }
             var Name_replace = restaurantDto.Name.Replace(" ", "-");
             var image_folder = Name_replace + "-" + restaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
-            var images = Image.Upload_Image(image_folder, "restaurant", restaurantDto.fileCollection);
+            var images = await Image.Upload_Image(image_folder, "restaurant", restaurantDto.fileCollection);
             foreach (var image in images)
             {
                 restaurant.AddImage(image);
@@ -108,7 +108,7 @@ namespace backend.BussinessLogic
             }
             var Name_replace = restaurantDto.Name.Replace(" ", "-");
             var image_folder = Name_replace + "-" + existingRestaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
-            var images = Image.Update_Image(image_folder, existingRestaurant.Name.Replace(" ", "-") +"-" + existingRestaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"), "restaurant", restaurantDto.path, restaurantDto.fileCollection);
+            var images = await Image.Update_Image(image_folder, existingRestaurant.Name.Replace(" ", "-") +"-" + existingRestaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"), "restaurant", restaurantDto.path, restaurantDto.fileCollection);
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
