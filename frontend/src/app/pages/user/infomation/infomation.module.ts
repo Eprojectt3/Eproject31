@@ -8,6 +8,7 @@ import { InfomationComponent } from './infomation.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // PrimeNg
 import { CarouselModule } from 'primeng/carousel';
@@ -27,6 +28,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ImageModule } from 'primeng/image';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
+import { GalleryComponent } from './tours/gallery/gallery.component';
+import { TimelineModule } from 'primeng/timeline';
 
 @NgModule({
   declarations: [
@@ -39,6 +45,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     ResortDetailComponent,
     ToursListComponent,
     TourDetailComponent,
+    GalleryComponent,
   ],
   imports: [
     MatButtonModule,
@@ -57,7 +64,11 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatFormFieldModule,
     MatGridListModule,
     MatTabsModule,
-
+    MatDividerModule,
+    RatingModule,
+    FormsModule,
+    MatDialogModule,
+    TimelineModule,
   ],
 })
 export class InfomationModule {}

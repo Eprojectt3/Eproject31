@@ -64,7 +64,6 @@ export class ListToursComponent implements OnInit {
 
         this.totalSize = val.count;
         this.dataSource = val.data;
-        console.log(this.dataSource);
       });
   };
 

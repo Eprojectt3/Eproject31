@@ -15,7 +15,7 @@ export class DetailHotelComponent implements OnInit {
 
   constructor(
     private hotelService: HotelService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -23,7 +23,6 @@ export class DetailHotelComponent implements OnInit {
 
     this.hotelService.getDetailHotel(this.id).subscribe((val: any) => {
       this.hotel = val;
-      console.log(this.hotel);
     });
   }
 }

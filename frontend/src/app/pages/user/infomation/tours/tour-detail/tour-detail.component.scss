@@ -1,0 +1,8 @@
+:host ::ng-deep .p-rating-icon:not(.p-rating-cancel),
+:host ::ng-deep .p-rating-icon:not(.p-rating-cancel):hover {
+  color: #f67905 !important;
+}
+
+:host ::ng-deep .p-timeline-event-opposite {
+  display: none;
+}

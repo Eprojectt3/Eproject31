@@ -24,7 +24,13 @@ namespace backend.BussinessLogic
         private readonly IHttpContextAccessor _httpContextAccessor;
         private DataContext context;
 
-        public HotelBusinessLogic(IUnitofWork _unitofWork, IMapper mapper , ImageService Image, IHttpContextAccessor _httpContextAccessor, DataContext dataContext)
+        public HotelBusinessLogic(
+            IUnitofWork _unitofWork,
+            IMapper mapper,
+            ImageService Image,
+            IHttpContextAccessor _httpContextAccessor,
+            DataContext dataContext
+        )
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
@@ -70,12 +76,13 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("Hotel not found");
             }
 
-            if (await IsHotelAddressDuplicate(hotel.Address,hotel.Id))
+            if (await IsHotelAddressDuplicate(hotel.Address, hotel.Id))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
             var Name_replace = hotelDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + hotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
+            var image_folder =
+                Name_replace + "-" + hotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
             var images = await Image.Upload_Image(image_folder, "hotel", hotelDto.fileCollection);
             foreach (var image in images)
             {
@@ -106,8 +113,17 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var Name_replace = hotelDto.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
-            var images = await Image.Update_Image(image_folder, existingHotel.Name.Replace(" ", "-") + "-"+ existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"), "hotel", hotelDto.path, hotelDto.fileCollection) ;
+            var image_folder =
+                Name_replace + "-" + existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
+            var images = await Image.Update_Image(
+                image_folder,
+                existingHotel.Name.Replace(" ", "-")
+                    + "-"
+                    + existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss"),
+                "hotel",
+                hotelDto.path,
+                hotelDto.fileCollection
+            );
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
@@ -127,7 +143,7 @@ namespace backend.BussinessLogic
             existingHotel.Rating = hotel.Rating;
             existingHotel.Description = hotel.Description;
             existingHotel.Links = hotel.Links;
-            if (await IsHotelAddressDuplicate(hotel.Address,hotel.Id))
+            if (await IsHotelAddressDuplicate(hotel.Address, hotel.Id))
             {
                 throw new BadRequestExceptions("Hotel Address is exist.");
             }
@@ -153,7 +169,9 @@ namespace backend.BussinessLogic
                         throw new NotFoundExceptions("not found");
                     }
 
-                    var itineraryHaveHotelId = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new HotelDeleteItinerarySpec(Id));
+                    var itineraryHaveHotelId = await unitofWork
+                        .Repository<Itinerary>()
+                        .GetAllWithAsync(new HotelDeleteItinerarySpec(Id));
                     if (itineraryHaveHotelId.Any())
                     {
                         await unitofWork.Repository<Itinerary>().DeleteRange(itineraryHaveHotelId);
@@ -167,7 +185,10 @@ namespace backend.BussinessLogic
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
                     var Name_replace = existingHotel.Name.Replace(" ", "-");
-                    var image_folder = Name_replace + "-" + existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
+                    var image_folder =
+                        Name_replace
+                        + "-"
+                        + existingHotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
                     var delete_image = Image.DeleteImage(image_folder, "hotel");
                     transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
                     return delete_image;
@@ -180,7 +201,6 @@ namespace backend.BussinessLogic
             }
         }
 
-
         public async Task<object> GetByHotelId(int id)
         {
             var hotel = await unitofWork.Repository<Hotel>().GetByIdAsync(id);
@@ -189,7 +209,8 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             var Name_replace = hotel.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + hotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
+            var image_folder =
+                Name_replace + "-" + hotel.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
             var httpRequest = _httpContextAccessor.HttpContext.Request;
             var result = new
             {
@@ -209,39 +230,49 @@ namespace backend.BussinessLogic
         }
 
         //duplicate name
-        private async Task<bool> IsHotelAddressDuplicate(string hotelName,int id)
+        private async Task<bool> IsHotelAddressDuplicate(string hotelName, int id)
         {
             // Sử dụng GetEntityWithSpecAsync để kiểm tra trùng lặp
             var duplicateHotel = await unitofWork
                 .Repository<Hotel>()
-                .GetEntityWithSpecAsync(new HotelByAddressSpecification(hotelName,id));
+                .GetEntityWithSpecAsync(new HotelByAddressSpecification(hotelName, id));
 
             return duplicateHotel != null;
         }
+
         public async Task<Pagination<HotelDto>> SelectAllHotelPagination(SpecParams specParams)
         {
-
             var httpRequest = _httpContextAccessor.HttpContext.Request;
             var spec = new SearchHotelSpec(specParams);
             var result = new List<HotelDto>();
             int count = await unitofWork.Repository<Hotel>().GetCountWithSpecAsync(spec);
             var restaurantPage = new List<Hotel>();
-            if (string.IsNullOrEmpty(specParams.Search) && string.IsNullOrEmpty(specParams.Location) && specParams.Rating == null)
+            if (
+                string.IsNullOrEmpty(specParams.Search)
+                && string.IsNullOrEmpty(specParams.Location)
+                && specParams.Rating == null
+            )
             {
-                restaurantPage = await context.Hotels.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToListAsync();
+                restaurantPage = await context.Hotels
+                    .Skip((specParams.PageIndex - 1) * specParams.PageSize)
+                    .Take(specParams.PageSize)
+                    .ToListAsync();
             }
             else
             {
                 var restaurants = await unitofWork.Repository<Hotel>().GetAllWithAsync(spec);
 
-                restaurantPage = restaurants.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
-
+                restaurantPage = restaurants
+                    .Skip((specParams.PageIndex - 1) * specParams.PageSize)
+                    .Take(specParams.PageSize)
+                    .ToList();
             }
-                //Them ảnh
+            //Them ảnh
             foreach (var restaurant in restaurantPage)
             {
                 var Name_replace = restaurant.Name.Replace(" ", "-");
-                var image_folder = Name_replace + "-" + restaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
+                var image_folder =
+                    Name_replace + "-" + restaurant.CreateDate.ToString("yyyy-MM-dd-HH-mm-ss");
                 var location = context.Locations.FirstOrDefault(l => l.ID == restaurant.LocationId);
                 var restaurantInfo = new HotelDto
                 {
@@ -255,12 +286,20 @@ namespace backend.BussinessLogic
                 };
                 result.Add(restaurantInfo);
             }
-            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+            var totalPageIndex =
+                count % specParams.PageSize == 0
+                    ? count / specParams.PageSize
+                    : (count / specParams.PageSize) + 1;
 
-            var pagination = new Pagination<HotelDto>(specParams.PageIndex, specParams.PageSize, result, count, totalPageIndex);
+            var pagination = new Pagination<HotelDto>(
+                specParams.PageIndex,
+                specParams.PageSize,
+                result,
+                count,
+                totalPageIndex
+            );
 
             return pagination;
         }
     }
-
 }

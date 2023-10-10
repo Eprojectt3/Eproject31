@@ -19,7 +19,7 @@
   <section class="2xl:visible xl:visible lg:visible invisible" id="navbar ">
     <div class="navbar flex">
       <div
-        class="nav text-white lg:w-[60%] lg:ml-[20%] mt-[15px] xl:ml-[50%] xl:translate-x-[-45%] 2xl:translate-x-[-45%] 2xl:ml-[50%] xl:w-[45%] 2xl:w-[45%]"
+        class="nav text-white lg:w-[55%] mx-auto mt-[15px] xl:w-[45%] 2xl:w-[45%]"
       >
         <nav class="w-[100%]">
           <ul class="flex justify-between items-center">
@@ -49,7 +49,7 @@
           </ul>
         </nav>
       </div>
-      <div *ngIf="!isLogin && !userInfo" class="flex mr-[40px] mt-[25px]">
+      <div *ngIf="!isLogin && !userInfo" class="flex right-10 top-5 absolute">
         <button
           mat-raised-button
           class="font-[600] hover:w-[80px] hover:h-[38px]"
@@ -162,7 +162,9 @@
   <!-- Title -->
   <section id="title" class="xl:mt-[70px] 2xl:mt-[70px] lg:mt-[70px] mt-[30px]">
     <div class="text-center">
-      <h2 class="title xl:text-[120px] 2xl:text-[120px] text-[90px] text-white">
+      <h2
+        class="title xl:text-[120px] 2xl:text-[120px] lg:text-[120px] text-[90px] text-white"
+      >
         {{ titleValue | async }}
       </h2>
     </div>

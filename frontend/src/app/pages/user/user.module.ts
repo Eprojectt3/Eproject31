@@ -59,7 +59,6 @@ import { ImageModule } from 'primeng/image';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     HttpClientModule,
-
   ],
   exports: [UserComponent],
   providers: [

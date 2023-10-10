@@ -23,13 +23,11 @@ export class ListCategoriesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   public dataSource = new MatTableDataSource<Category>([]);
 
-
   constructor(
     private categoryService: CategoryService,
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute
-
   ) {}
 
   ngOnInit(): void {
@@ -70,39 +68,38 @@ export class ListCategoriesComponent implements OnInit {
       width: '400px',
     });
     dialogRef.afterClosed().subscribe({
-      next:(val)=>{
-        if(val){
+      next: (val) => {
+        if (val) {
           this.getListCategories();
         }
-      }
-    })
+      },
+    });
   };
-  public openUpdateCate = (data:any) => {
+  public openUpdateCate = (data: any) => {
     const dialogRef = this.dialog.open(DialogCreateComponent, {
       data: data,
       height: '230px',
       width: '400px',
     });
     dialogRef.afterClosed().subscribe({
-      next:(val)=>{
-        if(val){
+      next: (val) => {
+        if (val) {
           this.getListCategories();
         }
-      }
-    })
+      },
+    });
   };
 
-  public deleteCategory = (id:string) => {
-    this.categoryService.deleteCategory(id).subscribe(val=>{
+  public deleteCategory = (id: string) => {
+    this.categoryService.deleteCategory(id).subscribe((val) => {
       this.categoryService
-      .getCategories(this.index, this.pageSize)
-      .subscribe((val: any) => {
-        this.categories = val.data;
-        this.totalSize = val.count;
-      });
-    })
-  }
-
+        .getCategories(this.index, this.pageSize)
+        .subscribe((val: any) => {
+          this.categories = val.data;
+          this.totalSize = val.count;
+        });
+    });
+  };
 
   public isUpdateCategory = (): boolean => {
     const currentUrl: string = this.router.url;

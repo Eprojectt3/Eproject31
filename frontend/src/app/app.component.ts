@@ -35,4 +35,10 @@ export class AppComponent implements OnInit {
 
     return currentUrl.includes('/admin');
   };
+
+  public isShowLayoutOrder = (): boolean => {
+    const currentUrl = this.router.url;
+
+    return currentUrl.includes('/user/order');
+  };
 }

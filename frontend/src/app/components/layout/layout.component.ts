@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { TitleService } from 'src/app/services/title.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
@@ -31,7 +31,6 @@ export class LayoutComponent implements OnInit {
       this.isLogin = val;
     });
     this.userInfo = this.tokenStorage.getUser();
-    console.log(this.isLogin);
   }
 
   public logout = (): void => {
@@ -40,5 +39,7 @@ export class LayoutComponent implements OnInit {
     this.$isLogin.subscribe((val) => {
       this.isLogin = val;
     });
+
+    location.reload();
   };
 }

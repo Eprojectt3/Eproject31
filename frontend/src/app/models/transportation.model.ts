@@ -3,6 +3,7 @@ export interface Transportation {
   name?: string;
   price?: number;
   description?: string;
+  tour_ID?: number;
   tours?: any;
   createBy?: string;
   createDate?: Date;

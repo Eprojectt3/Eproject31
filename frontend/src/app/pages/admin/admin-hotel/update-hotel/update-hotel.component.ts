@@ -90,7 +90,6 @@ export class UpdateHotelComponent implements OnInit {
 
       for (let urlImage of val.urlImage) {
         this.urlImages.push(urlImage);
-        console.log(this.urlImages);
       }
     });
   }
