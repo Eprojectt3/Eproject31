@@ -5,6 +5,7 @@ import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { DialogCreateComponent } from '../dialog-create/dialog-create.component';
 import { UpdateCateComponent } from '../update-cate/update-cate.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-categories',
@@ -21,9 +22,12 @@ export class ListCategoriesComponent implements OnInit {
   public index: number = 1;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+
   constructor(
     private categoryService: CategoryService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
+
   ) {}
 
   ngOnInit(): void {
@@ -57,5 +61,17 @@ export class ListCategoriesComponent implements OnInit {
     });
   };
 
-  public openUpdateCate = () => {};
+  public isShowCreateHotel = (): boolean => {
+    const currentUrl: string = this.router.url;
+
+    return currentUrl.includes('/admin/categories/create');
+  };
+
+ 
+
+  public isUpdateCategory = (): boolean => {
+    const currentUrl: string = this.router.url;
+
+    return currentUrl.includes('/admin/categories/update/');
+  };
 }
