@@ -94,7 +94,7 @@ namespace backend.BussinessLogic
             }
             var Name_replace = staffDto.Name.Replace(" ", "-");
             var image_folder = Name_replace + "-" + existingStaff.PersonId;
-            var images = await Image.Update_Image(image_folder, existingStaff.Name +"-" + existingStaff.PersonId, "staff", staffDto.path, staffDto.fileCollection);
+            var images = await Image.Update_Image(image_folder, existingStaff.Name.Replace(" ", "-") + "-" + existingStaff.PersonId, "staff", staffDto.path, staffDto.fileCollection);
             images.Add("JPG.JPG");
             foreach (var image in images)
             {
