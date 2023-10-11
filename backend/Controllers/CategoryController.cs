@@ -15,16 +15,16 @@ namespace backend.Controllers
     public class CategoryController : ControllerBase
     {
         public CategoryBusinessLogic categoryBussinessLogic;
-        private readonly IResponseCacheService responseCacheService;
-        public CategoryController(CategoryBusinessLogic categoryBussiness, IResponseCacheService responseCache)
+        //private readonly IResponseCacheService responseCacheService;
+        public CategoryController(CategoryBusinessLogic categoryBussiness)
         {
             categoryBussinessLogic = categoryBussiness;
-            responseCacheService = responseCache;
+            //responseCacheService = responseCache;
         }
 
         // execute list all category
         [HttpGet]
-        [Cache(1400)]
+        //[Cache(1400)]
         public async Task<ActionResult> ListCategory()
         {
             var output = await categoryBussinessLogic.SelectAllCategory();
@@ -44,7 +44,7 @@ namespace backend.Controllers
             await categoryBussinessLogic.Create(category);
 
             var api = "/api/Category/ListCategory*";
-            responseCacheService.RemoveCache(api);
+            //responseCacheService.RemoveCache(api);
             return Ok(category);
         }
 

@@ -35,7 +35,9 @@
             mat-flat-button
             color="primary"
             class="mr-[10px]"
-            (click)="openUpdateCate()"
+            [routerLink]="['/admin/categories/update', element.id]"
+        
+           
           >
             Edit
           </button>
@@ -62,5 +64,8 @@
       page of periodic elements"
     >
     </mat-paginator>
+  </div>
+  <div *ngIf="isUpdateCategory()">
+    <router-outlet></router-outlet>
   </div>
 </section>

@@ -7,7 +7,7 @@ import { User } from '../models/user.model';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 
-const AUTH_API = environment.apiUrl;
+const AUTH_API = environment.apiLocallHost;
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

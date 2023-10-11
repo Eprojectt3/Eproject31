@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FeedbackService } from '../../../../services/feedback.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ValidatorFormService } from '../../../../services/validator-form.service';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,7 +18,7 @@ import { FeedBack } from 'src/app/models/feedback.model';
 export class UpdateFeedComponent implements OnInit {
   formData: FormData = new FormData();
   loginForm!: FormGroup;
-  Editor = ClassicEditor;
+  // Editor = ClassicEditor;
   feedback!: FeedBack;
   id!: number;
 
