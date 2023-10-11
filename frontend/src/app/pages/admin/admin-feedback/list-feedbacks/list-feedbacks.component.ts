@@ -63,6 +63,7 @@ export class ListFeedbacksComponent implements OnInit {
 
   public openUpdateCate = () => {
   };
+  // Delete Feed
 
   public deleteFeedback = (id:string) => {
     this.feedbackService.deleteFeedback(id).subscribe(val=>{

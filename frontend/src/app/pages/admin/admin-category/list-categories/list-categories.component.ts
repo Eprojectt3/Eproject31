@@ -5,7 +5,8 @@ import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { DialogCreateComponent } from '../dialog-create/dialog-create.component';
 import { UpdateCateComponent } from '../update-cate/update-cate.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-list-categories',
@@ -21,16 +22,25 @@ export class ListCategoriesComponent implements OnInit {
   public totalSize: number = 0;
   public index: number = 1;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  public dataSource = new MatTableDataSource<Category>([]);
 
 
   constructor(
     private categoryService: CategoryService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
 
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params: any) => {
+      if (params.refresh === 'true') {
+        this.getListCategories();
+      }
+    });
+
+    // Get list hotel pagination
     this.getListCategories();
   }
 
@@ -50,6 +60,7 @@ export class ListCategoriesComponent implements OnInit {
       .subscribe((val: any) => {
         this.categories = val.data;
         this.totalSize = val.count;
+        this.dataSource = val.data;
       });
   };
 
@@ -61,13 +72,17 @@ export class ListCategoriesComponent implements OnInit {
     });
   };
 
-  public isShowCreateHotel = (): boolean => {
-    const currentUrl: string = this.router.url;
+  public deleteCategory = (id:string) => {
+    this.categoryService.deleteCategory(id).subscribe(val=>{
+      this.categoryService
+      .getCategories(this.index, this.pageSize)
+      .subscribe((val: any) => {
+        this.categories = val.data;
+        this.totalSize = val.count;
+      });
+    })
+  }
 
-    return currentUrl.includes('/admin/categories/create');
-  };
-
- 
 
   public isUpdateCategory = (): boolean => {
     const currentUrl: string = this.router.url;

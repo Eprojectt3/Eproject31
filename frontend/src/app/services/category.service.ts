@@ -43,9 +43,10 @@ export class CategoryService {
     );
   };
   // Delete category
-  public deleteCategory = (id: number): Observable<any> => {
-    return this.http.delete(`${AUTH_API}/api/Category/Delete/${id}`);
+  public deleteCategory = (id: string | undefined): Observable<any> => {
+    return this.http.delete(`${AUTH_API}/api/Category/Delete/`+id);
   };
+
 
   // Update category
   public updateCategory = (data: any): Observable<any> => {
