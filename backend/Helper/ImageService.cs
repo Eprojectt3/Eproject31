@@ -33,7 +33,10 @@ namespace backend.Helper
                 
                 
                 var result = new List<string>();
-                result = await ResizeImage(fileCollection, Filepath);
+                if(fileCollection != null)
+                {
+                    result = await ResizeImage(fileCollection, Filepath);
+                }
                 /*
                 foreach (var file in fileCollection)
                 {
@@ -132,10 +135,14 @@ namespace backend.Helper
         public string DeleteImage(string productcode, string type)
         {
             try
-            {
+            {        
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","Upload", type, productcode);
-                Directory.Delete(path, true);
-                return "Xóa Thành Công";
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                    return "Xóa Thành Công";
+                }
+                return "Xóa ảnh chưa được thực thi";
             }catch (Exception ex)
             {
                 throw ex;
@@ -190,8 +197,11 @@ namespace backend.Helper
                             File.Delete(element);
                         }
                     }
-                    result = await Upload_Image(subFolder, type, fileCollection);
-                        }
+                    if (fileCollection != null)
+                    {
+                        result = await Upload_Image(objectdto, type, fileCollection);
+                    }
+                }
                         //khác tên productcode                
                         else
                         {
@@ -218,18 +228,21 @@ namespace backend.Helper
                             File.Copy(element, destinationPath, true);
                         }                     
                     }
-                    result = await Upload_Image(objectdto, type, fileCollection);
-                   /*
-                    foreach (var file_image in fileCollection)
+                    if(fileCollection != null)
                     {
-                        string destinationPath2 = Path.Combine(des_Path, Path.GetFileName(file_image.FileName));
-                        using (FileStream stream = new FileStream(destinationPath2, FileMode.Append))
-                        {
-                            file_image.CopyToAsync(stream);
+                        result = await Upload_Image(objectdto, type, fileCollection);
+                    }
+                    /*
+                     foreach (var file_image in fileCollection)
+                     {
+                         string destinationPath2 = Path.Combine(des_Path, Path.GetFileName(file_image.FileName));
+                         using (FileStream stream = new FileStream(destinationPath2, FileMode.Append))
+                         {
+                             file_image.CopyToAsync(stream);
 
-                        }
-                    }   
-                   */
+                         }
+                     }   
+                    */
                     Directory.Delete(get_curren_folder, true);
                     
                 }
