@@ -19,7 +19,7 @@ namespace backend.Dtos.TourDtos
         public int? Transportation_ID { get; set; }
         public string? Departure_location { get; set; }
 
-        public IFormFileCollection fileCollection { get; set; }
+        public IFormFileCollection? fileCollection { get; set; }
     }
     public class Tour_Update_Dto : TourDto
     {

@@ -15,7 +15,7 @@ namespace backend.Dtos.RestaurantDtos
         public string? PhoneNumbber { get; set; }
         public int? LocationId { get; set; }  
         public string? Links { get; set; }
-        public IFormFileCollection fileCollection { get; set; }
+        public IFormFileCollection? fileCollection { get; set; }
     }
     public class Restaurant_Update_Dto : RestaurantImageDto
     {
