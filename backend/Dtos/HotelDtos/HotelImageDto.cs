@@ -16,7 +16,7 @@ namespace backend.Dtos.HotelDtos
         public string? Image { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Links { get; set; }
-        public IFormFileCollection fileCollection { get; set; }
+        public IFormFileCollection? fileCollection { get; set; }
     }
     public class Hotel_Update_Dto : HotelImageDto
     {
