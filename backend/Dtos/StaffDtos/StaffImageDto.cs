@@ -7,7 +7,7 @@
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public string? PersonId { get; set; }
-        public IFormFileCollection fileCollection { get; set; }
+        public IFormFileCollection? fileCollection { get; set; }
     }
     public class Staff_Update_Dto : StaffImageDto 
     {
