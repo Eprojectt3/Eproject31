@@ -135,10 +135,14 @@ namespace backend.Helper
         public string DeleteImage(string productcode, string type)
         {
             try
-            {
+            {        
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","Upload", type, productcode);
-                Directory.Delete(path, true);
-                return "Xóa Thành Công";
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                    return "Xóa Thành Công";
+                }
+                return "Xóa ảnh chưa được thực thi";
             }catch (Exception ex)
             {
                 throw ex;
