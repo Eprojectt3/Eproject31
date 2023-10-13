@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using backend.Dtos.HotelDtos;
 using backend.Dtos.RestaurantDtos;
 using backend.Dtos.StaffDtos;
+using backend.Dao.Specification.TransportationSpec;
 
 namespace backend.BussinessLogic
 {
@@ -23,14 +24,16 @@ namespace backend.BussinessLogic
         private readonly IHttpContextAccessor _httpContextAccessor;
         private IMapper mapper;
         private DataContext context;
+        private TourDetailBusinessLogic TourDetailBusinessLogic;
 
-        public TourBusinessLogic(IUnitofWork _unitofWork, ImageService imageService, IHttpContextAccessor httpContextAccessor, IMapper mapper ,DataContext context)
+        public TourBusinessLogic(IUnitofWork _unitofWork, ImageService imageService, IHttpContextAccessor httpContextAccessor, IMapper mapper, DataContext context, TourDetailBusinessLogic tourDetailBusinessLogic)
         {
             unitofWork = _unitofWork;
             Image = imageService;
             _httpContextAccessor = httpContextAccessor;
             this.mapper = mapper;
             this.context = context;
+            TourDetailBusinessLogic = tourDetailBusinessLogic;
         }
 
         //list tour
@@ -84,33 +87,38 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
         }
-        public async Task CreateWithRating(Tour tour)
+        public async Task<double> CreateWithRating(int id)
         {
+
+            var tour = await unitofWork.Repository<Tour>().GetByIdAsync(id);
             if (tour is null)
             {
-                throw new NotFoundExceptions("Cattegory not found");
+                throw new NotFoundExceptions("Tour not found");
             }
-            var orderDetail = await unitofWork.Repository<OrderDetail>().GetAllAsync();
-            if (orderDetail != null && orderDetail.Any())
+            var tourDetail = await unitofWork.Repository<TourDetail>().GetAllWithAsync(new GetOrderSpec(id));
+            var orderDetailList = new List<OrderDetail>();
+            foreach (var iteam in tourDetail)
             {
-                var ratings = orderDetail.Select(od => od.Rating).ToList();
+                var orderDetail = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(new SelectAllRatingOrderDetailSpec(iteam.Id));
+                orderDetailList.AddRange(orderDetail);
+            }
+            double averageRating = 0;
+            if (orderDetailList != null && orderDetailList.Any())
+            {
+                var ratings = orderDetailList.Select(od => od.Rating).ToList();
 
                 if (ratings.Any())
                 {
-                    double averageRating = (double)ratings.Average();
+                    averageRating = (double)ratings.Average();
                     tour.Rating = (int)averageRating;
                 }
                 else
                 {
                     throw new BadRequestExceptions("Rating is null");
                 }
+
             }
-            await unitofWork.Repository<Tour>().AddAsync(tour);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
-            }
+            return averageRating;
         }
 
 
@@ -163,21 +171,54 @@ namespace backend.BussinessLogic
         //delete tour
         public async Task Delete(int id)
         {
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(id);
+                    if (existingTour == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+                    var Tour = await unitofWork.Repository<TourDetail>().GetAllWithAsync(new GetTourDetailSpec(id));
+                    var iti = await unitofWork.Repository<Itinerary>().GetAllWithAsync(new GetItinerarySpec(id));
+                    var service = await unitofWork.Repository<Service>().GetAllWithAsync(new GetServiceSpec(id));
+                    if (Tour.Any())
+                    {
+                        foreach (var item in Tour)
 
-            var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(id);
-            if (existingTour == null)
-            {
-                throw new NotFoundExceptions("not found");
+                        {
+                            await TourDetailBusinessLogic.Delete(item.Id);
+                        }
+                    }
+                        
+
+                    if (iti.Any())
+                    {
+                        await unitofWork.Repository<Itinerary>().DeleteRange(iti);
+                    }
+                    if (service.Any())
+                    {
+                        await unitofWork.Repository<Service>().DeleteRange(service);
+                    }
+                    await unitofWork.Repository<Tour>().Delete(existingTour);
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+                    var Name_replace = existingTour.Name.Replace(" ", "-");
+                    var image_folder = Name_replace + "-" + existingTour.Departure_location.Replace(" ", "-");
+                    var delete_image = Image.DeleteImage(image_folder, "tour");
+
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
-            await unitofWork.Repository<Tour>().Delete(existingTour);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
-            }
-            var Name_replace = existingTour.Name.Replace(" ", "-");
-            var image_folder = Name_replace + "-" + existingTour.Departure_location.Replace(" ", "-");
-            var delete_image = Image.DeleteImage(image_folder, "tour");
         }
 
         //get tour by id

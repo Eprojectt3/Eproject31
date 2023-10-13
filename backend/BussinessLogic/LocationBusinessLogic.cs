@@ -8,6 +8,7 @@ using backend.Exceptions;
 using backend.Helper;
 using System.Drawing.Printing;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -15,10 +16,12 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
-        public LocationBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        public DataContext context;
+        public LocationBusinessLogic(IUnitofWork _unitofWork, IMapper mapper ,DataContext context)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.context = context;
         }
 
         //list category
@@ -77,38 +80,50 @@ namespace backend.BussinessLogic
         //delete location
         public async Task Delete(int id)
         {
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var existingLocation1 = await unitofWork.Repository<Location1>().GetByIdAsync(id);
+                    var HotelHaveLocationId = await unitofWork.Repository<Hotel>().GetAllWithAsync(new GetHotelHasLocationId(id));
+                    var ResortHaveLocationId = await unitofWork.Repository<Resorts>().GetAllWithAsync(new GetResortHasLocationId(id));
+                    var RestaurantHaveLocationId = await unitofWork.Repository<Restaurant>().GetAllWithAsync(new GetRestaurantHasLocationId(id));
+                    if (existingLocation1 == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+                    // Xóa tất cả các khách sạn liên quan
+                    foreach (var hotel in HotelHaveLocationId)
+                    {
+                        await unitofWork.Repository<Hotel>().Delete(hotel);
+                    }
+                    // Xóa tất cả các resort liên quan
+                    foreach (var resort in ResortHaveLocationId)
+                    {
+                        await unitofWork.Repository<Resorts>().Delete(resort);
+                    }
+                    // Xóa tất cả các resort liên quan
+                    foreach (var restaurant in RestaurantHaveLocationId)
+                    {
+                        await unitofWork.Repository<Restaurant>().Delete(restaurant);
+                    }
 
-            var existingLocation1 = await unitofWork.Repository<Location1>().GetByIdAsync(id);
-            var HotelHaveLocationId = await unitofWork.Repository<Hotel>().GetAllWithAsync(new GetHotelHasLocationId(id));
-            var ResortHaveLocationId = await unitofWork.Repository<Resorts>().GetAllWithAsync(new GetResortHasLocationId(id));
-            var RestaurantHaveLocationId = await unitofWork.Repository<Restaurant>().GetAllWithAsync(new GetRestaurantHasLocationId(id));
-            if (existingLocation1 == null)
-            {
-                throw new NotFoundExceptions("not found");
-            }
-            // Xóa tất cả các khách sạn liên quan
-            foreach (var hotel in HotelHaveLocationId)
-            {
-                await unitofWork.Repository<Hotel>().Delete(hotel);
-            }
-            // Xóa tất cả các resort liên quan
-            foreach (var resort in ResortHaveLocationId)
-            {
-                await unitofWork.Repository<Resorts>().Delete(resort);
-            }
-            // Xóa tất cả các resort liên quan
-            foreach (var restaurant in RestaurantHaveLocationId)
-            {
-                await unitofWork.Repository<Restaurant>().Delete(restaurant);
-            }
+                    await unitofWork.Repository<Location1>().Delete(existingLocation1);
 
-            await unitofWork.Repository<Location1>().Delete(existingLocation1);
-
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
+            
         }
         public async Task<Pagination<LocationDtos>> SelectAllLocation1Pagination(SpecParams specParams)
         {

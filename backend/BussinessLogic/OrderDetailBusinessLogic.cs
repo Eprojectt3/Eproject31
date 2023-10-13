@@ -77,8 +77,8 @@ namespace backend.BussinessLogic
             existingOrderDetail.UserID = orderDetail.UserID;
             existingOrderDetail.Payment_ID = orderDetail.Payment_ID;
             existingOrderDetail.Type_Payment = orderDetail.Type_Payment;
+            existingOrderDetail.Tour_Detail_ID = orderDetail.Tour_Detail_ID;
 
-            
             await unitofWork.Repository<OrderDetail>().Update(existingOrderDetail);
             var check = await unitofWork.Complete();
             if (check < 1)

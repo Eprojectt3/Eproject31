@@ -37,7 +37,7 @@ namespace backend.Extensions
             services.AddTransient<TourDetailBusinessLogic>();
             services.AddTransient<UserBussinessLogic>();
             services.AddTransient<ImageService>();
-           
+            services.AddTransient<RoleBusinessLogic>();
             services.AddTransient<InformationBusinessLogic>();
             services.AddTransient<ImageService>();
             services.AddTransient<Search_TourDetail_Dao>();
