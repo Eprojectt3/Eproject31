@@ -73,14 +73,14 @@ namespace backend.BussinessLogic
         }
 
         //update itinerary
-        public async Task Update(Itinerary itinerary)
+        public async Task Update(Itinerary itinerary, int id)
         {
             if (itinerary is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingItinerary = await unitofWork.Repository<Itinerary>().GetByIdAsync(itinerary.Id);
+            var existingItinerary = await unitofWork.Repository<Itinerary>().GetByIdAsync(id);
 
             if (existingItinerary is null)
             {

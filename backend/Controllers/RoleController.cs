@@ -45,11 +45,11 @@ namespace backend.Controllers
         }
 
         //execute update role
-        [HttpPut]
-        public async Task<IActionResult> Update(Role role)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Role role,int id)
         {
 
-            await roleBusinessLogic.Update(role);
+            await roleBusinessLogic.Update(role, id);
             return Ok(role);
         }
 

@@ -125,5 +125,16 @@ namespace backend.Controllers
                 return StatusCode(500, "Đã xảy ra lỗi trong quá trình tính toán");
             }
         }
+        //get order by id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByOrderId(int id)
+        {
+            var order = await orderBusinessLogic.GetByOrderId(id);
+            if (order == null)
+            {
+                return NotFound("not found order");
+            }
+            return Ok(order);
+        }
     }
 }

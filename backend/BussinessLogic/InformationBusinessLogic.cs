@@ -43,14 +43,14 @@ namespace backend.BussinessLogic
         }
 
         //update information
-        public async Task Update(Information information)
+        public async Task Update(Information information, int id)
         {
             if (information is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingInformation = await unitofWork.Repository<Information>().GetByIdAsync(information.Id);
+            var existingInformation = await unitofWork.Repository<Information>().GetByIdAsync(id);
 
             if (existingInformation is null)
             {

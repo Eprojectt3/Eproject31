@@ -52,14 +52,14 @@ namespace backend.BussinessLogic
         }
 
         //update orderDetail
-        public async Task Update(OrderDetail orderDetail)
+        public async Task Update(OrderDetail orderDetail, int id)
         {
             if (orderDetail is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingOrderDetail = await unitofWork.Repository<OrderDetail>().GetByIdAsync(orderDetail.Id);
+            var existingOrderDetail = await unitofWork.Repository<OrderDetail>().GetByIdAsync(id);
 
             if (existingOrderDetail is null)
             {

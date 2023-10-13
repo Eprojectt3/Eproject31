@@ -45,14 +45,14 @@ namespace backend.BussinessLogic
         }
 
         //update feedback
-        public async Task Update(FeedBack feedback)
+        public async Task Update(FeedBack feedback,int id)
         {
             if (feedback is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingFeedBack = await unitofWork.Repository<FeedBack>().GetByIdAsync(feedback.Id);
+            var existingFeedBack = await unitofWork.Repository<FeedBack>().GetByIdAsync(id);
 
             if (existingFeedBack is null)
             {

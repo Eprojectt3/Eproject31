@@ -49,11 +49,11 @@ namespace backend.Controllers
         }
 
         //execute update category
-        [HttpPut]
-        public async Task<IActionResult> Update( Category category)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update( Category category, int id)
         {
 
-            await categoryBussinessLogic.Update(category);
+            await categoryBussinessLogic.Update(category,id);
             return Ok(category);
         }
 

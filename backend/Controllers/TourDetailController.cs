@@ -89,8 +89,19 @@ namespace backend.Controllers
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
         }
-       
-        
-        
+
+
+        //get tourDetail by id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByTourDetailId(int id)
+        {
+            var tourDetail = await tourDetailBusinessLogic.GetByTourDetailId(id);
+            if (tourDetail == null)
+            {
+                return NotFound("not found tourDetail");
+            }
+            return Ok(tourDetail);
+        }
+
     }
 }

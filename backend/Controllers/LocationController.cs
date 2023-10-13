@@ -54,11 +54,11 @@ namespace backend.Controllers
         }
 
         //execute update location
-        [HttpPut]
-        public async Task<IActionResult> Update(Location1 location)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Location1 location,int id)
         {
 
-            await locationBussinessLogic.Update(location);
+            await locationBussinessLogic.Update(location, id);
             return Ok(location);
         }
 

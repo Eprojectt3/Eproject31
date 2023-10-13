@@ -55,11 +55,11 @@ namespace backend.Controllers
         }
 
         //execute update itinerary
-        [HttpPut]
-        public async Task<IActionResult> Update(Itinerary itinerary)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Itinerary itinerary,int id)
         {
 
-            await itineraryBusinessLogic.Update(itinerary);
+            await itineraryBusinessLogic.Update(itinerary, id);
             return Ok(itinerary);
         }
 

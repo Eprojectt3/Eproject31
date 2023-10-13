@@ -171,8 +171,7 @@ namespace backend.BussinessLogic
         //delete tour
         public async Task Delete(int id)
         {
-            using (var transaction = context.Database.BeginTransaction())
-            {
+            
                 try
                 {
                     var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(id);
@@ -207,18 +206,18 @@ namespace backend.BussinessLogic
                     {
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
-                    var Name_replace = existingTour.Name.Replace(" ", "-");
-                    var image_folder = Name_replace + "-" + existingTour.Departure_location.Replace(" ", "-");
-                    var delete_image = Image.DeleteImage(image_folder, "tour");
+                    //var Name_replace = existingTour.Name.Replace(" ", "-");
+                    //var image_folder = Name_replace + "-" + existingTour.Departure_location.Replace(" ", "-");
+                    //var delete_image = Image.DeleteImage(image_folder, "tour");
 
-                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+
                     throw ex;
                 }
-            }
+            
         }
 
         //get tour by id
