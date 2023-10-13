@@ -6,6 +6,8 @@ using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
+using backend.Dao.Specification.CategorySpec;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -13,10 +15,12 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
-        public TransportationBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        public DataContext context;
+        public TransportationBusinessLogic(IUnitofWork _unitofWork, IMapper mapper ,DataContext context)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.context = context;
         }
 
         //list category
@@ -80,18 +84,35 @@ namespace backend.BussinessLogic
         //delete transportation
         public async Task Delete(int id)
         {
-
-            var existingTransportation = await unitofWork.Repository<Transportation>().GetByIdAsync(id);
-            if (existingTransportation == null)
+            using (var transaction = context.Database.BeginTransaction())
             {
-                throw new NotFoundExceptions("not found");
+                try
+                {
+                    var existingTransportation = await unitofWork.Repository<Transportation>().GetByIdAsync(id);
+                    if (existingTransportation == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+                    var Tour = await unitofWork.Repository<Tour>().GetAllWithAsync(new TransGetListTourSpec(id));
+                    if (Tour.Any())
+                    {
+                        await unitofWork.Repository<Tour>().DeleteRange(Tour);
+                    }
+                    await unitofWork.Repository<Transportation>().Delete(existingTransportation);
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
-            await unitofWork.Repository<Transportation>().Delete(existingTransportation);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
-            }
+            
         }
         public async Task<Pagination<TransportationDto>> SelectAllTransportationPagination(SpecParams specParams)
         {

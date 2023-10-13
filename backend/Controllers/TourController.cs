@@ -88,7 +88,12 @@ namespace backend.Controllers
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> UpdateRating(int id)
+        {
+            var averageRating = await tourBusinessLogic.CreateWithRating(id);
+            return Ok(new { averageRating = averageRating });
+        }
 
-        
     }
 }

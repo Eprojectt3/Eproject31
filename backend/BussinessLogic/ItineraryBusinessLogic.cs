@@ -6,6 +6,7 @@ using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -13,10 +14,12 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
-        public ItineraryBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        public DataContext context;
+        public ItineraryBusinessLogic(IUnitofWork _unitofWork, IMapper mapper,DataContext context)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.context = context;
         }
 
         //list itinerary
@@ -122,18 +125,30 @@ namespace backend.BussinessLogic
         //delete itinerary
         public async Task Delete(int id)
         {
-
-            var existingItinerary = await unitofWork.Repository<Itinerary>().GetByIdAsync(id);
-            if (existingItinerary == null)
+            using (var transaction = context.Database.BeginTransaction())
             {
-                throw new NotFoundExceptions("not found");
+                try
+                {
+                    var existingItinerary = await unitofWork.Repository<Itinerary>().GetByIdAsync(id);
+                    if (existingItinerary == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+                    await unitofWork.Repository<Itinerary>().Delete(existingItinerary);
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
-            await unitofWork.Repository<Itinerary>().Delete(existingItinerary);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
-            }
+            
         }
         public async Task<Pagination<ItineraryDto>> SelectAllItineraryPagination(SpecParams specParams)
         {

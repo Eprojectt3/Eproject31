@@ -88,8 +88,7 @@ namespace backend.BussinessLogic
         //delete tourDetail
         public async Task Delete(int id)
         {
-            using (var transaction = context.Database.BeginTransaction())
-            {
+            
                 try
                 {
                     var existingTourDetail = await unitofWork.Repository<TourDetail>().GetByIdAsync(id);
@@ -98,12 +97,11 @@ namespace backend.BussinessLogic
                         throw new NotFoundExceptions("not found");
                     }
 
-                    var TourDetailHaveOrderId = await unitofWork.Repository<Order>().GetAllWithAsync(new TourDetailDeleteOrderSpec(id));
+                    var TourDetailHaveOrderId = await unitofWork.Repository<Order>().GetEntityWithSpecAsync(new TourDetailDeleteOrderSpec(id));
                     var TourDetailHaveOrderDetailId = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(new TourDetailDeleteOrderDetailSpec(id));
-                    if (TourDetailHaveOrderId.Any())
-                    {
-                        await unitofWork.Repository<Order>().DeleteRange(TourDetailHaveOrderId);
-                    }
+                    
+                        await unitofWork.Repository<Order>().Delete(TourDetailHaveOrderId);
+
                     if (TourDetailHaveOrderDetailId.Any())
                     {
                         await unitofWork.Repository<OrderDetail>().DeleteRange(TourDetailHaveOrderDetailId);
@@ -117,14 +115,14 @@ namespace backend.BussinessLogic
                         throw new BadRequestExceptions("chua dc thuc thi");
                     }
 
-                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                    
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    
                     throw ex;
                 }
-            }
+            
         }
         public async Task<TourDetail?> GetTourDetailAsync(int id)
         {

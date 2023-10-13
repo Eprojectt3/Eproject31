@@ -6,6 +6,7 @@ using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -13,10 +14,12 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
-        public FeedBackBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        public DataContext context;
+        public FeedBackBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, DataContext context)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.context = context;
         }
 
         //list feedback
@@ -75,18 +78,31 @@ namespace backend.BussinessLogic
         //delete feedback
         public async Task Delete(int id)
         {
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var existingFeedBack = await unitofWork.Repository<FeedBack>().GetByIdAsync(id);
+                    if (existingFeedBack == null)
+                    {
+                        throw new NotFoundExceptions("not found");
+                    }
+                    await unitofWork.Repository<FeedBack>().Delete(existingFeedBack);
+                    var check = await unitofWork.Complete();
+                    if (check < 1)
+                    {
+                        throw new BadRequestExceptions("chua dc thuc thi");
+                    }
 
-            var existingFeedBack = await unitofWork.Repository<FeedBack>().GetByIdAsync(id);
-            if (existingFeedBack == null)
-            {
-                throw new NotFoundExceptions("not found");
+                    transaction.Commit(); // Commit giao dịch nếu mọi thứ thành công
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // Rollback giao dịch nếu có ngoại lệ
+                    throw ex;
+                }
             }
-            await unitofWork.Repository<FeedBack>().Delete(existingFeedBack);
-            var check = await unitofWork.Complete();
-            if (check < 1)
-            {
-                throw new BadRequestExceptions("chua dc thuc thi");
-            }
+            
         }
         public async Task<Pagination<FeedBackDto>> SelectAllFeedBackPagination(SpecParams specParams)
         {
