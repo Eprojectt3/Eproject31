@@ -31,7 +31,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { UpdateCateComponent } from './admin-category/update-cate/update-cate.component';
 import { CreateHotelComponent } from './admin-hotel/create-hotel/create-hotel.component';
 import { MatSelectModule } from '@angular/material/select';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -42,7 +41,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ImageModule } from 'primeng/image';
 import { UpdateHotelComponent } from './admin-hotel/update-hotel/update-hotel.component';
 import { CreateTourComponent } from './admin-tour/create-tour/create-tour.component';
-import { UpdateFeedComponent } from './admin-feedback/update-feed/update-feed.component';
 import { DeleteFeedComponent } from './admin-feedback/delete-feed/delete-feed.component';
 import { CreateFeedComponent } from './admin-feedback/create-feed/create-feed.component';
 import { DeleteCateComponent } from './admin-category/delete-cate/delete-cate.component';
@@ -58,6 +56,12 @@ import { CreateServiceComponent } from './admin-service/create-service/create-se
 import { DeleteServiceComponent } from './admin-service/delete-service/delete-service.component';
 import { CreateTransportationComponent } from './admin-transportation/create-transportation/create-transportation.component';
 import { DeleteTransportationsComponent } from './admin-transportation/delete-transportations/delete-transportations.component';
+import { CreateResortComponent } from './admin-resort/create-resort/create-resort.component';
+import { UpdateResortComponent } from './admin-resort/update-resort/update-resort.component';
+import { DetailResortComponent } from './admin-resort/detail-resort/detail-resort.component';
+import { CreateRestaurantComponent } from './admin-restaurant/create-restaurant/create-restaurant.component';
+import { UpdateRestaurantComponent } from './admin-restaurant/update-restaurant/update-restaurant.component';
+import { DetailRestaurantComponent } from './admin-restaurant/detail-restaurant/detail-restaurant.component';
 
 
 @NgModule({
@@ -77,12 +81,10 @@ import { DeleteTransportationsComponent } from './admin-transportation/delete-tr
     ListToursComponent,
     ListTransportationsComponent,
     DialogCreateComponent,
-    UpdateCateComponent,
     CreateHotelComponent,
     DetailHotelComponent,
     UpdateHotelComponent,
     CreateTourComponent,
-    UpdateFeedComponent,
     DeleteFeedComponent,
     CreateFeedComponent,
     DeleteCateComponent,
@@ -98,6 +100,12 @@ import { DeleteTransportationsComponent } from './admin-transportation/delete-tr
     DeleteServiceComponent,
     CreateTransportationComponent,
     DeleteTransportationsComponent,
+    CreateResortComponent,
+    UpdateResortComponent,
+    DetailResortComponent,
+    CreateRestaurantComponent,
+    UpdateRestaurantComponent,
+    DetailRestaurantComponent,
 
   ],
   imports: [

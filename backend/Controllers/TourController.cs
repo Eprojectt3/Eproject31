@@ -58,7 +58,10 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await tourBusinessLogic.Delete(id);
-            return Ok();
+            return Ok(new
+            {
+                message = "Delete success"
+            });
         }
         //get tour by id
         [HttpGet("{id}")]

@@ -53,7 +53,10 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await resortBusinessLogic.Delete(id);
-            return Ok();
+            return Ok(new
+            {
+                message = "Delete success"
+            });
         }
         //get hotel by id
         [HttpGet("{id}")]

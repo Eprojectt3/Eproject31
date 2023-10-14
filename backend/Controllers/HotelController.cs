@@ -69,7 +69,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
              var result = await hotelBusinessLogic.Delete(id);
-            return Ok(result);
+            return Ok(new { message = result });
         }
 
         //get hotel by id

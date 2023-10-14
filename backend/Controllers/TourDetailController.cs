@@ -61,7 +61,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await tourDetailBusinessLogic.Delete(id);
-            return Ok();
+            return Ok(new { message = "Delete success" });
         }
         [HttpPut]
         public async Task<IActionResult> Update_User(TourDetail_By_Update_UserDto tourDetail_By_Update_UserDto)

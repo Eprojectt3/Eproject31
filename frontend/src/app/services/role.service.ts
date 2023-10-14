@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Role } from '../models/role.model';
+import {  Role1 } from '../models/role.model';
 
 const AUTH_API: string = environment.apiLocallHost;
 const httpOptions = {
@@ -13,10 +13,10 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class RoleService {
-  roleSubject: BehaviorSubject<Role[] | null>;
+  roleSubject: BehaviorSubject<Role1[] | null>;
 
   constructor(private httpClient: HttpClient) {
-    this.roleSubject = new BehaviorSubject<Role[] | null>(null);
+    this.roleSubject = new BehaviorSubject<Role1[] | null>(null);
   }
 
   // Get List Role
@@ -30,8 +30,8 @@ export class RoleService {
     pageSize: number = 10
   ): Observable<any> => {
     return this.httpClient
-      .post<Role[]>(
-        `${AUTH_API}/api/Role/ListRolesPagination`,
+      .post<Role1[]>(
+        `${AUTH_API}/api/Role/ListRolePagination`,
         {
           pageIndex: pageIndex,
           pageSize: pageSize,
@@ -59,7 +59,7 @@ export class RoleService {
   };
 
   // Update Role
-  public updateRole = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Role/Update`, data);
+  public updateRole = (data: any,id:number): Observable<any> => {
+    return this.httpClient.put(`${AUTH_API}/api/Role/Update/${id}`, data);
   };
 }

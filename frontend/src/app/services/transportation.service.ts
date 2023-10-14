@@ -34,16 +34,15 @@ export class TransportationService {
     pageIndex?: number,
     pageSize: number = 10
   ): Observable<any> => {
-    return this.httpClient
-      .post<Transportation[]>(
-        `${AUTH_API}/api/Transportation/ListTransportationPagination`,
-        {
-          pageIndex: pageIndex,
-          pageSize: pageSize,
-        },
-        httpOptions
-      )
-      .pipe(tap((val) => this.transportationSubject.next(val)));
+    return this.httpClient.post<Transportation[]>(
+      `${AUTH_API}/api/Transportation/ListTransportationPagination`,
+      {
+        pageIndex: pageIndex,
+        pageSize: pageSize,
+      },
+      httpOptions
+    );
+    // .pipe(tap((val) => this.transportationSubject.next(val)));
   };
 
   // Get detail Transportation
@@ -62,14 +61,14 @@ export class TransportationService {
   };
 
   // Delete Transportation
-  public deleteTransportation = (id: number): Observable<any> => {
+  public deleteTransportation = (id: string | undefined): Observable<any> => {
     return this.httpClient.delete(
-      `${AUTH_API}/api/Transportation/Delete/${id}`
+      `${AUTH_API}/api/Transportation/Delete/`+id
     );
   };
 
   // Update Transportation
-  public updateTransportation = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Transportation/Update`, data);
+  public updateTransportation = (data: any,id :number): Observable<any> => {
+    return this.httpClient.put(`${AUTH_API}/api/Transportation/Update/${id}`, data);
   };
 }

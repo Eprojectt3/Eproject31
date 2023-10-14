@@ -58,7 +58,7 @@ export class LocationService {
   };
 
   // Update Location
-  public updateLocation = (data: any): Observable<any> => {
-    return this.http.put(`${AUTH_API}/api/Location/Update`, data);
+  public updateLocation = (data: any,id:number): Observable<any> => {
+    return this.http.put(`${AUTH_API}/api/Location/Update/${id}`, data);
   };
 }

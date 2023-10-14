@@ -1,7 +1,7 @@
-// export interface Role {
-//   id: number;
-//   name?: string;
-// }
+export interface Role1 {
+  id: number;
+  name?: string;
+}
 
 // export const role: Role[] = [
 //   {
