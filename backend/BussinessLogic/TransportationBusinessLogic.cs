@@ -16,11 +16,13 @@ namespace backend.BussinessLogic
         public IUnitofWork unitofWork;
         public IMapper mapper;
         public DataContext context;
-        public TransportationBusinessLogic(IUnitofWork _unitofWork, IMapper mapper ,DataContext context)
+        private TourBusinessLogic tourBusiness;
+        public TransportationBusinessLogic(IUnitofWork _unitofWork, IMapper mapper , DataContext context, TourBusinessLogic tourBusiness)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
             this.context = context;
+            this.tourBusiness = tourBusiness;
         }
 
         //list category
@@ -50,14 +52,14 @@ namespace backend.BussinessLogic
         }
 
         //update transportation
-        public async Task Update(Transportation transportation)
+        public async Task Update(Transportation transportation,int id)
         {
             if (transportation is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingTransportation = await unitofWork.Repository<Transportation>().GetByIdAsync(transportation.Id);
+            var existingTransportation = await unitofWork.Repository<Transportation>().GetByIdAsync(id);
 
             if (existingTransportation is null)
             {
@@ -96,7 +98,11 @@ namespace backend.BussinessLogic
                     var Tour = await unitofWork.Repository<Tour>().GetAllWithAsync(new TransGetListTourSpec(id));
                     if (Tour.Any())
                     {
-                        await unitofWork.Repository<Tour>().DeleteRange(Tour);
+                        foreach (var item in Tour)
+                        {
+                            await tourBusiness.Delete(item.Id);
+                        }
+                        //await unitofWork.Repository<Tour>().DeleteRange(Tour);
                     }
                     await unitofWork.Repository<Transportation>().Delete(existingTransportation);
                     var check = await unitofWork.Complete();

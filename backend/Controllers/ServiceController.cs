@@ -40,11 +40,11 @@ namespace backend.Controllers
         }
 
         //execute update service
-        [HttpPut]
-        public async Task<IActionResult> Update(Service service)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Service service,int id)
         {
 
-            await serviceBusinessLogic.Update(service);
+            await serviceBusinessLogic.Update(service, id);
             return Ok(service);
         }
 

@@ -47,14 +47,14 @@ namespace backend.BussinessLogic
         }
 
         //update location
-        public async Task Update(Location1 location)
+        public async Task Update(Location1 location, int id)
         {
             if (location is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingLocation1 = await unitofWork.Repository<Location1>().GetByIdAsync(location.ID);
+            var existingLocation1 = await unitofWork.Repository<Location1>().GetByIdAsync(id);
 
             if (existingLocation1 is null)
             {

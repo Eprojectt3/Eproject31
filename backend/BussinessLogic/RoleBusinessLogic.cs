@@ -51,14 +51,14 @@ namespace backend.BussinessLogic
         }
 
         //update role
-        public async Task Update(Role role)
+        public async Task Update(Role role, int id)
         {
             if (role is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingRole = await unitofWork.Repository<Role>().GetByIdAsync(role.Id);
+            var existingRole = await unitofWork.Repository<Role>().GetByIdAsync(id);
 
             if (existingRole is null)
             {

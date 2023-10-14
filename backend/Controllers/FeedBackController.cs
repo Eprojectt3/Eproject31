@@ -40,11 +40,11 @@ namespace backend.Controllers
         }
 
         //execute update tour
-        [HttpPut]
-        public async Task<IActionResult> Update(FeedBack tour)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(FeedBack tour, int id)
         {
 
-            await feedBackBusinessLogic.Update(tour);
+            await feedBackBusinessLogic.Update(tour, id);
             return Ok(tour);
         }
 

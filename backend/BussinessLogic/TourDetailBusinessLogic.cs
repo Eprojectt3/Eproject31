@@ -7,7 +7,6 @@ using backend.Helper;
 using webapi.Dao.UnitofWork;
 using backend.Dtos.TourDetailDtos;
 using backend.Dao.Specification.TourDetailSpec;
-using backend.Dao.Specification.StaffSpec;
 using webapi.Data;
 
 namespace backend.BussinessLogic
@@ -184,6 +183,17 @@ namespace backend.BussinessLogic
             var pagination = new Pagination<TourDetailDto>(specParams.PageIndex, specParams.PageSize, tourDetailsPage, count, totalPageIndex);
 
             return pagination;
+        }
+        //get tourDetail by id
+        public async Task<TourDetail> GetByTourDetailId(int id)
+        {
+            var tourDetail = await unitofWork.Repository<TourDetail>().GetByIdAsync(id);
+            if (tourDetail == null)
+            {
+                throw new NotFoundExceptions("not found");
+            }
+            
+            return tourDetail;
         }
     }
 }

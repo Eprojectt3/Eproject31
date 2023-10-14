@@ -185,5 +185,16 @@ namespace backend.BussinessLogic
 
             return totalRevenue;
         }
+        //get order by id
+        public async Task<Order> GetByOrderId(int id)
+        {
+            var order = await unitofWork.Repository<Order>().GetByIdAsync(id);
+            if (order == null)
+            {
+                throw new NotFoundExceptions("not found");
+            }
+
+            return order;
+        }
     }
 }

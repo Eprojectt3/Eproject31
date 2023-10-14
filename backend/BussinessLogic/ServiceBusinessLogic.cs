@@ -42,14 +42,14 @@ namespace backend.BussinessLogic
         }
 
         //update service
-        public async Task Update(Service service)
+        public async Task Update(Service service, int id)
         {
             if (service is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingService = await unitofWork.Repository<Service>().GetByIdAsync(service.ID);
+            var existingService = await unitofWork.Repository<Service>().GetByIdAsync(id);
 
             if (existingService is null)
             {

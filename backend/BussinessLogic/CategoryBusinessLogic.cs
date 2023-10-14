@@ -18,11 +18,13 @@ namespace backend.BussinessLogic
         public IUnitofWork unitofWork;
         public IMapper mapper;
         public DataContext context;
-        public CategoryBusinessLogic(IUnitofWork _unitofWork, IMapper mapper,DataContext context)
+        private TourBusinessLogic tourBusiness;
+        public CategoryBusinessLogic(IUnitofWork _unitofWork, IMapper mapper,DataContext context, TourBusinessLogic tourBusiness)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
             this.context = context;
+            this.tourBusiness = tourBusiness;
         }
 
         //list category
@@ -55,14 +57,14 @@ namespace backend.BussinessLogic
         }
 
         //update category
-        public async Task Update(Category category)
+        public async Task Update(Category category,int id)
         {
             if (category is null)
             {
                 throw new NotFoundExceptions("not found");
             }
 
-            var existingCategory = await unitofWork.Repository<Category>().GetByIdAsync(category.Id);
+            var existingCategory = await unitofWork.Repository<Category>().GetByIdAsync(id);
 
             if (existingCategory is null)
             {
@@ -98,7 +100,11 @@ namespace backend.BussinessLogic
                     var Tour = await unitofWork.Repository<Tour>().GetAllWithAsync(new GetListTourSpec(id));
                     if (Tour.Any())
                     {
-                        await unitofWork.Repository<Tour>().DeleteRange(Tour);
+                        foreach (var item in Tour)
+                        {
+                            await tourBusiness.Delete(item.Id);
+                        }
+                        //await unitofWork.Repository<Tour>().DeleteRange(Tour);
                     }
                     await unitofWork.Repository<Category>().Delete(existingCategory);
                     var check = await unitofWork.Complete();
