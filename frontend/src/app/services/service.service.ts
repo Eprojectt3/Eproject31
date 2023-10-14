@@ -45,17 +45,26 @@ export class ServiceService {
   };
 
   // Create Service
-  public createService = (data: any): Observable<any> => {
-    return this.httpClient.post(`${AUTH_API}/api/Service/Add`, data);
+  public createService = (
+    name: string | undefined,
+    tour: string | undefined,
+    description: string | undefined
+  ): Observable<any> => {
+    return this.httpClient.post(`${AUTH_API}/api/Service/Add`, {
+      name: name,
+      tour_Name:tour,
+      description:description
+
+    });
   };
 
   // Delete Service
-  public deleteResort = (id: number): Observable<any> => {
-    return this.httpClient.delete(`${AUTH_API}/api/Service/Delete/${id}`);
+  public deleteService = (id: string): Observable<any> => {
+    return this.httpClient.delete(`${AUTH_API}/api/Service/Delete/` + id);
   };
 
   // Update Service
-  public updateResort = (data: any): Observable<any> => {
+  public updateService = (data: any): Observable<any> => {
     return this.httpClient.put(`${AUTH_API}/api/Service/Update`, data);
   };
 }

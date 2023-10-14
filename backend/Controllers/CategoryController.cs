@@ -12,6 +12,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+
     public class CategoryController : ControllerBase
     {
         public CategoryBusinessLogic categoryBussinessLogic;

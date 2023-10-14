@@ -50,7 +50,7 @@ export class ItineraryService {
   };
 
   // Delete Itinerary
-  public deleteItinerary = (id: number): Observable<any> => {
+  public deleteItinerary = (id: string): Observable<any> => {
     return this.httpClient.delete(`${AUTH_API}/api/Itinerary/Delete/${id}`);
   };
 

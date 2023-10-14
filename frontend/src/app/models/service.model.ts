@@ -3,7 +3,7 @@ export interface Service {
   name?: string;
   description?: string;
   tour_ID?: number;
-  tour?: any;
+  tour_Name?: any;
   createBy?: string;
   createDate?: Date;
   updateBy?: string;

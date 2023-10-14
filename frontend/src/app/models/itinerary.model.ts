@@ -2,6 +2,7 @@ export interface Itinerary {
   id?: number;
   tourID?: number;
   tour?: any;
+  tour_Name?: string;
   sequence?: number;
   description?: string;
   startTime?: Date;
