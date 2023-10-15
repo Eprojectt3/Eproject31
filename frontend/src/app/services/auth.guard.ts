@@ -17,12 +17,12 @@ export class AuthGuard implements CanActivate {
     private router: Router,
     private tokenStorage: TokenStorageService,
     private snackBar: SnackbarService,
-    private roleService: RoleService
+    private roleService: RoleService,
   ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ):
     | boolean
     | UrlTree
@@ -30,22 +30,24 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree> {
     const user = this.tokenStorage.getUser();
     const role: number | undefined = user?.roleId;
+    let isRoleSuccess: any = [];
     let roleAdmin: any = [];
+    let flag: boolean;
 
     return this.roleService.getListRole().pipe(
       map((roles) => {
         if (user) {
           roleAdmin = roles.filter((role: any) => {
-            return role.name === route.data['roles'][0];
+            return role.id === user?.roleId;
           });
 
           if (roleAdmin.length > 0) {
             for (let item of roleAdmin) {
-              if (item.id !== role) {
+              if (!route.data['roles'].includes(item.name)) {
                 this.tokenStorage.signOut();
                 this.snackBar.openSnackBar(
                   'You do not have access to the admin page',
-                  'Error'
+                  'Error',
                 );
                 this.router.navigate(['/auth/login']);
                 return false;
@@ -57,7 +59,7 @@ export class AuthGuard implements CanActivate {
         }
         this.router.navigate(['/auth/login']);
         return false;
-      })
+      }),
     );
   }
 }

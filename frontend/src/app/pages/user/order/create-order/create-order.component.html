@@ -89,9 +89,32 @@
               <mat-datepicker disabled="true" #picker2></mat-datepicker>
             </mat-form-field>
           </div>
+
+          <div class="text-left mt-[10px]">
+            <mat-form-field class="example-full-width w-[45%]">
+              <mat-label>Number of people</mat-label>
+              <input
+                #number
+                matInput
+                formControlName="number_of_people"
+                type="number"
+                [(ngModel)]="quantity"
+                (change)="changeNumberOfPeople($event)"
+              />
+              <mat-error *ngIf="form.controls['number_of_people']?.errors"
+                >Number of people are required
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
 
-        <button mat-flat-button color="warn" type="submit">Next</button>
+        <div>
+          <h2>Price: {{ totalPrice }}</h2>
+        </div>
+
+        <button mat-flat-button color="warn" class="mt-[15px]" type="submit">
+          Next
+        </button>
       </form>
     </div>
   </div>

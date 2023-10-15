@@ -30,8 +30,10 @@ export class CreateOrderComponent implements OnInit {
   minDate: Date = new Date();
   maxDate: Date = new Date();
   listTourDetail!: TourDetail[];
-  tourDetail!: Tour[];
+  tours!: Tour;
+  quantity: number = 1;
   isValidOrder: boolean = true;
+  totalPrice!: number;
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +43,7 @@ export class CreateOrderComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private tourDetailService: TourDetailService,
-    public orderService: OrderService
+    public orderService: OrderService,
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +56,8 @@ export class CreateOrderComponent implements OnInit {
         Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
       ],
     });
+
+    this.form.controls['number_of_people'].setValue(1);
 
     // Get tour detail
     this.route.queryParams.subscribe((params) => {
@@ -83,6 +87,9 @@ export class CreateOrderComponent implements OnInit {
 
     // Check limit quantity of tour
     this.tourService.getDetailTour(this.tourId).subscribe((tour: Tour) => {
+      this.tours = tour;
+      this.totalPrice = Number(this.tours.price);
+
       this.tourDetailService
         .getListTourDetail()
         .subscribe((tourDetails: TourDetail[]) => {
@@ -91,7 +98,7 @@ export class CreateOrderComponent implements OnInit {
           });
 
           this.orderService.getListOrders().subscribe((orders: Order[]) => {
-            console.log(orders);
+            // console.log(orders);
           });
         });
     });
@@ -105,5 +112,9 @@ export class CreateOrderComponent implements OnInit {
     this.selectedDate2 = new Date(this.selectedDate1);
 
     this.selectedDate2.setDate(this.selectedDate2.getDate() + this.rangeTime);
+  };
+
+  public changeNumberOfPeople = (e: any) => {
+    this.totalPrice = Number(e.target.value) * Number(this.tours.price);
   };
 }
