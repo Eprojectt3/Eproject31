@@ -64,7 +64,10 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await orderBusinessLogic.Delete(id);
-            return Ok();
+            return Ok(new
+            {
+                message = "Delete success"
+            });
         }
         [HttpGet("{TourDetailID}")]
         public async Task<ActionResult> GetOrderByTourDetailId(int TourDetailID)

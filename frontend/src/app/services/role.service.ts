@@ -59,7 +59,7 @@ export class RoleService {
   };
 
   // Update Role
-  public updateRole = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Role/Update`, data);
+  public updateRole = (data: any,id:number): Observable<any> => {
+    return this.httpClient.put(`${AUTH_API}/api/Role/Update/${id}`, data);
   };
 }

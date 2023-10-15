@@ -7,7 +7,7 @@
       <button
         mat-flat-button
         color="primary"
-        (click)="openCreateCate()"
+        (click)="openCreateTrans()"
         class="w-[150px] !rounded-[30px]"
       >
         Create
@@ -43,8 +43,7 @@
             mat-flat-button
             color="primary"
             class="mr-[10px]"
-            [routerLink]="['/admin/update', element.id]"
-            (click)="openUpdateCate()"
+            (click)="openUpdateTrans(element)"
           >
             Edit
           </button>

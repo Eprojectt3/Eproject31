@@ -65,7 +65,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await categoryBussinessLogic.Delete(id);
-            return Ok();
+            return Ok(new { message = "Delete success" });
         }
         [HttpPost]
         public async Task<ActionResult> ListCategoryPagination(SpecParams pagination)

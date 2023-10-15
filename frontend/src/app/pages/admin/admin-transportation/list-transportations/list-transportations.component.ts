@@ -8,6 +8,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Transportation } from 'src/app/models/transportation.model';
 import { TransportationService } from 'src/app/services/transportation.service';
 import { DialogCreateComponent } from '../../admin-category/dialog-create/dialog-create.component';
+import { CreateTransportationComponent } from '../create-transportation/create-transportation.component';
 
 @Component({
   templateUrl: './list-transportations.component.html',
@@ -63,14 +64,26 @@ export class ListTransportationsComponent implements OnInit {
   };
 
   // Create FeedBack
-  public openCreateCate = () => {
-    const dialogRef = this.dialog.open(DialogCreateComponent, {
+  public openCreateTrans = () => {
+    const dialogRef = this.dialog.open(CreateTransportationComponent, {
       height: '230px',
       width: '400px',
     });
   };
 
-  public openUpdateCate = () => {
+  public openUpdateTrans = (data:any) => {
+    const dialogRef = this.dialog.open(CreateTransportationComponent, {
+      data: data,
+      height: '230px',
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.getListTrans();
+        }
+      }
+    })
   };
   // Delete Feed
 

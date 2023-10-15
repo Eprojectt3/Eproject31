@@ -8,7 +8,7 @@
       <button
         mat-flat-button
         color="primary"
-        (click)="openCreateCate()"
+        (click)="openCreateRole()"
         class="w-[150px] !rounded-[30px]"
       >
         Create
@@ -38,7 +38,7 @@
             color="primary"
             class="mr-[10px]"
             [routerLink]="['/admin/update-feed', element.id]"
-            (click)="openUpdateCate()"
+            (click)="openUpdateRole(element)"
           >
             Edit
           </button>
