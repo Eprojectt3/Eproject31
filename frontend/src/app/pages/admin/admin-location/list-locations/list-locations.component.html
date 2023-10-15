@@ -35,7 +35,7 @@
             mat-flat-button
             color="primary"
             class="mr-[10px]"
-            [routerLink]="['/admin/update', element.id]"
+            (click)="openUpdateLocation(element)"
 
           >
             Edit
@@ -63,9 +63,6 @@
       page of periodic elements"
     >
     </mat-paginator>
-  </div>
-  <div *ngIf="isUpdateLocation()">
-    <router-outlet></router-outlet>
   </div>
 </section>
 

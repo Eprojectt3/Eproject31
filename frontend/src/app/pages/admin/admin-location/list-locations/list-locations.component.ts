@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { LocationService } from 'src/app/services/location.service';
 import { DialogCreateComponent } from '../../admin-category/dialog-create/dialog-create.component';
+import { CreateLocationComponent } from '../create-location/create-location.component';
 
 @Component({
   selector: 'app-list-locations',
@@ -68,7 +69,7 @@ export class ListLocationsComponent implements OnInit {
 
   // Create cate
   public openCreateLocation = () => {
-    const dialogRef = this.dialog.open(DialogCreateComponent, {
+    const dialogRef = this.dialog.open(CreateLocationComponent, {
       height: '230px',
       width: '400px',
     });
@@ -86,10 +87,19 @@ export class ListLocationsComponent implements OnInit {
   }
 
 
-  public isUpdateLocation = (): boolean => {
-    const currentUrl: string = this.router.url;
-
-    return currentUrl.includes('/admin/locations/update/');
+  public openUpdateLocation = (data:any) => {
+    const dialogRef = this.dialog.open(CreateLocationComponent, {
+      data: data,
+      height: '230px',
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.getListLocations();
+        }
+      }
+    })
   };
 
 }

@@ -1,1 +1,26 @@
-<p>create-location works!</p>
+<ng-container>
+    <div>
+      <!-- Title  -->
+      <h1 class="mb-[15px] text-[20px] font-[600] px-5 pt-7">{{data? 'Update':'Create'}} location</h1>
+  
+      <!-- Form Create -->
+      <div class="">
+        <form class="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div>
+            <mat-form-field class="w-[85%] ml-5">
+              <mat-label>State</mat-label>
+              <input class="" type="text" matInput formControlName="state" [errorStateMatcher]="validatorForm" />
+              <mat-error *ngIf="loginForm.controls['state'].errors?.['whitespace']">State is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="mt-[15px]">
+            <button type="submit" class="ml-5" mat-raised-button color="primary">
+              {{data? 'Update':'Create'}}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-container>
+  

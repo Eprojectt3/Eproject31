@@ -68,7 +68,7 @@ export class TransportationService {
   };
 
   // Update Transportation
-  public updateTransportation = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Transportation/Update`, data);
+  public updateTransportation = (data: any,id :number): Observable<any> => {
+    return this.httpClient.put(`${AUTH_API}/api/Transportation/Update/${id}`, data);
   };
 }

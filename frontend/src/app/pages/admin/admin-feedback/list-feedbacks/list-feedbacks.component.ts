@@ -61,7 +61,19 @@ export class ListFeedbacksComponent implements OnInit {
     });
   };
 
-  public openUpdateCate = () => {
+  public openUpdateFeed = (data:any) => {
+    const dialogRef = this.dialog.open(CreateFeedComponent, {
+      data: data,
+      height: '230px',
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.getListFeedBack();
+        }
+      }
+    })
   };
   // Delete Feed
 

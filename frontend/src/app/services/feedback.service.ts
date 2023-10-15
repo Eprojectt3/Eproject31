@@ -53,7 +53,7 @@ export class FeedbackService {
       return this.http.delete<FeedBack>(`${AUTH_API}/api/FeedBack/Delete/`+id)
     }
     // Update feddback
-  public updateFeedback = (data: any): Observable<any> => {
-    return this.http.put(`${AUTH_API}/api/FeedBack/Update`, data);
+  public updateFeedback = (data: any,id :number): Observable<any> => {
+    return this.http.put(`${AUTH_API}/api/FeedBack/Update/${id}`, data);
   };
 }
