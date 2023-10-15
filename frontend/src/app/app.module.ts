@@ -44,6 +44,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { InterceptorModule } from './interceptor.module';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { LayoutOrderComponent } from './components/layout-order/layout-order.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { LayoutOrderComponent } from './components/layout-order/layout-order.com
     LayoutComponent,
     FooterComponent,
     LayoutOrderComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

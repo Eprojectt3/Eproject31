@@ -45,6 +45,7 @@ export class TourDetailComponent implements OnInit {
   transportationTour!: Transportation[];
   itineraries!: Itinerary[];
   itinerary!: Itinerary[];
+  listImages: any = [];
 
   constructor(
     private titleService: TitleService,
@@ -67,6 +68,9 @@ export class TourDetailComponent implements OnInit {
     this.tourService.getDetailTour(this.id).subscribe((val) => {
       this.tour = val;
       console.log(this.tour);
+      this.listImages = val.urlImage;
+      this.imagesCount = val.urlImage.length;
+      this.images = val.urlImage.slice(0, 3);
 
       // Get list Transportation
       this.transportationSrvice
@@ -99,15 +103,12 @@ export class TourDetailComponent implements OnInit {
         return item.tour_ID == this.id;
       });
     });
-
-    this.imagesCount = imagePath.length;
-    this.images = imagePath.slice(0, 3);
   }
 
   public openGalery = () => {
     const dialogRef = this.dialog.open(GalleryComponent, {
       width: '800px',
-      data: imagePath,
+      data: this.listImages,
     });
   };
 

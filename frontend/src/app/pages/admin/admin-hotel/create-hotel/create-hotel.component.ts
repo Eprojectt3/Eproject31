@@ -126,9 +126,17 @@ export class CreateHotelComponent implements OnInit {
 
   onSelect = ($event: FileSelectEvent) => {
     const uploadedImage: File = $event.files[0];
+    const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+    const allowedExtensionName = ['.jpg', '/jpeg', '.png'];
 
     if (uploadedImage.size < 100000) {
-      this.uploadedImages.push(uploadedImage);
+      if (allowedTypes.includes(uploadedImage.type)) {
+        allowedExtensionName.map((item) => {
+          if (uploadedImage.name.includes(item)) {
+            this.uploadedImages.push(uploadedImage);
+          }
+        });
+      }
     } else {
       console.error('File size is too large');
     }

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import {  Role1 } from '../models/role.model';
+import { Role1 } from '../models/role.model';
 
 const AUTH_API: string = environment.apiLocallHost;
 const httpOptions = {
@@ -21,7 +21,7 @@ export class RoleService {
 
   // Get List Role
   public getListRole = (): Observable<any> => {
-    return this.httpClient.get(AUTH_API + '/api/Role/ListResorts', httpOptions);
+    return this.httpClient.get(AUTH_API + '/api/Role/ListRole', httpOptions);
   };
 
   // Get List Role Pagination
