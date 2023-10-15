@@ -26,7 +26,8 @@ export class UpdateHotelComponent implements OnInit {
   id!: number;
   location!: any;
   hotelDetail!: any;
-  urlImages: string[] = [];
+  urlImages: any = [];
+  pathImages: any = [];
 
   constructor(
     private hotelService: HotelService,
@@ -90,6 +91,7 @@ export class UpdateHotelComponent implements OnInit {
 
       for (let urlImage of val.urlImage) {
         this.urlImages.push(urlImage);
+        this.pathImages.push(urlImage.path);
       }
     });
   }
@@ -98,6 +100,10 @@ export class UpdateHotelComponent implements OnInit {
     for (const uploadImage of this.uploadedImages) {
       this.formData.append('fileCollection', uploadImage, uploadImage.name);
       console.log(uploadImage);
+    }
+
+    for (const pathImage of this.pathImages) {
+      this.formData.append('path', pathImage);
     }
 
     this.formData.append('Name', this.loginForm.controls['name'].value);
@@ -121,7 +127,7 @@ export class UpdateHotelComponent implements OnInit {
     ) {
       this.hotelService.updateHotel(this.formData).subscribe(
         (val) => {
-          this.snackBar.openSnackBar('Create success', 'Success');
+          this.snackBar.openSnackBar('Update success', 'Success');
           this.router.navigate(['/admin/hotels'], {
             queryParams: { refresh: 'true' },
           });
@@ -151,8 +157,31 @@ export class UpdateHotelComponent implements OnInit {
 
   // Upload Image
   public onSelect = ($event: FileSelectEvent) => {
-    const uploadedImage = $event.files[0];
+    const uploadedImage: File = $event.files[0];
+    const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+    const allowedExtensionName = ['.jpg', '/jpeg', '.png'];
 
-    this.uploadedImages.push(uploadedImage);
+    if (uploadedImage.size < 100000) {
+      if (allowedTypes.includes(uploadedImage.type)) {
+        allowedExtensionName.map((item) => {
+          if (uploadedImage.name.includes(item)) {
+            this.uploadedImages.push(uploadedImage);
+          }
+        });
+      }
+    } else {
+      console.error('File size is too large');
+    }
+  };
+
+  // Update Remove image
+  public removeImage = (urlPath: any, urlImage: any) => {
+    this.pathImages = this.pathImages.filter((pathImage: any) => {
+      return urlPath !== pathImage;
+    });
+
+    this.urlImages = this.urlImages.filter((item: any) => {
+      return item !== urlImage;
+    });
   };
 }

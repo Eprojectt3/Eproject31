@@ -15,6 +15,6 @@ export interface Role1 {
 // ];
 
 export enum Role {
-  Admin = 1,
-  User = 2,
+  Admin = 'Admin',
+  User = 'User',
 }

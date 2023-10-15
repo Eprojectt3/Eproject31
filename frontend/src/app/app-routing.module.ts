@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/auth.guard';
 import { Role } from './models/role.model';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,8 @@ const routes: Routes = [
     redirectTo: 'user',
     pathMatch: 'full',
   },
+
+  { path: '**', pathMatch: 'full', component: NotFoundComponent },
 ];
 
 @NgModule({

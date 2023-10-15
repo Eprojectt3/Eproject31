@@ -41,4 +41,19 @@ export class AppComponent implements OnInit {
 
     return currentUrl.includes('/user/order');
   };
+
+  public isShowNotFound = (): boolean => {
+    const currentUrl = this.router.url;
+
+    if (
+      currentUrl.includes('/user/order') ||
+      currentUrl.includes('/admin') ||
+      currentUrl.includes('/auth/login') ||
+      currentUrl.includes('/user/')
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 }
