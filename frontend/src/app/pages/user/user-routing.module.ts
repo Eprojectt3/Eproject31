@@ -31,7 +31,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./order/order.module').then((m) => m.OrderModule),
     canActivate: [AuthGuard],
-    data: { roles: [Role.User] },
+    data: { roles: [Role.User, Role.Admin] },
   },
   // { path: '', component: UserComponent, pathMatch: 'full' },
 ];
