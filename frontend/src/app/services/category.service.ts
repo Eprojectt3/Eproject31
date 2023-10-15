@@ -44,12 +44,11 @@ export class CategoryService {
   };
   // Delete category
   public deleteCategory = (id: string | undefined): Observable<any> => {
-    return this.http.delete(`${AUTH_API}/api/Category/Delete/`+id);
+    return this.http.delete(`${AUTH_API}/api/Category/Delete/` + id);
   };
 
-
   // Update category
-  public updateCategory = (id:number,data: any): Observable<any> => {
+  public updateCategory = (id: number, data: any): Observable<any> => {
     return this.http.put(`${AUTH_API}/api/Category/Update/${id}`, data);
   };
 }

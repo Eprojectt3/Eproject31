@@ -1,0 +1,84 @@
+<div class="!bg-white shadow-md">
+  <mat-toolbar class="!w-[55%] !m-auto !bg-white !h-[80px]">
+    <div class="w-[100%]">
+      <nav class="w-[100%]">
+        <ul class="flex justify-between items-center w-[100%]">
+          <li>
+            <a class="text-[15px] text-[#EF1515]" routerLink="/user/home/"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a class="text-[15px] text-[#EF1515]" routerLink="/user/about/"
+              >About</a
+            >
+          </li>
+          <li>
+            <a class="logo text-[35px] text-[#EF1515]" routerLink="/user/home/"
+              >Karnel Travels</a
+            >
+          </li>
+          <li class="flex items-center">
+            <a class="text-[15px] text-[#EF1515]" routerLink="/user/infomation"
+              >Infomation
+            </a>
+            <button class="mt-[16px]" [matMenuTriggerFor]="menuInfo">
+              <mat-icon class="text-[15px] text-[#EF1515]"
+                >arrow_drop_down</mat-icon
+              >
+            </button>
+          </li>
+
+          <li>
+            <a class="text-[15px] text-[#EF1515]" routerLink="/user/contact/"
+              >Contact</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <div
+        *ngIf="userInfo"
+        class="avatar w-[40px] h-[40px] right-20 top-6 absolute lg:right-10"
+      >
+        <button type="button" [matMenuTriggerFor]="menu">
+          <mat-icon class="text-[#EF1515] text-[28px] !w-[100%] !h-[100%]"
+            >account_circle</mat-icon
+          >
+        </button>
+      </div>
+    </div>
+  </mat-toolbar>
+
+  <!-- infomation menu -->
+  <div id="information-menu ">
+    <mat-menu #menuInfo="matMenu">
+      <button mat-menu-item routerLink="/user/infomation/tours">Tours</button>
+      <button mat-menu-item routerLink="/user/infomation/hotels">Hotels</button>
+      <button mat-menu-item routerLink="/user/infomation/resorts">
+        Resorts
+      </button>
+      <button mat-menu-item routerLink="/user/infomation/restaurants">
+        Restaurants
+      </button>
+    </mat-menu>
+  </div>
+
+  <!-- User Menu -->
+  <mat-menu #menu="matMenu" class="!w-[200px]">
+    <h2 class="ml-[20px] text-[19px] font-[500] mb-[10px]">
+      {{ userInfo?.name }}
+    </h2>
+    <button mat-menu-item>
+      <mat-icon class="!text-[#FA5246]">person</mat-icon>
+      <span>Profile</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon class="!text-[#FA5246]">shopping_cart</mat-icon
+      ><span>My Orders</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon class="!text-[#FA5246]">logout</mat-icon><span>Logout</span>
+    </button>
+  </mat-menu>
+</div>

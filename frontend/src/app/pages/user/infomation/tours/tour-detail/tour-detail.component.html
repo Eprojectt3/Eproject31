@@ -1,4 +1,178 @@
-<mat-tab-group>
-  <mat-tab dynamicHeight label="Information">Information</mat-tab>
-  <mat-tab dynamicHeight label="Tour plan">Tour plan</mat-tab>
-</mat-tab-group>
+<div class="flex">
+  <mat-tab-group class="w-[60%] ml-28 mt-7">
+    <!-- Information -->
+    <mat-tab dynamicHeight label="Information">
+      <div class="">
+        <!-- Content and title -->
+        <div class="">
+          <!-- Title  -->
+          <div class="title">
+            <h1 class="text-[25px] font-bold mt-6">{{ tour?.name }}</h1>
+          </div>
+
+          <!-- Content -->
+          <div class="content mt-[16px]">
+            <p>
+              {{ tour?.description }}
+            </p>
+          </div>
+
+          <!-- List Information -->
+          <div class="list-inform ation mt-[55px] border-[#625F5F]">
+            <mat-divider></mat-divider>
+
+            <!-- Departure Place -->
+            <div class="mt-[17px] mb-[17px] flex justify-between">
+              <span class="font-bold text-[16px] ml-[10px]"
+                >Departure Place</span
+              >
+              <span class="mr-[15px]">{{ tour?.departure_location }}</span>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Include -->
+            <div class="include mt-[17px] mb-[17px] flex justify-between">
+              <span class="font-bold text-[16px] ml-[10px]">Include</span>
+              <div class="list-service mr-[15px]">
+                <ul *ngFor="let service of services">
+                  <li class="flex items-center">
+                    <mat-icon class="text-[#29D930] mr-[5px]"
+                      >check_circle</mat-icon
+                    >
+                    <span>{{ service?.name }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+
+            <!-- Rating -->
+            <div class="rating mt-[17px] mb-[17px] flex justify-between">
+              <span class="font-bold text-[16px] ml-[10px]">Rating</span>
+              <span class="mr-[15px]"
+                ><p-rating
+                  [iconOnStyle]="{
+                    color: '#F67905'
+                  }"
+                  [(ngModel)]="tour.rating"
+                  [readonly]="true"
+                  [cancel]="false"
+                ></p-rating
+              ></span>
+            </div>
+            <mat-divider></mat-divider>
+
+            <!-- Image -->
+            <div class="image flex mt-[40px]">
+              <div
+                *ngFor="let image of images"
+                class="mr-[12px] w-[250px] h-[150px]"
+              >
+                <p-image
+                  [imageStyle]="{
+                    objectFit: 'cover',
+                    backgroundSize: 'cover',
+                    width: '250px',
+                    height: '140px',
+                  }"
+                  [src]="image.path"
+                  alt="Error"
+                  [preview]="true"
+                ></p-image>
+              </div>
+              <!-- More Image -->
+              <div *ngIf="imagesCount > 3" class="more-image mt-[50px]">
+                <button mat-raised-button (click)="openGalery()" color="warn">
+                  More
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Tour Plan -->
+    <mat-tab dynamicHeight label="Tour plan">
+      <div class="tour-plan mt-[40px] ml-0">
+        <div>
+          <p-timeline [value]="itineraries">
+            <ng-template pTemplate="marker" let-itinerary>
+              <span
+                class="bg-[#F44336] text-white rounded-[50%] w-[60px] h-[60px] text-center pt-[28%] font-semibold"
+              >
+                Day 1
+              </span>
+            </ng-template>
+            <ng-template pTemplate="content" let-itinerary>
+              <div class="w-[150px]">
+                <p>
+                  {{ itinerary?.description }}
+                </p>
+              </div>
+            </ng-template>
+          </p-timeline>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Booking -->
+  <div
+    class="booking shadow-lg border-[0.25px] border-[#ADACAC] h-[300px] w-[240px] rounded-[30px] mt-[140px] ml-[80px]"
+  >
+    <div class="mt-[10px]">
+      <div class="text-center">
+        <h2 class="font-medium text-[27px]">Price</h2>
+        <span class="text-[25px] text-[#FA5858] font-semibold">{{
+          tour?.price
+        }}</span
+        ><br />
+        <button
+          mat-flat-button
+          color="warn"
+          class="w-[70%] !rounded-[10px] mt-[10px]"
+          (click)="navigateToBooking()"
+        >
+          Booking
+        </button>
+      </div>
+
+      <div class="mt-[20px] px-[10px]">
+        <div class="flex items-center">
+          <mat-icon class="text-[15px] text-[#FA5858]"> schedule </mat-icon>
+          <span class="text-[13px] font-semibold"
+            >About:
+            <span class="font-normal">{{ tour?.range_time }} 4 days</span></span
+          >
+        </div>
+
+        <!-- Transportation -->
+        <div class="flex mt-[7px]">
+          <mat-icon class="text-[15px] text-[#FA5858]">map</mat-icon>
+          <div class="text-[13px] font-semibold">
+            Transportation:
+            <span
+              class="text-[13px] font-normal"
+              *ngFor="let transportation of transportationTour"
+            >
+              {{ transportation?.name }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Destination -->
+        <div class="flex items-center mt-[7px]">
+          <mat-icon class="text-[15px] text-[#FA5858]">location_on</mat-icon>
+          <span class="text-[13px] font-semibold"
+            >Destination:
+            <span class="font-normal">{{
+              tour?.departure_location
+            }}</span></span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

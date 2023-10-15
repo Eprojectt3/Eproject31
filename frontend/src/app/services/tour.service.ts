@@ -16,13 +16,20 @@ const httpOptions = {
 })
 export class TourService {
   public toursSubject: BehaviorSubject<Tour[] | null>;
+  public toursDetailSubject: BehaviorSubject<Tour | null>;
+  public $tourDetail: Observable<Tour | null>;
 
   constructor(private httpclient: HttpClient) {
     this.toursSubject = new BehaviorSubject<Tour[] | null>(null);
+    this.toursDetailSubject = new BehaviorSubject<Tour | null>(null);
+    this.$tourDetail = this.toursDetailSubject.asObservable();
   }
 
-  getListTour() {
-    return this.httpclient.get(AUTH_API + '/api/Tour/ListTour');
+  getListTour(): Observable<Tour[]> {
+    return this.httpclient.get<Tour[]>(
+      AUTH_API + '/api/Tour/ListTour',
+      httpOptions
+    );
   }
 
   // Get list tour pagination
@@ -42,16 +49,35 @@ export class TourService {
       .pipe(tap((val) => this.toursSubject.next(val)));
   };
 
+  // Get detail tour
+  public getDetailTour = (id: number): Observable<any> => {
+    return this.httpclient
+      .get(`${AUTH_API}/api/Tour/GetByTourId/${id}`, httpOptions)
+      .pipe(tap((val: any) => this.toursSubject.next(val)));
+  };
+
   // Create tours
   public createTours = (data: any): Observable<any> => {
     return this.httpclient.post(`${AUTH_API}/api/Tour/Add`, data);
   };
-   // Delete Itinerary
-   public deleteTours = (id: string): Observable<any> => {
+
+  // Delete Tour
+  public deleteTours = (id: string): Observable<any> => {
     return this.httpclient.delete(`${AUTH_API}/api/Tour/Delete/${id}`);
   };
 
-  // getTourDetail(){
-  //   return this.httpclient.get("'https://localhost:7110/api/TourDetail/ListTourDetail")
-  //  }
+  // Create tour
+  public createTour = (data: any): Observable<any> => {
+    return this.httpclient.post(`${AUTH_API}/api/Tour/Add`, data);
+  };
+
+  // Delete Tour
+  public deleteHotel = (id: number): Observable<any> => {
+    return this.httpclient.delete(`${AUTH_API}/api/Tour/Delete/${id}`);
+  };
+
+  // Update Tour
+  public updateHotel = (data: any): Observable<any> => {
+    return this.httpclient.put(`${AUTH_API}/api/Tour/Update`, data);
+  };
 }

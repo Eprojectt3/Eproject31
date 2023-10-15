@@ -11,6 +11,7 @@ export interface Tour {
   type?: boolean | false;
   range_time?: number;
   transportation_Name?: string;
+  transportation_ID?: number;
   discount?: number;
   departure_location?: string;
   urlImage?: string[];

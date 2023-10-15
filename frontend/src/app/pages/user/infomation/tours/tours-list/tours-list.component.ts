@@ -12,7 +12,7 @@ import { TourService } from '../../../../../services/tour.service';
 export class ToursListComponent implements OnInit {
   filters: Filter[] = filter;
 
-  tours!: Tour[] ;
+  tours!: Tour[];
 
   constructor(
     private titleService: TitleService,
@@ -21,8 +21,8 @@ export class ToursListComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitleValue('Tours list');
-    this.tourService.getListTour().subscribe((val:any) => {
-      this.tours=val;
+    this.tourService.getListTour().subscribe((val: any) => {
+      this.tours = val;
     });
   }
 }

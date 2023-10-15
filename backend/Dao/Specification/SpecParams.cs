@@ -2,7 +2,6 @@
 {
     public class SpecParams
     {
- 
         public int PageIndex { get; set; } = 1;
 
         private int pageSize = 5;
@@ -22,10 +21,7 @@
         public string? Search
         {
             get { return search; }
-            set
-            {
-                search = value.ToLower();
-            }
+            set { search = value.ToLower(); }
         }
     }
 }

@@ -4,7 +4,7 @@ import { ValidatorFormService } from '../../../../services/validator-form.servic
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../../../../services/hotel.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { FileSelectEvent } from 'primeng/fileupload';
+import { FileSelectEvent, FileUploadErrorEvent } from 'primeng/fileupload';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { LocationService } from '../../../../services/location.service';
 import { Location } from '../../../../models/location.model';
@@ -125,16 +125,19 @@ export class CreateHotelComponent implements OnInit {
   // Upload Image
 
   onSelect = ($event: FileSelectEvent) => {
-    const uploadedImage = $event.files[0];
+    const uploadedImage: File = $event.files[0];
 
-    this.uploadedImages.push(uploadedImage);
+    if (uploadedImage.size < 100000) {
+      this.uploadedImages.push(uploadedImage);
+    } else {
+      console.error('File size is too large');
+    }
   };
 
   // Get List Location
   public getListLocations = () => {
     this.locationService.getListLocation().subscribe((val: any) => {
       this.locations = val;
-      console.log(this.locations);
     });
   };
 
@@ -143,5 +146,10 @@ export class CreateHotelComponent implements OnInit {
     this.uploadedImages = this.uploadedImages.filter((val: File) => {
       return val !== event.file;
     });
+  };
+
+  // OnError
+  public onError = (event: FileUploadErrorEvent) => {
+    console.error(event.error);
   };
 }

@@ -4,6 +4,8 @@ import { HomeComponent } from './home/home.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { UserComponent } from './user.component';
+import { AuthGuard } from 'src/app/services/auth.guard';
+import { Role } from 'src/app/models/role.model';
 
 const routes: Routes = [
   {
@@ -24,6 +26,13 @@ const routes: Routes = [
     component: AboutUsComponent,
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: 'order',
+    loadChildren: () =>
+      import('./order/order.module').then((m) => m.OrderModule),
+    canActivate: [AuthGuard],
+    data: { roles: [Role.User] },
+  },
   // { path: '', component: UserComponent, pathMatch: 'full' },
 ];
 

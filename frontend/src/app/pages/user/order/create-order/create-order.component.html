@@ -1,0 +1,106 @@
+<div class="container">
+  <!-- Title -->
+  <div class="title mb-[25px]">
+    <h1 class="font-medium text-[30px] ml-[380px]">My Order</h1>
+  </div>
+
+  <!-- Form -->
+  <div
+    class="form bg-white w-[50%] m-auto p-[20px] rounded-[10px] text-center text-[20px]"
+  >
+    <h2 class="font-medium text-[#F44336] text-[28px]">{{ tourName }}</h2>
+
+    <div class="mt-[25px]" *ngIf="isValidOrder">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- User Info -->
+
+        <div class="user-info w-[78%] m-auto">
+          <!-- Row 1 -->
+          <div class="flex justify-between">
+            <!-- Name User -->
+            <div>
+              <p class="font-medium">
+                Name: <span class="font-normal">{{ user?.name }}</span>
+              </p>
+            </div>
+
+            <!-- Time Range -->
+            <div>
+              <p class="font-medium">
+                Time Range: <span class="font-normal">{{ rangeTime }}</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="flex justify-between mt-[15px]">
+            <!-- Email -->
+            <div>
+              <p class="font-medium">
+                Email: <span class="font-normal">{{ user?.email }}</span>
+              </p>
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <p class="font-medium">
+                Phone: <span class="font-normal">{{ user?.phone }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="form-info flex justify-between mt-[20px]">
+            <!-- Departure Date -->
+            <mat-form-field appearance="fill" class="mr-[15px]">
+              <mat-label>Departure Date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                [min]="minDate"
+                [max]="maxDate"
+                formControlName="departure_date"
+                (dateChange)="onDate1Change($event)"
+                [(ngModel)]="selectedDate1"
+              />
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+            <!-- End Date -->
+            <mat-form-field>
+              <mat-label>End Date</mat-label>
+              <input
+                [(ngModel)]="selectedDate2"
+                readonly
+                formControlName="end_date"
+                matInput
+                [matDatepicker]="picker2"
+                form
+              />
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker2"
+              ></mat-datepicker-toggle>
+              <mat-datepicker disabled="true" #picker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <button mat-flat-button color="warn" type="submit">Next</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  header="Error"
+  [(visible)]="!isValidOrder"
+  [style]="{ width: '50vw' }"
+>
+  <p>Tour is invalid</p>
+</p-dialog>

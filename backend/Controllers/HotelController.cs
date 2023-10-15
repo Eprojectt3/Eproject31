@@ -13,6 +13,7 @@ namespace backend.Controllers
     public class HotelController : ControllerBase
     {
         public HotelBusinessLogic hotelBusinessLogic;
+
         public HotelController(HotelBusinessLogic Bussiness)
         {
             hotelBusinessLogic = Bussiness;
@@ -29,6 +30,7 @@ namespace backend.Controllers
             }
             return Ok(output);
         }
+
         [HttpPost]
         public async Task<ActionResult> ListHotelPagination(SpecParams pagination)
         {
@@ -46,10 +48,8 @@ namespace backend.Controllers
 
         //execute add new hotel
         [HttpPost]
-
-        public async Task<IActionResult> Add([FromForm]HotelImageDto hotel)
+        public async Task<IActionResult> Add([FromForm] HotelImageDto hotel)
         {
-
             await hotelBusinessLogic.Create(hotel);
 
             return Ok(hotel);
@@ -59,16 +59,15 @@ namespace backend.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] Hotel_Update_Dto hotel)
         {
-
             await hotelBusinessLogic.Update(hotel);
             return Ok(hotel);
         }
 
         //execute delete hotel
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-             var result = await hotelBusinessLogic.Delete(id);
+            var result = await hotelBusinessLogic.Delete(id);
             return Ok(result);
         }
 

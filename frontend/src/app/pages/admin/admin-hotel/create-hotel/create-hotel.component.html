@@ -115,12 +115,18 @@
         <!--        Image Upload-->
         <div class="mb-[20px]">
           <p-fileUpload
+            [maxFileSize]="100000"
+            invalidFileSizeMessageSummary="Invalid file size"
+            invalidFileTypeMessageSummary="Invalid file type"
             chooseLabel="Choose"
             name="fileCollection"
             [multiple]="true"
-            accept="image/*"
+            accept=".jpg,.jpeg,.png"
             (onSelect)="onSelect($event)"
             (onRemove)="onRemove($event)"
+            (onError)="onError($event)"
+            [showUploadButton]="false"
+            [showCancelButton]="false"
           ></p-fileUpload>
           <!-- <input
             type="file"
