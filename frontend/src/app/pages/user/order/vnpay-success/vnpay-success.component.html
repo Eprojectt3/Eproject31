@@ -1,0 +1,11 @@
+<div class="w-[40%] text-center mx-auto mt-[40px]" *ngIf="isSuccess">
+  <h1 class="font-medium text-[30px]">Payment success</h1>
+  <p>You have successfully paid the amount:</p>
+  <p>Thank you for using the service!</p>
+</div>
+
+<div *ngIf="!isSuccess" class="w-[40%] text-center mx-auto mt-[40px]">
+  <h1 class="font-medium text-[30px]">Payment Fail</h1>
+  <!-- <p>You have successfully paid the amount:</p>
+  <p>Thank you for using the service!</p> -->
+</div>

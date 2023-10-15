@@ -1,7 +1,7 @@
 <div class="container">
   <!-- Title -->
   <div class="title mb-[25px]">
-    <h1 class="font-medium text-[30px] ml-[380px]">My Order</h1>
+    <h1 class="font-medium text-[30px] ml-[300px]">My Order</h1>
   </div>
 
   <!-- Form -->
@@ -100,6 +100,7 @@
                 type="number"
                 [(ngModel)]="quantity"
                 (change)="changeNumberOfPeople($event)"
+                min="0"
               />
               <mat-error *ngIf="form.controls['number_of_people']?.errors"
                 >Number of people are required
@@ -108,11 +109,25 @@
           </div>
         </div>
 
-        <div>
-          <h2>Price: {{ totalPrice }}</h2>
+        <!-- Price -->
+        <div class="ml-[70%]">
+          <h2 class="font-medium">Price</h2>
+          <span class="text-[20px] text-[#F81919]"
+            >VND: {{ totalPrice * 24456 | currency : "VND" }}</span
+          >
+          <br />
+          <span class="text-[20px] text-[#F81919]"
+            >USD: {{ totalPrice | currency }}</span
+          >
         </div>
 
-        <button mat-flat-button color="warn" class="mt-[15px]" type="submit">
+        <button
+          mat-flat-button
+          matStepperNext
+          color="warn"
+          class="mt-[20px] ml-[75%] !w-[40px]"
+          type="submit"
+        >
           Next
         </button>
       </form>

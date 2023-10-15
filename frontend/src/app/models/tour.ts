@@ -20,6 +20,7 @@ export interface Tour {
   createBy?: string;
   updateAt?: Date;
   updateBy?: string;
+  staff_Id?: number;
 }
 
 // seed data

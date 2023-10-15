@@ -1,0 +1,54 @@
+<ng-container>
+  <div class="container">
+    <!-- Title -->
+    <!-- <div class="title">
+        <h1 class="font-medium text-[25px] ml-[15px] mt-[15px]">VNPay</h1>
+      </div> -->
+
+    <!-- Content -->
+    <div class="content">
+      <div class="p-[10px]">
+        <div class="">
+          <h1 class="font-medium text-[20px]">Price detail</h1>
+        </div>
+        <div class="mt-[15px] flex justify-between">
+          <p class="font-normal text-[18px]">{{ tour?.tourName }}</p>
+          <span class="mr-[30px] text-[#F44336] flex justify-end"
+            >USD: {{ tour?.priceOfTour | currency }}</span
+          >
+        </div>
+
+        <div class="mt-[15px] text-[18px]">
+          <p>
+            <span class="font-normal">Number of people:</span>
+            {{ tour?.quantity }}
+          </p>
+        </div>
+      </div>
+
+      <mat-divider class="w-[97%] !mx-auto"></mat-divider>
+
+      <div class="mt-[15px] ml-[10px]">
+        <h3 class="font-medium">
+          Total price:
+          <span class="font-normal">{{ tour?.price | currency }}</span>
+        </h3>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="flex justify-end mr-[30px] pb-[15px]">
+      <button mat-flat-button matStepperPrevious color="warn">Cancel</button>
+      <button
+        mat-flat-button
+        matStepperNext
+        color="warn"
+        class="!w-[40px] ml-[5px]"
+        type="button"
+        (click)="payByPaypal()"
+      >
+        Pay
+      </button>
+    </div>
+  </div>
+</ng-container>

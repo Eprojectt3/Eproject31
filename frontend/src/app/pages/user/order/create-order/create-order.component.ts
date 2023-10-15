@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { Order } from 'src/app/models/order.model';
+import { Staff } from 'src/app/models/staff.model';
 import { Tour } from 'src/app/models/tour';
 import { TourDetail } from 'src/app/models/tour-detail.model';
 import { User } from 'src/app/models/user.model';
 import { OrderService } from 'src/app/services/order.service';
+import { StaffService } from 'src/app/services/staff.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { TourDetailService } from 'src/app/services/tour-detail.service';
 import { TourService } from 'src/app/services/tour.service';
@@ -34,6 +36,8 @@ export class CreateOrderComponent implements OnInit {
   quantity: number = 1;
   isValidOrder: boolean = true;
   totalPrice!: number;
+  staff!: Staff[];
+  @Output() tourInfo = new EventEmitter<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -44,6 +48,7 @@ export class CreateOrderComponent implements OnInit {
     public dialog: MatDialog,
     private tourDetailService: TourDetailService,
     public orderService: OrderService,
+    private staffService: StaffService
   ) {}
 
   ngOnInit(): void {
@@ -102,10 +107,52 @@ export class CreateOrderComponent implements OnInit {
           });
         });
     });
+
+    // Time
+    this.selectedDate2 = new Date(this.selectedDate1);
+    this.selectedDate2.setDate(this.selectedDate2.getDate() + this.rangeTime);
+
+    // Get list staff
+    this.staffService.getListStaff().subscribe((val) => {
+      this.staff = val;
+    });
   }
 
   // OnSubmit
-  public onSubmit(): void {}
+  public onSubmit(): void {
+    let isStaffActive: boolean = true;
+    let staffId: number = 0;
+
+    do {
+      staffId = Math.floor(Math.random() * this.staff.length);
+
+      this.tourDetailService.getListTourDetail().subscribe((val: any) => {
+        for (let va of val) {
+          if (va.staff_Id === staffId) {
+            if (va.isActive) {
+              isStaffActive = false;
+            }
+          }
+        }
+      });
+    } while (!isStaffActive);
+
+    const tourInformation = {
+      tourName: this.tourName,
+      price: this.totalPrice,
+      quantity: this.form.controls['number_of_people'].value,
+      startDate: new Date(this.form.controls['departure_date'].value),
+      endDate: new Date(this.form.controls['end_date'].value),
+      priceOfTour: this.tours.price,
+      tourId: this.tours.id,
+      staff_Id: staffId,
+      quantityLimit: this.tours.quantity_limit,
+    };
+
+    localStorage.setItem('tourInformation', JSON.stringify(tourInformation));
+
+    this.tourInfo.emit(tourInformation);
+  }
 
   // Change Date
   public onDate1Change = (e: any) => {
