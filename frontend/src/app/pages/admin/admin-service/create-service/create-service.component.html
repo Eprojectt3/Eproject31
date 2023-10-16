@@ -1,7 +1,7 @@
 <ng-container>
   <div>
     <!-- Title  -->
-    <h1 class="mb-[15px] text-[20px] font-[600] px-5 pt-7">Create Service</h1>
+    <h1 class="mb-[15px] text-[20px] font-[600] px-5 pt-7">{{data? 'Update':'Create'}} Service</h1>
 
     <!-- Form Create -->
     <div class="">
@@ -14,11 +14,20 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div>
+        <div >
           <mat-form-field class="w-[85%] ml-5">
-            <mat-label>TourName</mat-label>
-            <input class="" type="text" matInput formControlName="tour_Name" [errorStateMatcher]="validatorForm" />
-            <mat-error *ngIf="loginForm.controls['tour_Name'].errors?.['whitespace']">TourName is required
+            <mat-label>Tour</mat-label>
+            <mat-select formControlName="tour_Name" [errorStateMatcher]="validatorForm">
+              <mat-option
+                *ngFor="let tour of tours"
+                [value]="tour.id"
+                >{{ tour.name }}</mat-option
+              >
+            </mat-select>
+            <mat-error
+              *ngIf="loginForm.controls['tour_Name'].errors?.['required']"
+            >
+              Please choose a option
             </mat-error>
           </mat-form-field>
         </div>
@@ -33,7 +42,7 @@
         </div>
         <div class="mt-[15px]">
           <button type="submit" class="ml-5" mat-raised-button color="primary">
-            Create
+            {{data? 'Update':'Create'}}
           </button>
         </div>
       </form>

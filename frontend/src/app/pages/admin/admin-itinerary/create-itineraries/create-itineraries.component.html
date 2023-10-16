@@ -1,1 +1,59 @@
-<p>create-itineraries works!</p>
+<ng-container>
+  <div>
+    <!-- Title  -->
+    <h1 class="mb-[15px] text-[20px] font-[600] px-5 pt-7">Create Itineraries</h1>
+
+    <!-- Form Create -->
+    <div class="">
+      <form class="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div >
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>Tour</mat-label>
+            <mat-select formControlName="tour_Name" [errorStateMatcher]="validatorForm">
+              <mat-option
+                *ngFor="let tour of tours"
+                [value]="tour.id"
+                >{{ tour.name }}</mat-option
+              >
+            </mat-select>
+            <mat-error
+              *ngIf="loginForm.controls['tour_Name'].errors?.['required']"
+            >
+              Please choose a option
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>sequence</mat-label>
+            <input class="" type="text" matInput formControlName="sequence" [errorStateMatcher]="validatorForm" />
+            <mat-error *ngIf="loginForm.controls['sequence'].errors?.['whitespace']">Name is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>description</mat-label>
+            <input class="" type="text" matInput formControlName="description" [errorStateMatcher]="validatorForm" />
+            <mat-error *ngIf="loginForm.controls['description'].errors?.['whitespace']">Email is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>type</mat-label>
+            <input class="" type="text" matInput formControlName="type" [errorStateMatcher]="validatorForm" />
+            <mat-error *ngIf="loginForm.controls['type'].errors?.['whitespace']">Phone is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="mt-[15px]">
+          <button type="submit" class="ml-5" mat-raised-button color="primary">
+            {{data? 'Update':'Create'}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>

@@ -48,12 +48,12 @@ export class CreateTransportationComponent {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.loginForm.patchValue(this.data)
 
-    this.transportationService.transportationSubject.subscribe((val: any) => {
-      this.loginForm.controls['name'].setValue(val.name);
+    // this.transportationService.transportationSubject.subscribe((val: any) => {
+    //   this.loginForm.controls['name'].setValue(val.name);
 
 
 
-    });
+    // });
   }
 
   onSubmit = async ()  => {

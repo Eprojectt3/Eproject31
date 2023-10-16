@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 // PrimeNg
 import { CarouselModule } from 'primeng/carousel';
@@ -33,6 +34,7 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { GalleryComponent } from './tours/gallery/gallery.component';
 import { TimelineModule } from 'primeng/timeline';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { TimelineModule } from 'primeng/timeline';
     FormsModule,
     MatDialogModule,
     TimelineModule,
+    PaginatorModule,
+    MatPaginatorModule
   ],
 })
 export class InfomationModule {}
