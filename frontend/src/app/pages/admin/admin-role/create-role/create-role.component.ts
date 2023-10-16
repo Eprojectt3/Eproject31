@@ -76,7 +76,7 @@ export class CreateRoleComponent implements OnInit{
 
       }else{
         this.roleService
-        .createRole(roles.name)
+        .createRole(roles)
         .subscribe((val: any) => {
           this.snackBarService.openSnackBar('Create successfully', 'Success');
           this.errorMessage = '';
