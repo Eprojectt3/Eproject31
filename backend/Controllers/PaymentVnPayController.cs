@@ -19,18 +19,24 @@ namespace backend.Controllers
             paymentBussinessLogic = _paymentBussinessLogic;
             mapper = _mapper;
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> GetPayment(OrderDetailDtos orderDetail)
         {
             var url = paymentBussinessLogic.GetUrlPayment(orderDetail);
-            return Ok(url);
+            return Ok(new
+            {
+                message = url.ToString(),
+            });
         }
         
         [HttpPost]
         public async Task<ActionResult> CreateDataAsync(PaymentVnPayDtos paymentVnPay)
         {
             var result = await paymentBussinessLogic.CreateDataAsync(paymentVnPay);
-            return Ok(result);
+            return Ok(new
+            {
+                message = result
+            });
         }
 
 
