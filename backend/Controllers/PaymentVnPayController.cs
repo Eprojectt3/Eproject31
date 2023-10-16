@@ -4,7 +4,11 @@ using backend.Dtos.OrderDetailDtos;
 using backend.Dtos.PaymentDtos;
 using backend.Entity;
 using backend.Exceptions;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Specialized;
+using System.Security.Policy;
+using System.Web;
 
 namespace backend.Controllers
 {
@@ -36,6 +40,27 @@ namespace backend.Controllers
             return Ok(new
             {
                 message = result
+            });
+        }
+        [HttpGet]
+        public async Task<IActionResult> CallBack()
+        {
+            string fullUrl = HttpContext.Request.GetDisplayUrl();
+            Uri uri = new Uri(fullUrl);
+            NameValueCollection queryParameters = HttpUtility.ParseQueryString(uri.Query);
+            string orderid = queryParameters["vnp_TxnRef"];
+            string vnp_Amount = queryParameters["vnp_Amount"];
+            string description = queryParameters["vnp_OrderInfo"];
+            string vnp_responeCode = queryParameters["vnp_ResponseCode"];
+            string vnp_TransactionStatus = queryParameters["vnp_TransactionStatus"];
+
+            return Ok(new
+            {
+                orderid = orderid,
+                vnp_Amount = vnp_Amount,
+                description = description,
+                vnp_responeCode = vnp_responeCode,
+                vnp_TransactionStatus = vnp_TransactionStatus,
             });
         }
 
