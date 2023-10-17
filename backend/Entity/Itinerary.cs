@@ -21,16 +21,12 @@ namespace backend.Entity
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
-        public string? Type { get; set; }
+        public int Place_Type_ID { get; set; }
+        [ForeignKey("Place_Type_ID")]
+        public PlaceType? PlaceType { get; set; }
 
-        public int HotelId { get; set; } = 1;
-        [ForeignKey("HotelId")]
-        public Hotel? hotel { get; set; }
-        public int RestaurantID { get; set; } = 1;
-        [ForeignKey("RestaurantID")]
-        public Restaurant? restaurant { get; set;}
-        public int ResortID { get; set; } = 1;
-        [ForeignKey("ResortID")]
-        public Resorts? Resorts { get; set; }
+        public int PlaceID { get; set; } = 1;
+        [ForeignKey("PlaceID")]
+        public Place? hotel { get; set; }
     }
 }

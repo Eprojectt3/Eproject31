@@ -20,11 +20,9 @@ namespace backend.Extensions
             services.AddScoped<IUnitofWork, UnitofWork>();
             services.AddSingleton<Hashtable>();
             services.AddTransient<CategoryBusinessLogic>();
-            services.AddTransient<RestaurantBusinessLogic>();
-            services.AddTransient<HotelBusinessLogic>();
+            services.AddTransient<PlaceBusinessLogic>();
             services.AddTransient<LocationBusinessLogic>();
             services.AddTransient<TransportationBusinessLogic>();
-            services.AddTransient<ResortBusinessLogic>();
             services.AddTransient<FeedBackBusinessLogic>();
             services.AddTransient<OrderBusinessLogic>();
             services.AddTransient<TourBusinessLogic>();
@@ -42,7 +40,8 @@ namespace backend.Extensions
             services.AddTransient<ImageService>();
             services.AddTransient<Search_TourDetail_Dao>();
             services.AddTransient<Search_Tour_Dao>();
-            services.AddTransient<Top_10_Tour_Dao>();
+            services.AddTransient<Top_10_Tour_Dao>();           
+            services.AddTransient<Get_Place_Type_Dao>();
             services.AddAutoMapper(typeof(AutoMapper1));
             services.Configure<ApiBehaviorOptions>(options =>
             {

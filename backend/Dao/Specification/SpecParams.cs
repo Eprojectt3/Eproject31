@@ -18,6 +18,7 @@
 
         public int? Rating { get; set; }
         public bool? IsActive { get; set; }
+        public int? Place_Type_ID { get; set; }
         public string? Search
         {
             get { return search; }

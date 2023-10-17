@@ -18,13 +18,11 @@ namespace webapi.Data
         public virtual DbSet<ForgotPasswordRequest> ForgotPasswordRequests { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<FeedBack> FeedBack { get; set; }
-        public virtual DbSet<Hotel> Hotels { get; set; }
+        public virtual DbSet<Place> Places { get; set; }
         public virtual DbSet<Itinerary> Itinerarie { get; set; }
         public virtual DbSet<Location1> Locations { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
-        public virtual DbSet<Resorts> Resorts { get; set; }
-        public virtual DbSet<Restaurant> Restaurant { get; set; }
         public virtual DbSet<Tour> Tour { get; set; }
         public virtual DbSet<Transportation> Transportation { get; set; }
         public virtual DbSet<Service> Service { get; set; }
@@ -34,7 +32,7 @@ namespace webapi.Data
         public virtual DbSet<Staff> Staff { get; set; }
         public virtual DbSet<Information> Information { get; set; }
 
-
+        public virtual DbSet<PlaceType> PlaceTypes { get; set; }    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
