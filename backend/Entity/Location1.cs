@@ -10,9 +10,7 @@ namespace backend.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public string? State { get; set; }
-        public ICollection<Hotel>? Hotels { get; set; }
-        public ICollection<Resorts>? Resorts { get; set; }
+        public ICollection<Place>? Hotels { get; set; }
 
-        public ICollection<Restaurant>? Restaurant { get; set; }
     }
 }
