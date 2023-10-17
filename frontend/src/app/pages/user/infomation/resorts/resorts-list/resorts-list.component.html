@@ -42,11 +42,9 @@
                   class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
                 >
                   <!-- Image -->
-                  <img
-                    class="xl:p-[10px]"
-                    mat-card-image
-                    [src]="resort.urlImage"
-                  />
+                  <div>
+                    <!-- <img class="xl:p-[10px] h-[150px] w-full" mat-card-image [src]="resort.urlImage[0]?.image"  /> -->
+                   </div>
                   <!-- Card header -->
                   <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
                     ><mat-card-title
@@ -90,6 +88,18 @@
           </div>
         </div>
       </div>
+      <mat-paginator class="!bg-[#f5f4f3] pr-[200px]"
+      #paginator
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      (page)="pageEvent = handlePage($event)"
+      [pageSizeOptions]="[5, 10]"
+      [length]="totalSize"
+      showFirstLastButtons
+      aria-label="Select
+    page of periodic elements"
+    >
+    </mat-paginator>
     </div>
   </section>
 </ng-container>

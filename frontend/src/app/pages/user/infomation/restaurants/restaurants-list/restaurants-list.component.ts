@@ -1,19 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Filter, filter } from 'src/app/models/filter.model';
 import { Tour } from 'src/app/models/tour';
 import { TitleService } from 'src/app/services/title.service';
 import { RestaurantService } from '../../../../../services/restaurant.service';
 import { Restaurant } from 'src/app/models/restaurant';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-restaurants-list',
   templateUrl: './restaurants-list.component.html',
   styleUrls: ['./restaurants-list.component.scss'],
 })
-export class RestaurantsListComponent {
+export class RestaurantsListComponent implements OnInit {
+  filters: Filter[] = filter;
+  // tours:Tour[]=tours
   restaurants!: Restaurant[];
   selected = 'none';
-  filters: Filter[] = filter;
+  public pageSize: number = 12;
+  public pageIndex: number = 0;
+
+  public pageEvent: PageEvent = new PageEvent();
+  public totalSize: number = 0;
+  public index: number = 1;
+  public dataSource = new MatTableDataSource<Restaurant>([]);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private titleService: TitleService,
@@ -21,16 +32,27 @@ export class RestaurantsListComponent {
   ) {}
 
   ngOnInit(): void {
-    this.titleService.setTitleValue('Restaurant List');
-    this.restaurantService.GetListRestaurant().subscribe((val: any) => {
-      this.restaurants = val;
+    this.titleService.setTitleValue('Hotel List');
+    this.getListRestaurants();
 
-      for (let res of this.restaurants) {
-        const firstPeriodIndex = res.description.indexOf('.');
-        if (firstPeriodIndex !== -1) {
-          res.description = res.description.slice(0, firstPeriodIndex + 1);
-        }
-      }
-    });
   }
+  public getListRestaurants = () => {
+    this.restaurantService
+      .getListRestaurantPagination(this.index, this.pageSize)
+      .subscribe((val: any) => {
+        this.restaurants = val.data;
+        console.log( this.restaurants);
+        this.totalSize = val.count;
+        this.dataSource = val.data;
+      });
+  };
+
+
+
+  public handlePage = (e: any): any => {
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.index = this.pageIndex + 1;
+    this.getListRestaurants();
+  };
 }
