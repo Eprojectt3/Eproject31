@@ -1,8 +1,13 @@
 <div class="container">
-  <mat-stepper [linear]="true" class="!bg-[#f5f4f3] mt-[20px]">
+  <mat-stepper linear="false" class="!bg-[#f5f4f3] mt-[20px]">
     <mat-step>
       <ng-template matStepLabel>Order</ng-template>
-      <app-create-order></app-create-order>
+      <app-create-order (tourInfo)="setTourInfo($event)"></app-create-order>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Payment</ng-template>
+      <app-payment [tour]="tourInfo"></app-payment>
     </mat-step>
   </mat-stepper>
 </div>

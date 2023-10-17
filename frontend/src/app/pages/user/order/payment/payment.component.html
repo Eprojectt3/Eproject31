@@ -1,0 +1,18 @@
+<ng-container>
+  <div class="container">
+    <!-- Title -->
+    <div class="title">
+      <h1 class="font-medium text-[30px] ml-[180px] mb-[20px]">Payment</h1>
+    </div>
+
+    <!-- Payment -->
+    <div class="w-[55%] bg-white mx-auto rounded-[10px]">
+      <mat-tab-group>
+        <mat-tab label="VNPay"> <app-vnpay [tour]="tour"></app-vnpay> </mat-tab>
+        <mat-tab label="Paypal">
+          <app-paypal [tour]="tour"></app-paypal>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</ng-container>

@@ -133,8 +133,8 @@ namespace backend.Controllers
         },
             application_context = new ApplicationContext
             {
-                return_url = "https://example.com/return",
-                cancel_url = "https://example.com/cancel"
+                return_url = "http://localhost:4200/user/order/paypal-success",
+                cancel_url = "http://localhost:4200/user/order/paypal-cancel"
             }
         };
 
