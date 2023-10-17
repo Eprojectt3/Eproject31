@@ -27,22 +27,11 @@ namespace backend.Helper
             CreateMap<Location1, LocationDtos>()
                 .ForMember(l => l.State, otp => otp.MapFrom(o => o.State))
                 .ReverseMap();
-            CreateMap<Hotel, HotelDto>()
+            CreateMap<Place, PlaceDto>()
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.location1.State))
                 .ReverseMap();
-            CreateMap<HotelImageDto, Hotel>().ReverseMap();
-            CreateMap<Resorts, Dtos.ResortDtos.ResortDto>()
-                .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
-                .ReverseMap();
-            CreateMap<Restaurant, RestaurantDto>()
-                .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
-                .ReverseMap();
-            CreateMap<ResortImageDto, Resorts>().ReverseMap();
-            CreateMap<Restaurant, RestaurantDto>()
-                .ForMember(h => h.Location, otp => otp.MapFrom(o => o.Location.State))
-                .ReverseMap();
-            CreateMap<RestaurantImageDto, Restaurant>().ReverseMap();
-  
+            CreateMap<PlaceImageDto, Place>().ReverseMap();
+            
 
             CreateMap<Staff, StaffDto>().ReverseMap();
             CreateMap<StaffImageDto, Staff>().ReverseMap();
@@ -51,11 +40,7 @@ namespace backend.Helper
             CreateMap<FeedBack, FeedBackDto>().ReverseMap();
 
             CreateMap<Itinerary, ItineraryDto>()
-                .ForMember(i => i.Tour_Name, otp => otp.MapFrom(o => o.tour.Name))
-                .ForMember(i => i.HotelName, otp => otp.MapFrom(o => o.hotel.Name))
-                .ForMember(i => i.ResortName, otp => otp.MapFrom(o => o.Resorts.Name))
-                .ForMember(i => i.RestaurantName, otp => otp.MapFrom(o => o.restaurant.Name))
-                ;
+                .ForMember(i => i.Tour_Name, otp => otp.MapFrom(o => o.tour.Name));
 
             CreateMap<Service, ServiceDto>()
                 .ForMember(s => s.Tour_Name, otp => otp.MapFrom(o => o.Tour.Name));

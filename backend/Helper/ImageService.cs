@@ -152,7 +152,8 @@ namespace backend.Helper
         public async Task<List<string>> Update_Image(string objectdto,string? object1,string type,List<string> paths,IFormFileCollection fileCollection)
         {
             List<string> result = new List<string>();
-            string Filepath = GetFilepath(objectdto, type);
+            string Filepath = GetFilepath(object1, type);
+            string FilePath_objectdto = GetFilepath(objectdto, type);
             var image_path_fe = new List<string>();
             var image_path_sever = new List<string>();
             var differnce_image = new List<string>();
@@ -186,7 +187,7 @@ namespace backend.Helper
                     image_path_sever.Add(image_sever);
                 }
                 //Trường hợp trùng tên
-                if (Directory.Exists(Filepath))
+                if (Directory.Exists(FilePath_objectdto))
                      {
                     //Tìm kiếm những image khác trong image_path_sever
                     differnce_image = image_path_sever.Except(image_path_fe).ToList();
