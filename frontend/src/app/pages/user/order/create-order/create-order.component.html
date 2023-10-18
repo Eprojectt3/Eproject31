@@ -59,8 +59,8 @@
                 [min]="minDate"
                 [max]="maxDate"
                 formControlName="departure_date"
-                (dateChange)="onDate1Change($event)"
-                [(ngModel)]="selectedDate1"
+                [matDatepickerFilter]="isDisable"
+                (dateInput)="onDate1Change($event)"
               />
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle
@@ -68,6 +68,11 @@
                 [for]="picker1"
               ></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
+
+              <mat-error
+                *ngIf="form.controls['departure_date']?.errors?.['required']"
+                >Departure date is required</mat-error
+              >
             </mat-form-field>
 
             <!-- End Date -->
@@ -127,6 +132,24 @@
           color="warn"
           class="mt-[20px] ml-[75%] !w-[40px]"
           type="submit"
+          *ngIf="
+            !form.controls['departure_date']?.errors &&
+            !form.controls['departure_date']?.errors &&
+            !form.controls['number_of_people']?.errors
+          "
+        >
+          Next
+        </button>
+        <button
+          mat-flat-button
+          color="warn"
+          class="mt-[20px] ml-[75%] !w-[40px]"
+          type="submit"
+          *ngIf="
+            form.controls['departure_date']?.errors ||
+            form.controls['departure_date']?.errors ||
+            form.controls['number_of_people']?.errors
+          "
         >
           Next
         </button>

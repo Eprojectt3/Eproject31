@@ -2,9 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import * as moment from 'moment';
-import { Moment } from 'moment';
-import { Order } from 'src/app/models/order.model';
 import { Staff } from 'src/app/models/staff.model';
 import { Tour } from 'src/app/models/tour';
 import { TourDetail } from 'src/app/models/tour-detail.model';
@@ -37,6 +34,10 @@ export class CreateOrderComponent implements OnInit {
   isValidOrder: boolean = true;
   totalPrice!: number;
   staff!: Staff[];
+  tourDetaiCountByDate: Map<any, any> = new Map();
+  dailyTourDetailMap: Map<string, any[]> = new Map<string, any[]>();
+  orderMap: Map<any, any> = new Map();
+  startDate: any;
   @Output() tourInfo = new EventEmitter<any>();
 
   constructor(
@@ -58,7 +59,10 @@ export class CreateOrderComponent implements OnInit {
       end_date: ['', Validators.compose([Validators.required])],
       number_of_people: [
         '',
-        Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
+        Validators.compose([
+          this.validatorForm.NoWhitespaceValidator(),
+          Validators.min(1),
+        ]),
       ],
     });
 
@@ -102,15 +106,23 @@ export class CreateOrderComponent implements OnInit {
             return tourDetail.tourId === tour.id;
           });
 
-          this.orderService.getListOrders().subscribe((orders: Order[]) => {
-            // console.log(orders);
-          });
+          for (let tourDe of this.listTourDetail) {
+            this.startDate = new Date(tourDe.start_Date as Date)
+              .getDate()
+              .toString();
+
+            const dailyTourDetail =
+              this.dailyTourDetailMap.get(this.startDate) || [];
+
+            dailyTourDetail.push(tourDe);
+            this.dailyTourDetailMap.set(this.startDate, dailyTourDetail);
+          }
         });
     });
 
     // Time
-    this.selectedDate2 = new Date(this.selectedDate1);
-    this.selectedDate2.setDate(this.selectedDate2.getDate() + this.rangeTime);
+    // this.selectedDate2 = new Date(this.selectedDate1);
+    // this.selectedDate2.setDate(this.selectedDate2.getDate() + this.rangeTime);
 
     // Get list staff
     this.staffService.getListStaff().subscribe((val) => {
@@ -156,6 +168,8 @@ export class CreateOrderComponent implements OnInit {
 
   // Change Date
   public onDate1Change = (e: any) => {
+    this.selectedDate1 = e.value;
+
     this.selectedDate2 = new Date(this.selectedDate1);
 
     this.selectedDate2.setDate(this.selectedDate2.getDate() + this.rangeTime);
@@ -163,5 +177,18 @@ export class CreateOrderComponent implements OnInit {
 
   public changeNumberOfPeople = (e: any) => {
     this.totalPrice = Number(e.target.value) * Number(this.tours.price);
+  };
+
+  // Disable day has tour exceed quatity limt
+  public isDisable = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDate();
+
+    for (const [key, value] of this.dailyTourDetailMap) {
+      if (value.length >= Number(this.tours?.quantity_limit)) {
+        return day !== Number(key);
+      }
+    }
+
+    return true;
   };
 }
