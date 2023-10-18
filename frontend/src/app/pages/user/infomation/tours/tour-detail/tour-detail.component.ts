@@ -12,24 +12,6 @@ import { Transportation } from 'src/app/models/transportation.model';
 import { ItineraryService } from 'src/app/services/itinerary.service';
 import { Itinerary } from 'src/app/models/itinerary.model';
 
-const imagePath: Object[] = [
-  {
-    path: '../../../../../../assets/images/anh_HomePage3 1 (1).jpg',
-  },
-  {
-    path: '../../../../../../assets/images/cat-ba-3553145_1920 1.jpg',
-  },
-  {
-    path: '../../../../../../assets/images/Ha Long.jpg',
-  },
-  {
-    path: '../../../../../../assets/images/hands 1.jpg',
-  },
-  {
-    path: '../../../../../../assets/images/Hotel1 1.jpg',
-  },
-];
-
 @Component({
   selector: 'app-tour-detail',
   templateUrl: './tour-detail.component.html',

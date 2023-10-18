@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-stepper linear="false" class="!bg-[#f5f4f3] mt-[20px]">
+  <mat-stepper linear class="!bg-[#f5f4f3] mt-[20px]" #stepper>
     <mat-step>
       <ng-template matStepLabel>Order</ng-template>
       <app-create-order (tourInfo)="setTourInfo($event)"></app-create-order>
