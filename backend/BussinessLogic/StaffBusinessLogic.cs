@@ -102,7 +102,6 @@ namespace backend.BussinessLogic
             }
             existingStaff.UpdateDate = staff.UpdateDate;
             existingStaff.UpdateBy = staff.UpdateBy;
-            existingStaff.CreateBy = staff.CreateBy;
             existingStaff.IsActive = staff.IsActive;
             existingStaff.Name = staff.Name;
             existingStaff.Image = staff.Image;

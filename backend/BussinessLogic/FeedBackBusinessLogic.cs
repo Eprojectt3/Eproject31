@@ -59,9 +59,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             existingFeedBack.UpdateDate = feedback.UpdateDate;
-            existingFeedBack.CreateDate = feedback.CreateDate;
             existingFeedBack.UpdateBy = feedback.UpdateBy;
-            existingFeedBack.CreateBy = feedback.CreateBy;
             existingFeedBack.IsActive = feedback.IsActive;
             existingFeedBack.Title = feedback.Title;
             existingFeedBack.Name = feedback.Name;

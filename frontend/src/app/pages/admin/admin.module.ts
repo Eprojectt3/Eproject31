@@ -62,6 +62,8 @@ import { DetailResortComponent } from './admin-resort/detail-resort/detail-resor
 import { CreateRestaurantComponent } from './admin-restaurant/create-restaurant/create-restaurant.component';
 import { UpdateRestaurantComponent } from './admin-restaurant/update-restaurant/update-restaurant.component';
 import { DetailRestaurantComponent } from './admin-restaurant/detail-restaurant/detail-restaurant.component';
+import { ListStaffsComponent } from './admin-staff/list-staffs/list-staffs.component';
+import { CreateStaffComponent } from './admin-staff/create-staff/create-staff.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +107,8 @@ import { DetailRestaurantComponent } from './admin-restaurant/detail-restaurant/
     CreateRestaurantComponent,
     UpdateRestaurantComponent,
     DetailRestaurantComponent,
+    ListStaffsComponent,
+    CreateStaffComponent,
   ],
   imports: [
     CommonModule,

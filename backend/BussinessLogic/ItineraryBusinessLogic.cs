@@ -68,9 +68,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             existingItinerary.UpdateDate = itinerary.UpdateDate;
-            existingItinerary.CreateDate = itinerary.CreateDate;
             existingItinerary.UpdateBy = itinerary.UpdateBy;
-            existingItinerary.CreateBy = itinerary.CreateBy;
             existingItinerary.IsActive = itinerary.IsActive;
             existingItinerary.TourID = itinerary.TourID;
             existingItinerary.Sequence = itinerary.Sequence;

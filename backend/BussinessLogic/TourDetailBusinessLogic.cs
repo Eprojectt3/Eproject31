@@ -66,9 +66,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             existingTourDetail.UpdateDate = tourDetail.UpdateDate;
-            existingTourDetail.CreateDate = tourDetail.CreateDate;
             existingTourDetail.UpdateBy = tourDetail.UpdateBy;
-            existingTourDetail.CreateBy = tourDetail.CreateBy;
             existingTourDetail.IsActive = tourDetail.IsActive;
             existingTourDetail.TourId = tourDetail.TourId;
             existingTourDetail.Start_Date = tourDetail.Start_Date;
