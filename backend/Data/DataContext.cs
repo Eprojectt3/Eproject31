@@ -40,12 +40,12 @@ namespace webapi.Data
 
             modelBuilder.Entity<Order>().HasIndex(ul => new { ul.Tour_Detail_ID }).IsUnique();
 
-            //    modelBuilder.Entity<Hotel>()
-            //       .HasOne(h => h.location1)
-            //       .WithMany(l => l.Hotels)
-            //       .HasForeignKey(h => h.LocationId)
-            //       .IsRequired()
-            //       .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Itinerary>()
+               .HasOne(h => h.hotel)
+               .WithMany(l => l.Itineraries)
+               .HasForeignKey(h => h.PlaceID)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.NoAction);
             //    modelBuilder.Entity<Resorts>()
             //        .HasOne(h => h.Location)
             //        .WithMany(l => l.Resorts)
