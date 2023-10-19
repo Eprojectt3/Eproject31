@@ -71,9 +71,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             existingCategory.UpdateDate = category.UpdateDate;
-            existingCategory.CreateDate = category.CreateDate;
             existingCategory.UpdateBy = category.UpdateBy;
-            existingCategory.CreateBy = category.CreateBy;
             existingCategory.Name = category.Name;
             existingCategory.IsActive = category.IsActive;
 

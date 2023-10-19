@@ -66,9 +66,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             existingOrderDetail.UpdateDate = orderDetail.UpdateDate;
-            existingOrderDetail.CreateDate = orderDetail.CreateDate;
             existingOrderDetail.UpdateBy = orderDetail.UpdateBy;
-            existingOrderDetail.CreateBy = orderDetail.CreateBy;
             existingOrderDetail.IsActive = orderDetail.IsActive;            
             existingOrderDetail.OrderID = orderDetail.OrderID;
             existingOrderDetail.Quantity = orderDetail.Quantity;

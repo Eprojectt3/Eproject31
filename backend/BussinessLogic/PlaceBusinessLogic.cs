@@ -134,7 +134,6 @@ namespace backend.BussinessLogic
             }
             existingHotel.UpdateDate = place.UpdateDate;
             existingHotel.UpdateBy = place.UpdateBy;
-            existingHotel.CreateBy = place.CreateBy;
             existingHotel.Name = place.Name;
             existingHotel.IsActive = place.IsActive;
             existingHotel.Address = place.Address;

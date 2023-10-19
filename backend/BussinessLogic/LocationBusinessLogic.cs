@@ -61,9 +61,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             existingLocation1.UpdateDate = location.UpdateDate;
-            existingLocation1.CreateDate = location.CreateDate;
             existingLocation1.UpdateBy = location.UpdateBy;
-            existingLocation1.CreateBy = location.CreateBy;
             existingLocation1.IsActive = location.IsActive;
             existingLocation1.State = location.State;
             

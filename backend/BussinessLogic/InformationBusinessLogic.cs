@@ -57,9 +57,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             existingInformation.UpdateDate = information.UpdateDate;
-            existingInformation.CreateDate = information.CreateDate;
             existingInformation.UpdateBy = information.UpdateBy;
-            existingInformation.CreateBy = information.CreateBy;
             existingInformation.IsActive = information.IsActive;
             existingInformation.Location = information.Location;
             existingInformation.Transportation = information.Transportation;

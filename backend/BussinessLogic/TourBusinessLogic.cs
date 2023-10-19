@@ -146,7 +146,6 @@ namespace backend.BussinessLogic
             }
             existingTour.UpdateDate = tour.UpdateDate;
             existingTour.UpdateBy = tour.UpdateBy;
-            existingTour.CreateBy = tour.CreateBy;
             existingTour.IsActive = tour.IsActive;
             existingTour.Name = tour.Name;
             existingTour.Price = tour.Price;

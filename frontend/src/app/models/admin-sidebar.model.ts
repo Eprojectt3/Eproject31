@@ -70,4 +70,9 @@ export const adminSidebar: AdminSidebar[] = [
     title: 'Order',
     link: '/admin/orders',
   },
+  {
+    icon: 'group',
+    title: 'Staff',
+    link: '/admin/staffs',
+  },
 ];

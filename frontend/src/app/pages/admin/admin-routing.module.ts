@@ -29,6 +29,7 @@ import { CreateRestaurantComponent } from './admin-restaurant/create-restaurant/
 import { DetailRestaurantComponent } from './admin-restaurant/detail-restaurant/detail-restaurant.component';
 import { UpdateRestaurantComponent } from './admin-restaurant/update-restaurant/update-restaurant.component';
 import { ListRestaurantsComponent } from './admin-restaurant/list-restaurants/list-restaurants.component';
+import { ListStaffsComponent } from './admin-staff/list-staffs/list-staffs.component';
 
 const routes: Routes = [
   {
@@ -165,6 +166,24 @@ const routes: Routes = [
         component: UpdateRestaurantComponent,
       },
     ],
+  },
+  {
+    path: 'staffs',
+    component: ListStaffsComponent,
+    // children: [
+    //   {
+    //     path: 'create',
+    //     component: CreateHotelComponent,
+    //   },
+    //   {
+    //     path: 'detail/:id',
+    //     component: DetailHotelComponent,
+    //   },
+    //   {
+    //     path: 'update/:id',
+    //     component: UpdateHotelComponent,
+    //   },
+    // ],
   },
 
   { path: '', component: AdminComponent, pathMatch: 'full' },

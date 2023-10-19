@@ -56,9 +56,7 @@ namespace backend.BussinessLogic
                 throw new NotFoundExceptions("not found");
             }
             existingService.UpdateDate = service.UpdateDate;
-            existingService.CreateDate = service.CreateDate;
             existingService.UpdateBy = service.UpdateBy;
-            existingService.CreateBy = service.CreateBy;
             existingService.IsActive = service.IsActive;
             existingService.Tour = service.Tour;
             existingService.Name = service.Name;
