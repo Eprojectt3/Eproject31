@@ -17,6 +17,13 @@ export class CategoryService {
   categorySubject!: BehaviorSubject<Category[] | null>;
   constructor(private http: HttpClient) {}
 
+  public getListCategories = (): Observable<any> => {
+    return this.http.get<any>(
+      `${AUTH_API}/api/Category/ListCategory`,
+      httpOptions
+    );
+  };
+
   // Get List Category
   public getCategories = (
     pageIndex?: number,
@@ -48,7 +55,7 @@ export class CategoryService {
   };
 
   // Update category
-  public updateCategory = (id:number,data: any): Observable<any> => {
+  public updateCategory = (id: number, data: any): Observable<any> => {
     return this.http.put(`${AUTH_API}/api/Category/Update/${id}`, data);
   };
 }

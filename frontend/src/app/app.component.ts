@@ -42,6 +42,12 @@ export class AppComponent implements OnInit {
     return currentUrl.includes('/user/order');
   };
 
+  public isShowSearchResult = (): boolean => {
+    const currentUrl = this.router.url;
+
+    return currentUrl.includes('/search-result');
+  };
+
   public isShowNotFound = (): boolean => {
     const currentUrl = this.router.url;
 
@@ -49,7 +55,8 @@ export class AppComponent implements OnInit {
       currentUrl.includes('/user/order') ||
       currentUrl.includes('/admin') ||
       currentUrl.includes('/auth/login') ||
-      currentUrl.includes('/user/')
+      currentUrl.includes('/user/') ||
+      currentUrl.includes('/search-result')
     ) {
       return false;
     } else {

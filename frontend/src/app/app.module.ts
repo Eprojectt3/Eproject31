@@ -20,6 +20,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 
 // Font awesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -33,18 +35,20 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { appInitializer } from './helpers/app.initializer';
 import { AuthService } from './services/auth.service';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AuthInterceptor } from './helpers/interceptor/auth.interceptor';
-import { LoadingInterceptor } from './helpers/interceptor/loading.interceptor';
-import { ErrorInterceptor } from './helpers/interceptor/error.interceptor';
+import { HttpClientModule } from '@angular/common/http';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
-
 import { LayoutComponent } from './components/layout/layout.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { InterceptorModule } from './interceptor.module';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { LayoutOrderComponent } from './components/layout-order/layout-order.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SearchComponent } from './components/search/search.component';
+import { SearchTourComponent } from './components/search/search-tour/search-tour.component';
+import { SearchHotelComponent } from './components/search/search-hotel/search-hotel.component';
+import { SearchRestaurantComponent } from './components/search/search-restaurant/search-restaurant.component';
+import { SearchResortComponent } from './components/search/search-resort/search-resort.component';
+import { SearchResultComponent } from './components/search/search-result/search-result.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +60,12 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     FooterComponent,
     LayoutOrderComponent,
     NotFoundComponent,
+    SearchComponent,
+    SearchTourComponent,
+    SearchHotelComponent,
+    SearchRestaurantComponent,
+    SearchResortComponent,
+    SearchResultComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +94,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatTooltipModule,
     MatSidenavModule,
     CKEditorModule,
+    MatTabsModule,
+    MatSelectModule,
   ],
   providers: [
     // {

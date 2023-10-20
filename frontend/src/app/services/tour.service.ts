@@ -18,6 +18,8 @@ export class TourService {
   public toursSubject: BehaviorSubject<Tour[] | null>;
   public toursDetailSubject: BehaviorSubject<Tour | null>;
   public $tourDetail: Observable<Tour | null>;
+  public tourSearchSubject: BehaviorSubject<Tour[] | null> =
+    new BehaviorSubject<Tour[] | null>(null);
 
   constructor(private httpclient: HttpClient) {
     this.toursSubject = new BehaviorSubject<Tour[] | null>(null);
@@ -79,5 +81,12 @@ export class TourService {
   // Update Tour
   public updateHotel = (data: any): Observable<any> => {
     return this.httpclient.put(`${AUTH_API}/api/Tour/Update`, data);
+  };
+
+  // Search Tour
+  public searchTour = (data: any): Observable<any> => {
+    return this.httpclient
+      .post(`${AUTH_API}/api/TourDetail/SearchTour`, data)
+      .pipe(tap((val: any) => this.tourSearchSubject.next(val)));
   };
 }

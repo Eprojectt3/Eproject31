@@ -1,0 +1,93 @@
+<ng-container class="tours-list w-[100%]">
+  <!-- Filter -->
+  <section id="filter" class="w-[80%] m-auto flex justify-end mt-[15px]">
+    <!-- select-filter -->
+    <div class="select-filter">
+      <mat-form-field class="">
+        <mat-label class="text-[#A9A9A9]">
+          <mat-icon class="text-[#A9A9A9]">filter_alt</mat-icon>
+          Filter</mat-label
+        >
+        <mat-select>
+          <mat-option *ngFor="let filter of filters" [value]="filter.name">{{
+            filter.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </section>
+
+  <!-- Hotel List -->
+  <section id="most-popular-hotels" class="most-popular text-center">
+    <div>
+      <h1 class="font-[600] text-[#585555] text-[25px]">Tours List</h1>
+      <p class="mt-[17px] text-[#999999]">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+        sollicitudin,<br />
+        tellus vitae condimentum egestas, libero dolor auctor tellus, eu
+        consectetur neque elit quis nunc. Cras elementum pretium.
+      </p>
+
+      <!-- Card tour -->
+      <div
+        class="card-tour mt-[30px] 2xl:w-[65%] xl:w-[80%] lg:w-[75%] m-auto mb-[35px]"
+      >
+        <div class="flex flex-wrap -mx-4">
+          <div *ngFor="let da of data" class="px-4 mb-[40px] xl:w-1/4">
+            <button [routerLink]="['/user/infomation/tour-detail', da.id]">
+              <div>
+                <mat-card
+                  class="mat-card text-left mr-[5px] xl:pb-[10px] !bg-[#EEEEFF] xl:w-[250px] xl:h-[300px]"
+                >
+                  <!-- Image -->
+                  <img
+                    class="xl:p-[10px]"
+                    mat-card-image
+                    src="../../../assets/images/Rectangle 19377.jpg"
+                  />
+                  <!-- Card header -->
+                  <mat-card-header class="!py-0 !pl-[5px] xl:!pl-[15px]"
+                    ><mat-card-title
+                      class="!text-[15px] text-[#181E4B] xl:!text-[18px] !w-[220px] truncate"
+                      >{{ da.name }}</mat-card-title
+                    >
+                  </mat-card-header>
+
+                  <!-- Card Content -->
+                  <mat-card-content class="!pl-[5px] xl:!pl-[15px]">
+                    <p
+                      [innerHTML]="da.description"
+                      class="text-[10px] text-[#181E4B] xl:!text-[12px] h-[50px] overflow-hidden"
+                    >
+                      <!-- {{ tour.description | truncate }} -->
+                    </p>
+                  </mat-card-content>
+
+                  <!-- Card footer -->
+                  <mat-card-footer
+                    class="px-[15px] pt-[10px] !pl-[5px] xl:!pl-[15px]"
+                  >
+                    <div class="flex">
+                      <span class="!text-[9px] xl:!text-[13px] xl:mr-[20px]">{{
+                        da.price | currency
+                      }}</span>
+                      <div
+                        class="rating text-[10px] flex xl:!text-[13px] xl:w-[25px]"
+                      >
+                        <mat-icon
+                          class="text-[10px] xl:!text-[13px] xl:pt-[1px] text-[#DF6951]"
+                          >star</mat-icon
+                        >
+                        {{ da.rating }}
+                      </div>
+                    </div>
+                  </mat-card-footer>
+                </mat-card>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>

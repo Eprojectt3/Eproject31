@@ -33,6 +33,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.User, Role.Admin] },
   },
+
   // { path: '', component: UserComponent, pathMatch: 'full' },
 ];
 

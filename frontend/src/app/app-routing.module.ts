@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/auth.guard';
 import { Role } from './models/role.model';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SearchResultComponent } from './components/search/search-result/search-result.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () =>
       import('./pages/user/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: 'search-result',
+    component: SearchResultComponent,
   },
   {
     path: '',

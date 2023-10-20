@@ -1,6 +1,6 @@
 <div class="layout">
   <!-- Image -->
-  <section id="img">
+  <section id="img" class="h-0">
     <div class="w-[100%] h-[500px] absolute z-[-1000]">
       <div class="h-[100%] w-[100%] relative">
         <div
@@ -13,6 +13,16 @@
         />
       </div>
     </div>
+
+    <!-- Search -->
+    <button
+      *ngIf="isShowSearchComponent()"
+      class="absolute top-[400px] left-[50%] h-auto translate-x-[-50%] 2xl:w-[900px] xl:w-[900px] lg:w-[600px] md:w-[500px] sm:w-[400px] w-[300px] !h-[45px] !text-[#8C8787] !justify-start"
+      mat-raised-button
+      (click)="openSearchDialog()"
+    >
+      Search
+    </button>
   </section>
 
   <!-- Navbar -->
