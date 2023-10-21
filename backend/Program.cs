@@ -1,9 +1,12 @@
 using System.Configuration;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using backend.Entity;
 using backend.Extensions;
 using backend.Middleware;
+using backend.Model.Paypal.Input;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using webapi.Dao.IServices;
@@ -85,14 +88,24 @@ builder.Services.AddCors(
         )
 );
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<DataContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
 }
+
+app.UseSwagger();
+    app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 
