@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
   apiUrl: 'https://dapury.click',
-  apiLocallHost: 'http://localhost:7110',
+  apiLocallHost: 'https://localhost:7110',
   apiDockerHost: 'https://localhost:7110',
 };

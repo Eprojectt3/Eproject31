@@ -49,7 +49,8 @@ export class TourDetailComponent implements OnInit {
     // Get tour detail
     this.tourService.getDetailTour(this.id).subscribe((val) => {
       this.tour = val;
-      console.log(this.tour);
+      console.log(val);
+
       this.listImages = val.urlImage;
       this.imagesCount = val.urlImage.length;
       this.images = val.urlImage.slice(0, 3);

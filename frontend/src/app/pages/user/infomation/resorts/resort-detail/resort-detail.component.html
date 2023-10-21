@@ -8,29 +8,13 @@
       >
         Karnel Travels
       </h2>
-      <!-- <div>
-        <a href="" class="p-[20px] font-bold"
-          ><fa-icon
-            class="xl:text-[23px] 2xl:text-[23px] lg:text-[23px] text-[15px] text-[#F44336] pr-[5px]"
-            [icon]="faFace"
-          ></fa-icon
-          >FaceBook</a
-        >
-        <a href="" class="p-[20px] font-bold"
-          ><fa-icon
-            class="xl:text-[23px] 2xl:text-[23px] lg:text-[23px] text-[15px] text-[#F44336] pr-[5px]"
-            [icon]="fatwitter"
-          ></fa-icon
-          >Twitter</a
-        >
-      </div> -->
     </div>
   </div>
-  <div  class="w-full pr-4 pl-4 mr-auto ml-auto">
+  <div class="w-full pr-4 pl-4 mr-auto ml-auto">
     <!-- Image -->
     <img
       class="xl:p-[10px] w-[100%] h-[563px]"
-      [src]="resort.urlImage"
+      [src]="resort?.urlImage[0].image"
     />
 
     <div class="text-center mb-12 pb-3 pt-7">
@@ -52,12 +36,12 @@
             Price range:
           </h2>
           <p class="text-orange-500 text-[25px] pl-[10px]">
-            {{ resort.price_range }} - 2000
+            {{ resort.price_range }}
           </p>
         </div>
         <!-- Info -->
         <div class="leading-[30px]">
-         {{resort.location}}
+          {{ resort?.description }}
         </div>
 
         <div class="pb-[10px] mt-[20px]">
@@ -73,36 +57,31 @@
         </div>
 
         <!-- image -->
-        <div class="flex ">
-          <div class="pr-[15px] card flex justify-content-center">
+        <div class="flex">
+          <div
+            class="pr-[15px] card flex justify-content-center"
+            *ngFor="let image of images"
+          >
             <p-image
-              src="../../../../../assets/images/Sapa.jpg"
+              [imageStyle]="{
+              objectFit: 'cover',
+              backgroundSize: 'cover',
+              width: '250px',
+              height: '140px',
+            }"
+              [src]="image.image"
               alt="Image"
               width="250"
               [preview]="true"
             >
             </p-image>
           </div>
-          <div class="pr-[15px]" >
-            <p-image
-            src="../../../../../assets/images/Sapa.jpg"
-            alt="Image"
-            width="250"
-            [preview]="true"
-          >
-          </p-image>
-          </div>
-          <div class="pr-[15px]">
-            <p-image
-            src="../../../../../assets/images/Sapa.jpg"
-            alt="Image"
-            width="250"
-            [preview]="true"
-          >
-          </p-image>
-          </div>
-          <div>
 
+          <!-- More Image -->
+          <div *ngIf="imagesCount > 3" class="more-image mt-[50px]">
+            <button mat-raised-button (click)="openGalery()" color="warn">
+              More
+            </button>
           </div>
         </div>
       </div>
