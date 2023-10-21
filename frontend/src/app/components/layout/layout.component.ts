@@ -4,6 +4,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { TitleService } from 'src/app/services/title.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-layout',
@@ -16,11 +19,14 @@ export class LayoutComponent implements OnInit {
   $isLogin!: Observable<boolean | false>;
   titleValue!: Observable<string | null>;
   isLogin: boolean = false;
+  isShowSearch: boolean = false;
 
   constructor(
     private titleService: TitleService,
     private authService: AuthService,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private router: Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -41,5 +47,30 @@ export class LayoutComponent implements OnInit {
     });
 
     location.reload();
+  };
+
+  // Is Show search
+  public isShowSearchComponent = (): boolean => {
+    const currentUrl = this.router.url;
+
+    if (
+      currentUrl.includes('/user/infomation') ||
+      currentUrl.includes('/user/infomation/tours') ||
+      currentUrl.includes('/user/infomation/hotels') ||
+      currentUrl.includes('/user/infomation/resorts') ||
+      currentUrl.includes('/user/infomation/restaurants')
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
+  // Open search Dialog
+  public openSearchDialog = () => {
+    const dialogRef = this.dialog.open(SearchComponent, {
+      width: '700px',
+      height: 'auto',
+    });
   };
 }

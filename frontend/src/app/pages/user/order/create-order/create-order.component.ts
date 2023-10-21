@@ -173,6 +173,7 @@ export class CreateOrderComponent implements OnInit {
     this.selectedDate2 = new Date(this.selectedDate1);
 
     this.selectedDate2.setDate(this.selectedDate2.getDate() + this.rangeTime);
+    console.log(this.selectedDate2);
   };
 
   public changeNumberOfPeople = (e: any) => {

@@ -1,0 +1,89 @@
+<div class="container search-tour-section">
+  <div mat-dialog-content class="search-form">
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <!-- Row 1 -->
+      <div class="w-[100%]">
+        <!-- Name tour -->
+        <div class="name-tour w-[100%]">
+          <mat-form-field class="w-[100%]" focused>
+            <mat-label>Name tour</mat-label>
+            <input matInput formControlName="name_tour" />
+          </mat-form-field>
+        </div>
+
+        <!-- Category Tour  -->
+        <div class="category-tour w-[100%]">
+          <mat-form-field class="w-[100%]" focused>
+            <mat-label>Category tour</mat-label>
+            <mat-select formControlName="category_tour">
+              <mat-option
+                *ngFor="let category of categories"
+                [value]="category?.id"
+                >{{ category?.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="w-[100%]">
+        <!-- Price -->
+        <div class="price w-[100%]">
+          <mat-form-field class="w-[100%]" focused>
+            <mat-label>From Price</mat-label>
+            <input matInput formControlName="from_price" />
+          </mat-form-field>
+
+          <mat-form-field class="w-[100%]" focused>
+            <mat-label>To Price</mat-label>
+            <input matInput formControlName="to_price" />
+          </mat-form-field>
+        </div>
+
+        <!-- Location -->
+        <div class="location w-[100%]">
+          <mat-form-field class="w-[100%]" focused>
+            <mat-label>Location</mat-label>
+            <mat-select formControlName="location">
+              <mat-option
+                *ngFor="let location of locations"
+                [value]="location?.state"
+                >{{ location?.state }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="row-3">
+          <!-- Rating -->
+          <div class="rating w-[100%]">
+            <mat-form-field class="w-[100%]" focused>
+              <mat-label>Rating</mat-label>
+              <mat-select formControlName="rating">
+                <mat-option *ngFor="let rating of ratings" [value]="rating"
+                  >{{ rating }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex justify-end">
+        <button
+          mat-flat-button
+          color="warn"
+          type="button"
+          (click)="isCloseDialog()"
+          class="mr-[10px]"
+        >
+          Close
+        </button>
+        <button mat-flat-button color="warn" type="submit">Search</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -54,3 +54,9 @@
 <div *ngIf="isShowNotFound()">
   <router-outlet></router-outlet>
 </div>
+
+<div *ngIf="isShowSearchResult()">
+  <app-layout></app-layout>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</div>
