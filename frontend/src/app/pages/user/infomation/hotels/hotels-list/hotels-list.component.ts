@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Filter, filter } from 'src/app/models/filter.model';
-import { Tour, tours } from 'src/app/models/tour';
 import { TitleService } from 'src/app/services/title.service';
 import { Hotel } from '../../../../../models/hotel';
-import { HotelService } from 'src/app/services/hotel.service';
-import { MatCardLgImage } from '@angular/material/card';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { PlaceService } from 'src/app/services/place.service';
 
 @Component({
   selector: 'app-hotels-list',
@@ -29,26 +27,26 @@ export class HotelsListComponent implements OnInit {
 
   constructor(
     private titleService: TitleService,
-    private hotelService: HotelService
+    private placeService: PlaceService
   ) {}
 
   ngOnInit(): void {
     this.titleService.setTitleValue('Hotel List');
     this.getListHotels();
-
   }
   public getListHotels = () => {
-    this.hotelService
-      .getListHotelPagination(this.index, this.pageSize)
-      .subscribe((val: any) => {
-        this.hotels = val.data;
-        console.log( this.hotels);
-        this.totalSize = val.count;
-        this.dataSource = val.data;
-      });
+    const data = {
+      pageIndex: this.index,
+      pageSize: this.pageSize,
+      place_Type_ID: 1,
+    };
+
+    this.placeService.getListPlacePagination(data).subscribe((val: any) => {
+      this.hotels = val.data;
+      this.totalSize = val.count;
+      this.dataSource = val.data;
+    });
   };
-
-
 
   public handlePage = (e: any): any => {
     this.pageIndex = e.pageIndex;

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -28,8 +27,8 @@ export class LoginComponent {
     private tokenStorage: TokenStorageService,
     private snackBarService: SnackbarService,
     private titleService: TitleService,
-    private location: Location,
-  ) { }
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
     // set title
@@ -82,7 +81,7 @@ export class LoginComponent {
 
           console.log(this.errorMessage);
           this.snackBarService.openSnackBar(this.errorMessage, 'Error');
-        },
+        }
       );
     }
   };

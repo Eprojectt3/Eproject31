@@ -17,7 +17,7 @@ export interface Resort {
   phoneNumber?: string;
   updateBy?: string;
   updateDate?: Date;
-  urlImage?: string[];
+  urlImage?: any[];
 
   // quantityLimit?: number;
   // type?: boolean | false;
