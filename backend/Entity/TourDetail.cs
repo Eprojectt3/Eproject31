@@ -12,7 +12,7 @@ namespace backend.Entity
         public int TourId { get; set; }
         [ForeignKey("TourId")]
         public Tour? tour { get; set; }
-        public DateTime? Start_Date { get; set; }
+        public DateTime Start_Date { get; set; } 
         public DateTime? End_Date { get; set; }
         public int? Quantity { get; set; }
         public int? Staff_Id { get; set; } = 1;
