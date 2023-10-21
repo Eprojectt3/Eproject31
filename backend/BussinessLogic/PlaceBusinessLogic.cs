@@ -45,29 +45,19 @@ namespace backend.BussinessLogic
         //list hotel
         public async Task<IEnumerable<object>> SelectAllHotel()
         {
-            var data = await unitofWork.Repository<Place>().GetAllAsync();
-            var httpRequest = _httpContextAccessor.HttpContext.Request;
-            var result = new List<object>();
+            var query = from place in context.Places
+                        join pt in context.PlaceTypes
+                        on place.Place_Type_ID equals pt.ID
+                        select new
+                        {
+                            Place = place,
+                            PlaceTypeId = pt.ID
+                        };
+            var data = query.ToList();
+           
 
-            foreach (var hotel in data)
-            {
-                var hotelInfo = new
-                {
-                    hotel.Id,
-                    hotel.Name,
-                    hotel.Price_range,
-                    hotel.Rating,
-                    hotel.LocationId,
-                    hotel.Description,
-                    hotel.Image,
-                    hotel.Address,
-                    hotel.PhoneNumber,
-                    hotel.Links,
-                };
-
-                result.Add(hotelInfo);
-            }
-            return result;
+           
+            return data;
         }
 
         //create 
@@ -276,6 +266,7 @@ namespace backend.BussinessLogic
                     Rating = restaurant.Rating,
                     PhoneNumber = restaurant.PhoneNumber,
                     Location = location.State,
+                    Description = restaurant.Description,
                     UrlImage = Image.GetUrlImage(image_folder, name.ToString(), httpRequest)
                 };
                 result.Add(restaurantInfo);
