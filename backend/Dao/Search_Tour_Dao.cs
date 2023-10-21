@@ -53,11 +53,12 @@ namespace backend.Dao
             var httpRequest = _httpContextAccessor.HttpContext.Request;
             var query = from tour in context.Tour
                         join category in context.Category on tour.category_id equals category.Id
-                        join tour_detail in context.TourDetail on tour.Id equals tour_detail.TourId
-                        where (string.IsNullOrEmpty(search_Tour_Dto.Name) || tour.Name.Equals(search_Tour_Dto.Name))
+                        join tour_detail in context.TourDetail on tour.Id equals tour_detail.TourId into Tour_TourDetail
+                        from info_tour in Tour_TourDetail.DefaultIfEmpty()
+                        where (string.IsNullOrEmpty(search_Tour_Dto.Name) || tour.Name.Contains(search_Tour_Dto.Name))
                             && (!search_Tour_Dto.category_Id.HasValue || tour.category_id == search_Tour_Dto.category_Id.Value)
                             && (!search_Tour_Dto.Rating.HasValue || tour.Rating == search_Tour_Dto.Rating.Value)
-                            && (!search_Tour_Dto.Departure_Time.HasValue || tour_detail.Start_Date == search_Tour_Dto.Departure_Time.Value)
+                            && (!search_Tour_Dto.Departure_Time.HasValue || info_tour.Start_Date.Date == search_Tour_Dto.Departure_Time.Value.Date)
                             &&(string.IsNullOrEmpty(search_Tour_Dto.Price) || tour.Price >= minprice && tour.Price <= maxprice)
                         select new Search_Tour_Dto_Output
                         {
