@@ -36,11 +36,11 @@ namespace backend.Controllers
         {
             var output = await hotelBusinessLogic.SelectAllHotelPagination(pagination);
 
-            // Kiểm tra xem trang có dữ liệu hay không
-            if (output.Data.Count == 0)
-            {
-                return NotFound();
-            }
+            //// Kiểm tra xem trang có dữ liệu hay không
+            //if (output.Data.Count == 0)
+            //{
+            //    return NotFound();
+            //}
 
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);

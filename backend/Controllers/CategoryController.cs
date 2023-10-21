@@ -73,11 +73,12 @@ namespace backend.Controllers
             var output = await categoryBussinessLogic.SelectAllCategoryPagination(pagination);
 
             // Kiểm tra xem trang có dữ liệu hay không
+            /*
             if (output.Data.Count == 0)
             {
                 return NotFound();
             }
-
+            */
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
         }

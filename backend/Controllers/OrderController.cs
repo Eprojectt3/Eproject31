@@ -33,10 +33,12 @@ namespace backend.Controllers
         public async Task<ActionResult> ListOrderPagination(SpecParams pagination)
         {
             var output = await orderBusinessLogic.SelectAllOrderPagination(pagination);
-            if(output.Data.Count == 0) { 
-            
-                return NotFound();
-            }
+            /*
+         if (output.Data.Count == 0)
+         {
+             return NotFound();
+         }
+         */
             return Ok(output);
         }
         //execute add new order
