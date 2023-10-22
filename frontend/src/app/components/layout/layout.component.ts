@@ -59,7 +59,8 @@ export class LayoutComponent implements OnInit {
       currentUrl.includes('/user/infomation/hotels') ||
       currentUrl.includes('/user/infomation/resorts') ||
       currentUrl.includes('/user/infomation/restaurants') ||
-      currentUrl.includes('/search-result')
+      currentUrl.includes('/search-result') ||
+      currentUrl.includes('/user/home')
     ) {
       return true;
     }
