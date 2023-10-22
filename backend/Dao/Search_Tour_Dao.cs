@@ -74,7 +74,7 @@ namespace backend.Dao
                             Range_time = tour.Range_time,
                             Discount = tour.Discount,
                             Transportation_ID = tour.Transportation_ID,
-                            UrlImage = Image.GetUrlImage(tour.Name, "tour", httpRequest)
+                            UrlImage = Image.GetUrlImage(tour.Name.Replace(" ", "-")+ "-" + tour.Departure_location.Replace(" ", "-"), "tour", httpRequest)
                         };
             var result = await query.ToListAsync();
             return result;
