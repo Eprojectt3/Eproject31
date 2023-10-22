@@ -61,7 +61,6 @@ const routes: Routes = [
         path: 'create',
         component: CreateRoleComponent,
       },
-
     ],
   },
   {
@@ -72,7 +71,6 @@ const routes: Routes = [
         path: 'create',
         component: CreateLocationComponent,
       },
-
     ],
   },
   {
@@ -83,7 +81,6 @@ const routes: Routes = [
         path: 'create',
         component: CreateItinerariesComponent,
       },
-
     ],
   },
   {
@@ -94,7 +91,6 @@ const routes: Routes = [
         path: 'create',
         component: CreateTransportationComponent,
       },
-
     ],
   },
   {
@@ -105,7 +101,6 @@ const routes: Routes = [
         path: 'create',
         component: CreateServiceComponent,
       },
-
     ],
   },
   {

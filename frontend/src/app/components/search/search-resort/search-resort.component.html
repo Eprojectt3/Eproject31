@@ -1,1 +1,57 @@
-<p>search-resort works!</p>
+<ng-container>
+  <div class="search-hotel">
+    <!-- Form -->
+    <div class="form-search">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="p-5">
+          <!-- Name hotel -->
+          <mat-form-field class="name-hotel w-[100%]">
+            <mat-label>Name</mat-label>
+            <input class="" matInput formControlName="name" />
+          </mat-form-field>
+
+          <!-- Location -->
+          <mat-form-field class="w-[100%]">
+            <mat-label>Location</mat-label>
+            <mat-select formControlName="location">
+              <mat-option
+                *ngFor="let location of locations"
+                [value]="location.state"
+              >
+                {{ location.state }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Rating -->
+          <mat-form-field class="w-[100%]">
+            <mat-label>Rating</mat-label>
+            <mat-select formControlName="rating">
+              <mat-option
+                *ngFor="let rate of ['Not rated yet', 1, 2, 3, 4, 5]"
+                [value]="rate !== 'Not rated yet' ? rate : 0"
+              >
+                {{ rate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Submit and cancel -->
+
+          <div class="flex justify-end">
+            <button
+              class="mr-[10px]"
+              mat-flat-button
+              color="warn"
+              type="button"
+              (click)="isCloseDialog()"
+            >
+              Close
+            </button>
+            <button mat-flat-button color="warn" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>

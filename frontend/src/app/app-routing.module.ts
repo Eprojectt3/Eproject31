@@ -4,6 +4,9 @@ import { AuthGuard } from './services/auth.guard';
 import { Role } from './models/role.model';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SearchResultComponent } from './components/search/search-result/search-result.component';
+import { SearchResultHotelComponent } from './components/search/search-result/search-result-hotel/search-result-hotel.component';
+import { SearchResultResortComponent } from './components/search/search-result/search-result-resort/search-result-resort.component';
+import { SearchResultRestaurantComponent } from './components/search/search-result/search-result-restaurant/search-result-restaurant.component';
 
 const routes: Routes = [
   {
@@ -26,6 +29,20 @@ const routes: Routes = [
   {
     path: 'search-result',
     component: SearchResultComponent,
+    children: [
+      {
+        path: 'hotels',
+        component: SearchResultHotelComponent,
+      },
+      {
+        path: 'resorts',
+        component: SearchResultResortComponent,
+      },
+      {
+        path: 'restaurants',
+        component: SearchResultRestaurantComponent,
+      },
+    ],
   },
   {
     path: '',

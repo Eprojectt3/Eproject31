@@ -22,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 // Font awesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -49,6 +50,9 @@ import { SearchHotelComponent } from './components/search/search-hotel/search-ho
 import { SearchRestaurantComponent } from './components/search/search-restaurant/search-restaurant.component';
 import { SearchResortComponent } from './components/search/search-resort/search-resort.component';
 import { SearchResultComponent } from './components/search/search-result/search-result.component';
+import { SearchResultHotelComponent } from './components/search/search-result/search-result-hotel/search-result-hotel.component';
+import { SearchResultResortComponent } from './components/search/search-result/search-result-resort/search-result-resort.component';
+import { SearchResultRestaurantComponent } from './components/search/search-result/search-result-restaurant/search-result-restaurant.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +70,9 @@ import { SearchResultComponent } from './components/search/search-result/search-
     SearchRestaurantComponent,
     SearchResortComponent,
     SearchResultComponent,
+    SearchResultHotelComponent,
+    SearchResultResortComponent,
+    SearchResultRestaurantComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,6 +103,7 @@ import { SearchResultComponent } from './components/search/search-result/search-
     CKEditorModule,
     MatTabsModule,
     MatSelectModule,
+    MatPaginatorModule,
   ],
   providers: [
     // {

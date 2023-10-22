@@ -89,4 +89,10 @@ export class TourService {
       .post(`${AUTH_API}/api/TourDetail/SearchTour`, data)
       .pipe(tap((val: any) => this.tourSearchSubject.next(val)));
   };
+
+  public searchPlace = (data: any): Observable<any> => {
+    return this.httpclient
+      .post(`${AUTH_API}/api/Place/ListHotelPagination`, data)
+      .pipe(tap((val: any) => this.tourSearchSubject.next(val)));
+  };
 }
