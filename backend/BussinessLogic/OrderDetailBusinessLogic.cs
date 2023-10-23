@@ -8,7 +8,9 @@ using backend.Dtos.OrderDetailDtos;
 using backend.Entity;
 using backend.Exceptions;
 using backend.Helper;
+using StackExchange.Redis;
 using webapi.Dao.UnitofWork;
+using webapi.Data;
 
 namespace backend.BussinessLogic
 {
@@ -16,11 +18,13 @@ namespace backend.BussinessLogic
     {
         public IUnitofWork unitofWork;
         public IMapper mapper;
+        public DataContext context;
 
-        public OrderDetailBusinessLogic(IUnitofWork _unitofWork, IMapper mapper)
+        public OrderDetailBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, DataContext context)
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
+            this.context = context;
         }
 
         //list orderDetail
@@ -34,6 +38,32 @@ namespace backend.BussinessLogic
             var spec = new OrderDetailSpec(id);
             var data = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(spec);
             return data;
+        }
+        public async Task<IEnumerable<OrderDetailWithTourDto>> SelectAllOrderDetailWithTour()
+        {
+            var query = from orderDetail in context.OrderDetail
+                        join user in context.Users on orderDetail.UserID equals user.Id
+                        join tourDetail in context.TourDetail on orderDetail.Tour_Detail_ID equals tourDetail.Id
+                        join tour in context.Tour on tourDetail.TourId equals tour.Id
+                        select new OrderDetailWithTourDto
+                        {
+                            Id = orderDetail.Id,
+                            OrderID = orderDetail.OrderID,
+                            Quantity = orderDetail.Quantity,
+                            Price = orderDetail.Price,
+                            Rating = orderDetail.Rating,
+                            User_Name = user.Name,
+                            Description = orderDetail.Description,
+                            Tour_Detail_ID = orderDetail.Tour_Detail_ID,
+                            TourName = tour.Name,
+                            Type_Payment = orderDetail.Type_Payment,
+                            Payment_ID = orderDetail.Payment_ID,
+
+                        };
+
+            var result = query.ToList(); 
+
+            return result;
         }
 
         //create orderDetail

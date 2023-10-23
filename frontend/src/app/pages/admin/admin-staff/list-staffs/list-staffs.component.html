@@ -1,5 +1,5 @@
 <section class="w-[100%] bg-white p-[15px] h-[auto] m-auto">
-    <div >
+    <div *ngIf="!isShowCreateStaff() && !isShowDetailStaff() && !isUpdateStaff()">
       <div class="mb-[30px] ml-[25px] mt-[20px] flex w-[96%] justify-between">
         <h1 class="font-[600] text-[25px]">Staff</h1>
   
@@ -92,8 +92,8 @@
       </div>
     </div>
   
-    <!-- <div *ngIf="isShowCreateHotel() || isShowDetailHotel() || isUpdateHotel()">
+    <div *ngIf="isShowCreateStaff() || isShowDetailStaff() || isUpdateStaff() ">
       <router-outlet></router-outlet>
-    </div> -->
+    </div>
   </section>
   

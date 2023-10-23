@@ -30,6 +30,9 @@ import { DetailRestaurantComponent } from './admin-restaurant/detail-restaurant/
 import { UpdateRestaurantComponent } from './admin-restaurant/update-restaurant/update-restaurant.component';
 import { ListRestaurantsComponent } from './admin-restaurant/list-restaurants/list-restaurants.component';
 import { ListStaffsComponent } from './admin-staff/list-staffs/list-staffs.component';
+import { CreateStaffComponent } from './admin-staff/create-staff/create-staff.component';
+import { DetailStaffComponent } from './admin-staff/detail-staff/detail-staff.component';
+import { UpdateStaffComponent } from './admin-staff/update-staff/update-staff.component';
 import { ListDashboardComponent } from './admin-dashboard/list-dashboard/list-dashboard.component';
 
 const routes: Routes = [
@@ -179,20 +182,20 @@ const routes: Routes = [
   {
     path: 'staffs',
     component: ListStaffsComponent,
-    // children: [
-    //   {
-    //     path: 'create',
-    //     component: CreateHotelComponent,
-    //   },
-    //   {
-    //     path: 'detail/:id',
-    //     component: DetailHotelComponent,
-    //   },
-    //   {
-    //     path: 'update/:id',
-    //     component: UpdateHotelComponent,
-    //   },
-    // ],
+    children: [
+      {
+        path: 'create',
+        component: CreateStaffComponent,
+      },
+      {
+        path: 'detail/:id',
+        component: DetailStaffComponent,
+      },
+      {
+        path: 'update/:id',
+        component: UpdateStaffComponent,
+      },
+    ],
   },
 
 

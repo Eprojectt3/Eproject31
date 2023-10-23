@@ -27,6 +27,16 @@ namespace backend.Controllers
             }
             return Ok(output);
         }
+        [HttpGet]
+        public async Task<ActionResult> ListOrderDetailWithTour()
+        {
+            var output = await orderDetailBusinessLogic.SelectAllOrderDetailWithTour();
+            if (output == null)
+            {
+                return NotFound();
+            }
+            return Ok(output);
+        }
 
         //execute add new orderDetail
         [HttpPost]

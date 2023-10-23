@@ -1,0 +1,55 @@
+<ng-container>
+    <div class="container">
+      <div class="title">
+        <h1 class="text-[23px] font-bold mb-[10px]">Staff detail</h1>
+      </div>
+  
+      <mat-divider></mat-divider>
+  
+      <div class="detail mt-[15px]">
+        <!--        staff name-->
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Staff name:</h3>
+          <span class="text-[18px]">{{ staff?.name }}</span>
+        </div>
+  
+        <!--        Email-->
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Email:</h3>
+          <span class="text-[18px]">{{ staff?.email }}</span>
+        </div>
+  
+        <!--        Phone-->
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Phone:</h3>
+          <span class="text-[18px]">{{ staff?.phone }}</span>
+        </div>
+  
+        <!--        PersonId-->
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">PersonId:</h3>
+          <span class="text-[18px]">{{ staff?.personId }}</span>
+        </div>
+  
+  
+        <!--        Image-->
+        <div class="image flex mt-[40px]">
+          <div
+            *ngFor="let img of staff?.urlImage"
+            class="w-[200px] h-[200px] bg-cover object-cover mr-[10px]"
+          >
+            <p-image
+              [imageStyle]="{
+                width: '250px',
+                height: '150px'
+              }"
+              class="bg-cover object-cover"
+              [src]="img.image"
+              alt="Error"
+              [preview]="true"
+            ></p-image>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>

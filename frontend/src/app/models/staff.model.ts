@@ -5,5 +5,5 @@ export interface Staff {
   phone?: string;
   email?: string;
   personId?: string;
-  urlImage?: any[];
+  urlImage?: any;
 }

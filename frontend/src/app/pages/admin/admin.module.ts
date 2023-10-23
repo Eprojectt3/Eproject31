@@ -71,6 +71,8 @@ import { ChartModule } from 'primeng/chart';
 import { FormsModule } from '@angular/forms';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { DetailStaffComponent } from './admin-staff/detail-staff/detail-staff.component';
+import { UpdateStaffComponent } from './admin-staff/update-staff/update-staff.component';
 
 @NgModule({
   declarations: [
@@ -118,6 +120,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     CreateStaffComponent,
     ListDashboardComponent,
 
+    DetailStaffComponent,
+    UpdateStaffComponent,
   ],
   imports: [
     CommonModule,
