@@ -27,7 +27,7 @@ export class AuthService {
     private http: HttpClient,
     private tokenStorage: TokenStorageService,
     private snackBarService: SnackbarService,
-    private location: Location
+    private location: Location,
   ) {
     this.userSubject = new BehaviorSubject<User | null>(null);
     this.$user = this.userSubject.asObservable();
@@ -46,7 +46,7 @@ export class AuthService {
           username: user?.userInfo?.username,
           password: user?.userInfo?.password,
         },
-        httpOptions
+        httpOptions,
       )
 
       .pipe(
@@ -61,7 +61,7 @@ export class AuthService {
           this.snackBarService.openSnackBar(err, 'Error');
 
           return of(err);
-        })
+        }),
       );
   };
 
@@ -76,12 +76,12 @@ export class AuthService {
           accessToken: token?.accessToken,
           refreshToken: token?.refreshToken,
         },
-        httpOptions
+        httpOptions,
       )
       .pipe(
         tap(() => {
           this.$isLoggedInSubject.next(false);
-        })
+        }),
       )
       .subscribe();
     this.stopRefreshTokenTimer();
@@ -104,7 +104,7 @@ export class AuthService {
 
           return data;
         }),
-        tap(() => this.startRefreshTokenTimer())
+        tap(() => this.startRefreshTokenTimer()),
       );
   };
 
@@ -121,7 +121,7 @@ export class AuthService {
 
       this.refreshTokenTimeout = setTimeout(
         () => this.refreshToken().subscribe(),
-        timeout
+        timeout,
       );
     }
   };
@@ -129,5 +129,10 @@ export class AuthService {
   private stopRefreshTokenTimer = () => {
     clearTimeout(this.refreshTokenTimeout);
     this.tokenStorage.signOut();
+  };
+
+  // Change password
+  public changePassword = (data: any): Observable<any> => {
+    return this.http.put(`${AUTH_API}/api/Users/ChangePassword`, data);
   };
 }

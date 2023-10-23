@@ -29,6 +29,7 @@ namespace backend.Entity
         )]
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
+
         [Required(ErrorMessage = "Phone is required")]
         public string Phone { get; set; }
 

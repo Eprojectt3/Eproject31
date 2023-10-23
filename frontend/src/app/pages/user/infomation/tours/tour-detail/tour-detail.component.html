@@ -102,11 +102,14 @@
               <span
                 class="bg-[#F44336] text-white rounded-[50%] w-[60px] h-[60px] text-center pt-[28%] font-semibold"
               >
-                Day 1
+                {{ itinerary?.sequence }}
               </span>
             </ng-template>
             <ng-template pTemplate="content" let-itinerary>
-              <div class="w-[150px]">
+              <div class="w-[100%]">
+                <h1 class="font-semibold text-[20px]">
+                  State {{ itinerary?.sequence }}
+                </h1>
                 <p>
                   {{ itinerary?.description }}
                 </p>

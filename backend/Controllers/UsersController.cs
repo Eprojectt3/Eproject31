@@ -4,6 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Timers;
+using AutoMapper;
+using backend.Dtos.ChangePassworkDto;
+using backend.Dtos.UserDto;
 using backend.Entity;
 using backend.Exceptions;
 using Microsoft.AspNetCore.Authorization;
@@ -29,13 +32,15 @@ namespace webapi.Controllers
         private readonly IConfiguration _configuration;
         private System.Timers.Timer _timer;
         private readonly IServiceProvider _serviceProvider;
+        private IMapper mapper;
 
         public UsersController(
             DataContext context,
             IJWTManagerService jWTManager,
             IUserService userService,
             IConfiguration configuration,
-            IServiceProvider serviceProvider
+            IServiceProvider serviceProvider,
+            IMapper mapper
         )
         {
             _serviceProvider = serviceProvider;
@@ -57,6 +62,8 @@ namespace webapi.Controllers
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network
             };
+
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -335,6 +342,58 @@ namespace webapi.Controllers
             mailMessage.To.Add(email);
 
             _smtpClient.Send(mailMessage);
+        }
+
+        // Update User
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] UserDto user)
+        {
+            var tour = mapper.Map<UserDto, User>(user);
+
+            if (user.Id == null)
+            {
+                return NotFound(new { Message = "User id is null" });
+            }
+
+            var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            if (existedUser is null)
+            {
+                return NotFound(new { Message = "User id not found" });
+            }
+
+            existedUser.Name = user.Name;
+            existedUser.Username = user.Username;
+            existedUser.Email = user.Email;
+            existedUser.Phone = user.Phone;
+
+            if (user.RoleId != null)
+            {
+                existedUser.RoleId = (int)user.RoleId;
+            }
+
+            _context.Entry(existedUser).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return Ok(existedUser);
+        }
+
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePassworkDto user)
+        {
+            var validUser = await userService.IsValidUserAsync(user.Username, user.OldPassword);
+
+            if (validUser is null)
+            {
+                return Unauthorized(new { Message = "Incorrect username or password!" });
+            }
+
+            validUser.Password = BCrypt.Net.BCrypt.HashPassword(user.NewPassword);
+
+            _context.Entry(validUser).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Change password successfully" });
         }
     }
 }

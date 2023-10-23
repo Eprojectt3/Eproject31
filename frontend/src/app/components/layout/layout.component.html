@@ -3,24 +3,16 @@
   <section id="img" class="h-0">
     <div class="w-[100%] h-[500px] absolute z-[-1000]">
       <div class="h-[100%] w-[100%] relative">
-        <div
-          class="w-[100%] h-[100%] absolute bg-black opacity-[0.2] top-0 left-0"
-        ></div>
-        <img
-          src="../../../assets/images/cat-ba-3553145_1920 1.jpg"
-          alt="error"
-          class="w-[100%] h-[100%] bg-cover object-cover"
-        />
+        <div class="w-[100%] h-[100%] absolute bg-black opacity-[0.2] top-0 left-0"></div>
+        <img src="../../../assets/images/cat-ba-3553145_1920 1.jpg" alt="error"
+          class="w-[100%] h-[100%] bg-cover object-cover" />
       </div>
     </div>
 
     <!-- Search -->
-    <button
-      *ngIf="isShowSearchComponent()"
+    <button *ngIf="isShowSearchComponent()"
       class="absolute top-[400px] left-[50%] h-auto translate-x-[-50%] 2xl:w-[900px] xl:w-[900px] lg:w-[600px] md:w-[500px] sm:w-[400px] w-[300px] !h-[45px] !text-[#8C8787] !justify-start"
-      mat-raised-button
-      (click)="openSearchDialog()"
-    >
+      mat-raised-button (click)="openSearchDialog()">
       Search
     </button>
   </section>
@@ -28,9 +20,7 @@
   <!-- Navbar -->
   <section class="2xl:visible xl:visible lg:visible invisible" id="navbar ">
     <div class="navbar flex">
-      <div
-        class="nav text-white lg:w-[55%] mx-auto mt-[15px] xl:w-[45%] 2xl:w-[45%]"
-      >
+      <div class="nav text-white lg:w-[55%] mx-auto mt-[15px] xl:w-[45%] 2xl:w-[45%]">
         <nav class="w-[100%]">
           <ul class="flex justify-between items-center">
             <li>
@@ -40,13 +30,10 @@
               <a class="text-[20px]" routerLink="/user/about/">About</a>
             </li>
             <li>
-              <a class="logo text-[35px]" routerLink="/user/home/"
-                >Karnel Travels</a
-              >
+              <a class="logo text-[35px]" routerLink="/user/home/">Karnel Travels</a>
             </li>
             <li class="flex items-center">
-              <a class="text-[20px]" routerLink="/user/infomation"
-                >Infomation
+              <a class="text-[20px]" routerLink="/user/infomation">Infomation
               </a>
               <button class="mt-[10px]" [matMenuTriggerFor]="menuInfo">
                 <mat-icon>arrow_drop_down</mat-icon>
@@ -60,30 +47,19 @@
         </nav>
       </div>
       <div *ngIf="!isLogin && !userInfo" class="flex right-10 top-5 absolute">
-        <button
-          mat-raised-button
-          class="font-[600] hover:w-[80px] hover:h-[38px]"
-          routerLink="/auth/login"
-        >
+        <button mat-raised-button class="font-[600] hover:w-[80px] hover:h-[38px]" routerLink="/auth/login">
           Login
         </button>
-        <button
-          mat-stroked-button
+        <button mat-stroked-button
           class="font-[600] ml-[10px] !border-slate-300 !text-white hover:w-[100px] hover:h-[40px] !border-[0.5px]"
-          routerLink="/auth/register"
-        >
+          routerLink="/auth/register">
           Register
         </button>
       </div>
 
-      <div
-        *ngIf="userInfo"
-        class="avatar w-[40px] h-[40px] right-20 top-7 absolute lg:right-10"
-      >
+      <div *ngIf="userInfo" class="avatar w-[40px] h-[40px] right-20 top-7 absolute lg:right-10">
         <button type="button" [matMenuTriggerFor]="menu">
-          <mat-icon class="text-white text-[35px] !w-[100%] !h-[100%]"
-            >account_circle</mat-icon
-          >
+          <mat-icon class="text-white text-[35px] !w-[100%] !h-[100%]">account_circle</mat-icon>
         </button>
       </div>
 
@@ -92,13 +68,12 @@
         <h2 class="ml-[20px] text-[19px] font-[500] mb-[10px]">
           {{ userInfo?.name }}
         </h2>
-        <button mat-menu-item>
+        <button mat-menu-item routerLink="/user/my-profile">
           <mat-icon class="!text-[#FA5246]">person</mat-icon>
           <span>Profile</span>
         </button>
-        <button mat-menu-item>
-          <mat-icon class="!text-[#FA5246]">shopping_cart</mat-icon
-          ><span>My Orders</span>
+        <button mat-menu-item routerLink="/user/my-order">
+          <mat-icon class="!text-[#FA5246]">shopping_cart</mat-icon><span>My Orders</span>
         </button>
         <button mat-menu-item (click)="logout()">
           <mat-icon class="!text-[#FA5246]">logout</mat-icon><span>Logout</span>
@@ -124,9 +99,7 @@
   </div>
 
   <!-- navbar mobile -->
-  <div
-    class="nav-mobile absolute top-[20px] left-[15px] lg:invisible xl:invisible 2xl:invisible"
-  >
+  <div class="nav-mobile absolute top-[20px] left-[15px] lg:invisible xl:invisible 2xl:invisible">
     <div>
       <button aria-label="menu" class="" [matMenuTriggerFor]="menu">
         <mat-icon class="text-white">menu</mat-icon>
@@ -134,12 +107,8 @@
     </div>
   </div>
 
-  <div
-    class="avatar w-[25px] h-[25px] right-5 top-5 absolute xl:invisible 2xl:invisible lg:invisible"
-  >
-    <mat-icon class="text-white text-[25px] !w-[100%] !h-[100%]"
-      >account_circle</mat-icon
-    >
+  <div class="avatar w-[25px] h-[25px] right-5 top-5 absolute xl:invisible 2xl:invisible lg:invisible">
+    <mat-icon class="text-white text-[25px] !w-[100%] !h-[100%]">account_circle</mat-icon>
   </div>
 
   <!-- menu mobile -->
@@ -153,12 +122,7 @@
         <mat-icon>density_medium</mat-icon>
         <span>About us</span>
       </button>
-      <button
-        type="button"
-        routerLink="/user/infomation"
-        class=""
-        mat-menu-item
-      >
+      <button type="button" routerLink="/user/infomation" class="" mat-menu-item>
         <mat-icon class="text-[21px]">info</mat-icon>
         <span>Infomation</span>
       </button>
@@ -172,9 +136,7 @@
   <!-- Title -->
   <section id="title" class="xl:mt-[70px] 2xl:mt-[70px] lg:mt-[70px] mt-[30px]">
     <div class="text-center">
-      <h2
-        class="title xl:text-[120px] 2xl:text-[120px] lg:text-[120px] text-[90px] text-white"
-      >
+      <h2 class="title xl:text-[120px] 2xl:text-[120px] lg:text-[120px] text-[90px] text-white">
         {{ titleValue | async }}
       </h2>
     </div>

@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using backend.Dtos.CategoryDtos;
 using backend.Dtos.FeedBackDtos;
 using backend.Dtos.HotelDtos;
@@ -15,6 +14,7 @@ using backend.Dtos.StaffDtos;
 using backend.Dtos.TourDetailDtos;
 using backend.Dtos.TourDtos;
 using backend.Dtos.TransportationDtos;
+using backend.Dtos.UserDto;
 using backend.Entity;
 
 namespace backend.Helper
@@ -31,7 +31,7 @@ namespace backend.Helper
                 .ForMember(h => h.Location, otp => otp.MapFrom(o => o.location1.State))
                 .ReverseMap();
             CreateMap<PlaceImageDto, Place>().ReverseMap();
-            
+            CreateMap<UserDto, User>().ReverseMap();
 
             CreateMap<Staff, StaffDto>().ReverseMap();
             CreateMap<StaffImageDto, Staff>().ReverseMap();
@@ -54,7 +54,10 @@ namespace backend.Helper
             CreateMap<Tour_Detail_PaymentPaypal_Dto, TourDetail>().ReverseMap();
             CreateMap<Tour, TourPageDto>()
                 .ForMember(s => s.category_Name, otp => otp.MapFrom(o => o.category.Name))
-                .ForMember(s => s.Transportation_Name, otp => otp.MapFrom(o => o.transportation.Name));
+                .ForMember(
+                    s => s.Transportation_Name,
+                    otp => otp.MapFrom(o => o.transportation.Name)
+                );
             CreateMap<Transportation, TransportationDto>().ReverseMap();
             CreateMap<Order, OrderDtos>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailWithTourDto>()
