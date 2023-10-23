@@ -7,6 +7,8 @@ import { TitleService } from 'src/app/services/title.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { ValidatorFormService } from 'src/app/services/validator-form.service';
 import { Location } from '@angular/common';
+import { PreviousRouteServiceService } from 'src/app/services/previous-route-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +29,9 @@ export class LoginComponent {
     private tokenStorage: TokenStorageService,
     private snackBarService: SnackbarService,
     private titleService: TitleService,
-    private location: Location
+    private location: Location,
+    private previousRouteService: PreviousRouteServiceService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -73,7 +77,16 @@ export class LoginComponent {
             this.errorMessage = '';
             this.user = data?.userInfo;
             this.authService.startRefreshTokenTimer();
-            this.location.back();
+
+            if (
+              this.previousRouteService
+                .getPreviousRoute()
+                .includes('/auth/register')
+            ) {
+              this.router.navigate(['/home']);
+            } else {
+              this.location.back();
+            }
           }
         },
         (err: any) => {

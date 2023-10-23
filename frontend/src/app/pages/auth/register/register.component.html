@@ -1,1 +1,140 @@
-<p>register works!</p>
+<ng-container>
+  <div
+    class="container mx-auto px-[15px] rounded-[20px] border-black border-[1px] py-[20px] mt-[20px]"
+  >
+    <!-- Title -->
+    <div class="title text-center mb-[15px]">
+      <h1 class="font-semibold text-[25px]">Register</h1>
+    </div>
+
+    <!-- Form -->
+    <div class="form">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Username -->
+        <div class="username">
+          <mat-form-field class="w-[100%]">
+            <mat-label> Username </mat-label>
+            <input matInput formControlName="username" />
+            <mat-error
+              *ngIf="form.controls['username']?.errors?.['whitespace']"
+            >
+              Username is requied
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Name -->
+        <div class="name">
+          <mat-form-field class="w-[100%]">
+            <mat-label> Name </mat-label>
+            <input matInput formControlName="name" />
+            <mat-error *ngIf="form.controls['name']?.errors?.['whitespace']">
+              Name is requied
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Email -->
+        <div class="email">
+          <mat-form-field class="w-[100%]">
+            <mat-label> Email </mat-label>
+            <input matInput formControlName="email" />
+            <mat-error *ngIf="form.controls['email']?.errors?.['whitespace']">
+              Email is requied
+            </mat-error>
+
+            <mat-error *ngIf="form.controls['email']?.errors?.['pattern']">
+              Email is invalid
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Phone -->
+        <div class="phone">
+          <mat-form-field class="w-[100%]">
+            <mat-label> Phone </mat-label>
+            <input matInput formControlName="phone" />
+
+            <mat-error *ngIf="form.controls['phone']?.errors?.['whitespace']">
+              Phone is requied
+            </mat-error>
+            <mat-error *ngIf="form.controls['phone']?.errors?.['pattern']">
+              Phone is invalid
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Password -->
+        <div class="password">
+          <mat-form-field class="w-[100%]">
+            <mat-label>Current password</mat-label>
+            <input
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              formControlName="password"
+            />
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              (click)="isShowPassword()"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+
+            <mat-error
+              *ngIf="form.controls['password']?.errors?.['whitespace']"
+            >
+              Password is requied
+            </mat-error>
+            <mat-error *ngIf="form.controls['password'].errors?.['pattern']">
+              Password must contains at least one lower case char, upper case
+              char, digit and symbol
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Confirm password -->
+        <div class="confirm-password">
+          <mat-form-field class="w-[100%]">
+            <mat-label>Confirm password</mat-label>
+            <input
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              formControlName="confirmPassword"
+            />
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              (click)="isShowPassword()"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+
+            <mat-error
+              *ngIf="form.controls['confirmPassword']?.errors?.['whitespace']"
+            >
+              Confirm password is requied
+            </mat-error>
+            <mat-error
+              *ngIf="
+                form.controls['confirmPassword'].errors?.['passwordMismatch']
+              "
+              >Confirm passwords do not match</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!-- Submit -->
+        <div class="button-submit">
+          <button mat-flat-button color="warn" type="submit">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>
