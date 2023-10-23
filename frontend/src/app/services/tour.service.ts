@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Tour } from '../models/tour';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Tour_10 } from '../models/top10-tour.model';
 
 const AUTH_API: string = environment.apiLocallHost;
 
@@ -16,6 +17,8 @@ const httpOptions = {
 })
 export class TourService {
   public toursSubject: BehaviorSubject<Tour[] | null>;
+  public tour_10Subject: BehaviorSubject<Tour_10[] | null>;
+
   public toursDetailSubject: BehaviorSubject<Tour | null>;
   public $tourDetail: Observable<Tour | null>;
   public tourSearchSubject: BehaviorSubject<Tour[] | null> =
@@ -23,6 +26,7 @@ export class TourService {
 
   constructor(private httpclient: HttpClient) {
     this.toursSubject = new BehaviorSubject<Tour[] | null>(null);
+    this.tour_10Subject= new BehaviorSubject<Tour_10[] | null>(null)
     this.toursDetailSubject = new BehaviorSubject<Tour | null>(null);
     this.$tourDetail = this.toursDetailSubject.asObservable();
   }
@@ -33,6 +37,17 @@ export class TourService {
       httpOptions
     );
   }
+
+  public getTop10Tour = (): Observable<Tour_10[]> =>{
+
+    return this.httpclient.get<Tour_10[]>(
+      `${AUTH_API}/api/Tour/Get_Top_10_Tour`,
+      httpOptions
+    ).pipe(tap((val) => this.tour_10Subject.next(val)));
+
+  }
+
+
 
   // Get list tour pagination
   public getListToursPagination = (

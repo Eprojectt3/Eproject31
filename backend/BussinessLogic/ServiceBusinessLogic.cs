@@ -58,7 +58,7 @@ namespace backend.BussinessLogic
             existingService.UpdateDate = service.UpdateDate;
             existingService.UpdateBy = service.UpdateBy;
             existingService.IsActive = service.IsActive;
-            existingService.Tour = service.Tour;
+            existingService.Tour_ID = service.Tour_ID;
             existingService.Name = service.Name;
             existingService.Description = service.Description;
             

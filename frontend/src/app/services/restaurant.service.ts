@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Restaurant } from '../models/restaurant';
+import { Restaurant } from '../models/restaurant.model';
+
 
 const AUTH_API: string = environment.apiLocallHost;
 const httpOptions = {

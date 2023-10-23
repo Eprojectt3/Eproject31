@@ -30,8 +30,22 @@ import { DetailRestaurantComponent } from './admin-restaurant/detail-restaurant/
 import { UpdateRestaurantComponent } from './admin-restaurant/update-restaurant/update-restaurant.component';
 import { ListRestaurantsComponent } from './admin-restaurant/list-restaurants/list-restaurants.component';
 import { ListStaffsComponent } from './admin-staff/list-staffs/list-staffs.component';
+import { ListDashboardComponent } from './admin-dashboard/list-dashboard/list-dashboard.component';
 
 const routes: Routes = [
+
+  {
+    path: 'dashboards',
+      component: ListDashboardComponent,
+      // children: [
+      //   {
+      //     path: 'create',
+      //     component: CreateRestaurantComponent,
+      //   },
+
+      // ],
+    },
+
   {
     path: 'users',
     component: ListUsersComponent,
@@ -180,6 +194,8 @@ const routes: Routes = [
     //   },
     // ],
   },
+
+
 
   { path: '', component: AdminComponent, pathMatch: 'full' },
 ];

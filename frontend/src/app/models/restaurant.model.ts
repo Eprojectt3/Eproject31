@@ -1,4 +1,4 @@
-export interface Reataurant {
+export interface Restaurant {
   id?: number;
   name?: string;
   rating?: number | null;
@@ -14,10 +14,10 @@ export interface Reataurant {
   links?: string;
   location1?: any;
   locationId?: number;
-  phoneNumber?: number;
+  PhoneNumbber?: string;
   updateBy?: string;
   updateDate?: Date;
-  urlImage?: string[];
+  urlImage?: any;
 
   // quantityLimit?: number;
   // type?: boolean | false;

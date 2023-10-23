@@ -687,7 +687,7 @@ namespace backend.Migrations
                     b.Property<int?>("Staff_Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Start_Date")
+                    b.Property<DateTime>("Start_Date")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TourId")
@@ -833,7 +833,7 @@ namespace backend.Migrations
                     b.HasOne("backend.Entity.Place", "hotel")
                         .WithMany("Itineraries")
                         .HasForeignKey("PlaceID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("backend.Entity.PlaceType", "PlaceType")
