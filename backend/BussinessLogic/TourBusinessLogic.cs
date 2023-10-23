@@ -45,6 +45,8 @@ namespace backend.BussinessLogic
 
             foreach (var tour in data)
             {
+                var Name_replace = tour.Name.Replace(" ", "-");
+                var image_folder = Name_replace + "-" + tour.Departure_location.Replace(" ", "-");
                 var tourInfo = new
                 {
                     tour.Id,
@@ -60,7 +62,7 @@ namespace backend.BussinessLogic
                     tour.Transportation_ID,
                     tour.Departure_location,
                     //Thêm các trường cần thêm
-                    UrlImage = Image.GetUrlImage(tour.Name, "tour", httpRequest) // Gọi phương thức GetUrlImage11 cho từng bản ghi
+                    UrlImage = Image.GetUrlImage(image_folder, "tour", httpRequest) // Gọi phương thức GetUrlImage11 cho từng bản ghi
                 };
 
                 result.Add(tourInfo);
