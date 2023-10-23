@@ -2,28 +2,28 @@
     <div class="px-5">
       <!--        Title-->
       <div class="mb-[20px]">
-        <h1 class="font-bold text-[25px]">Create Staff</h1>
+        <h1 class="font-bold text-[25px]">Update staff</h1>
       </div>
   
       <!--        Form-->
       <div>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <!--          Staff name-->
+          <!--          staff name-->
           <div class="w-[100%]">
             <mat-form-field class="!w-[100%]">
-              <mat-label>Staff name</mat-label>
+              <mat-label>staff name</mat-label>
               <input
                 matInput
                 formControlName="name"
                 [errorStateMatcher]="validatorForm"
               />
               <mat-error *ngIf="loginForm.controls['name'].errors?.['whitespace']"
-                >Name Staff is required
+                >Name staff is required
               </mat-error>
             </mat-form-field>
           </div>
   
-          <!--          email-->
+          <!--          Email-->
           <div class="w-[100%]">
             <mat-form-field class="!w-[100%]">
               <mat-label>Email</mat-label>
@@ -34,13 +34,14 @@
               />
               <mat-error
                 *ngIf="loginForm.controls['email'].errors?.['whitespace']"
-                >email is required
+                >Email is required
               </mat-error>
             </mat-form-field>
           </div>
   
-          <!-- <div class="flex justify-around"> -->
+          <div class="flex justify-around">
             
+  
             <!--          Phone-->
             <div class="w-[100%]">
               <mat-form-field class="!w-[100%]">
@@ -59,22 +60,18 @@
                 </mat-error>
               </mat-form-field>
             </div>
-          <!-- </div> -->
-          <!-- PersonId -->
+          </div>
+  
+        
+  
+          <!--          personid-->
           <div class="w-[100%]">
             <mat-form-field class="!w-[100%]">
               <mat-label>PersonId</mat-label>
-              <input
-                matInput
-                formControlName="personid"
-                [errorStateMatcher]="validatorForm"
-              />
+              <input matInput formControlName="personid" />
               <mat-error
                 *ngIf="loginForm.controls['personid'].errors?.['whitespace']"
                 >PersonId is required
-              </mat-error>
-              <mat-error *ngIf="loginForm.controls['personid'].errors?.['pattern']"
-                >PersonId is not valid
               </mat-error>
             </mat-form-field>
           </div>
@@ -91,15 +88,44 @@
               accept=".jpg,.jpeg,.png"
               (onSelect)="onSelect($event)"
               (onRemove)="onRemove($event)"
-              (onError)="onError($event)"
               [showUploadButton]="false"
               [showCancelButton]="false"
             ></p-fileUpload>
+  
+            <!--          <input type="file" (change)="uploadFile($event)" />-->
+            <div class="list-img flex">
+              <ul
+                *ngFor="let urlImage of urlImages"
+                class="mr-[10px] relative z-1"
+              >
+                <li>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    class="absolute -top-28 left-[255px] !z-50"
+                    (click)="removeImage(urlImage.path, urlImage)"
+                  >
+                    <mat-icon class="text-[#504e4e]">close</mat-icon>
+                  </button>
+  
+                  <p-image
+                    [imageStyle]="{
+                      width: '250px',
+                      height: '150px'
+                    }"
+                    class="bg-cover object-cover"
+                    [src]="urlImage.image"
+                    alt="Error"
+                    [preview]="true"
+                  ></p-image>
+                </li>
+              </ul>
+            </div>
           </div>
   
           <!--        Button create-->
           <div>
-            <button mat-flat-button color="primary" type="submit">Create</button>
+            <button mat-flat-button color="primary" type="submit">Update</button>
           </div>
         </form>
       </div>
