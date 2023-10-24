@@ -3,6 +3,8 @@ export interface Tour {
   name?: string;
   price?: number;
   category_Name?: string;
+  categoy?:any;
+  category_Id?:number;
   description: string;
   image?: string;
   quantity_limit?: number;
@@ -12,6 +14,7 @@ export interface Tour {
   range_time?: number;
   transportation_Name?: string;
   transportation_ID?: number;
+  transportation? : any;
   discount?: number;
   departure_location?: string;
   urlImage?: string[];
