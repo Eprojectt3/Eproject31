@@ -8,6 +8,7 @@ import { LocationService } from '../../../../services/location.service';
 import { Location } from '@angular/common';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { PlaceService } from 'src/app/services/place.service';
 
 @Component({
   selector: 'app-list-hotels',
@@ -30,13 +31,17 @@ export class ListHotelsComponent implements OnInit {
   public totalSize: number = 0;
   public index: number = 1;
   public dataSource = new MatTableDataSource<Hotel>([]);
+  public data = {
+
+    place_Type_ID: 1,
+  };
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
-    private hotelService: HotelService,
     private router: Router,
     private snackBar: SnackbarService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private placeService: PlaceService
   ) {}
 
   ngOnInit(): void {
@@ -61,8 +66,13 @@ export class ListHotelsComponent implements OnInit {
 
   // Get list Hotel
   public getListHotels = () => {
-    this.hotelService
-      .getListHotelPagination(this.index, this.pageSize)
+    const data = {
+      pageIndex: this.index,
+      pageSize: this.pageSize,
+      place_Type_ID: 1,
+    };
+    this.placeService
+      .getListPlacePagination(data)
       .subscribe((val: any) => {
         this.hotels = val.data;
         this.totalSize = val.count;
@@ -72,12 +82,13 @@ export class ListHotelsComponent implements OnInit {
 
   // Delete hotel
   public deleteHotels = (id: number): void => {
-    this.hotelService.deleteHotel(id).subscribe(
+
+    this.placeService.DeletePlace(id).subscribe(
       (val: any) => {
         this.snackBar.openSnackBar('Delete success', 'Success');
         this.getListHotels();
       },
-      (err) => {
+      (err:any) => {
         this.snackBar.openSnackBar(err, 'Error');
         console.log(err);
       }

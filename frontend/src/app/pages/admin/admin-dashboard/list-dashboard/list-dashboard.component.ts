@@ -25,7 +25,7 @@ export class ListDashboardComponent implements OnInit {
   Months: Filter[] = monthss;
   selectedFilter: string = 'month';
   selectedMonth: number = 1;
-    // months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  // months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   public displayedColumns: string[] = [
     'id',
     'name',
@@ -54,10 +54,8 @@ export class ListDashboardComponent implements OnInit {
     });
 
     this.getListTop10();
-    // this. getDataForDayschange(1);
 
     this.getMonthYear();
-
   }
 
   public onSubmit = () => {};
@@ -76,12 +74,28 @@ export class ListDashboardComponent implements OnInit {
     this.selectedMonth = selectedMonths.value; // Cập nhật giá trị tháng đã chọn.
     this.getDataForDayschange(this.selectedMonth); // Gọi hàm để lấy dữ liệu dựa trên tháng đã chọn.
     console.log(this.selectedMonth);
-
   }
 
+   getDaysInMonth(month: number, year: number): number {
+    console.log(typeof month);
+    if (Number(month)  === 2) {
+      console.log(typeof month);
+
+      // Tháng 2 có thể có 28 hoặc 29 ngày tùy thuộc vào năm nhuận.
+      return (Number(year) % 4 === 0 && Number(year) % 100 !== 0) || (Number(year) % 400 === 0) ? 29 : 28;
+
+    } else if ([4, 6, 9, 11].includes(Number(month))) {
+      // Các tháng 4, 6, 9, 11 có 30 ngày.
+      return 30;
+    } else {
+      // Các tháng còn lại (1, 3, 5, 7, 8, 10, 12) có 31 ngày.
+      return 31;
+    }
+  }
+  // chon tháng
   getDataForDayschange(month: number) {
     const year: number = new Date().getFullYear();
-    const daysInMonth = new Date(year, month, 0).getDate();
+    const daysInMonth = this.getDaysInMonth( month,year);
     console.log(daysInMonth);
 
     const requests = [];
@@ -100,8 +114,6 @@ export class ListDashboardComponent implements OnInit {
       });
       console.log(labelData);
       console.log(amount);
-
-
 
       this.RenderChart(labelData, amount);
     });

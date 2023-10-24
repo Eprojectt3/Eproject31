@@ -8,6 +8,8 @@ import { FileSelectEvent, FileUploadErrorEvent } from 'primeng/fileupload';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { LocationService } from '../../../../services/location.service';
 import { Location } from '../../../../models/location.model';
+import { PlaceService } from 'src/app/services/place.service';
+import { Place } from 'src/app/models/place.model';
 
 @Component({
   selector: 'app-create-hotel',
@@ -23,19 +25,20 @@ export class CreateHotelComponent implements OnInit {
   public locations!: Location[];
   formData: FormData = new FormData();
   dataForm: any;
+  // place_Type_ID: 1,
 
   constructor(
     private fb: FormBuilder,
     public validatorForm: ValidatorFormService,
     private route: ActivatedRoute,
-    private hotelService: HotelService,
     private snackBar: SnackbarService,
     private locationService: LocationService,
-    private router: Router
+    private router: Router,
+    private placeService: PlaceService
   ) {}
 
   ngOnInit(): void {
-    this.hotelService.hotelsSubject.subscribe(
+    this.placeService.placeSubject.subscribe(
       (val: any) => (this.hotels = val?.data)
     );
 
@@ -79,24 +82,31 @@ export class CreateHotelComponent implements OnInit {
     this.formData.append('Name', this.loginForm.controls['name'].value);
     this.formData.append('Rating', '0');
     this.formData.append('Price_range', this.loginForm.controls['price'].value);
-    this.formData.append(
-      'LocationId',
-      this.loginForm.controls['location'].value
-    );
+    this.formData.append('LocationId', this.loginForm.controls['location'].value);
     this.formData.append('Description', this.description);
     this.formData.append('Address', this.loginForm.controls['address'].value);
     this.formData.append('PhoneNumber', this.loginForm.controls['phone'].value);
 
-    this.dataForm = {
-      Name: this.loginForm.controls['name'].value,
-      Rating: '0',
-      Price_range: this.loginForm.controls['price'].value,
-      LocationId: this.loginForm.controls['location'].value,
-      Description: this.description,
-      Address: this.loginForm.controls['address'].value,
-      PhoneNumber: this.loginForm.controls['phone'].value,
-      fileCollection: this.uploadedImages,
-    };
+    // Thêm place_Type_ID và gán cứng giá trị 1
+    this.formData.append('place_Type_ID', '1');
+
+    // const dataForm: Place = {
+    //   place: {
+    //     name: this.loginForm.controls['name'].value,
+    //     rating: 0,
+    //     price_range: this.loginForm.controls['price'].value,
+    //     locationId: this.loginForm.controls['location'].value,
+    //     description: this.description,
+    //     address: this.loginForm.controls['address'].value,
+    //     phoneNumber: this.loginForm.controls['phone'].value,
+    //     place_Type_ID: 1
+    //   },
+    //   placeTypeId: 1 // Nếu bạn muốn gán cứng placeTypeId
+    // };
+    console.log(this.formData);
+    console.log(this.dataForm);
+
+
 
     if (
       !this.loginForm.controls['name'].errors &&
@@ -106,14 +116,19 @@ export class CreateHotelComponent implements OnInit {
       !this.loginForm.controls['description'].errors &&
       !this.loginForm.controls['address'].errors
     ) {
-      this.hotelService.createHotel(this.formData).subscribe(
+      // const data = {
+      //   place_Type_ID: 1,
+      // };
+      this.placeService.createPlace(this.formData).subscribe(
         (val) => {
+          console.log(this.formData)
           this.snackBar.openSnackBar('Create success', 'Success');
           this.router.navigate(['/admin/hotels'], {
             queryParams: { refresh: 'true' },
           });
         },
         (err) => {
+          console.log(this.formData)
           console.log(err);
           this.snackBar.openSnackBar(err, 'Error');
           console.log(this.formData);
