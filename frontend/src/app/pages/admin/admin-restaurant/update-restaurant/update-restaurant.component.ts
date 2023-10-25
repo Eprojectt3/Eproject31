@@ -7,8 +7,8 @@ import { FileSelectEvent, FileUploadErrorEvent } from 'primeng/fileupload';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { LocationService } from '../../../../services/location.service';
 import { Location } from '../../../../models/location.model';
-import { RestaurantService } from 'src/app/services/restaurant.service';
 import { Restaurant } from 'src/app/models/restaurant.model';
+import { PlaceService } from 'src/app/services/place.service';
 
 @Component({
   selector: 'app-update-restaurant',
@@ -33,7 +33,7 @@ export class UpdateRestaurantComponent implements OnInit {
     private fb: FormBuilder,
     public validatorForm: ValidatorFormService,
     private route: ActivatedRoute,
-    private restaurantService: RestaurantService,
+    private placeService: PlaceService,
     private snackBar: SnackbarService,
     private locationService: LocationService,
     private router: Router
@@ -43,7 +43,7 @@ export class UpdateRestaurantComponent implements OnInit {
 
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.restaurantService.getDetailRestaurant(this.id).subscribe((val: any) => {
+    this.placeService.getPlaceById(this.id).subscribe((val: any) => {
       this.restaurant = val;
       this.formData.append('Id', val.id);
     });
@@ -79,11 +79,11 @@ export class UpdateRestaurantComponent implements OnInit {
       images: [null],
     });
 
-    this.restaurantService.restaurantSubject.subscribe((val: any) => {
+    this.placeService.placeSubject.subscribe((val: any) => {
       this.loginForm.controls['name'].setValue(val.name);
       this.loginForm.controls['price'].setValue(val.price_range);
       this.loginForm.controls['location'].setValue(val.locationId);
-      this.loginForm.controls['phone'].setValue(val.phoneNumbber);
+      this.loginForm.controls['phone'].setValue(val.phoneNumber);
       this.loginForm.controls['address'].setValue(val.address);
       this.loginForm.controls['description'].setValue(val.description);
       this.location = val.locationId;
@@ -114,8 +114,8 @@ export class UpdateRestaurantComponent implements OnInit {
     );
     this.formData.append('Description', this.description);
     this.formData.append('Address', this.loginForm.controls['address'].value);
-    this.formData.append('PhoneNumbber', this.loginForm.controls['phone'].value);
-
+    this.formData.append('PhoneNumber', this.loginForm.controls['phone'].value);
+    this.formData.append('place_Type_ID', '3');          
     if (
       !this.loginForm.controls['name'].errors &&
       !this.loginForm.controls['price'].errors &&
@@ -124,8 +124,8 @@ export class UpdateRestaurantComponent implements OnInit {
       !this.loginForm.controls['description'].errors &&
       !this.loginForm.controls['address'].errors
     ) {
-      this.restaurantService.updateRestaurant(this.formData).subscribe(
-        (val) => {
+      this.placeService.updatePlace(this.formData).subscribe(
+        (val) => {  
           this.snackBar.openSnackBar('Update success', 'Success');
           this.router.navigate(['/admin/restaurants'], {
             queryParams: { refresh: 'true' },

@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Hotel } from '../../../../models/hotel';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-
-import { RestaurantService } from 'src/app/services/restaurant.service';
 import { Restaurant } from 'src/app/models/restaurant.model';
+import { PlaceService } from 'src/app/services/place.service';
 
 @Component({
   selector: 'app-list-restaurants',
@@ -20,33 +18,37 @@ export class ListRestaurantsComponent implements OnInit {
   public displayedColumns: string[] = [
     'id',
     'name',
-    'price_range',
+    'price',
     'location',
-    'phoneNumber',
+    'phone',
     'action',
   ];
   public pageEvent: PageEvent = new PageEvent();
   public totalSize: number = 0;
   public index: number = 1;
-  public dataSource = new MatTableDataSource<Hotel>([]);
+  public dataSource = new MatTableDataSource<Restaurant>([]);
+  public data = {
+
+    place_Type_ID: 2,
+  };
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
-    private restaurantService: RestaurantService,
     private router: Router,
     private snackBar: SnackbarService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private placeService: PlaceService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
       if (params.refresh === 'true') {
-        this.getListTours();
+        this.getListRestaurants();
       }
     });
 
-    // Get list hotel pagination
-    this.getListTours();
+    // Get list Restaurant pagination
+    this.getListRestaurants();
   }
 
   // HandlePage
@@ -55,13 +57,18 @@ export class ListRestaurantsComponent implements OnInit {
     this.pageSize = e.pageSize;
     this.index = this.pageIndex + 1;
 
-    this.getListTours();
+    this.getListRestaurants();
   };
 
-  // Get list Hotel
-  public getListTours = () => {
-    this.restaurantService
-      .getListRestaurantPagination(this.index, this.pageSize)
+  // Get list Restaurant
+  public getListRestaurants = () => {
+    const data = {
+      pageIndex: this.index,
+      pageSize: this.pageSize,
+      place_Type_ID: 3,
+    };
+    this.placeService
+      .getListPlacePagination(data)
       .subscribe((val: any) => {
         this.restaurants = val.data;
         this.totalSize = val.count;
@@ -72,10 +79,10 @@ export class ListRestaurantsComponent implements OnInit {
 
   // Delete hotel
   public deleteRestaurant = (id: number): void => {
-    this.restaurantService.deleteRestaurant(id).subscribe(
+    this.placeService.DeletePlace(id).subscribe(
       (val: any) => {
         this.snackBar.openSnackBar('Delete success', 'Success');
-        this.getListTours();
+        this.getListRestaurants();
       },
       (err) => {
         this.snackBar.openSnackBar(err, 'Error');

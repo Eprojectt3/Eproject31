@@ -1,12 +1,12 @@
 <section class="w-[100%] bg-white p-[15px] h-[auto] m-auto">
   <div *ngIf="!isShowCreateHotel() && !isShowDetailHotel() && !isUpdateHotel()">
     <div class="mb-[30px] ml-[25px] mt-[20px] flex w-[96%] justify-between">
-      <h1 class="font-[600] text-[25px]">Resorts</h1>
+      <h1 class="font-[600] text-[25px]">Resort</h1>
 
       <!-- Button create -->
       <div class="">
         <button
-          routerLink="/admin/hotels/create"
+          routerLink="/admin/resorts/create"
           mat-flat-button
           color="primary"
           class="w-[150px] !rounded-[30px]"
@@ -18,7 +18,7 @@
 
     <!-- Table  -->
     <div class="table-categories w-[97%] m-auto">
-      <table mat-table [dataSource]="resort" class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Id</th>
           <td mat-cell *matCellDef="let element">{{ element?.id }}</td>
@@ -29,7 +29,7 @@
           <td mat-cell *matCellDef="let element">{{ element?.name }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="price_range">
+        <ng-container matColumnDef="price">
           <th mat-header-cell *matHeaderCellDef>Price</th>
           <td mat-cell *matCellDef="let element">{{ element?.price_range }}</td>
         </ng-container>
@@ -39,7 +39,7 @@
           <td mat-cell *matCellDef="let element">{{ element?.location }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="phoneNumber">
+        <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef>Phone</th>
           <td mat-cell *matCellDef="let element">{{ element?.phoneNumber }}</td>
         </ng-container>
@@ -51,7 +51,7 @@
               mat-flat-button
               color="primary"
               class="mr-[10px]"
-              [routerLink]="['/admin/hotels/update', element.id]"
+              [routerLink]="['/admin/resorts/update', element.id]"
             >
               Edit
             </button>
@@ -59,7 +59,7 @@
               mat-flat-button
               color="primary"
               class="mr-[10px]"
-              [routerLink]="['/admin/hotels/detail', element.id]"
+              [routerLink]="['/admin/resorts/detail', element.id]"
             >
               Detail
             </button>
@@ -96,4 +96,3 @@
     <router-outlet></router-outlet>
   </div>
 </section>
-

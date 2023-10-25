@@ -80,8 +80,9 @@ namespace backend.BussinessLogic
             existingItinerary.Sequence = itinerary.Sequence;
             existingItinerary.Description = itinerary.Description;
             existingItinerary.StartTime = itinerary.StartTime;
-            existingItinerary.EndTime = itinerary.EndTime;        
-          
+            existingItinerary.EndTime = itinerary.EndTime;
+            existingItinerary.PlaceID = itinerary.PlaceID;
+            existingItinerary.Place_Type_ID = itinerary.Place_Type_ID;
             await unitofWork.Repository<Itinerary>().Update(existingItinerary);
             var check = await unitofWork.Complete();
             if (check < 1)
