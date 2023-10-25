@@ -170,12 +170,12 @@ namespace webapi.Controllers
 
             if (existedUsername)
             {
-                ModelState.AddModelError("DuplicatedUsername", "Username is duplicated");
+                return BadRequest(new { Message = "Username is already" });
             }
 
             if (!ModelState.IsValid)
             {
-                return Ok(ModelState);
+                return BadRequest(ModelState);
             }
 
             User newUser = new User();

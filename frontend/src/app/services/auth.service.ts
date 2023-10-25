@@ -4,7 +4,6 @@ import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 import { SnackbarService } from './snackbar.service';
 import { User } from '../models/user.model';
-import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 
 const AUTH_API = environment.apiLocallHost;
@@ -26,8 +25,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorageService,
-    private snackBarService: SnackbarService,
-    private location: Location,
+    private snackBarService: SnackbarService
   ) {
     this.userSubject = new BehaviorSubject<User | null>(null);
     this.$user = this.userSubject.asObservable();
@@ -46,7 +44,7 @@ export class AuthService {
           username: user?.userInfo?.username,
           password: user?.userInfo?.password,
         },
-        httpOptions,
+        httpOptions
       )
 
       .pipe(
@@ -61,7 +59,7 @@ export class AuthService {
           this.snackBarService.openSnackBar(err, 'Error');
 
           return of(err);
-        }),
+        })
       );
   };
 
@@ -76,12 +74,12 @@ export class AuthService {
           accessToken: token?.accessToken,
           refreshToken: token?.refreshToken,
         },
-        httpOptions,
+        httpOptions
       )
       .pipe(
         tap(() => {
           this.$isLoggedInSubject.next(false);
-        }),
+        })
       )
       .subscribe();
     this.stopRefreshTokenTimer();
@@ -104,7 +102,7 @@ export class AuthService {
 
           return data;
         }),
-        tap(() => this.startRefreshTokenTimer()),
+        tap(() => this.startRefreshTokenTimer())
       );
   };
 
@@ -121,7 +119,7 @@ export class AuthService {
 
       this.refreshTokenTimeout = setTimeout(
         () => this.refreshToken().subscribe(),
-        timeout,
+        timeout
       );
     }
   };
@@ -134,5 +132,10 @@ export class AuthService {
   // Change password
   public changePassword = (data: any): Observable<any> => {
     return this.http.put(`${AUTH_API}/api/Users/ChangePassword`, data);
+  };
+
+  // Register
+  public register = (data: any): Observable<any> => {
+    return this.http.post(`${AUTH_API}/api/Users/Register`, data);
   };
 }

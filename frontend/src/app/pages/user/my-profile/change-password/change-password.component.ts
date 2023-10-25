@@ -25,8 +25,8 @@ export class ChangePasswordComponent implements OnInit {
     private validator: ValidatorFormService,
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
-    private snackBarService: SnackbarService,
-  ) { }
+    private snackBarService: SnackbarService
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -38,7 +38,9 @@ export class ChangePasswordComponent implements OnInit {
         '',
         Validators.compose([
           this.validator.NoWhitespaceValidator(),
-          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/),
+          Validators.pattern(
+            '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])((?=.*\\W)|(?=.*_))^[^ ]+$'
+          ),
         ]),
       ],
       confirm_password: [
@@ -73,7 +75,7 @@ export class ChangePasswordComponent implements OnInit {
         (err) => {
           console.error(err);
           this.snackBarService.openSnackBar(err, 'Error');
-        },
+        }
       );
     }
   };
