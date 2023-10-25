@@ -6,13 +6,14 @@ using System.Net.Mail;
 using System.Timers;
 using AutoMapper;
 using backend.Dtos.ChangePassworkDto;
+using backend.Dtos.ResetPasswordDto;
 using backend.Dtos.UserDto;
 using backend.Entity;
 using backend.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 using webapi.Dao.IServices;
 using webapi.Data;
@@ -158,6 +159,121 @@ namespace webapi.Controllers
             return Ok(newJwtToken);
         }
 
+        // Log out
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> Logout([FromBody] Tokens token)
+        {
+            System.Console.WriteLine(token);
+            var rfToken = await _context.UserRefreshTokens.FirstOrDefaultAsync(
+                t => t.RefreshToken.Equals(token.RefreshToken)
+            );
+
+            if (rfToken is null)
+            {
+                return NotFound(new { message = "Invalid refresh token" });
+            }
+
+            _context.UserRefreshTokens.Remove(rfToken);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Log out successfully" });
+        }
+
+        // Forgot password
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> SendForgotPasswordEmail(
+            [FromBody] ForgotPasswordRequest request
+        )
+        {
+            var isEmailValid = await _context.Users.FirstOrDefaultAsync(
+                u => u.Username == request.Username
+            );
+
+            if (isEmailValid is null)
+            {
+                return NotFound(new { message = "User is not existed" });
+            }
+
+            var confirmationCode = GenerateRandomCode();
+
+            request.ExpirationTime = DateTime.UtcNow.AddMinutes(2);
+            request.Code = confirmationCode;
+
+            await _context.ForgotPasswordRequests.AddAsync(request);
+            await _context.SaveChangesAsync();
+
+            SendConfirmationEmail(isEmailValid.Email, confirmationCode);
+
+            return Ok(
+                new { message = "A confirmation email has been sent to your email address." }
+            );
+        }
+
+        // Verify code reset password
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> VerifyCodeResetPassword(
+            [FromBody] ForgotPasswordRequest request
+        )
+        {
+            var confirmCode = await _context.ForgotPasswordRequests
+                .Where(f => f.Username == request.Username && f.Code == request.Code)
+                .FirstOrDefaultAsync();
+
+            if (confirmCode is null)
+            {
+                return NotFound(new { message = "confirm code invalid" });
+            }
+
+            if (confirmCode.ExpirationTime < DateTime.UtcNow)
+            {
+                _context.ForgotPasswordRequests.Remove(confirmCode);
+                await _context.SaveChangesAsync();
+                return NotFound(new { message = "The code has expired" });
+            }
+
+            _context.ForgotPasswordRequests.Remove(confirmCode);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Comfirm successfully" });
+        }
+
+        // Delete confirm code
+        [HttpDelete]
+        [AllowAnonymous]
+        public async Task<ActionResult> DeleteConfirmCodeExpired()
+        {
+            DateTime currentTime = DateTime.UtcNow;
+
+            var ConfirmCodeExpired = _context.ForgotPasswordRequests
+                .Where(f => f.ExpirationTime < currentTime)
+                .ToList();
+
+            if (ConfirmCodeExpired.Count == 0)
+            {
+                return NotFound(new { message = "Code is not found" });
+            }
+
+            foreach (var confirmCode in ConfirmCodeExpired)
+            {
+                _context.ForgotPasswordRequests.Remove(confirmCode);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Delete successfully" });
+        }
+
+        private string GenerateRandomCode()
+        {
+            Random random = new Random();
+            const string chars = "0123456789";
+            return new string(
+                Enumerable.Repeat(chars, 6).Select(s => s[random.Next(s.Length)]).ToArray()
+            );
+        }
+
         // Register
         [AllowAnonymous]
         [HttpPost]
@@ -215,119 +331,6 @@ namespace webapi.Controllers
             return Ok(newUser);
         }
 
-        // Log out
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<ActionResult> Logout([FromBody] Tokens token)
-        {
-            System.Console.WriteLine(token);
-            var rfToken = await _context.UserRefreshTokens.FirstOrDefaultAsync(
-                t => t.RefreshToken.Equals(token.RefreshToken)
-            );
-
-            if (rfToken is null)
-            {
-                return NotFound(new { message = "Invalid refresh token" });
-            }
-
-            _context.UserRefreshTokens.Remove(rfToken);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Message = "Log out successfully" });
-        }
-
-        // Forgot password
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> SendForgotPasswordEmail(
-            [FromBody] ForgotPasswordRequest request
-        )
-        {
-            var isEmailValid = await _context.Users.FirstOrDefaultAsync(
-                u => u.Email == request.Email
-            );
-
-            if (isEmailValid is null)
-            {
-                return NotFound(new { message = "User is not existed" });
-            }
-
-            var confirmationCode = GenerateRandomCode();
-
-            request.ExpirationTime = DateTime.UtcNow.AddMinutes(2);
-            request.Code = confirmationCode;
-
-            await _context.ForgotPasswordRequests.AddAsync(request);
-            await _context.SaveChangesAsync();
-
-            SendConfirmationEmail(request.Email, confirmationCode);
-
-            return Ok(new { message = "Xác nhận đã được gửi đến địa chỉ email của bạn." });
-        }
-
-        // Verify code reset password
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<ActionResult> VerifyCodeResetPassword(
-            [FromBody] ForgotPasswordRequest request
-        )
-        {
-            var confirmCode = await _context.ForgotPasswordRequests
-                .Where(f => f.Email == request.Email && f.Code == request.Code)
-                .FirstOrDefaultAsync();
-
-            if (confirmCode is null)
-            {
-                return NotFound(new { message = "confirm code invalid" });
-            }
-
-            if (confirmCode.ExpirationTime < DateTime.UtcNow)
-            {
-                _context.ForgotPasswordRequests.Remove(confirmCode);
-                await _context.SaveChangesAsync();
-                return NotFound(new { message = "The code has expired" });
-            }
-
-            _context.ForgotPasswordRequests.Remove(confirmCode);
-            await _context.SaveChangesAsync();
-            return Ok(new { message = "Comfirm successfully" });
-        }
-
-        // Delete confirm code
-        [HttpDelete]
-        [AllowAnonymous]
-        public async Task<ActionResult> DeleteConfirmCodeExpired()
-        {
-            DateTime currentTime = DateTime.UtcNow;
-
-            var ConfirmCodeExpired = _context.ForgotPasswordRequests
-                .Where(f => f.ExpirationTime < currentTime)
-                .ToList();
-
-            if (ConfirmCodeExpired.Count == 0)
-            {
-                return NotFound(new { message = "Code is not found" });
-            }
-
-            foreach (var confirmCode in ConfirmCodeExpired)
-            {
-                _context.ForgotPasswordRequests.Remove(confirmCode);
-            }
-
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Delete successfully" });
-        }
-
-        private string GenerateRandomCode()
-        {
-            Random random = new Random();
-            const string chars = "0123456789";
-            return new string(
-                Enumerable.Repeat(chars, 6).Select(s => s[random.Next(s.Length)]).ToArray()
-            );
-        }
-
         // Send email comfirm code
         private void SendConfirmationEmail(string email, string confirmationCode)
         {
@@ -342,6 +345,22 @@ namespace webapi.Controllers
             mailMessage.To.Add(email);
 
             _smtpClient.Send(mailMessage);
+        }
+
+        // Check User already existed
+        [HttpPost]
+        public async Task<ActionResult> CheckUserExisted([FromBody] string username)
+        {
+            var existedUser = await _context.Users.FirstOrDefaultAsync(
+                u => u.Username.Equals(username)
+            );
+
+            if (existedUser is null)
+            {
+                return BadRequest(new { Message = "User is already existed" });
+            }
+
+            return Ok(new { Message = "User is not existed" });
         }
 
         // Update User
@@ -391,6 +410,27 @@ namespace webapi.Controllers
             validUser.Password = BCrypt.Net.BCrypt.HashPassword(user.NewPassword);
 
             _context.Entry(validUser).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Change password successfully" });
+        }
+
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDto user)
+        {
+            var ValidUser = await _context.Users.FirstOrDefaultAsync(
+                u => u.Username.Equals(user.Username)
+            );
+
+            if (ValidUser is null)
+            {
+                return Unauthorized(new { Message = "Incorrect username or password!" });
+            }
+
+            ValidUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
+            _context.Entry(ValidUser).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return Ok(new { Message = "Change password successfully" });

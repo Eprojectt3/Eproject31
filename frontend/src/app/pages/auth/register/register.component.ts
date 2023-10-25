@@ -118,13 +118,13 @@ export class RegisterComponent implements OnInit {
     ) {
       this.authService.register(data).subscribe(
         (val) => {
-          this.snackBar.openSnackBar('Register successfully', ' Success');
+          this.snackBar.openSnackBar('Register successfully', 'Success');
           const currentUrl = this.router.url;
           this.previousRouteService.setPreviousRoute(currentUrl);
           this.router.navigate(['/auth/login']);
         },
         (err) => {
-          // console.log(err);
+          console.log(err);
 
           this.snackBar.openSnackBar(err, 'Error');
         }

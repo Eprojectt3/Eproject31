@@ -56,7 +56,9 @@
       <div>
         <!--      Forgot password-->
         <div class="ml-[10px] mb-[25px]">
-          <a class="cursor-pointer text-[#36373b] hover:text-[#5473f0]"
+          <a
+            class="cursor-pointer text-[#36373b] hover:text-[#5473f0]"
+            routerLink="/auth/forgot-password"
             >Forgot Password</a
           >
         </div>
@@ -78,8 +80,11 @@
     <mat-divider class="!mt-[20px]"></mat-divider>
 
     <!--    If don't have account-->
-    <div class="text-center mt-[8px] text-[13px]">
-      <p>Don't have an account</p>
+    <div class="text-center mt-[8px] text-[13px] flex justify-center">
+      <p class="mr-[10px]">Don't have an account</p>
+      <button class="text-blue-500" routerLink="/auth/register">
+        Register
+      </button>
     </div>
   </div>
 </div>
