@@ -47,22 +47,22 @@ export class ResortService {
   // Get detail Resort
   public getDetailResort = (id: number): Observable<any> => {
     return this.httpClient
-      .get(`${AUTH_API}/api/Resort/GetByResortId/${id}`, httpOptions)
+      .get(`${AUTH_API}/api/Place/GetByHotelId/${id}`, httpOptions)
       .pipe(tap((val: any) => this.resortSubject.next(val)));
   };
 
   // Create Resort
   public createResort = (data: any): Observable<any> => {
-    return this.httpClient.post(`${AUTH_API}/api/Resort/Add`, data);
+    return this.httpClient.post(`${AUTH_API}/api/Place/Add`, data);
   };
 
   // Delete Resort
   public deleteResort = (id: string): Observable<any> => {
-    return this.httpClient.delete(`${AUTH_API}/api/Resort/Delete/${id}`);
+    return this.httpClient.delete(`${AUTH_API}/api/Place/Delete/${id}`);
   };
 
   // Update Resort
   public updateResort = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Resort/Update`, data);
+    return this.httpClient.put(`${AUTH_API}/api/Place/Update`, data);
   };
 }

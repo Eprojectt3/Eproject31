@@ -9,6 +9,7 @@ import { Location } from '../../../../models/location.model';
 import { LocationService } from '../../../../services/location.service';
 import { FileSelectEvent } from 'primeng/fileupload';
 import { Hotel } from '../../../../models/hotel';
+import { PlaceService } from 'src/app/services/place.service';
 
 @Component({
   selector: 'app-update-hotel',
@@ -30,7 +31,7 @@ export class UpdateHotelComponent implements OnInit {
   pathImages: any = [];
 
   constructor(
-    private hotelService: HotelService,
+    private placeService: PlaceService,
     private fb: FormBuilder,
     public validatorForm: ValidatorFormService,
     public snackBar: SnackbarService,
@@ -44,7 +45,7 @@ export class UpdateHotelComponent implements OnInit {
 
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.hotelService.getDetailHotel(this.id).subscribe((val: any) => {
+    this.placeService.getPlaceById(this.id).subscribe((val: any) => {
       this.hotel = val;
       this.formData.append('Id', val.id);
     });
@@ -80,7 +81,7 @@ export class UpdateHotelComponent implements OnInit {
       images: [null],
     });
 
-    this.hotelService.hotelsSubject.subscribe((val: any) => {
+    this.placeService.placeSubject.subscribe((val: any) => {
       this.loginForm.controls['name'].setValue(val.name);
       this.loginForm.controls['price'].setValue(val.price_range);
       this.loginForm.controls['location'].setValue(val.locationId);
@@ -125,7 +126,7 @@ export class UpdateHotelComponent implements OnInit {
       !this.loginForm.controls['description'].errors &&
       !this.loginForm.controls['address'].errors
     ) {
-      this.hotelService.updateHotel(this.formData).subscribe(
+      this.placeService.updatePlace(this.formData).subscribe(
         (val) => {
           this.snackBar.openSnackBar('Update success', 'Success');
           this.router.navigate(['/admin/hotels'], {

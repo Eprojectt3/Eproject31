@@ -43,22 +43,22 @@ export class HotelService {
   // Get detail hotel
   public getDetailHotel = (id: number): Observable<any> => {
     return this.httpClient
-      .get(`${AUTH_API}/api/Hotel/GetByHotelId/${id}`, httpOptions)
+      .get(`${AUTH_API}/api/Place/GetByHotelId/${id}`, httpOptions)
       .pipe(tap((val: any) => this.hotelsSubject.next(val)));
   };
 
   // Create hotel
   public createHotel = (data: any): Observable<any> => {
-    return this.httpClient.post(`${AUTH_API}/api/Hotel/Add`, data);
+    return this.httpClient.post(`${AUTH_API}/api/Place/Add`, data);
   };
 
   // Delete hotel
   public deleteHotel = (id: number): Observable<any> => {
-    return this.httpClient.delete(`${AUTH_API}/api/Hotel/Delete/${id}`);
+    return this.httpClient.delete(`${AUTH_API}/api/Place/Delete/${id}`);
   };
 
   // Update hotel
   public updateHotel = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Hotel/Update`, data);
+    return this.httpClient.put(`${AUTH_API}/api/Place/Update`, data);
   };
 }

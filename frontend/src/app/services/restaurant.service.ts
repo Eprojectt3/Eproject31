@@ -48,22 +48,22 @@ export class RestaurantService {
   // Get detail Restaurant
   public getDetailRestaurant = (id: number): Observable<any> => {
     return this.httpClient
-      .get(`${AUTH_API}/api/Restaurant/GetByRestaurantId/${id}`, httpOptions)
+      .get(`${AUTH_API}/api/Place/GetByHotelId/${id}`, httpOptions)
       .pipe(tap((val: any) => this.restaurantSubject.next(val)));
   };
 
   // Create Restaurant
   public createRestaurant = (data: any): Observable<any> => {
-    return this.httpClient.post(`${AUTH_API}/api/Restaurant/Add`, data);
+    return this.httpClient.post(`${AUTH_API}/api/Place/Add`, data);
   };
 
   // Delete Restaurant
   public deleteRestaurant = (id: number): Observable<any> => {
-    return this.httpClient.delete(`${AUTH_API}/api/Restaurant/Delete/${id}`);
+    return this.httpClient.delete(`${AUTH_API}/api/Place/Delete/${id}`);
   };
 
   // Update Restaurant
   public updateRestaurant = (data: any): Observable<any> => {
-    return this.httpClient.put(`${AUTH_API}/api/Restaurant/Update`, data);
+    return this.httpClient.put(`${AUTH_API}/api/Place/Update`, data);
   };
 }

@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Restaurant } from 'src/app/models/restaurant.model';
 import { RestaurantService } from 'src/app/services/restaurant.service';
+import { PlaceService } from 'src/app/services/place.service';
 
 @Component({
   selector: 'app-detail-restaurant',
@@ -17,14 +18,14 @@ export class DetailRestaurantComponent implements OnInit {
   public id!: number;
 
   constructor(
-    private restaurantService: RestaurantService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private placeService: PlaceService
   ) {}
 
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.restaurantService.getDetailRestaurant(this.id).subscribe((val: any) => {
+    this.placeService.getPlaceById(this.id).subscribe((val: any) => {
       this.restaurant = val;
     });
   }

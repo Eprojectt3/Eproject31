@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Place } from '../models/place.model';
 
@@ -56,6 +56,10 @@ export class PlaceService {
     return this.httpclient.get(
       `${AUTH_API}/api/Place/GetByHotelId/${id}`,
       httpOptions
+    ).pipe(
+      tap((resData:any) => {
+        this.placeSubject.next(resData);
+      })
     );
   };
 }
