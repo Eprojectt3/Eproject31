@@ -169,6 +169,25 @@ namespace backend.BussinessLogic
             }
         }
 
+        public async Task UpdateRating(Tour_Update_Dto tourdto)
+        {
+
+            var tour = mapper.Map<Tour_Update_Dto, Tour>(tourdto);
+
+            var existingTour = await unitofWork.Repository<Tour>().GetByIdAsync(tour.Id);
+
+            if (existingTour is null)
+            {
+                throw new NotFoundExceptions("not found");
+            }                        
+            existingTour.Rating = tour.Rating;
+            await unitofWork.Repository<Tour>().Update(existingTour);
+            var check = await unitofWork.Complete();
+            if (check < 1)
+            {
+                throw new BadRequestExceptions("chua dc thuc thi");
+            }
+        }
         //delete tour
         public async Task Delete(int id)
         {
