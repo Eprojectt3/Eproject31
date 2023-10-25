@@ -10,7 +10,7 @@ import {
   providedIn: 'root',
 })
 export class ValidatorFormService implements ErrorStateMatcher {
-  constructor() {}
+  constructor() { }
 
   // Validate if have whitespace will error
   NoWhitespaceValidator = (): ValidatorFn => {
@@ -32,7 +32,7 @@ export class ValidatorFormService implements ErrorStateMatcher {
   // Error when invalid control is dirty, touched, or submitted.
   isErrorState = (
     control: AbstractControl,
-    form: FormGroupDirective
+    form: FormGroupDirective,
   ): boolean => {
     const isSubmit = form && form.submitted;
     return (

@@ -76,6 +76,7 @@ builder.Services.AddRedis(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
 // Cors
 builder.Services.AddCors(
     opt =>
@@ -87,7 +88,6 @@ builder.Services.AddCors(
             }
         )
 );
-
 
 var app = builder.Build();
 
@@ -104,13 +104,11 @@ var app = builder.Build();
 //}
 
 app.UseSwagger();
-    app.UseSwaggerUI();
-
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
 
 app.UseRouting();
 

@@ -1,0 +1,51 @@
+<ng-container>
+  <div class="my-order mt-[10px]" *ngIf="!isShowOrderDetail()">
+    <!-- Title -->
+    <div class="title ml-[270px] xl:ml-[200px] mb-[20px]">
+      <h1 class="font-bold text-[20px]">My Orders</h1>
+    </div>
+
+    <!-- Order -->
+    <div class="order-card">
+      <mat-card class="w-[70%] mb-[15px] mx-auto" *ngFor="let keyValue of orderAndTourMap | keyvalue">
+        <mat-card-header>
+          <h2 class="flex items-center">
+            <mat-icon class="text-[#22BC1F] mr-[10px]">check_circle</mat-icon>
+            <span class="text-[20px] font-semibold text-[#E12222]">{{
+              keyValue.key.tourName
+              }}</span>
+          </h2>
+        </mat-card-header>
+
+        <mat-card-content class="mt-[10px]">
+          <!-- Number of people -->
+          <div>
+            <p class="font-semibold">
+              Number of people:
+              <span class="font-normal">{{
+                keyValue.value.number_people
+                }}</span>
+            </p>
+          </div>
+
+          <!-- Price -->
+          <div>
+            <p class="font-semibold">
+              Price: <span class="font-normal">{{ keyValue.key.price }}</span>
+            </p>
+          </div>
+        </mat-card-content>
+
+        <!-- Navigate to order detail -->
+        <mat-card-actions>
+          <a class="text-[12px] ml-[8px] text-blue-500"
+            [routerLink]="['/user/my-order/order-detail', keyValue.key.id]">Order Detail</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="isShowOrderDetail()">
+    <router-outlet></router-outlet>
+  </div>
+</ng-container>

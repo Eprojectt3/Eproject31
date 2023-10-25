@@ -20,7 +20,11 @@ namespace backend.BussinessLogic
         public IMapper mapper;
         public DataContext context;
 
-        public OrderDetailBusinessLogic(IUnitofWork _unitofWork, IMapper mapper, DataContext context)
+        public OrderDetailBusinessLogic(
+            IUnitofWork _unitofWork,
+            IMapper mapper,
+            DataContext context
+        )
         {
             unitofWork = _unitofWork;
             this.mapper = mapper;
@@ -33,35 +37,44 @@ namespace backend.BussinessLogic
             var data = await unitofWork.Repository<OrderDetail>().GetAllAsync();
             return data;
         }
+
         public async Task<IEnumerable<OrderDetail>> SelectAllOrderDetail2(int id)
         {
             var spec = new OrderDetailSpec(id);
             var data = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(spec);
             return data;
         }
+
         public async Task<IEnumerable<OrderDetailWithTourDto>> SelectAllOrderDetailWithTour()
         {
-            var query = from orderDetail in context.OrderDetail
-                        join user in context.Users on orderDetail.UserID equals user.Id
-                        join tourDetail in context.TourDetail on orderDetail.Tour_Detail_ID equals tourDetail.Id
-                        join tour in context.Tour on tourDetail.TourId equals tour.Id
-                        select new OrderDetailWithTourDto
-                        {
-                            Id = orderDetail.Id,
-                            OrderID = orderDetail.OrderID,
-                            Quantity = orderDetail.Quantity,
-                            Price = orderDetail.Price,
-                            Rating = orderDetail.Rating,
-                            User_Name = user.Name,
-                            Description = orderDetail.Description,
-                            Tour_Detail_ID = orderDetail.Tour_Detail_ID,
-                            TourName = tour.Name,
-                            Type_Payment = orderDetail.Type_Payment,
-                            Payment_ID = orderDetail.Payment_ID,
+            var query =
+                from orderDetail in context.OrderDetail
+                join user in context.Users on orderDetail.UserID equals user.Id
+                join tourDetail in context.TourDetail
+                    on orderDetail.Tour_Detail_ID equals tourDetail.Id
+                join tour in context.Tour on tourDetail.TourId equals tour.Id
+                join transportation in context.Transportation
+                    on tour.Transportation_ID equals transportation.Id
+                select new OrderDetailWithTourDto
+                {
+                    Id = orderDetail.Id,
+                    OrderID = orderDetail.OrderID,
+                    Quantity = orderDetail.Quantity,
+                    Price = orderDetail.Price,
+                    Rating = orderDetail.Rating,
+                    User_Name = user.Name,
+                    User_ID = user.Id,
+                    Description = orderDetail.Description,
+                    Tour_Detail_ID = orderDetail.Tour_Detail_ID,
+                    TourName = tour.Name,
+                    Range_time = tour.Range_time,
+                    Type_Payment = orderDetail.Type_Payment,
+                    Payment_ID = orderDetail.Payment_ID,
+                    Transportation = transportation,
+                    tourDetail = tourDetail
+                };
 
-                        };
-
-            var result = query.ToList(); 
+            var result = query.ToList();
 
             return result;
         }
@@ -97,11 +110,11 @@ namespace backend.BussinessLogic
             }
             existingOrderDetail.UpdateDate = orderDetail.UpdateDate;
             existingOrderDetail.UpdateBy = orderDetail.UpdateBy;
-            existingOrderDetail.IsActive = orderDetail.IsActive;            
+            existingOrderDetail.IsActive = orderDetail.IsActive;
             existingOrderDetail.OrderID = orderDetail.OrderID;
             existingOrderDetail.Quantity = orderDetail.Quantity;
             existingOrderDetail.Price = orderDetail.Price;
-            existingOrderDetail.Rating = orderDetail.Rating;          
+            existingOrderDetail.Rating = orderDetail.Rating;
             existingOrderDetail.UserID = orderDetail.UserID;
             existingOrderDetail.Payment_ID = orderDetail.Payment_ID;
             existingOrderDetail.Type_Payment = orderDetail.Type_Payment;
@@ -118,7 +131,6 @@ namespace backend.BussinessLogic
         //delete orderDetail
         public async Task Delete(int id)
         {
-
             var existingOrderDetail = await unitofWork.Repository<OrderDetail>().GetByIdAsync(id);
             if (existingOrderDetail == null)
             {
@@ -131,30 +143,46 @@ namespace backend.BussinessLogic
                 throw new BadRequestExceptions("chua dc thuc thi");
             }
         }
+
         public async Task<OrderDetail> GetOrderDetailById(int Id)
         {
             var result = await unitofWork.Repository<OrderDetail>().GetByIdAsync(Id);
-            if(result == null)
+            if (result == null)
             {
                 return null;
             }
             return result;
         }
-        public async Task<Pagination<OrderDetailDto>> SelectAllOrderDetailPagination(SpecParams specParams)
-        {
 
+        public async Task<Pagination<OrderDetailDto>> SelectAllOrderDetailPagination(
+            SpecParams specParams
+        )
+        {
             var spec = new SearchOrderDetailSpec(specParams);
             var orderDetail = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(spec);
 
-            var data = mapper.Map<IReadOnlyList<OrderDetail>, IReadOnlyList<OrderDetailDto>>(orderDetail);
-            var orderDetailPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize).Take(specParams.PageSize).ToList();
+            var data = mapper.Map<IReadOnlyList<OrderDetail>, IReadOnlyList<OrderDetailDto>>(
+                orderDetail
+            );
+            var orderDetailPage = data.Skip((specParams.PageIndex - 1) * specParams.PageSize)
+                .Take(specParams.PageSize)
+                .ToList();
 
             var countSpec = new SearchOrderDetailSpec(specParams);
             var count = await unitofWork.Repository<OrderDetail>().GetCountWithSpecAsync(countSpec);
 
-            var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
+            var totalPageIndex =
+                count % specParams.PageSize == 0
+                    ? count / specParams.PageSize
+                    : (count / specParams.PageSize) + 1;
 
-            var pagination = new Pagination<OrderDetailDto>(specParams.PageIndex, specParams.PageSize, orderDetailPage, count, totalPageIndex);
+            var pagination = new Pagination<OrderDetailDto>(
+                specParams.PageIndex,
+                specParams.PageSize,
+                orderDetailPage,
+                count,
+                totalPageIndex
+            );
 
             return pagination;
         }

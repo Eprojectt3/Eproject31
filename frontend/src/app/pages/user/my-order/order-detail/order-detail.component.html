@@ -1,0 +1,117 @@
+<ng-container class="">
+  <div class="container mx-auto mt-[30px]">
+    <!-- Title -->
+    <div class="title">
+      <h1 class="text-[25px] font-medium ml-[300px]">Order detail</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content w-[60%] h-auto bg-white mt-[10px] mx-auto px-10 py-5">
+      <div class="flex justify-center">
+        <h2 class="text-[20px] text-[#F44336] font-medium">
+          {{ orderDetail?.tourName }}
+        </h2>
+      </div>
+
+      <div>
+        <div>
+          <!-- Name -->
+          <div>
+            <p class="font-semibold">
+              Name: <span class="font-normal">{{ user?.name }}</span>
+            </p>
+          </div>
+
+          <!-- Time range -->
+          <div>
+            <p class="font-semibold">
+              Time range:
+              <span class="font-normal">{{ orderDetail?.range_time }}
+                {{ range_time > 1 ? "days" : "day" }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <!-- Email -->
+          <div>
+            <p class="font-semibold">
+              Email: <span class="font-normal">{{ user?.email }}</span>
+            </p>
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <p class="font-semibold">
+              Phone: <span class="font-medium">{{ user?.phone }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <!-- Transportation -->
+          <div>
+            <p class="font-semibold">
+              Transportation:
+              <span class="font-normal">{{
+                orderDetail?.transportation?.name
+                }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <!-- Departure Date -->
+          <div>
+            <p class="font-semibold">
+              Departure Date:
+              <span class="font-normal">{{ departureDate }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <!-- End Date -->
+          <div>
+            <p class="font-semibold">
+              End Date:
+              <span class="font-normal">{{ endDate }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <!-- Create at -->
+          <div>
+            <p class="font-semibold">
+              Create at:
+              <span class="font-normal">{{ createAt }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <!-- Rating -->
+          <div>
+            <p class="font-semibold">
+              Rating:
+              <p-rating (onRate)="onRate($event)" [iconOnStyle]="{
+                  color: '#F67905'
+                }" [(ngModel)]="rating" [cancel]="false"></p-rating>
+            </p>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="flex justify-end">
+          <p class="font-semibold text-[20px]">
+            Price:
+            <span class="font-normal text-[#F81919]">{{
+              orderDetail?.price
+              }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

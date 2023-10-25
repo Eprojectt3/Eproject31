@@ -14,9 +14,9 @@ export class AppComponent implements OnInit {
   url!: string | null;
   adminSidebars: AdminSidebar[] = adminSidebar;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   public isShowUserLayout = (): boolean => {
     const currentUrl = this.router.url;
@@ -39,7 +39,11 @@ export class AppComponent implements OnInit {
   public isShowLayoutOrder = (): boolean => {
     const currentUrl = this.router.url;
 
-    return currentUrl.includes('/user/order');
+    return (
+      currentUrl.includes('/user/order') ||
+      currentUrl.includes('/user/my-order') ||
+      currentUrl.includes('/user/my-profile')
+    );
   };
 
   public isShowSearchResult = (): boolean => {

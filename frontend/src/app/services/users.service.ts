@@ -14,10 +14,15 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // get all users
   public getAll = (): Observable<any> => {
     return this.http.get<User[]>(`${AUTH_API}/api/Users/GetListUsers`);
+  };
+
+  // Update user
+  public updateUser = (data: any): Observable<any> => {
+    return this.http.put(`${AUTH_API}/api/Users/Update`, data);
   };
 }

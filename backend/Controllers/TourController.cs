@@ -16,6 +16,7 @@ namespace backend.Controllers
     {
         public TourBusinessLogic tourBusinessLogic;
         public Top_10_Tour_Dao top_10_Tour_Dao;
+
         public TourController(TourBusinessLogic Bussiness, Top_10_Tour_Dao top_10_Tour_Dao)
         {
             tourBusinessLogic = Bussiness;
@@ -36,7 +37,6 @@ namespace backend.Controllers
 
         //execute add new tour
         [HttpPost]
-
         public async Task<IActionResult> Add([FromForm] TourDto tourdto)
         {
             await tourBusinessLogic.Create(tourdto);
@@ -48,7 +48,6 @@ namespace backend.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] Tour_Update_Dto tourdto)
         {
-
             await tourBusinessLogic.Update(tourdto);
             return Ok(tourdto);
         }
@@ -65,18 +64,17 @@ namespace backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await tourBusinessLogic.Delete(id);
-            return Ok(new
-            {
-                message = "Delete success"
-            });
+            return Ok(new { message = "Delete success" });
         }
+
         //get tour by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByTourId(int id)
         {
-           var result =  await tourBusinessLogic.GetByTourId(id);
+            var result = await tourBusinessLogic.GetByTourId(id);
             return Ok(result);
         }
+
         [HttpGet]
         public async Task<IActionResult> Get_Top_10_Tour()
         {
@@ -100,12 +98,12 @@ namespace backend.Controllers
             // Trả về dữ liệu phân trang và thông tin về trang
             return Ok(output);
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRatingFromOrder(int id)
         {
             var averageRating = await tourBusinessLogic.CreateWithRating(id);
             return Ok(new { averageRating = averageRating });
         }
-
     }
 }
