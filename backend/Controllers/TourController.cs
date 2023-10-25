@@ -52,6 +52,13 @@ namespace backend.Controllers
             await tourBusinessLogic.Update(tourdto);
             return Ok(tourdto);
         }
+        [HttpPut]
+        public async Task<IActionResult> UpdateRating([FromForm] Tour_Update_Dto tourdto)
+        {
+
+            await tourBusinessLogic.UpdateRating(tourdto);
+            return Ok(tourdto);
+        }
 
         //execute delete tour
         [HttpDelete("{id}")]
@@ -94,7 +101,7 @@ namespace backend.Controllers
             return Ok(output);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> UpdateRating(int id)
+        public async Task<IActionResult> GetRatingFromOrder(int id)
         {
             var averageRating = await tourBusinessLogic.CreateWithRating(id);
             return Ok(new { averageRating = averageRating });

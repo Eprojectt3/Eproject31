@@ -7,6 +7,7 @@ using backend.Exceptions;
 using backend.Helper;
 using webapi.Dao.UnitofWork;
 using webapi.Data;
+using Microsoft.CodeAnalysis;
 
 namespace backend.BussinessLogic
 {
@@ -50,7 +51,12 @@ namespace backend.BussinessLogic
             {
                 throw new NotFoundExceptions("Cattegory not found");
             }
-          
+            await unitofWork.Repository<Itinerary>().AddAsync(itinerary);
+            var check = await unitofWork.Complete();
+            if (check < 1)
+            {
+                throw new BadRequestExceptions("chua dc thuc thi");
+            }
         }
 
         //update itinerary
