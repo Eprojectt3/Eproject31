@@ -1,6 +1,7 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
 using backend.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +47,7 @@ namespace backend.Controllers
 
         //execute add new itinerary
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(Itinerary itinerary)
         {
 
@@ -56,6 +58,7 @@ namespace backend.Controllers
 
         //execute update itinerary
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Itinerary itinerary,int id)
         {
 
@@ -65,6 +68,7 @@ namespace backend.Controllers
 
         //execute delete itinerary
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await itineraryBusinessLogic.Delete(id);
@@ -73,6 +77,7 @@ namespace backend.Controllers
                 message = "Delete success"
             });
         }
+        
         [HttpPost]
         public async Task<ActionResult> ListItineraryPagination(SpecParams pagination)
         {

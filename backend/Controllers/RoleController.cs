@@ -1,6 +1,7 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
 using backend.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,8 @@ namespace backend.Controllers
         // execute list all role
         [HttpGet]
         //[Cache(1400)]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> ListRole()
         {
             var output = await roleBusinessLogic.SelectAllRole();
@@ -33,6 +36,7 @@ namespace backend.Controllers
 
         //execute add new role
         [HttpPost]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Add(Role role)
         {
@@ -46,6 +50,8 @@ namespace backend.Controllers
 
         //execute update role
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update(Role role,int id)
         {
 

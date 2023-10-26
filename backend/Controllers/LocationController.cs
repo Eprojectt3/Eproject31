@@ -2,6 +2,7 @@
 using backend.Dao.Specification;
 using backend.Entity;
 using backend.Helper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,7 +45,7 @@ namespace backend.Controllers
         }
         //execute add new location
         [HttpPost]
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(Location1 location)
         {
 
@@ -55,6 +56,8 @@ namespace backend.Controllers
 
         //execute update location
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update(Location1 location,int id)
         {
 
@@ -64,6 +67,8 @@ namespace backend.Controllers
 
         //execute delete location
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int id)
         {
             await locationBussinessLogic.Delete(id);

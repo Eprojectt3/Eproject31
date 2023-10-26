@@ -1,6 +1,7 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
 using backend.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,7 @@ namespace backend.Controllers
 
         //execute add new service
         [HttpPost]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Add(Service service)
         {
@@ -41,6 +43,8 @@ namespace backend.Controllers
 
         //execute update service
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update(Service service,int id)
         {
 
@@ -50,6 +54,8 @@ namespace backend.Controllers
 
         //execute delete service
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int id)
         {
             await serviceBusinessLogic.Delete(id);

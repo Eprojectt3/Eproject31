@@ -1,6 +1,7 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
 using backend.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,7 @@ namespace backend.Controllers
 
         //execute add new tour
         [HttpPost]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Add(FeedBack tour)
         {
@@ -41,6 +43,7 @@ namespace backend.Controllers
 
         //execute update tour
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(FeedBack tour, int id)
         {
 
@@ -50,12 +53,14 @@ namespace backend.Controllers
 
         //execute delete tour
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await feedBackBusinessLogic.Delete(id);
             return Ok(new { message = "Delete success" });
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ListFeedBackPagination(SpecParams pagination)
         {
             var output = await feedBackBusinessLogic.SelectAllFeedBackPagination(pagination);

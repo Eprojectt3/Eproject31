@@ -1,6 +1,7 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
 using backend.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +41,7 @@ namespace backend.Controllers
 
         //execute add new orderDetail
         [HttpPost]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Add(OrderDetail orderDetail)
         {
@@ -51,6 +53,8 @@ namespace backend.Controllers
 
         //execute update orderDetail
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update(OrderDetail orderDetail,int id)
         {
 
@@ -60,6 +64,8 @@ namespace backend.Controllers
 
         //execute delete orderDetail
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int id)
         {
             await orderDetailBusinessLogic.Delete(id);
@@ -69,6 +75,7 @@ namespace backend.Controllers
             });
         }
         [HttpPost]
+
         public async Task<ActionResult> ListOrderDetailPagination(SpecParams pagination)
         {
             var output = await orderDetailBusinessLogic.SelectAllOrderDetailPagination(pagination);
