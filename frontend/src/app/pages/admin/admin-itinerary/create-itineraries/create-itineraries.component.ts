@@ -9,18 +9,22 @@ import { Tour } from 'src/app/models/tour';
 import { TourService } from 'src/app/services/tour.service';
 import { ItineraryService } from '../../../../services/itinerary.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
+import { Place } from 'src/app/models/place.model';
+import { PlaceService } from '../../../../services/place.service';
+import { PlaceType } from 'src/app/models/place-type.model';
 
 @Component({
   selector: 'app-create-itineraries',
   templateUrl: './create-itineraries.component.html',
-  styleUrls: ['./create-itineraries.component.scss']
+  styleUrls: ['./create-itineraries.component.scss'],
 })
 export class CreateItinerariesComponent implements OnInit {
   loginForm!: FormGroup;
   itinearies!: Itinerary;
   // description!: any;
-   tours!: Tour[];
+  tours!: Tour[];
+  places!: Place[];
+  placeType!: PlaceType[];
   errorMessage: string = '';
   id!: number;
   constructor(
@@ -31,18 +35,11 @@ export class CreateItinerariesComponent implements OnInit {
     private snackBar: SnackbarService,
     private itineraryService: ItineraryService,
     private tourService: TourService,
-    @Inject(MAT_DIALOG_DATA) public data:any,
+    private PlaceService: PlaceService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
-  }
-  ngOnInit(): void {
-    this.itineraryService.itinerarySubject.subscribe(
-      (val: any) => (this.itinearies = val?.data)
-    );
-    this.getListTours();
-    console.log(this.data);
     this.loginForm = this.fb.group({
-
       tour_Name: ['', Validators.required],
       sequence: [
         '',
@@ -52,28 +49,45 @@ export class CreateItinerariesComponent implements OnInit {
         '',
         Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
       ],
-      type: [
-        '',
-        Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
-      ],
+      type: ['', Validators.required],
+      place_Name: ['', Validators.required],
+
     });
+  }
+  ngOnInit(): void {
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    this.loginForm.patchValue(this.data)
+    this.getListTours();
+    this.getListPlace();
+    this.getListPlaceType();
+
+    this.itineraryService.itinerarySubject.subscribe(
+      (val: any) => (this.itinearies = val?.data)
+    );
+
+    // console.log(this.data);
+
 
   }
 
   onSubmit = async () => {
     const itinearies = {
-      tour_Name:this.loginForm.controls['tour_Name'].value,
-      description:this.loginForm.controls['description'].value,
-      sequence:this.loginForm.controls['sequence'].value,
-      type:this.loginForm.controls['type'].value,
-
+      // id: this.data.id,
+      tourID: Number (this.loginForm.controls['tour_Name'].value),
+      description: this.loginForm.controls['description'].value,
+      sequence: this.loginForm.controls['sequence'].value,
+      place_Type_ID: Number (this.loginForm.controls['type'].value),
+      placeId: Number (this.loginForm.controls['place_Name'].value),
     };
+    console.log(itinearies);
 
     if (!this.loginForm.controls['tour_Name'].errors) {
+
+      if(this.data){
         this.itineraryService
-        .createItinerary(this.itinearies.tour_Name,this.itinearies.sequence,this.itinearies.description,this.itinearies.type)
+        .updateItinerary(itinearies,this.data.id)
         .subscribe((val: any) => {
-          this.snackBar.openSnackBar('Create successfully', 'Success');
+          this.snackBar.openSnackBar('Update successfully', 'Success');
           this.errorMessage = '';
           this.dialogRef.close('success');
         }),
@@ -82,8 +96,21 @@ export class CreateItinerariesComponent implements OnInit {
           console.log(err);
           this.snackBar.openSnackBar(this.errorMessage, 'Error');
         };
+      }else{
 
-
+        this.itineraryService
+          .createItinerary(itinearies)
+          .subscribe((val: any) => {
+            this.snackBar.openSnackBar('Create successfully', 'Success');
+            this.errorMessage = '';
+            this.dialogRef.close('success');
+          }),
+          (err: any) => {
+            // this.errorMessage = err?.error?.message;
+            console.log(err);
+            this.snackBar.openSnackBar(this.errorMessage, 'Error');
+          };
+      }
     }
   };
   // Get List Location
@@ -93,8 +120,14 @@ export class CreateItinerariesComponent implements OnInit {
     });
   };
 
-
-
-
-
+  public getListPlace = () => {
+    this.PlaceService.getListPlace().subscribe((val: any) => {
+      this.places = val;
+    });
+  };
+  public getListPlaceType = () => {
+    this.PlaceService.getListPlaceType().subscribe((val: any) => {
+      this.placeType = val;
+    });
+  };
 }

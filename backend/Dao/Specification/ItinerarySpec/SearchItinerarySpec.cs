@@ -12,6 +12,9 @@ namespace backend.Dao.Specification.ItinerarySpec
         )
         {
             Includes.Add(s => s.tour);
+            Includes.Add(s => s.PlaceType);
+            Includes.Add(s => s.hotel);
+
         }
     }
 }

@@ -40,7 +40,9 @@ namespace backend.Helper
             CreateMap<FeedBack, FeedBackDto>().ReverseMap();
 
             CreateMap<Itinerary, ItineraryDto>()
-                .ForMember(i => i.Tour_Name, otp => otp.MapFrom(o => o.tour.Name));
+              .ForMember(i => i.Tour_Name, otp => otp.MapFrom(o => o.tour.Name))
+             .ForMember(i => i.Type, otp => otp.MapFrom(o => o.PlaceType.Name))
+             .ForMember(i => i.PlaceName, otp => otp.MapFrom(o => o.hotel.Name));
 
             CreateMap<Service, ServiceDto>()
                 .ForMember(s => s.Tour_Name, otp => otp.MapFrom(o => o.Tour.Name));

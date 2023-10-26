@@ -10,11 +10,10 @@ import { ItineraryService } from 'src/app/services/itinerary.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CreateItinerariesComponent } from '../create-itineraries/create-itineraries.component';
 
-
 @Component({
   selector: 'app-list-itineraries',
   templateUrl: './list-itineraries.component.html',
-  styleUrls: ['./list-itineraries.component.scss']
+  styleUrls: ['./list-itineraries.component.scss'],
 })
 export class ListItinerariesComponent {
   public itineraries!: Itinerary[];
@@ -27,7 +26,7 @@ export class ListItinerariesComponent {
 
     'description',
     'type',
-    'action'
+    'action',
   ];
   public pageEvent: PageEvent = new PageEvent();
   public totalSize: number = 0;
@@ -77,20 +76,44 @@ export class ListItinerariesComponent {
 
   // Delete hotel
   public deleteItineraries = (id: string): void => {
-    this.itinerarieservice.deleteItinerary(id).subscribe(val=>{
-      this.itinerarieservice
-      .getListItineraryPagination(this.index, this.pageSize)
-      .subscribe((val: any) => {
-        this.itineraries = val.data;
-        this.totalSize = val.count;
-      });
-    })
+    this.itinerarieservice.deleteItinerary(id).subscribe(
+      (val: any) => {
+        this.snackBar.openSnackBar('Delete success', 'Success');
+        this.getListitineraries();
+      },
+      (err: any) => {
+        this.snackBar.openSnackBar(err, 'Error');
+        console.log(err);
+      }
+    );
   };
   // Create FeedBack
   public openCreateItinerary = () => {
     const dialogRef = this.dialog.open(CreateItinerariesComponent, {
       height: '230px',
       width: '400px',
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.getListitineraries();
+        }
+      },
+    });
+  };
+  // update
+  public openUpdateItinerary = (data: any) => {
+    const dialogRef = this.dialog.open(CreateItinerariesComponent, {
+      data: data,
+      height: '230px',
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.getListitineraries();
+        }
+      },
     });
   };
 
@@ -111,6 +134,4 @@ export class ListItinerariesComponent {
 
   //   return currentUrl.includes('/admin/itineraries/update/');
   // };
-
-
 }
