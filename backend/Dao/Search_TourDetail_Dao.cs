@@ -15,7 +15,7 @@ namespace backend.Dao
         {
             var result = from td in context.TourDetail
                          join t in context.Tour on td.TourId equals t.Id
-                         where td.Start_Date == start_date && t.Id == TourID
+                         where td.Start_Date.Date == start_date.Date && t.Id == TourID
                          select new TourDetail
                          {
                              Id = td.Id,

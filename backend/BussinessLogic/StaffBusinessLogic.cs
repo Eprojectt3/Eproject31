@@ -201,18 +201,22 @@ namespace backend.BussinessLogic
             }
             foreach (var staff in staffPage)
             {
-                var Name_replace = staff.Name.Replace(" ", "-");
-                var image_folder = Name_replace + "-" + staff.PersonId;
-                var staffInfo = new StaffDto
+                if (!string.IsNullOrEmpty(staff.Name))
                 {
-                    Id = staff.Id,
-                    Name = staff.Name,
-                    Phone = staff.Phone,
-                    Email = staff.Email,
-                    PersonId = staff.PersonId,
-                    UrlImage = Image.GetUrlImage(image_folder, "staff", httpRequest)
-                };
-                result.Add(staffInfo);
+                    var Name_replace = staff.Name.Replace(" ", "-");
+                    var image_folder = Name_replace + "-" + staff.PersonId;
+                    var staffInfo = new StaffDto
+                    {
+                        Id = staff.Id,
+                        Name = staff.Name,
+                        Phone = staff.Phone,
+                        Email = staff.Email,
+                        PersonId = staff.PersonId,
+                        UrlImage = Image.GetUrlImage(image_folder, "staff", httpRequest)
+                    };
+                    result.Add(staffInfo);
+                }
+             
             }
             var totalPageIndex = count % specParams.PageSize == 0 ? count / specParams.PageSize : (count / specParams.PageSize) + 1;
 

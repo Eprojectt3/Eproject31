@@ -96,10 +96,11 @@ namespace backend.BussinessLogic
 
                     var TourDetailHaveOrderId = await unitofWork.Repository<Order>().GetEntityWithSpecAsync(new TourDetailDeleteOrderSpec(id));
                     var TourDetailHaveOrderDetailId = await unitofWork.Repository<OrderDetail>().GetAllWithAsync(new TourDetailDeleteOrderDetailSpec(id));
-                    
-                        await unitofWork.Repository<Order>().Delete(TourDetailHaveOrderId);
-
-                    if (TourDetailHaveOrderDetailId.Any())
+                if (TourDetailHaveOrderId != null)
+                {
+                    await unitofWork.Repository<Order>().Delete(TourDetailHaveOrderId);
+                }
+                if (TourDetailHaveOrderDetailId.Any())
                     {
                         await unitofWork.Repository<OrderDetail>().DeleteRange(TourDetailHaveOrderDetailId);
                     }

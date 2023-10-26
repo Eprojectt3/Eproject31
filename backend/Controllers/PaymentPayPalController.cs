@@ -92,6 +92,10 @@ namespace backend.Controllers
      [HttpPost]
     public async Task<PaypalCreateOrderOutput> CreateOrder(OrderDetailDtos orderDetail)
     {
+        //Kiểm tra số lượng người mua vé < số lượng quantity
+
+        //TH1: KHI ĐÃ CÓ TOURDETAIL
+        //TH2: KHI CHƯA CÓ thì check trong Tour
         var token = await GetAuthorizationRequest();
 
         var paypalInput = new PaypalCreateOrderInput
