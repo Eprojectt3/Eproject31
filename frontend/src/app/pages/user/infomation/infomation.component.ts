@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Tour } from 'src/app/models/tour';
 import { PlaceService } from 'src/app/services/place.service';
 import { TitleService } from 'src/app/services/title.service';

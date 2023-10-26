@@ -18,6 +18,7 @@
           [value]="tours"
         >
           <ng-template let-tour pTemplate="item" class="xl:w-[80%]">
+
             <button
               type="button"
               [routerLink]="['/user/infomation/tour-detail/', tour.id]"
