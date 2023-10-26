@@ -10,8 +10,7 @@ namespace backend.Dtos.ItineraryDtos
         public int? Sequence { get; set; }
         public string? Description { get; set; }
         public string? Type { get; set; }
-        public string? HotelName { get; set; }
-        public string? ResortName { get; set; }
-        public string? RestaurantName { get; set; }
+        public string? PlaceName { get; set; }
+       
     }
 }

@@ -59,7 +59,7 @@ export class CreateServiceComponent {
 
   public onSubmit = () => {
     const service = {
-      id: this.data.id,
+      // id: this.data.id,
       name: this.loginForm.controls['name'].value,
       tour_ID: Number (this.loginForm.controls['tour_Name'].value),
       description: this.loginForm.controls['description'].value,

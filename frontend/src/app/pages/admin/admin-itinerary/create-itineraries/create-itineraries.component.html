@@ -26,8 +26,8 @@
         <div>
           <mat-form-field class="w-[85%] ml-5">
             <mat-label>sequence</mat-label>
-            <input class="" type="text" matInput formControlName="sequence" [errorStateMatcher]="validatorForm" />
-            <mat-error *ngIf="loginForm.controls['sequence'].errors?.['whitespace']">Name is required
+            <input class=""  matInput formControlName="sequence" [errorStateMatcher]="validatorForm" />
+            <mat-error *ngIf="loginForm.controls['sequence'].errors?.['whitespace']">sequence is required
             </mat-error>
           </mat-form-field>
         </div>
@@ -36,15 +36,35 @@
           <mat-form-field class="w-[85%] ml-5">
             <mat-label>description</mat-label>
             <input class="" type="text" matInput formControlName="description" [errorStateMatcher]="validatorForm" />
-            <mat-error *ngIf="loginForm.controls['description'].errors?.['whitespace']">Email is required
+            <mat-error *ngIf="loginForm.controls['description'].errors?.['whitespace']">description is required
             </mat-error>
           </mat-form-field>
         </div>
         <div>
           <mat-form-field class="w-[85%] ml-5">
             <mat-label>type</mat-label>
-            <input class="" type="text" matInput formControlName="type" [errorStateMatcher]="validatorForm" />
-            <mat-error *ngIf="loginForm.controls['type'].errors?.['whitespace']">Phone is required
+            <mat-select formControlName="type" [errorStateMatcher]="validatorForm">
+              <mat-option
+                *ngFor="let type of placeType"
+                [value]="type.id"
+                >{{ type.name }}</mat-option
+              >
+            </mat-select>
+            <mat-error *ngIf="loginForm.controls['type'].errors?.['whitespace']">type is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="w-[85%] ml-5">
+            <mat-label>PlaceName</mat-label>
+            <mat-select formControlName="place_Name" [errorStateMatcher]="validatorForm">
+              <mat-option
+                *ngFor="let placeName of places"
+                [value]="placeName.place.id"
+                >{{ placeName.place.name }}</mat-option
+              >
+            </mat-select>
+            <mat-error *ngIf="loginForm.controls['place_Name'].errors?.['whitespace']"> is required
             </mat-error>
           </mat-form-field>
         </div>
