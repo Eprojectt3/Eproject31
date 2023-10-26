@@ -138,4 +138,30 @@ export class AuthService {
   public register = (data: any): Observable<any> => {
     return this.http.post(`${AUTH_API}/api/Users/Register`, data);
   };
+
+  // Send Forgot password
+  public SendForgotPasswordEmail = (data: any): Observable<any> => {
+    return this.http.post(
+      `${AUTH_API}/api/Users/SendForgotPasswordEmail`,
+      data
+    );
+  };
+
+  // VerifyCodeResetPassword
+  public verifyCodeResetPassword = (data: any): Observable<any> => {
+    return this.http.post(
+      `${AUTH_API}/api/Users/VerifyCodeResetPassword`,
+      data
+    );
+  };
+
+  // Delete confirm code
+  public deleteConfirmCodeExpired = (): Observable<any> => {
+    return this.http.delete(`${AUTH_API}/api/Users/DeleteConfirmCodeExpired`);
+  };
+
+  //Reset password
+  public resetPassword = (data: any): Observable<any> => {
+    return this.http.put(`${AUTH_API}/api/Users/ResetPassword`, data);
+  };
 }

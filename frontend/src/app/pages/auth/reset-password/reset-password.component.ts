@@ -5,18 +5,18 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PreviousRouteServiceService } from 'src/app/services/previous-route-service.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { ValidatorFormService } from 'src/app/services/validator-form.service';
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss'],
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.scss'],
 })
-export class ChangePasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit {
   form!: FormGroup;
   hide: boolean = true;
   user: any;
@@ -25,16 +25,14 @@ export class ChangePasswordComponent implements OnInit {
     private fb: FormBuilder,
     private validator: ValidatorFormService,
     private authService: AuthService,
-    private tokenStorage: TokenStorageService,
-    private snackBarService: SnackbarService
+    private snackBarService: SnackbarService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private previousRouteService: PreviousRouteServiceService
   ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      old_password: [
-        '',
-        Validators.compose([this.validator.NoWhitespaceValidator()]),
-      ],
       new_password: [
         '',
         Validators.compose([
@@ -44,34 +42,42 @@ export class ChangePasswordComponent implements OnInit {
           ),
         ]),
       ],
-      confirm_password: [
-        '',
-        [this.validator.NoWhitespaceValidator(), this.matchPassword.bind(this)],
-      ],
     });
 
-    // Get user
-    this.user = this.tokenStorage.getUser();
+    this.route.queryParams.subscribe((params) => {
+      this.user = params['username'];
+    });
+
+    console.log(this.previousRouteService.getPreviousRoute());
+    if (
+      !this.previousRouteService
+        .getPreviousRoute()
+        .includes('/auth/forgot-password')
+    ) {
+      this.snackBarService.openSnackBar(
+        "Can't not access to reset password page",
+        'Error'
+      );
+      this.router.navigate(['/user/home']);
+      return;
+    }
   }
 
   // On submit
   public onSubmit = () => {
     const data = {
-      Username: this.user.username,
-      OldPassword: this.form.controls['old_password'].value,
-      NewPassword: this.form.controls['new_password'].value,
+      password: this.form.controls['new_password'].value,
+      username: this.user,
     };
 
-    if (
-      !this.form.controls['old_password'].errors &&
-      !this.form.controls['new_password'].errors &&
-      !this.form.controls['confirm_password'].errors
-    ) {
-      this.authService.changePassword(data).subscribe(
+    if (!this.form.controls['new_password'].errors) {
+      this.authService.resetPassword(data).subscribe(
         (val) => {
           this.snackBarService.openSnackBar('Change password Successfully');
+          const currentUrl = this.router.url;
+          this.previousRouteService.setPreviousRoute(currentUrl);
           this.authService.logout();
-          location.reload();
+          this.router.navigate(['/auth/login']);
         },
         (err) => {
           console.error(err);
@@ -79,14 +85,6 @@ export class ChangePasswordComponent implements OnInit {
         }
       );
     }
-  };
-
-  // Check confirm password and new password
-  matchPassword = (control: FormControl) => {
-    const newPassword = this.form?.get('new_password')?.value;
-    const confirmPassword = control.value;
-
-    return newPassword === confirmPassword ? null : { passwordMismatch: true };
   };
 
   isShowPassword = (): void => {

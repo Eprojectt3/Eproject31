@@ -81,9 +81,12 @@ export class LoginComponent {
             if (
               this.previousRouteService
                 .getPreviousRoute()
-                .includes('/auth/register')
+                .includes('/auth/register') ||
+              this.previousRouteService
+                .getPreviousRoute()
+                .includes('/auth/reset-password')
             ) {
-              this.router.navigate(['/home']);
+              this.router.navigate(['/user/home']);
             } else {
               this.location.back();
             }
