@@ -134,20 +134,21 @@ export class CreateOrderComponent implements OnInit {
   public onSubmit(): void {
     let isStaffActive: boolean = true;
     let staffId: number = 0;
+    staffId = 2
+    // do {
+    //   staffId = Math.floor(Math.random() * this.staff.length);
 
-    do {
-      staffId = Math.floor(Math.random() * this.staff.length);
-
-      this.tourDetailService.getListTourDetail().subscribe((val: any) => {
-        for (let va of val) {
-          if (va.staff_Id === staffId) {
-            if (va.isActive) {
-              isStaffActive = false;
-            }
-          }
-        }
-      });
-    } while (!isStaffActive);
+    //   this.tourDetailService.getListTourDetail().subscribe((val: any) => {
+    //     console.log(val)
+    //     for (let va of val) {
+    //       if (va.staff_Id === staffId) {
+    //         if (va.isActive) {
+    //           isStaffActive = false;
+    //         }
+    //       }
+    //     }
+    //   });
+    // } while (!isStaffActive);
 
     const tourInformation = {
       tourName: this.tourName,
