@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Tour, tours } from 'src/app/models/tour';
+import { Tour } from 'src/app/models/tour';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
@@ -11,7 +11,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
   styleUrls: ['./admin-layout.component.scss'],
 })
 export class AdminLayoutComponent implements OnInit {
-  tour: Tour[] = tours;
+  // tour: Tour[] = tours;
   $isLogin!: Observable<boolean | false>;
   isLogin: boolean = false;
   userInfo!: any;

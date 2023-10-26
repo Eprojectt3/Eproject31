@@ -73,6 +73,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { DetailStaffComponent } from './admin-staff/detail-staff/detail-staff.component';
 import { UpdateStaffComponent } from './admin-staff/update-staff/update-staff.component';
+import { UpdateTourComponent } from './admin-tour/update-tour/update-tour.component';
+import { DetailTourComponent } from './admin-tour/detail-tour/detail-tour.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +124,8 @@ import { UpdateStaffComponent } from './admin-staff/update-staff/update-staff.co
 
     DetailStaffComponent,
     UpdateStaffComponent,
+    UpdateTourComponent,
+    DetailTourComponent,
   ],
   imports: [
     CommonModule,

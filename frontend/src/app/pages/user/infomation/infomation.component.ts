@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Tour, tours } from 'src/app/models/tour';
+import { Tour } from 'src/app/models/tour';
 import { TitleService } from 'src/app/services/title.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { TitleService } from 'src/app/services/title.service';
   styleUrls: ['./infomation.component.scss'],
 })
 export class InfomationComponent implements OnInit {
-  tours: Tour[] = tours;
+  // tours: Tour[] = tours;
   responsiveOptions: any[] = [
     {
       breakpoint: '2000px',

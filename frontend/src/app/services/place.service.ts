@@ -54,12 +54,6 @@ export class PlaceService {
   // Get place by id
   public getPlaceById = (id: number): Observable<any> => {
     return this.httpclient.get(
-      `${AUTH_API}/api/Place/GetByHotelId/${id}`,
-      httpOptions
-    ).pipe(
-      tap((resData:any) => {
-        this.placeSubject.next(resData);
-      })
-    );
+      `${AUTH_API}/api/Place/GetByHotelId/${id}`,httpOptions).pipe(tap((val: any) => this.placeSubject.next(val)));;
   };
 }

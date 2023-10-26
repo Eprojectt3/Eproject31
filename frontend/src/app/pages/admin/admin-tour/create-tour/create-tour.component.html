@@ -11,7 +11,7 @@
                 <!--          tour name-->
                 <div class="w-[100%]">
                     <mat-form-field class="!w-[100%]">
-                        <mat-label>tour name</mat-label>
+                        <mat-label>Tour name</mat-label>
                         <input matInput formControlName="name" [errorStateMatcher]="validatorForm" />
                         <mat-error *ngIf="loginForm.controls['name'].errors?.['whitespace']">Name tour is required
                         </mat-error>
@@ -59,19 +59,15 @@
                         </mat-form-field>
                     </div>
                 </div>
-
-
-
-                <!--          Departure Time-->
-                <div class="w-[100%]">
-                    <mat-form-field class="!w-[100%]">
-                        <mat-label>Departure Time</mat-label>
-                        <input matInput formControlName="departure_Time" />
-                        <mat-error *ngIf="loginForm.controls['departure_Time'].errors?.['whitespace']">Departure Time is
-                            required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                 <!--          Price-->
+                 <div class="w-[100%]">
+                  <mat-form-field class="!w-[100%]">
+                      <mat-label>Quantity limit</mat-label>
+                      <input matInput formControlName="quantity_limit" [errorStateMatcher]="validatorForm" />
+                      <mat-error *ngIf="loginForm.controls['quantity_limit'].errors?.['whitespace']">quantity_limit is required
+                      </mat-error>
+                  </mat-form-field>
+              </div>
                 <!--          Range time-->
                 <div class="w-[100%]">
                     <mat-form-field class="!w-[100%]">
@@ -109,7 +105,7 @@
                       formControlName="description"
                       [editor]="Editor"
                     ></ckeditor>
-          
+
                     <mat-error
                       *ngIf="
                         (loginForm.controls['description'].errors?.['whitespace'] &&

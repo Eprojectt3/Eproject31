@@ -27,6 +27,7 @@ export class CreateHotelComponent implements OnInit {
   dataForm: any;
   // place_Type_ID: 1,
 
+
   constructor(
     private fb: FormBuilder,
     public validatorForm: ValidatorFormService,
@@ -90,21 +91,8 @@ export class CreateHotelComponent implements OnInit {
     // Thêm place_Type_ID và gán cứng giá trị 1
     this.formData.append('place_Type_ID', '1');
 
-    // const dataForm: Place = {
-    //   place: {
-    //     name: this.loginForm.controls['name'].value,
-    //     rating: 0,
-    //     price_range: this.loginForm.controls['price'].value,
-    //     locationId: this.loginForm.controls['location'].value,
-    //     description: this.description,
-    //     address: this.loginForm.controls['address'].value,
-    //     phoneNumber: this.loginForm.controls['phone'].value,
-    //     place_Type_ID: 1
-    //   },
-    //   placeTypeId: 1 // Nếu bạn muốn gán cứng placeTypeId
-    // };
+
     console.log(this.formData);
-    console.log(this.dataForm);
 
 
 

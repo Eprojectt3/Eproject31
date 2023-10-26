@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HotelService } from '../../../../services/hotel.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ValidatorFormService } from '../../../../services/validator-form.service';
@@ -10,6 +9,7 @@ import { LocationService } from '../../../../services/location.service';
 import { FileSelectEvent } from 'primeng/fileupload';
 import { Hotel } from '../../../../models/hotel';
 import { PlaceService } from 'src/app/services/place.service';
+import { Place } from 'src/app/models/place.model';
 
 @Component({
   selector: 'app-update-hotel',
@@ -23,7 +23,7 @@ export class UpdateHotelComponent implements OnInit {
   description!: any;
   uploadedImages: File[] = [];
   locations!: Location[];
-  hotel!: Hotel;
+  hotel!: Place;
   id!: number;
   location!: any;
   hotelDetail!: any;
@@ -31,13 +31,13 @@ export class UpdateHotelComponent implements OnInit {
   pathImages: any = [];
 
   constructor(
-    private placeService: PlaceService,
     private fb: FormBuilder,
     public validatorForm: ValidatorFormService,
     public snackBar: SnackbarService,
     public router: Router,
     public locationService: LocationService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private placeService: PlaceService
   ) {}
 
   ngOnInit(): void {
@@ -117,6 +117,7 @@ export class UpdateHotelComponent implements OnInit {
     this.formData.append('Description', this.description);
     this.formData.append('Address', this.loginForm.controls['address'].value);
     this.formData.append('PhoneNumber', this.loginForm.controls['phone'].value);
+    this.formData.append('place_Type_ID', '1');
 
     if (
       !this.loginForm.controls['name'].errors &&
