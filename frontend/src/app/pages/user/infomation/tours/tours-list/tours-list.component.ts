@@ -5,6 +5,8 @@ import { TitleService } from 'src/app/services/title.service';
 import { TourService } from '../../../../../services/tour.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { CustomTourComponent } from '../custom-tour/custom-tour.component';
 
 @Component({
   selector: 'app-tours-list',
@@ -24,7 +26,8 @@ export class ToursListComponent implements OnInit {
 
   constructor(
     private titleService: TitleService,
-    private tourService: TourService
+    private tourService: TourService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -52,5 +55,9 @@ export class ToursListComponent implements OnInit {
     this.pageSize = e.pageSize;
     this.index = this.pageIndex + 1;
     this.getListTours();
+  };
+
+  public openCustomTour = () => {
+    this.dialog.open(CustomTourComponent, { width: '700px', height: '600px' });
   };
 }

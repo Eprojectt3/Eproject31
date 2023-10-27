@@ -9,7 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 // PrimeNg
 import { CarouselModule } from 'primeng/carousel';
@@ -23,7 +24,6 @@ import { ResortsListComponent } from './resorts/resorts-list/resorts-list.compon
 import { ResortDetailComponent } from './resorts/resort-detail/resort-detail.component';
 import { ToursListComponent } from './tours/tours-list/tours-list.component';
 import { TourDetailComponent } from './tours/tour-detail/tour-detail.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ImageModule } from 'primeng/image';
@@ -31,10 +31,15 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
 import { RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GalleryComponent } from './tours/gallery/gallery.component';
 import { TimelineModule } from 'primeng/timeline';
 import { PaginatorModule } from 'primeng/paginator';
+import { CustomTourComponent } from './tours/custom-tour/custom-tour.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -48,6 +53,7 @@ import { PaginatorModule } from 'primeng/paginator';
     ToursListComponent,
     TourDetailComponent,
     GalleryComponent,
+    CustomTourComponent,
   ],
   imports: [
     MatButtonModule,
@@ -58,12 +64,10 @@ import { PaginatorModule } from 'primeng/paginator';
     CarouselModule,
     CardModule,
     PipeModule,
-    MatFormFieldModule,
     MatSelectModule,
     MatButtonToggleModule,
     ImageModule,
     MatSelectModule,
-    MatFormFieldModule,
     MatGridListModule,
     MatTabsModule,
     MatDividerModule,
@@ -72,7 +76,13 @@ import { PaginatorModule } from 'primeng/paginator';
     MatDialogModule,
     TimelineModule,
     PaginatorModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    CKEditorModule,
   ],
 })
 export class InfomationModule {}

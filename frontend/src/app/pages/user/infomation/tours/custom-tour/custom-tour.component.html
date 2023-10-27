@@ -1,0 +1,162 @@
+<div class="p-[15px]">
+  <!-- Title -->
+  <div class="title">
+    <h1 class="font-semibold text-[20px]">Custom your tour</h1>
+  </div>
+
+  <!-- User info -->
+  <div class="user-info">
+    <!-- Name -->
+    <div class="name">
+      <h2 class="font-semibold">
+        Name: <span class="font-normal">{{ user?.name }}</span>
+      </h2>
+    </div>
+
+    <!-- Email -->
+    <div class="email">
+      <h2 class="font-semibold">
+        Email: <span class="font-normal">{{ user?.email }}</span>
+      </h2>
+    </div>
+
+    <!-- Phone -->
+    <div class="phone">
+      <h2 class="font-semibold">
+        Phone: <span class="font-normal">{{ user?.phone }}</span>
+      </h2>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="form">
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Location -->
+        <div class="location mt-[20px]">
+          <mat-form-field class="w-[100%]">
+            <mat-label>Location</mat-label>
+            <mat-select formControlName="location">
+              <mat-option *ngFor="let lo of location" [value]="lo.state">
+                {{ lo.state }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.form.controls['location']?.errors"
+              >Location is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!-- Transportation  -->
+        <div class="transportation mt-[20px]">
+          <mat-form-field class="w-[100%]">
+            <mat-label>Transportation </mat-label>
+            <mat-select formControlName="transportation">
+              <mat-option
+                *ngFor="let transportation of transportations"
+                [value]="transportation.name"
+              >
+                {{ transportation.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.form.controls['transportation']?.errors"
+              >Transportation is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!-- Departure Date  -->
+        <div class="departure_date mt-[20px]">
+          <mat-form-field class="w-[100%]">
+            <mat-label>Departure Date </mat-label>
+            <input
+              formControlName="departure_date"
+              matInput
+              [matDatepicker]="picker"
+            />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+
+            <mat-error *ngIf="this.form.controls['departure_date']?.errors"
+              >Departure Date is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!-- End Date  -->
+        <div class="end_date mt-[20px]">
+          <mat-form-field class="w-[100%]">
+            <mat-label>End Date </mat-label>
+            <input
+              formControlName="end_date"
+              matInput
+              [matDatepicker]="picker2"
+            />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+
+            <mat-error *ngIf="this.form.controls['end_date']?.errors"
+              >End Date is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!-- Number of people -->
+        <div class="mt-[20px]">
+          <mat-form-field class="w-[100%]">
+            <mat-label>Number of people</mat-label>
+            <input type="number" matInput formControlName="number_people" />
+            <mat-error *ngIf="this.form.controls['number_people']?.errors"
+              >Number of people is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!-- Destination -->
+        <div class="mt-[20px]">
+          <mat-form-field class="w-[100%]">
+            <mat-label>Destination</mat-label>
+            <input matInput formControlName="destination" />
+            <mat-error *ngIf="this.form.controls['destination']?.errors"
+              >Destination is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!--        Description-->
+        <div class="mb-[20px]">
+          <h3 class="font-bold mb-[10px]">Description</h3>
+          <ckeditor
+            [(ngModel)]="description"
+            formControlName="description"
+            [editor]="Editor"
+          ></ckeditor>
+
+          <mat-error
+            *ngIf="
+            (form.controls['description'].errors?.['whitespace'] &&
+            form.controls['description'].dirty) ||
+          (form.controls['description'].errors?.['whitespace'] &&
+            form.controls['description'].touched)
+              "
+          >
+            Description is required
+          </mat-error>
+        </div>
+
+        <!-- Submit -->
+        <div>
+          <button mat-flat-button color="warn">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
