@@ -1,0 +1,76 @@
+<ng-container>
+  <div class="container">
+    <div class="title">
+      <h1 class="text-[23px] font-bold mb-[10px]">Order detail</h1>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="detail mt-[15px]">
+      <!--        Order id-->
+      <div class="flex mb-[8px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Order id:</h3>
+        <span class="text-[18px]">{{ order?.id }}</span>
+      </div>
+
+      <!--        Price-->
+      <div class="flex mb-[8px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Price:</h3>
+        <span class="text-[18px]">{{ order?.price }}</span>
+      </div>
+
+      <!--        Is active-->
+      <div class="flex mb-[8px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Is active:</h3>
+        <span class="text-[18px]">{{ order?.isActive }}</span>
+      </div>
+
+      <!--        Create Date-->
+      <div class="flex mb-[8px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Create Date:</h3>
+        <span class="text-[18px]">{{ order?.createDate | date }}</span>
+      </div>
+
+      <!--        Number of people-->
+      <div class="flex mb-[15px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">Number of people:</h3>
+        <span class="text-[18px]">{{ order?.number_people }}</span>
+      </div>
+
+      <!-- Order Details -->
+      <div class="mb-[15px]">
+        <h3 class="text-[18px] font-bold mr-[10px]">OrderDetails:</h3>
+        <div class="mt-[15px]">
+          <div
+            *ngFor="let orderDe of orderDetail"
+            class="border border-black mb-[10px] w-[70%] p-[10px]"
+          >
+            <div>
+              <h2 class="font-semibold">
+                User: <span class="font-normal">{{ orderDe?.user_Name }}</span>
+              </h2>
+            </div>
+
+            <div class="flex items-center">
+              <h2 class="font-semibold mr-[150px] w-[100px]">
+                Quantity:
+                <span class="font-normal">{{ orderDe?.quantity }}</span>
+              </h2>
+              <h2 class="font-semibold w-[250px] mr-[350px]">
+                Price:
+                <span class="font-normal">{{ orderDe?.price | currency }}</span>
+              </h2>
+              <div>
+                <a
+                  [routerLink]="['/admin/orderdetail/', orderDe?.id]"
+                  class="text-[12px] font-normal text-blue-600"
+                  >Detail</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

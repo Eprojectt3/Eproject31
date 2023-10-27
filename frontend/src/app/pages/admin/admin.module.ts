@@ -69,12 +69,14 @@ import { ToastModule } from 'primeng/toast';
 import { ListDashboardComponent } from './admin-dashboard/list-dashboard/list-dashboard.component';
 import { ChartModule } from 'primeng/chart';
 import { FormsModule } from '@angular/forms';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { DetailStaffComponent } from './admin-staff/detail-staff/detail-staff.component';
 import { UpdateStaffComponent } from './admin-staff/update-staff/update-staff.component';
 import { UpdateTourComponent } from './admin-tour/update-tour/update-tour.component';
 import { DetailTourComponent } from './admin-tour/detail-tour/detail-tour.component';
+import { DetailOrderComponent } from './admin-order/detail-order/detail-order.component';
+import { OrderdetailComponent } from './admin-order/orderdetail/orderdetail.component';
 
 @NgModule({
   declarations: [
@@ -121,11 +123,12 @@ import { DetailTourComponent } from './admin-tour/detail-tour/detail-tour.compon
     ListStaffsComponent,
     CreateStaffComponent,
     ListDashboardComponent,
-
     DetailStaffComponent,
     UpdateStaffComponent,
     UpdateTourComponent,
     DetailTourComponent,
+    DetailOrderComponent,
+    OrderdetailComponent,
   ],
   imports: [
     CommonModule,
@@ -155,7 +158,7 @@ import { DetailTourComponent } from './admin-tour/detail-tour/detail-tour.compon
     ChartModule,
     FormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   exports: [AdminComponent],
 })

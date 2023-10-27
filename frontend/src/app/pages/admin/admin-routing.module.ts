@@ -36,6 +36,9 @@ import { UpdateStaffComponent } from './admin-staff/update-staff/update-staff.co
 import { ListDashboardComponent } from './admin-dashboard/list-dashboard/list-dashboard.component';
 import { DetailTourComponent } from './admin-tour/detail-tour/detail-tour.component';
 import { UpdateTourComponent } from './admin-tour/update-tour/update-tour.component';
+import { ListOrdersComponent } from './admin-order/list-orders/list-orders.component';
+import { DetailOrderComponent } from './admin-order/detail-order/detail-order.component';
+import { OrderdetailComponent } from './admin-order/orderdetail/orderdetail.component';
 
 const routes: Routes = [
   {
@@ -207,6 +210,20 @@ const routes: Routes = [
         component: UpdateStaffComponent,
       },
     ],
+  },
+  {
+    path: 'orders',
+    component: ListOrdersComponent,
+    children: [
+      {
+        path: 'detail/:id',
+        component: DetailOrderComponent,
+      },
+    ],
+  },
+  {
+    path: 'orderdetail/:id',
+    component: OrderdetailComponent,
   },
 
   { path: '', component: AdminComponent, pathMatch: 'full' },

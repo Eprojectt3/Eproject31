@@ -27,25 +27,18 @@ export class OrderService {
   }
 
   // Get list Order pagination
-  public getListOrdersPagination = (
-    pageIndex?: number,
-    pageSize: number = 10
-  ): Observable<Order[]> => {
+  public getListOrdersPagination = (data: any): Observable<Order[]> => {
     return this.httpclient
-      .post<Order[]>(
-        `${AUTH_API}/api/Order/ListOrderPagination`,
-        {
-          pageIndex: pageIndex,
-          pageSize: pageSize,
-        },
-        httpOptions
-      )
+      .post<Order[]>(`${AUTH_API}/api/Order/ListOrderPagination`, data)
       .pipe(tap((val) => this.orderSubject.next(val)));
   };
 
   //get Dashbord Mont/year
 
-  public getListMonthWeek = (year: number, month: number): Observable<Order[]> => {
+  public getListMonthWeek = (
+    year: number,
+    month: number
+  ): Observable<Order[]> => {
     const url = `${AUTH_API}/api/Order/GetRevenueByMonth/${year}/${month}`;
     return this.httpclient.get<Order[]>(url, httpOptions);
   };
@@ -53,11 +46,26 @@ export class OrderService {
   public getListYear = (year: number): Observable<Order[]> => {
     const url = `${AUTH_API}/api/Order/GetRevenueByYear/${year}`;
     return this.httpclient.get<Order[]>(url, httpOptions);
-
   };
 
-  public getDataForDays = (year: number, month: number,day:number): Observable<Order[]> => {
+  public getDataForDays = (
+    year: number,
+    month: number,
+    day: number
+  ): Observable<Order[]> => {
     const url = `${AUTH_API}/api/Order/GetRevenueByDay/${year}/${month}/${day}`;
     return this.httpclient.get<Order[]>(url, httpOptions);
+  };
+
+  public getDetailOrder = (id: number): Observable<any> => {
+    return this.httpclient.get(
+      `${AUTH_API}/api/Order/GetByOrderId/${id}`,
+      httpOptions
+    );
+  };
+
+  // Delete order
+  public deleteOrder = (id: number) => {
+    return this.httpclient.delete(`${AUTH_API}/api/Order/Delete/${id}`);
   };
 }

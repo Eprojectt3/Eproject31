@@ -1,0 +1,59 @@
+<ng-container>
+  <div class="w-[80%] mx-auto p-[15px] bg-white">
+    <div class="title">
+      <h1 class="text-[23px] font-bold mb-[10px]">Order detail</h1>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="detail mt-[15px]">
+      <div *ngFor="let orderDe of orderDetail">
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Order id:</h3>
+          <span class="text-[18px]">{{ orderDe?.id }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Payment id:</h3>
+          <span class="text-[18px]">{{ orderDe?.payment_ID }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Price:</h3>
+          <span class="text-[18px]">{{ orderDe?.price }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Quantity:</h3>
+          <span class="text-[18px]">{{ orderDe?.quantity }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Range time:</h3>
+          <span class="text-[18px]">{{ orderDe?.range_time }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Start Date:</h3>
+          <span class="text-[18px]">{{ orderDe?.tourDetail?.start_Date }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">End Date:</h3>
+          <span class="text-[18px]">{{ orderDe?.tourDetail?.end_Date }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Tour:</h3>
+          <span class="text-[18px]">{{ orderDe?.tourName }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Transportation:</h3>
+          <span class="text-[18px]">{{ orderDe?.transportation?.name }}</span>
+        </div>
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Type payment:</h3>
+          <span class="text-[18px]">{{ orderDe?.type_Payment }}</span>
+        </div>
+
+        <div class="flex mb-[8px]">
+          <h3 class="text-[18px] font-bold mr-[10px]">Username:</h3>
+          <span class="text-[18px]">{{ orderDe?.user_Name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
