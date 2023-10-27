@@ -84,12 +84,14 @@ namespace webapi.Controllers
         {
             var validUser = await userService.IsValidUserAsync(user.Username, user.Password);
 
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == validUser.RoleId);
+
             if (validUser is null)
             {
                 return Unauthorized(new { Message = "Incorrect username or password!" });
             }
 
-            var token = jWTManager.GenerateToken(user.Username, validUser.RoleId);
+            var token = jWTManager.GenerateToken(user.Username, role.Name);
 
             if (token is null)
             {
@@ -138,7 +140,7 @@ namespace webapi.Controllers
                 return Unauthorized(new { Message = "Invalid attempt!" });
             }
 
-            var newJwtToken = jWTManager.GenerateRefreshToken(username, int.Parse(role));
+            var newJwtToken = jWTManager.GenerateRefreshToken(username, role);
 
             if (newJwtToken == null)
             {

@@ -10,8 +10,8 @@ namespace backend.Controllers
     [ApiController]
     public class InformationController : ControllerBase
     {
-
         public InformationBusinessLogic informationBusinessLogic;
+
         public InformationController(InformationBusinessLogic Bussiness)
         {
             informationBusinessLogic = Bussiness;
@@ -19,6 +19,7 @@ namespace backend.Controllers
 
         // execute list all information
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ListInformation()
         {
             var output = await informationBusinessLogic.SelectAllInformation();
@@ -48,10 +49,8 @@ namespace backend.Controllers
         //execute add new information
         [HttpPost]
         [Authorize(Roles = "Admin")]
-
         public async Task<IActionResult> Add(Information information)
         {
-
             await informationBusinessLogic.Create(information);
 
             return Ok(information);
@@ -60,10 +59,8 @@ namespace backend.Controllers
         //execute update information
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-
-        public async Task<IActionResult> Update(Information information,int id)
+        public async Task<IActionResult> Update(Information information, int id)
         {
-
             await informationBusinessLogic.Update(information, id);
             return Ok(information);
         }
@@ -71,15 +68,12 @@ namespace backend.Controllers
         //execute delete information
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-
         public async Task<IActionResult> Delete(int id)
         {
             await informationBusinessLogic.Delete(id);
-            return Ok(new
-            {
-                message = "Delete success"
-            });
+            return Ok(new { message = "Delete success" });
         }
+
         [HttpPost]
         public async Task<ActionResult> ListInformationPagination(SpecParams pagination)
         {
