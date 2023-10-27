@@ -1,17 +1,17 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { Staff } from 'src/app/models/staff.model';
-import { Tour } from 'src/app/models/tour';
-import { TourDetail } from 'src/app/models/tour-detail.model';
-import { User } from 'src/app/models/user.model';
-import { OrderService } from 'src/app/services/order.service';
-import { StaffService } from 'src/app/services/staff.service';
-import { TokenStorageService } from 'src/app/services/token-storage.service';
-import { TourDetailService } from 'src/app/services/tour-detail.service';
-import { TourService } from 'src/app/services/tour.service';
-import { ValidatorFormService } from 'src/app/services/validator-form.service';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute} from '@angular/router';
+import {Staff} from 'src/app/models/staff.model';
+import {Tour} from 'src/app/models/tour';
+import {TourDetail} from 'src/app/models/tour-detail.model';
+import {User} from 'src/app/models/user.model';
+import {StaffService} from 'src/app/services/staff.service';
+import {TokenStorageService} from 'src/app/services/token-storage.service';
+import {TourDetailService} from 'src/app/services/tour-detail.service';
+import {TourService} from 'src/app/services/tour.service';
+import {ValidatorFormService} from 'src/app/services/validator-form.service';
+import {SnackbarService} from "../../../../services/snackbar.service";
 
 @Component({
   selector: 'app-create-order',
@@ -28,16 +28,16 @@ export class CreateOrderComponent implements OnInit {
   selectedDate2: Date = new Date();
   minDate: Date = new Date();
   maxDate: Date = new Date();
-  listTourDetail!: TourDetail[];
+  listTourDetailFilter!: any;
+  listTourDetail!: any
   tours!: Tour;
   quantity: number = 1;
   isValidOrder: boolean = true;
   totalPrice!: number;
   staff!: Staff[];
-  tourDetaiCountByDate: Map<any, any> = new Map();
   dailyTourDetailMap: Map<string, any[]> = new Map<string, any[]>();
-  orderMap: Map<any, any> = new Map();
   startDate: any;
+  limitQuantity!: number
   @Output() tourInfo = new EventEmitter<any>();
 
   constructor(
@@ -48,21 +48,21 @@ export class CreateOrderComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private tourDetailService: TourDetailService,
-    public orderService: OrderService,
-    private staffService: StaffService
-  ) {}
+    private staffService: StaffService,
+    private snackBarService: SnackbarService
+  ) {
+  }
 
   ngOnInit(): void {
     // Create formgroup and form control
     this.form = this.fb.group({
-      departure_date: ['', Validators.compose([Validators.required])],
+      departure_date: ['', [Validators.required]],
       end_date: ['', Validators.compose([Validators.required])],
       number_of_people: [
         '',
-        Validators.compose([
-          this.validatorForm.NoWhitespaceValidator(),
+        [this.validatorForm.NoWhitespaceValidator(),
           Validators.min(1),
-        ]),
+          this.isExceedLimitQuantityFn.bind(this)]
       ],
     });
 
@@ -99,14 +99,17 @@ export class CreateOrderComponent implements OnInit {
       this.tours = tour;
       this.totalPrice = Number(this.tours.price);
 
+      this.limitQuantity = Number(tour.quantity_limit)
+
       this.tourDetailService
         .getListTourDetail()
         .subscribe((tourDetails: TourDetail[]) => {
-          this.listTourDetail = tourDetails.filter((tourDetail: TourDetail) => {
+          this.listTourDetail = tourDetails
+          this.listTourDetailFilter = tourDetails.filter((tourDetail: TourDetail) => {
             return tourDetail.tourId === tour.id;
           });
 
-          for (let tourDe of this.listTourDetail) {
+          for (let tourDe of this.listTourDetailFilter) {
             this.startDate = new Date(tourDe.start_Date as Date)
               .getDate()
               .toString();
@@ -120,12 +123,8 @@ export class CreateOrderComponent implements OnInit {
         });
     });
 
-    // Time
-    // this.selectedDate2 = new Date(this.selectedDate1);
-    // this.selectedDate2.setDate(this.selectedDate2.getDate() + this.rangeTime);
-
     // Get list staff
-    this.staffService.getListStaff().subscribe((val) => {
+    this.staffService.getListStaff().subscribe((val: Staff[]) => {
       this.staff = val;
     });
   }
@@ -133,29 +132,40 @@ export class CreateOrderComponent implements OnInit {
   // OnSubmit
   public onSubmit(): void {
     let isStaffActive: boolean = true;
-    let staffId: number = 0;
-    staffId = 2
-    // do {
-    //   staffId = Math.floor(Math.random() * this.staff.length);
+    let staffId: number = 2;
 
-    //   this.tourDetailService.getListTourDetail().subscribe((val: any) => {
-    //     console.log(val)
-    //     for (let va of val) {
-    //       if (va.staff_Id === staffId) {
-    //         if (va.isActive) {
-    //           isStaffActive = false;
-    //         }
-    //       }
-    //     }
-    //   });
-    // } while (!isStaffActive);
+    let filteredStaff: any[] = []
+
+    if (this.staff.length > 0) {
+      for (const tourDetail of this.listTourDetail) {
+        const foundStaff = this.staff.find(item => item.id === tourDetail.staff_Id)
+
+        if (foundStaff) {
+          if (!filteredStaff.includes(foundStaff)) {
+            filteredStaff.push(foundStaff)
+          }
+        }
+      }
+
+      const c = this.staff.filter(item => !filteredStaff.includes(item))
+
+      staffId = Math.floor(Math.random() * c.length);
+
+    } else {
+      staffId = 2
+    }
+
+    const startDate: Date = new Date(this.form.controls['departure_date'].value)
+    startDate.setDate(startDate.getDate() + 1)
+    const endDate: Date = new Date(this.form.controls['end_date'].value)
+    endDate.setDate(endDate.getDate() + 1)
 
     const tourInformation = {
       tourName: this.tourName,
       price: this.totalPrice,
       quantity: this.form.controls['number_of_people'].value,
-      startDate: new Date(this.form.controls['departure_date'].value),
-      endDate: new Date(this.form.controls['end_date'].value),
+      startDate: startDate,
+      endDate: endDate,
       priceOfTour: this.tours.price,
       tourId: this.tours.id,
       staff_Id: staffId,
@@ -170,27 +180,61 @@ export class CreateOrderComponent implements OnInit {
   // Change Date
   public onDate1Change = (e: any) => {
     this.selectedDate1 = e.value;
-
+    this.form.controls['number_of_people'].setValue(1);
     this.selectedDate2 = new Date(this.selectedDate1);
 
     this.selectedDate2.setDate(this.selectedDate2.getDate() + this.rangeTime);
-    console.log(this.selectedDate2);
+    // this.isExceedLimitQuantity()
   };
 
   public changeNumberOfPeople = (e: any) => {
     this.totalPrice = Number(e.target.value) * Number(this.tours.price);
   };
 
-  // Disable day has tour exceed quatity limt
+  // Disable day has tour exceed quantity limit
   public isDisable = (d: Date | null): boolean => {
     const day = (d || new Date()).getDate();
+    let dayKey!: number
+    const arrayKey: string[] = [...this.dailyTourDetailMap.keys()]
+    const arrayValue = [...this.dailyTourDetailMap.values()]
 
     for (const [key, value] of this.dailyTourDetailMap) {
-      if (value.length >= Number(this.tours?.quantity_limit)) {
-        return day !== Number(key);
+      if (Number(key) === day) {
+        for (let val of value) {
+          if (val.quantity < 1) {
+            return day !== Number(key)
+          }
+        }
       }
     }
-
     return true;
   };
+
+  // Check isExceedLimitQuantity
+  public isExceedLimitQuantityFn = (control: FormControl) => {
+    let isExceedLimitQuantity: boolean = false;
+    const currentDate: Date = new Date(this.selectedDate1)
+    const arrayKey: string[] = [...this.dailyTourDetailMap.keys()]
+    const arrayValue = [...this.dailyTourDetailMap.values()]
+
+    if (arrayKey.includes(String(currentDate.getDate()))) {
+      for (let values of arrayValue) {
+        for (let value of values) {
+          const currentValueDate: number = new Date(value.start_Date).getDate()
+          if (currentValueDate === currentDate.getDate()) {
+            if (Number(value.quantity) < 1 || Number(control.value) > Number(value.quantity)) {
+              this.snackBarService.openSnackBar("The number of people has exceeded", "Error")
+              isExceedLimitQuantity = true;
+            }
+          }
+        }
+      }
+    } else {
+      if (this.limitQuantity < control.value) {
+        this.snackBarService.openSnackBar("The number of people has exceeded", "Error")
+        isExceedLimitQuantity = true;
+      }
+    }
+    return !isExceedLimitQuantity ? null : {exceedLimitQuantity: 'The number of people has exceeded'}
+  }
 }

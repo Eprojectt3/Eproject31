@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -6,16 +6,17 @@ import {
   HttpInterceptor,
   HttpResponse,
 } from '@angular/common/http';
-import { Observable, catchError, throwError, tap, map } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
-import { TokenStorageService } from 'src/app/services/token-storage.service';
+import {Observable, catchError, throwError, tap, map} from 'rxjs';
+import {AuthService} from '../../services/auth.service';
+import {TokenStorageService} from 'src/app/services/token-storage.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private tokenStorage: TokenStorageService,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   intercept(
     request: HttpRequest<any>,
@@ -32,11 +33,9 @@ export class ErrorInterceptor implements HttpInterceptor {
       // }),
       catchError((err) => {
         if (
-          [401, 403, 400].includes(err.status) &&
-          this.authService.userValue
+          [401, 400].includes(err.status) &&
+          this.tokenStorage.getUser() !== null
         ) {
-          console.log('son');
-
           // this.tokenStorage.signOut();
           this.authService.logout();
         }

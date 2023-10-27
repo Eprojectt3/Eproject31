@@ -71,7 +71,8 @@
 
               <mat-error
                 *ngIf="form.controls['departure_date']?.errors?.['required']"
-                >Departure date is required</mat-error
+              >Departure date is required
+              </mat-error
               >
             </mat-form-field>
 
@@ -95,6 +96,7 @@
             </mat-form-field>
           </div>
 
+          <!--          Number of people-->
           <div class="text-left mt-[10px]">
             <mat-form-field class="example-full-width w-[45%]">
               <mat-label>Number of people</mat-label>
@@ -107,8 +109,11 @@
                 (change)="changeNumberOfPeople($event)"
                 min="0"
               />
-              <mat-error *ngIf="form.controls['number_of_people']?.errors"
-                >Number of people are required
+              <mat-error *ngIf="form.controls['number_of_people']?.errors?.['whitespace']"
+              >Number of people are required
+              </mat-error>
+              <mat-error *ngIf="form.controls['number_of_people']?.errors?.['exceedLimitQuantity']"
+              >{{form.controls['number_of_people']?.errors?.['exceedLimitQuantity']}}
               </mat-error>
             </mat-form-field>
           </div>
@@ -118,11 +123,11 @@
         <div class="ml-[70%]">
           <h2 class="font-medium">Price</h2>
           <span class="text-[20px] text-[#F81919]"
-            >VND: {{ totalPrice * 24456 | currency : "VND" }}</span
+          >VND: {{ totalPrice * 24456 | currency : "VND" }}</span
           >
-          <br />
+          <br/>
           <span class="text-[20px] text-[#F81919]"
-            >USD: {{ totalPrice | currency }}</span
+          >USD: {{ totalPrice | currency }}</span
           >
         </div>
 
@@ -133,9 +138,9 @@
           class="mt-[20px] ml-[75%] !w-[40px]"
           type="submit"
           *ngIf="
+            (!form.controls['departure_date']?.errors &&
             !form.controls['departure_date']?.errors &&
-            !form.controls['departure_date']?.errors &&
-            !form.controls['number_of_people']?.errors
+            !form.controls['number_of_people']?.errors)
           "
         >
           Next
@@ -146,13 +151,26 @@
           class="mt-[20px] ml-[75%] !w-[40px]"
           type="submit"
           *ngIf="
+            (form.controls['departure_date']?.errors ||
             form.controls['departure_date']?.errors ||
-            form.controls['departure_date']?.errors ||
-            form.controls['number_of_people']?.errors
+            form.controls['number_of_people']?.errors)
           "
         >
           Next
         </button>
+        <!--        <button-->
+        <!--          mat-flat-button-->
+        <!--          color="warn"-->
+        <!--          class="mt-[20px] ml-[75%] !w-[40px]"-->
+        <!--          type="submit"-->
+        <!--          *ngIf="-->
+        <!--            (!form.controls['departure_date']?.errors ||-->
+        <!--            !form.controls['departure_date']?.errors ||-->
+        <!--            !form.controls['number_of_people']?.errors ) -->
+        <!--          "-->
+        <!--        >-->
+        <!--          Next-->
+        <!--        </button>-->
       </form>
     </div>
   </div>

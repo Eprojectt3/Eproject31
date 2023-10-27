@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PaymentService } from 'src/app/services/payment.service';
-import { TokenStorageService } from 'src/app/services/token-storage.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {PaymentService} from 'src/app/services/payment.service';
+import {TokenStorageService} from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-paypal-success',
@@ -17,7 +17,8 @@ export class PaypalSuccessComponent implements OnInit {
     private route: ActivatedRoute,
     private tokenStorage: TokenStorageService,
     private paymentService: PaymentService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {

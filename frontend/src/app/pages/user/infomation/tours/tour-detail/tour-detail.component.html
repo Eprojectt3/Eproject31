@@ -12,9 +12,7 @@
 
           <!-- Content -->
           <div class="content mt-[16px]">
-            <p>
-              {{ tour?.description }}
-            </p>
+            <p [innerHTML]="tour?.description"></p>
           </div>
 
           <!-- List Information -->
@@ -24,7 +22,7 @@
             <!-- Departure Place -->
             <div class="mt-[17px] mb-[17px] flex justify-between">
               <span class="font-bold text-[16px] ml-[10px]"
-                >Departure Place</span
+              >Departure Place</span
               >
               <span class="mr-[15px]">{{ tour?.departure_location }}</span>
             </div>
@@ -38,7 +36,8 @@
                 <ul *ngFor="let service of services">
                   <li class="flex items-center">
                     <mat-icon class="text-[#29D930] mr-[5px]"
-                      >check_circle</mat-icon
+                    >check_circle
+                    </mat-icon
                     >
                     <span>{{ service?.name }}</span>
                   </li>
@@ -51,14 +50,14 @@
             <div class="rating mt-[17px] mb-[17px] flex justify-between">
               <span class="font-bold text-[16px] ml-[10px]">Rating</span>
               <span class="mr-[15px]"
-                ><p-rating
-                  [iconOnStyle]="{
+              ><p-rating
+                [iconOnStyle]="{
                     color: '#F67905'
                   }"
-                  [(ngModel)]="tour.rating"
-                  [readonly]="true"
-                  [cancel]="false"
-                ></p-rating
+                [(ngModel)]="tour.rating"
+                [readonly]="true"
+                [cancel]="false"
+              ></p-rating
               ></span>
             </div>
             <mat-divider></mat-divider>
@@ -130,8 +129,8 @@
         <h2 class="font-medium text-[27px]">Price</h2>
         <span class="text-[25px] text-[#FA5858] font-semibold">{{
           tour?.price
-        }}</span
-        ><br />
+          }}</span
+        ><br/>
         <button
           mat-flat-button
           color="warn"
@@ -144,9 +143,9 @@
 
       <div class="mt-[20px] px-[10px]">
         <div class="flex items-center">
-          <mat-icon class="text-[15px] text-[#FA5858]"> schedule </mat-icon>
+          <mat-icon class="text-[15px] text-[#FA5858]"> schedule</mat-icon>
           <span class="text-[13px] font-semibold"
-            >About:
+          >About:
             <span class="font-normal">{{ tour?.range_time }} days</span></span
           >
         </div>
@@ -169,10 +168,10 @@
         <div class="flex items-center mt-[7px]">
           <mat-icon class="text-[15px] text-[#FA5858]">location_on</mat-icon>
           <span class="text-[13px] font-semibold"
-            >Destination:
+          >Destination:
             <span class="font-normal">{{
               tour?.departure_location
-            }}</span></span
+              }}</span></span
           >
         </div>
       </div>
