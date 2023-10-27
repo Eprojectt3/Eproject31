@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ErrorStateMatcher } from '@angular/material/core';
+import {Injectable} from '@angular/core';
+import {ErrorStateMatcher} from '@angular/material/core';
 import {
   AbstractControl,
   FormGroupDirective,
@@ -10,7 +10,8 @@ import {
   providedIn: 'root',
 })
 export class ValidatorFormService implements ErrorStateMatcher {
-  constructor() { }
+  constructor() {
+  }
 
   // Validate if have whitespace will error
   NoWhitespaceValidator = (): ValidatorFn => {
@@ -25,7 +26,7 @@ export class ValidatorFormService implements ErrorStateMatcher {
       let isValid = !isWhitespace;
       return isValid
         ? null
-        : { whitespace: 'value must be not on white space' };
+        : {whitespace: 'value must be not on white space'};
     };
   };
 
