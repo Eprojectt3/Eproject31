@@ -1,8 +1,7 @@
 <ng-container class="tours-list w-[100%]">
   <!-- Filter -->
-  <section id="filter" class="w-[80%] m-auto flex justify-end mt-[15px]">
-    <!-- select-filter -->
-    <div class="select-filter">
+  <!-- <section id="filter" class="w-[80%] m-auto flex justify-end mt-[15px]"> -->
+  <!-- <div class="select-filter">
       <mat-form-field class="">
         <mat-label class="text-[#A9A9A9]">
           <mat-icon class="text-[#A9A9A9]">filter_alt</mat-icon>
@@ -14,6 +13,15 @@
           }}</mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+  </section> -->
+
+  <!-- Custom tour -->
+  <section id="custome-tour" class="mt-[30px]">
+    <div class="flex justify-end w-[90%]">
+      <button mat-flat-button color="warn" (click)="openCustomTour()">
+        Custom your tour
+      </button>
     </div>
   </section>
 
