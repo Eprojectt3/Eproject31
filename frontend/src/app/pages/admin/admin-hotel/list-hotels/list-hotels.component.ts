@@ -32,7 +32,6 @@ export class ListHotelsComponent implements OnInit {
   public index: number = 1;
   public dataSource = new MatTableDataSource<Hotel>([]);
   public data = {
-
     place_Type_ID: 1,
   };
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -71,24 +70,21 @@ export class ListHotelsComponent implements OnInit {
       pageSize: this.pageSize,
       place_Type_ID: 1,
     };
-    this.placeService
-      .getListPlacePagination(data)
-      .subscribe((val: any) => {
-        this.hotels = val.data;
-        this.totalSize = val.count;
-        this.dataSource = val.data;
-      });
+    this.placeService.getListPlacePagination(data).subscribe((val: any) => {
+      this.hotels = val.data;
+      this.totalSize = val.count;
+      this.dataSource = val.data;
+    });
   };
 
   // Delete hotel
   public deleteHotels = (id: number): void => {
-
     this.placeService.DeletePlace(id).subscribe(
       (val: any) => {
         this.snackBar.openSnackBar('Delete success', 'Success');
         this.getListHotels();
       },
-      (err:any) => {
+      (err: any) => {
         this.snackBar.openSnackBar(err, 'Error');
         console.log(err);
       }

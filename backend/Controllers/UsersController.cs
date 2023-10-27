@@ -84,12 +84,12 @@ namespace webapi.Controllers
         {
             var validUser = await userService.IsValidUserAsync(user.Username, user.Password);
 
-            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == validUser.RoleId);
-
             if (validUser is null)
             {
                 return Unauthorized(new { Message = "Incorrect username or password!" });
             }
+
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == validUser.RoleId);
 
             var token = jWTManager.GenerateToken(user.Username, role.Name);
 

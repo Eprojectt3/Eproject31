@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Role, Role1 } from 'src/app/models/role.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { PreviousRouteServiceService } from 'src/app/services/previous-route-service.service';
-import { RoleService } from 'src/app/services/role.service';
-import { SnackbarService } from 'src/app/services/snackbar.service';
-import { ValidatorFormService } from 'src/app/services/validator-form.service';
+import {Router} from '@angular/router';
+import {Role, Role1} from 'src/app/models/role.model';
+import {AuthService} from 'src/app/services/auth.service';
+import {PreviousRouteServiceService} from 'src/app/services/previous-route-service.service';
+import {RoleService} from 'src/app/services/role.service';
+import {SnackbarService} from 'src/app/services/snackbar.service';
+import {ValidatorFormService} from 'src/app/services/validator-form.service';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +31,8 @@ export class RegisterComponent implements OnInit {
     private snackBar: SnackbarService,
     private router: Router,
     private previousRouteService: PreviousRouteServiceService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -92,13 +93,11 @@ export class RegisterComponent implements OnInit {
     const newPassword = this.form?.get('password')?.value;
     const confirmPassword = control.value;
 
-    return newPassword === confirmPassword ? null : { passwordMismatch: true };
+    return newPassword === confirmPassword ? null : {passwordMismatch: true};
   };
 
   // Submit
   public onSubmit = () => {
-    console.log(this.form.get('username')?.value);
-
     const data = {
       username: this.form.get('username')?.value,
       name: this.form.get('name')?.value,

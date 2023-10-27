@@ -1,1 +1,95 @@
-<p>list-orders works!</p>
+<section class="w-[100%] bg-white p-[15px] h-[auto] m-auto">
+  <div *ngIf="!isShowDetailOrder() && !isUpdateOrder()">
+    <div class="mb-[30px] ml-[25px] mt-[20px] flex w-[96%] justify-between">
+      <h1 class="font-[600] text-[25px]">Orders</h1>
+
+      <!-- Button create -->
+      <!-- <div class="">
+        <button
+          routerLink="/admin/hotels/create"
+          mat-flat-button
+          color="primary"
+          class="w-[150px] !rounded-[30px]"
+        >
+          Create
+        </button>
+      </div> -->
+    </div>
+
+    <!-- Table  -->
+    <div class="table-categories w-[97%] m-auto">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>Id</th>
+          <td mat-cell *matCellDef="let element">{{ element?.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let element">{{ element?.price }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="isactive">
+          <th mat-header-cell *matHeaderCellDef>Active</th>
+          <td mat-cell *matCellDef="let element">{{ element?.isActive }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="number_of_people">
+          <th mat-header-cell *matHeaderCellDef>Number of people</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element?.number_people }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action" class="">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element" class="w-[400px]">
+            <!-- <button
+              mat-flat-button
+              color="primary"
+              class="mr-[10px]"
+              [routerLink]="['', element.id]"
+            >
+              Edit
+            </button> -->
+            <button
+              mat-flat-button
+              color="primary"
+              class="mr-[10px]"
+              [routerLink]="['/admin/orders/detail', element.id]"
+            >
+              Detail
+            </button>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="deleteOrder(element.id)"
+            >
+              Delete
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <mat-paginator
+        #paginator
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        (page)="pageEvent = handlePage($event)"
+        [pageSizeOptions]="[5, 10]"
+        [length]="totalSize"
+        showFirstLastButtons
+        aria-label="Select
+        page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+
+  <div *ngIf="isShowDetailOrder() || isUpdateOrder()">
+    <router-outlet></router-outlet>
+  </div>
+</section>

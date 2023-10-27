@@ -12,6 +12,7 @@ namespace backend.Controllers
     public class RoleController : ControllerBase
     {
         public RoleBusinessLogic roleBusinessLogic;
+
         //private readonly IResponseCacheService responseCacheService;
         public RoleController(RoleBusinessLogic roleBussiness)
         {
@@ -22,8 +23,6 @@ namespace backend.Controllers
         // execute list all role
         [HttpGet]
         //[Cache(1400)]
-        [Authorize(Roles = "Admin")]
-
         public async Task<ActionResult> ListRole()
         {
             var output = await roleBusinessLogic.SelectAllRole();
@@ -37,10 +36,8 @@ namespace backend.Controllers
         //execute add new role
         [HttpPost]
         [Authorize(Roles = "Admin")]
-
         public async Task<IActionResult> Add(Role role)
         {
-
             await roleBusinessLogic.Create(role);
 
             var api = "/api/Role/ListRole*";
@@ -51,15 +48,11 @@ namespace backend.Controllers
         //execute update role
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-
-        public async Task<IActionResult> Update(Role role,int id)
+        public async Task<IActionResult> Update(Role role, int id)
         {
-
             await roleBusinessLogic.Update(role, id);
             return Ok(role);
         }
-
-
 
         //execute delete role
         //[HttpDelete("{id}")]
