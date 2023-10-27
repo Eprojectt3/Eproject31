@@ -183,8 +183,8 @@ export class UpdateTourComponent implements OnInit {
     });
   };
 
-   // Remove Image
-   public onRemove = (event: any) => {
+  // Remove Image
+  public onRemove = (event: any) => {
     this.uploadedImages = this.uploadedImages.filter((val: File) => {
       return val !== event.file;
     });
@@ -196,16 +196,12 @@ export class UpdateTourComponent implements OnInit {
     const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     const allowedExtensionName = ['.jpg', '/jpeg', '.png'];
 
-    if (uploadedImage.size < 100000) {
-      if (allowedTypes.includes(uploadedImage.type)) {
-        allowedExtensionName.map((item) => {
-          if (uploadedImage.name.includes(item)) {
-            this.uploadedImages.push(uploadedImage);
-          }
-        });
-      }
-    } else {
-      console.error('File size is too large');
+    if (allowedTypes.includes(uploadedImage.type)) {
+      allowedExtensionName.map((item) => {
+        if (uploadedImage.name.includes(item)) {
+          this.uploadedImages.push(uploadedImage);
+        }
+      });
     }
   };
 

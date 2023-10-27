@@ -15,7 +15,6 @@ const httpOptions = {
 export class PlaceService {
   public placeSubject: BehaviorSubject<Place[] | null>;
 
-
   constructor(private httpclient: HttpClient) {
     this.placeSubject = new BehaviorSubject<Place[] | null>(null);
   }
@@ -25,13 +24,13 @@ export class PlaceService {
     return this.httpclient.get(`${AUTH_API}/api/Place/ListHotel`, httpOptions);
   };
 
- // Create hotel
- public createPlace = (data: any): Observable<any> => {
-  return this.httpclient.post(`${AUTH_API}/api/Place/Add`, data);
-};
-  public DeletePlace = (id:number):Observable<any>=>{
-    return this.httpclient.delete(`${AUTH_API}/api/Place/Delete/${id}`)
-  }
+  // Create hotel
+  public createPlace = (data: any): Observable<any> => {
+    return this.httpclient.post(`${AUTH_API}/api/Place/Add`, data);
+  };
+  public DeletePlace = (id: number): Observable<any> => {
+    return this.httpclient.delete(`${AUTH_API}/api/Place/Delete/${id}`);
+  };
   // Update Place
   public updatePlace = (data: any): Observable<any> => {
     return this.httpclient.put(`${AUTH_API}/api/Place/Update`, data);
@@ -53,7 +52,8 @@ export class PlaceService {
 
   // Get place by id
   public getPlaceById = (id: number): Observable<any> => {
-    return this.httpclient.get(
-      `${AUTH_API}/api/Place/GetByHotelId/${id}`,httpOptions).pipe(tap((val: any) => this.placeSubject.next(val)));;
+    return this.httpclient
+      .get(`${AUTH_API}/api/Place/GetByHotelId/${id}`, httpOptions)
+      .pipe(tap((val: any) => this.placeSubject.next(val)));
   };
 }

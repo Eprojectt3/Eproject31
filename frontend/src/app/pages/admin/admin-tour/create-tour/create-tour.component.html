@@ -1,137 +1,174 @@
 <ng-container>
-    <div class="px-5">
-        <!--        Title-->
-        <div class="mb-[20px]">
-            <h1 class="font-bold text-[25px]">Create tour</h1>
+  <div class="px-5">
+    <!--        Title-->
+    <div class="mb-[20px]">
+      <h1 class="font-bold text-[25px]">Create tour</h1>
+    </div>
+
+    <!--        Form-->
+    <div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!--          tour name-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Tour name</mat-label>
+            <input
+              matInput
+              formControlName="name"
+              [errorStateMatcher]="validatorForm"
+            />
+            <mat-error *ngIf="loginForm.controls['name'].errors?.['whitespace']"
+              >Name tour is required
+            </mat-error>
+          </mat-form-field>
         </div>
 
-        <!--        Form-->
-        <div>
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <!--          tour name-->
-                <div class="w-[100%]">
-                    <mat-form-field class="!w-[100%]">
-                        <mat-label>Tour name</mat-label>
-                        <input matInput formControlName="name" [errorStateMatcher]="validatorForm" />
-                        <mat-error *ngIf="loginForm.controls['name'].errors?.['whitespace']">Name tour is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+        <!--          Price-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Price</mat-label>
+            <input
+              matInput
+              formControlName="price"
+              [errorStateMatcher]="validatorForm"
+            />
+            <mat-error
+              *ngIf="loginForm.controls['price'].errors?.['whitespace']"
+              >Price is required
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-                <!--          Price-->
-                <div class="w-[100%]">
-                    <mat-form-field class="!w-[100%]">
-                        <mat-label>Price</mat-label>
-                        <input matInput formControlName="price" [errorStateMatcher]="validatorForm" />
-                        <mat-error *ngIf="loginForm.controls['price'].errors?.['whitespace']">Price is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+        <div class="flex justify-around">
+          <!--          Category-->
+          <div class="w-[100%]">
+            <mat-form-field class="!w-[97%]">
+              <mat-label>Category</mat-label>
+              <mat-select formControlName="category">
+                <mat-option
+                  *ngFor="let category of category"
+                  [value]="category.id"
+                  >{{ category.name }}</mat-option
+                >
+              </mat-select>
+              <mat-error
+                *ngIf="loginForm.controls['category'].errors?.['required']"
+              >
+                Please choose a option
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="flex justify-around">
+          <!--          Transportation-->
+          <div class="w-[100%]">
+            <mat-form-field class="!w-[97%]">
+              <mat-label>Transportation</mat-label>
+              <mat-select formControlName="transportation">
+                <mat-option
+                  *ngFor="let transportation of transportation"
+                  [value]="transportation.id"
+                  >{{ transportation.name }}</mat-option
+                >
+              </mat-select>
+              <mat-error
+                *ngIf="loginForm.controls['transportation'].errors?.['required']"
+              >
+                Please choose a option
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <!--          Price-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Quantity limit</mat-label>
+            <input
+              matInput
+              formControlName="quantity_limit"
+              [errorStateMatcher]="validatorForm"
+            />
+            <mat-error
+              *ngIf="loginForm.controls['quantity_limit'].errors?.['whitespace']"
+              >quantity_limit is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!--          Range time-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Range time</mat-label>
+            <input matInput formControlName="range_time" />
+            <mat-error
+              *ngIf="loginForm.controls['range_time'].errors?.['whitespace']"
+              >Range time is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!--          Discount-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Discount</mat-label>
+            <input matInput formControlName="discount" />
+            <mat-error
+              *ngIf="loginForm.controls['discount'].errors?.['whitespace']"
+              >Discount is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!--          Departure location-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Departure location</mat-label>
+            <input matInput formControlName="departure_location" />
+            <mat-error
+              *ngIf="loginForm.controls['departure_location'].errors?.['whitespace']"
+              >Departure location is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!--        Description-->
+        <div class="mb-[20px]">
+          <h3 class="font-bold mb-[10px]">Description</h3>
+          <ckeditor
+            [(ngModel)]="description"
+            formControlName="description"
+            [editor]="Editor"
+          ></ckeditor>
 
-                <div class="flex justify-around">
-                    <!--          Category-->
-                    <div class="w-[100%]">
-                        <mat-form-field class="!w-[97%]">
-                            <mat-label>Category</mat-label>
-                            <mat-select formControlName="category">
-                                <mat-option *ngFor="let category of category" [value]="category.id">{{ category.name
-                                    }}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="loginForm.controls['category'].errors?.['required']">
-                                Please choose a option
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="flex justify-around">
-                    <!--          Transportation-->
-                    <div class="w-[100%]">
-                        <mat-form-field class="!w-[97%]">
-                            <mat-label>Transportation</mat-label>
-                            <mat-select formControlName="transportation">
-                                <mat-option *ngFor="let transportation of transportation" [value]="transportation.id">{{
-                                    transportation.name
-                                    }}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="loginForm.controls['transportation'].errors?.['required']">
-                                Please choose a option
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                </div>
-                 <!--          Price-->
-                 <div class="w-[100%]">
-                  <mat-form-field class="!w-[100%]">
-                      <mat-label>Quantity limit</mat-label>
-                      <input matInput formControlName="quantity_limit" [errorStateMatcher]="validatorForm" />
-                      <mat-error *ngIf="loginForm.controls['quantity_limit'].errors?.['whitespace']">quantity_limit is required
-                      </mat-error>
-                  </mat-form-field>
-              </div>
-                <!--          Range time-->
-                <div class="w-[100%]">
-                    <mat-form-field class="!w-[100%]">
-                        <mat-label>Range time</mat-label>
-                        <input matInput formControlName="range_time" />
-                        <mat-error *ngIf="loginForm.controls['range_time'].errors?.['whitespace']">Range time is
-                            required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <!--          Discount-->
-                <div class="w-[100%]">
-                    <mat-form-field class="!w-[100%]">
-                        <mat-label>Discount</mat-label>
-                        <input matInput formControlName="discount" />
-                        <mat-error *ngIf="loginForm.controls['discount'].errors?.['whitespace']">Discount is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <!--          Departure location-->
-                <div class="w-[100%]">
-                    <mat-form-field class="!w-[100%]">
-                        <mat-label>Departure location</mat-label>
-                        <input matInput formControlName="departure_location" />
-                        <mat-error *ngIf="loginForm.controls['departure_location'].errors?.['whitespace']">Departure
-                            location is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <!--        Description-->
-                <div class="mb-[20px]">
-                    <h3 class="font-bold mb-[10px]">Description</h3>
-                    <ckeditor
-                      [(ngModel)]="description"
-                      formControlName="description"
-                      [editor]="Editor"
-                    ></ckeditor>
-
-                    <mat-error
-                      *ngIf="
+          <mat-error
+            *ngIf="
                         (loginForm.controls['description'].errors?.['whitespace'] &&
                           loginForm.controls['description'].dirty) ||
                         (loginForm.controls['description'].errors?.['whitespace'] &&
                           loginForm.controls['description'].touched)
                       "
-                    >
-                      Description is required
-                    </mat-error>
-                  </div>
-
-                <!--        Image Upload-->
-                <div class="mb-[20px]">
-                    <p-fileUpload [maxFileSize]="100000" invalidFileSizeMessageSummary="Invalid file size"
-                        invalidFileTypeMessageSummary="Invalid file type" chooseLabel="Choose" name="fileCollection"
-                        [multiple]="true" accept=".jpg,.jpeg,.png" (onSelect)="onSelect($event)"
-                        (onRemove)="onRemove($event)" (onError)="onError($event)" [showUploadButton]="false"
-                        [showCancelButton]="false"></p-fileUpload>
-                </div>
-
-                <!--        Button create-->
-                <div>
-                    <button mat-flat-button color="primary" type="submit">Create</button>
-                </div>
-            </form>
+          >
+            Description is required
+          </mat-error>
         </div>
+
+        <!--        Image Upload-->
+        <div class="mb-[20px]">
+          <p-fileUpload
+            invalidFileTypeMessageSummary="Invalid file type"
+            chooseLabel="Choose"
+            name="fileCollection"
+            [multiple]="true"
+            accept=".jpg,.jpeg,.png"
+            (onSelect)="onSelect($event)"
+            (onRemove)="onRemove($event)"
+            (onError)="onError($event)"
+            [showUploadButton]="false"
+            [showCancelButton]="false"
+          ></p-fileUpload>
+        </div>
+
+        <!--        Button create-->
+        <div>
+          <button mat-flat-button color="primary" type="submit">Create</button>
+        </div>
+      </form>
     </div>
+  </div>
 </ng-container>
