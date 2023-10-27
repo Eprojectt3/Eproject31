@@ -1,6 +1,7 @@
 ﻿using backend.BussinessLogic;
 using backend.Dao.Specification;
 using backend.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,8 @@ namespace backend.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> ListOrderPagination(SpecParams pagination)
         {
             var output = await orderBusinessLogic.SelectAllOrderPagination(pagination);
@@ -43,6 +46,7 @@ namespace backend.Controllers
         }
         //execute add new order
         [HttpPost]
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Add(Order order)
         {
@@ -54,6 +58,8 @@ namespace backend.Controllers
 
         //execute update order
         [HttpPut]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update(Order order)
         {
 
@@ -63,6 +69,8 @@ namespace backend.Controllers
 
         //execute delete order
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int id)
         {
             await orderBusinessLogic.Delete(id);
@@ -72,6 +80,8 @@ namespace backend.Controllers
             });
         }
         [HttpGet("{TourDetailID}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> GetOrderByTourDetailId(int TourDetailID)
         {
             var output = await orderBusinessLogic.GetEntityByCondition(TourDetailID);
@@ -83,6 +93,8 @@ namespace backend.Controllers
         }
         [HttpGet]
         [Route("{year}/{month}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> GetRevenueByMonth(int year, int month)
         {
             try
@@ -100,6 +112,8 @@ namespace backend.Controllers
 
         [HttpGet]
         [Route("{year}/{month}/{day}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> GetRevenueByDay(int year, int month,int day)
         {
             try
@@ -116,6 +130,8 @@ namespace backend.Controllers
         }
         [HttpGet]
         [Route("{year}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> GetRevenueByYear(int year)
         {
             try
@@ -132,6 +148,8 @@ namespace backend.Controllers
         }
         //get order by id
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> GetByOrderId(int id)
         {
             var order = await orderBusinessLogic.GetByOrderId(id);

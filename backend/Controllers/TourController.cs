@@ -5,6 +5,7 @@ using backend.Dao.Specification;
 using backend.Dao.Specification.TourSpec;
 using backend.Dtos.TourDtos;
 using backend.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,8 @@ namespace backend.Controllers
 
         //execute add new tour
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Add([FromForm] TourDto tourdto)
         {
             await tourBusinessLogic.Create(tourdto);
@@ -46,6 +49,8 @@ namespace backend.Controllers
 
         //execute update tour
         [HttpPut]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update([FromForm] Tour_Update_Dto tourdto)
         {
             await tourBusinessLogic.Update(tourdto);
@@ -61,6 +66,7 @@ namespace backend.Controllers
 
         //execute delete tour
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await tourBusinessLogic.Delete(id);

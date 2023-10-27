@@ -1,5 +1,6 @@
 ﻿using backend.Entity;
 using backend.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webapi.Dao.UnitofWork;
@@ -22,6 +23,8 @@ namespace backend.Controllers
             return Ok(list);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Add(PlaceType placeType)
         {
               await unitofWork.Repository<PlaceType>().AddAsync(placeType);
@@ -35,6 +38,8 @@ namespace backend.Controllers
         });
         }
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update(PlaceType placeType,int id)
         {
             var check = await unitofWork.Repository<PlaceType>().GetByIdAsync(id);

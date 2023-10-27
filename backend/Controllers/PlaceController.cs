@@ -3,6 +3,7 @@ using backend.Dao.Specification;
 using backend.Dtos;
 using backend.Dtos.HotelDtos;
 using backend.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,6 +49,8 @@ namespace backend.Controllers
 
         //execute add new hotel
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Add([FromForm] PlaceImageDto hotel)
         {
             await hotelBusinessLogic.Create(hotel);
@@ -57,6 +60,8 @@ namespace backend.Controllers
 
         //execute update hotel
         [HttpPut]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update([FromForm] Place_Update_Dto hotel)
         {
             await hotelBusinessLogic.Update(hotel);
@@ -65,6 +70,8 @@ namespace backend.Controllers
 
         //execute delete hotel
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int id)
         {
              var result = await hotelBusinessLogic.Delete(id);
