@@ -18,14 +18,14 @@ namespace webapi.Dao.Services
             this.iconfiguration = iconfiguration;
         }
 
-        public Tokens GenerateRefreshToken(string username, int roleId)
+        public Tokens GenerateRefreshToken(string username, string role)
         {
-            return GenerateJWTTokens(username, roleId);
+            return GenerateJWTTokens(username, role);
         }
 
-        public Tokens GenerateToken(string username, int roleId)
+        public Tokens GenerateToken(string username, string role)
         {
-            return GenerateJWTTokens(username, roleId);
+            return GenerateJWTTokens(username, role);
         }
 
         public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
@@ -64,7 +64,7 @@ namespace webapi.Dao.Services
         }
 
         // Generate token method
-        private Tokens GenerateJWTTokens(string username, int roleId)
+        private Tokens GenerateJWTTokens(string username, string role)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace webapi.Dao.Services
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                             new Claim(JwtRegisteredClaimNames.Aud, iconfiguration["JWT:Audience"]),
                             new Claim(JwtRegisteredClaimNames.Iss, iconfiguration["JWT:Issuer"]),
-                            new Claim(ClaimTypes.Role, roleId.ToString())
+                            new Claim(ClaimTypes.Role, role.ToString())
                         }
                     ),
                     Expires = DateTime.Now.AddHours(3),
