@@ -13,7 +13,7 @@ import { PlaceService } from 'src/app/services/place.service';
 @Component({
   selector: 'app-create-restaurant',
   templateUrl: './create-restaurant.component.html',
-  styleUrls: ['./create-restaurant.component.scss']
+  styleUrls: ['./create-restaurant.component.scss'],
 })
 export class CreateRestaurantComponent implements OnInit {
   loginForm!: FormGroup;
@@ -81,7 +81,10 @@ export class CreateRestaurantComponent implements OnInit {
     this.formData.append('Name', this.loginForm.controls['name'].value);
     this.formData.append('Rating', '0');
     this.formData.append('Price_range', this.loginForm.controls['price'].value);
-    this.formData.append('LocationId', this.loginForm.controls['location'].value);
+    this.formData.append(
+      'LocationId',
+      this.loginForm.controls['location'].value
+    );
     this.formData.append('Description', this.description);
     this.formData.append('Address', this.loginForm.controls['address'].value);
     this.formData.append('PhoneNumber', this.loginForm.controls['phone'].value);
@@ -105,8 +108,6 @@ export class CreateRestaurantComponent implements OnInit {
     console.log(this.formData);
     console.log(this.dataForm);
 
-
-
     if (
       !this.loginForm.controls['name'].errors &&
       !this.loginForm.controls['price'].errors &&
@@ -120,14 +121,14 @@ export class CreateRestaurantComponent implements OnInit {
       // };
       this.placeService.createPlace(this.formData).subscribe(
         (val) => {
-          console.log(this.formData)
+          console.log(this.formData);
           this.snackBar.openSnackBar('Create success', 'Success');
           this.router.navigate(['/admin/restaurants'], {
             queryParams: { refresh: 'true' },
           });
         },
         (err) => {
-          console.log(this.formData)
+          console.log(this.formData);
           console.log(err);
           this.snackBar.openSnackBar(err, 'Error');
           console.log(this.formData);
@@ -143,16 +144,12 @@ export class CreateRestaurantComponent implements OnInit {
     const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     const allowedExtensionName = ['.jpg', '/jpeg', '.png'];
 
-    if (uploadedImage.size < 100000) {
-      if (allowedTypes.includes(uploadedImage.type)) {
-        allowedExtensionName.map((item) => {
-          if (uploadedImage.name.includes(item)) {
-            this.uploadedImages.push(uploadedImage);
-          }
-        });
-      }
-    } else {
-      console.error('File size is too large');
+    if (allowedTypes.includes(uploadedImage.type)) {
+      allowedExtensionName.map((item) => {
+        if (uploadedImage.name.includes(item)) {
+          this.uploadedImages.push(uploadedImage);
+        }
+      });
     }
   };
 

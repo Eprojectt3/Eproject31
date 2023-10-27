@@ -13,7 +13,7 @@ import { PlaceService } from 'src/app/services/place.service';
 @Component({
   selector: 'app-update-restaurant',
   templateUrl: './update-restaurant.component.html',
-  styleUrls: ['./update-restaurant.component.scss']
+  styleUrls: ['./update-restaurant.component.scss'],
 })
 export class UpdateRestaurantComponent implements OnInit {
   formData: FormData = new FormData();
@@ -79,7 +79,7 @@ export class UpdateRestaurantComponent implements OnInit {
       images: [null],
     });
 
-    this.placeService.placeSubject.subscribe((val: any) => {
+    this.placeService.getPlaceById(this.id).subscribe((val: any) => {
       this.loginForm.controls['name'].setValue(val.name);
       this.loginForm.controls['price'].setValue(val.price_range);
       this.loginForm.controls['location'].setValue(val.locationId);
@@ -115,7 +115,7 @@ export class UpdateRestaurantComponent implements OnInit {
     this.formData.append('Description', this.description);
     this.formData.append('Address', this.loginForm.controls['address'].value);
     this.formData.append('PhoneNumber', this.loginForm.controls['phone'].value);
-    this.formData.append('place_Type_ID', '3');          
+    this.formData.append('place_Type_ID', '3');
     if (
       !this.loginForm.controls['name'].errors &&
       !this.loginForm.controls['price'].errors &&
@@ -125,7 +125,7 @@ export class UpdateRestaurantComponent implements OnInit {
       !this.loginForm.controls['address'].errors
     ) {
       this.placeService.updatePlace(this.formData).subscribe(
-        (val) => {  
+        (val) => {
           this.snackBar.openSnackBar('Update success', 'Success');
           this.router.navigate(['/admin/restaurants'], {
             queryParams: { refresh: 'true' },
@@ -160,16 +160,12 @@ export class UpdateRestaurantComponent implements OnInit {
     const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     const allowedExtensionName = ['.jpg', '/jpeg', '.png'];
 
-    if (uploadedImage.size < 100000) {
-      if (allowedTypes.includes(uploadedImage.type)) {
-        allowedExtensionName.map((item) => {
-          if (uploadedImage.name.includes(item)) {
-            this.uploadedImages.push(uploadedImage);
-          }
-        });
-      }
-    } else {
-      console.error('File size is too large');
+    if (allowedTypes.includes(uploadedImage.type)) {
+      allowedExtensionName.map((item) => {
+        if (uploadedImage.name.includes(item)) {
+          this.uploadedImages.push(uploadedImage);
+        }
+      });
     }
   };
 
@@ -183,5 +179,4 @@ export class UpdateRestaurantComponent implements OnInit {
       return item !== urlImage;
     });
   };
-
 }

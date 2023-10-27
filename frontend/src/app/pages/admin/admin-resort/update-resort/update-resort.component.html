@@ -1,170 +1,167 @@
 <ng-container>
-    <div class="px-5">
-      <!--        Title-->
-      <div class="mb-[20px]">
-        <h1 class="font-bold text-[25px]">Update Resort</h1>
-      </div>
-  
-      <!--        Form-->
-      <div>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <!--          Resort name-->
+  <div class="px-5">
+    <!--        Title-->
+    <div class="mb-[20px]">
+      <h1 class="font-bold text-[25px]">Update Resort</h1>
+    </div>
+
+    <!--        Form-->
+    <div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!--          Resort name-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Resort name</mat-label>
+            <input
+              matInput
+              formControlName="name"
+              [errorStateMatcher]="validatorForm"
+            />
+            <mat-error *ngIf="loginForm.controls['name'].errors?.['whitespace']"
+              >Name resort is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!--          Price-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Price</mat-label>
+            <input
+              matInput
+              formControlName="price"
+              [errorStateMatcher]="validatorForm"
+            />
+            <mat-error
+              *ngIf="loginForm.controls['price'].errors?.['whitespace']"
+              >Price is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex justify-around">
+          <!--          Location-->
           <div class="w-[100%]">
-            <mat-form-field class="!w-[100%]">
-              <mat-label>Resort name</mat-label>
-              <input
-                matInput
-                formControlName="name"
-                [errorStateMatcher]="validatorForm"
-              />
-              <mat-error *ngIf="loginForm.controls['name'].errors?.['whitespace']"
-                >Name resort is required
+            <mat-form-field class="!w-[97%]">
+              <mat-label>Location</mat-label>
+              <mat-select formControlName="location">
+                <mat-option
+                  *ngFor="let location of locations"
+                  [value]="location.id"
+                  >{{ location.state }}</mat-option
+                >
+              </mat-select>
+              <mat-error
+                *ngIf="loginForm.controls['location'].errors?.['required']"
+              >
+                Please choose a option
               </mat-error>
             </mat-form-field>
           </div>
-  
-          <!--          Price-->
+
+          <!--          Phone-->
           <div class="w-[100%]">
             <mat-form-field class="!w-[100%]">
-              <mat-label>Price</mat-label>
+              <mat-label>Phone</mat-label>
               <input
                 matInput
-                formControlName="price"
+                formControlName="phone"
                 [errorStateMatcher]="validatorForm"
               />
               <mat-error
-                *ngIf="loginForm.controls['price'].errors?.['whitespace']"
-                >Price is required
+                *ngIf="loginForm.controls['phone'].errors?.['whitespace']"
+                >Phone is required
+              </mat-error>
+              <mat-error *ngIf="loginForm.controls['phone'].errors?.['pattern']"
+                >Phone is not valid
               </mat-error>
             </mat-form-field>
           </div>
-  
-          <div class="flex justify-around">
-            <!--          Location-->
-            <div class="w-[100%]">
-              <mat-form-field class="!w-[97%]">
-                <mat-label>Location</mat-label>
-                <mat-select formControlName="location">
-                  <mat-option
-                    *ngFor="let location of locations"
-                    [value]="location.id"
-                    >{{ location.state }}</mat-option
-                  >
-                </mat-select>
-                <mat-error
-                  *ngIf="loginForm.controls['location'].errors?.['required']"
-                >
-                  Please choose a option
-                </mat-error>
-              </mat-form-field>
-            </div>
-  
-            <!--          Phone-->
-            <div class="w-[100%]">
-              <mat-form-field class="!w-[100%]">
-                <mat-label>Phone</mat-label>
-                <input
-                  matInput
-                  formControlName="phone"
-                  [errorStateMatcher]="validatorForm"
-                />
-                <mat-error
-                  *ngIf="loginForm.controls['phone'].errors?.['whitespace']"
-                  >Phone is required
-                </mat-error>
-                <mat-error *ngIf="loginForm.controls['phone'].errors?.['pattern']"
-                  >Phone is not valid
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-  
-          <!--        Description-->
-          <div class="mb-[20px]">
-            <h3 class="font-bold mb-[10px]">Description</h3>
-            <ckeditor
-              [(ngModel)]="description"
-              formControlName="description"
-              [editor]="Editor"
-            ></ckeditor>
-  
-            <mat-error
-              *ngIf="
+        </div>
+
+        <!--        Description-->
+        <div class="mb-[20px]">
+          <h3 class="font-bold mb-[10px]">Description</h3>
+          <ckeditor
+            [(ngModel)]="description"
+            formControlName="description"
+            [editor]="Editor"
+          ></ckeditor>
+
+          <mat-error
+            *ngIf="
                 (loginForm.controls['description'].errors?.['whitespace'] &&
                   loginForm.controls['description'].dirty) ||
                 (loginForm.controls['description'].errors?.['whitespace'] &&
                   loginForm.controls['description'].touched)
               "
-            >
-              Description is required
+          >
+            Description is required
+          </mat-error>
+        </div>
+
+        <!--          Address-->
+        <div class="w-[100%]">
+          <mat-form-field class="!w-[100%]">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address" />
+            <mat-error
+              *ngIf="loginForm.controls['address'].errors?.['whitespace']"
+              >Address is required
             </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!--        Image Upload-->
+        <div class="mb-[20px]">
+          <p-fileUpload
+            invalidFileTypeMessageSummary="Invalid file type"
+            chooseLabel="Choose"
+            name="fileCollection"
+            [multiple]="true"
+            accept=".jpg,.jpeg,.png"
+            (onSelect)="onSelect($event)"
+            (onRemove)="onRemove($event)"
+            [showUploadButton]="false"
+            [showCancelButton]="false"
+          ></p-fileUpload>
+
+          <!--          <input type="file" (change)="uploadFile($event)" />-->
+          <div class="list-img flex break-words">
+            <ul
+              *ngFor="let urlImage of urlImages"
+              class="mr-[10px] relative z-1"
+            >
+              <li>
+                <button
+                  type="button"
+                  mat-icon-button
+                  class="absolute -top-28 left-[255px] !z-50"
+                  (click)="removeImage(urlImage.path, urlImage)"
+                >
+                  <mat-icon class="text-[#504e4e]">close</mat-icon>
+                </button>
+
+                <p-image
+                  [imageStyle]="{
+                    width: '250px',
+                    height: '150px'
+                  }"
+                  class="bg-cover object-cover"
+                  [src]="urlImage.image"
+                  alt="Error"
+                  [preview]="true"
+                ></p-image>
+              </li>
+            </ul>
           </div>
-  
-          <!--          Address-->
-          <div class="w-[100%]">
-            <mat-form-field class="!w-[100%]">
-              <mat-label>Address</mat-label>
-              <input matInput formControlName="address" />
-              <mat-error
-                *ngIf="loginForm.controls['address'].errors?.['whitespace']"
-                >Address is required
-              </mat-error>
-            </mat-form-field>
-          </div>
-  
-          <!--        Image Upload-->
-          <div class="mb-[20px]">
-            <p-fileUpload
-              [maxFileSize]="100000"
-              invalidFileSizeMessageSummary="Invalid file size"
-              invalidFileTypeMessageSummary="Invalid file type"
-              chooseLabel="Choose"
-              name="fileCollection"
-              [multiple]="true"
-              accept=".jpg,.jpeg,.png"
-              (onSelect)="onSelect($event)"
-              (onRemove)="onRemove($event)"
-              [showUploadButton]="false"
-              [showCancelButton]="false"
-            ></p-fileUpload>
-  
-            <!--          <input type="file" (change)="uploadFile($event)" />-->
-            <div class="list-img flex">
-              <ul
-                *ngFor="let urlImage of urlImages"
-                class="mr-[10px] relative z-1"
-              >
-                <li>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    class="absolute -top-28 left-[255px] !z-50"
-                    (click)="removeImage(urlImage.path, urlImage)"
-                  >
-                    <mat-icon class="text-[#504e4e]">close</mat-icon>
-                  </button>
-  
-                  <p-image
-                    [imageStyle]="{
-                      width: '250px',
-                      height: '150px'
-                    }"
-                    class="bg-cover object-cover"
-                    [src]="urlImage.image"
-                    alt="Error"
-                    [preview]="true"
-                  ></p-image>
-                </li>
-              </ul>
-            </div>
-          </div>
-  
-          <!--        Button create-->
-          <div>
-            <button mat-flat-button color="primary" type="submit">Create</button>
-          </div>
-        </form>
-      </div>
+        </div>
+
+        <!--        Button create-->
+        <div>
+          <button mat-flat-button color="primary" type="submit">Create</button>
+        </div>
+      </form>
     </div>
-  </ng-container>
-  
+  </div>
+</ng-container>

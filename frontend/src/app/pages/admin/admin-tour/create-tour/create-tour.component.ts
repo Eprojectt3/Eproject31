@@ -52,11 +52,10 @@ export class CreateTourComponent implements OnInit {
         '',
         Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
       ],
-      category:['', Validators.required],
+      category: ['', Validators.required],
       description: [
         '',
         Validators.compose([this.validatorForm.NoWhitespaceValidator()]),
-
       ],
       quantity_limit: [
         '',
@@ -94,14 +93,29 @@ export class CreateTourComponent implements OnInit {
     this.formData.append('Name', this.loginForm.controls['name'].value);
     this.formData.append('Rating', '0');
     this.formData.append('Price', this.loginForm.controls['price'].value);
-    this.formData.append('Category_Id',this.loginForm.controls['category'].value);
+    this.formData.append(
+      'Category_Id',
+      this.loginForm.controls['category'].value
+    );
     this.formData.append('Description', this.description);
-    this.formData.append('Quantity_limit', this.loginForm.controls['quantity_limit'].value);
+    this.formData.append(
+      'Quantity_limit',
+      this.loginForm.controls['quantity_limit'].value
+    );
     // this.formData.append('Departure_Time', this.loginForm.controls['departure_Time'].value);
-    this.formData.append('Range_time', this.loginForm.controls['range_time'].value);
-    this.formData.append('Transportation_ID', this.loginForm.controls['transportation'].value);
+    this.formData.append(
+      'Range_time',
+      this.loginForm.controls['range_time'].value
+    );
+    this.formData.append(
+      'Transportation_ID',
+      this.loginForm.controls['transportation'].value
+    );
     this.formData.append('Discount', this.loginForm.controls['discount'].value);
-    this.formData.append('Departure_location', this.loginForm.controls['departure_location'].value);
+    this.formData.append(
+      'Departure_location',
+      this.loginForm.controls['departure_location'].value
+    );
     // console.log(this.formData);
 
     if (
@@ -111,9 +125,9 @@ export class CreateTourComponent implements OnInit {
       !this.loginForm.controls['quantity_limit'].errors &&
       !this.loginForm.controls['description'].errors &&
       // !this.loginForm.controls['departure_Time'].errors&&
-      !this.loginForm.controls['range_time'].errors&&
-      !this.loginForm.controls['transportation'].errors&&
-      !this.loginForm.controls['discount'].errors&&
+      !this.loginForm.controls['range_time'].errors &&
+      !this.loginForm.controls['transportation'].errors &&
+      !this.loginForm.controls['discount'].errors &&
       !this.loginForm.controls['departure_location'].errors
     ) {
       this.tourService.createTours(this.formData).subscribe(
@@ -122,7 +136,6 @@ export class CreateTourComponent implements OnInit {
           this.router.navigate(['/admin/tours'], {
             queryParams: { refresh: 'true' },
           });
-
         },
         (err) => {
           console.log(err);
@@ -138,16 +151,12 @@ export class CreateTourComponent implements OnInit {
     const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     const allowedExtensionName = ['.jpg', '/jpeg', '.png'];
 
-    if (uploadedImage.size < 100000) {
-      if (allowedTypes.includes(uploadedImage.type)) {
-        allowedExtensionName.map((item) => {
-          if (uploadedImage.name.includes(item)) {
-            this.uploadedImages.push(uploadedImage);
-          }
-        });
-      }
-    } else {
-      console.error('File size is too large');
+    if (allowedTypes.includes(uploadedImage.type)) {
+      allowedExtensionName.map((item) => {
+        if (uploadedImage.name.includes(item)) {
+          this.uploadedImages.push(uploadedImage);
+        }
+      });
     }
   };
   public getListCategory = () => {

@@ -81,18 +81,22 @@ export class UpdateHotelComponent implements OnInit {
       images: [null],
     });
 
-    this.placeService.placeSubject.subscribe((val: any) => {
-      this.loginForm.controls['name'].setValue(val.name);
-      this.loginForm.controls['price'].setValue(val.price_range);
-      this.loginForm.controls['location'].setValue(val.locationId);
-      this.loginForm.controls['phone'].setValue(val.phoneNumber);
-      this.loginForm.controls['address'].setValue(val.address);
-      this.loginForm.controls['description'].setValue(val.description);
-      this.location = val.locationId;
+    this.placeService.getPlaceById(this.id).subscribe((val: any) => {
+      this.loginForm.controls['name'].setValue(val?.name);
+      this.loginForm.controls['price'].setValue(val?.price_range);
+      this.loginForm.controls['location'].setValue(val?.locationId);
+      this.loginForm.controls['phone'].setValue(val?.phoneNumber);
+      this.loginForm.controls['address'].setValue(val?.address);
+      this.loginForm.controls['description'].setValue(val?.description);
+      this.location = val?.locationId;
 
-      for (let urlImage of val.urlImage) {
-        this.urlImages.push(urlImage);
-        this.pathImages.push(urlImage.path);
+      // console.log(val.urlImage);
+
+      for (let urlImage of val?.urlImage) {
+        if (!this.urlImages.includes(urlImage)) {
+          this.urlImages.push(urlImage);
+          this.pathImages.push(urlImage.path);
+        }
       }
     });
   }
@@ -163,16 +167,12 @@ export class UpdateHotelComponent implements OnInit {
     const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     const allowedExtensionName = ['.jpg', '/jpeg', '.png'];
 
-    if (uploadedImage.size < 100000) {
-      if (allowedTypes.includes(uploadedImage.type)) {
-        allowedExtensionName.map((item) => {
-          if (uploadedImage.name.includes(item)) {
-            this.uploadedImages.push(uploadedImage);
-          }
-        });
-      }
-    } else {
-      console.error('File size is too large');
+    if (allowedTypes.includes(uploadedImage.type)) {
+      allowedExtensionName.map((item) => {
+        if (uploadedImage.name.includes(item)) {
+          this.uploadedImages.push(uploadedImage);
+        }
+      });
     }
   };
 

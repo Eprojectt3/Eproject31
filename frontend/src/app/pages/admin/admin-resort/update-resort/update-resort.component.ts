@@ -13,9 +13,9 @@ import { PlaceService } from 'src/app/services/place.service';
 @Component({
   selector: 'app-update-resort',
   templateUrl: './update-resort.component.html',
-  styleUrls: ['./update-resort.component.scss']
+  styleUrls: ['./update-resort.component.scss'],
 })
-export class UpdateResortComponent implements OnInit{
+export class UpdateResortComponent implements OnInit {
   formData: FormData = new FormData();
   loginForm!: FormGroup;
   Editor = ClassicEditor;
@@ -80,7 +80,7 @@ export class UpdateResortComponent implements OnInit{
       images: [null],
     });
 
-    this.placeService.placeSubject.subscribe((val: any) => {
+    this.placeService.getPlaceById(this.id).subscribe((val: any) => {
       this.loginForm.controls['name'].setValue(val.name);
       this.loginForm.controls['price'].setValue(val.price_range);
       this.loginForm.controls['location'].setValue(val.locationId);
@@ -163,16 +163,12 @@ export class UpdateResortComponent implements OnInit{
     const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     const allowedExtensionName = ['.jpg', '/jpeg', '.png'];
 
-    if (uploadedImage.size < 100000) {
-      if (allowedTypes.includes(uploadedImage.type)) {
-        allowedExtensionName.map((item) => {
-          if (uploadedImage.name.includes(item)) {
-            this.uploadedImages.push(uploadedImage);
-          }
-        });
-      }
-    } else {
-      console.error('File size is too large');
+    if (allowedTypes.includes(uploadedImage.type)) {
+      allowedExtensionName.map((item) => {
+        if (uploadedImage.name.includes(item)) {
+          this.uploadedImages.push(uploadedImage);
+        }
+      });
     }
   };
 
