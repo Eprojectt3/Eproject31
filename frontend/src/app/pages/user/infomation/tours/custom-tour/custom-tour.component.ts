@@ -45,6 +45,21 @@ export class CustomTourComponent implements OnInit {
       number_people: ['', [Validators.required]],
       destination: ['', [Validators.required]],
       description: ['', [this.validationService.NoWhitespaceValidator()]],
+      name: ['', [this.validationService.NoWhitespaceValidator()]],
+      email: [
+        '',
+        [
+          this.validationService.NoWhitespaceValidator(),
+          Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
+        ],
+      ],
+      phone: [
+        '',
+        [
+          this.validationService.NoWhitespaceValidator(),
+          Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/),
+        ],
+      ],
     });
 
     // Get user
@@ -63,35 +78,81 @@ export class CustomTourComponent implements OnInit {
 
   // Submit
   public onSubmit = () => {
-    const data = {
-      location: this.form.controls['location'].value,
-      createBy: this.user.name,
-      createDate: new Date(),
-      transportation: this.form.controls['transportation'].value,
-      departure_Date: new Date(this.form.controls['departure_date'].value),
-      end_Date: new Date(this.form.controls['end_date'].value),
-      destination: this.form.controls['destination'].value,
-      description: this.description,
-    };
+    let data = {};
 
-    if (
-      !this.form.controls['location'].errors &&
-      !this.form.controls['transportation'].errors &&
-      !this.form.controls['departure_date'].errors &&
-      !this.form.controls['end_date'].errors &&
-      !this.form.controls['destination'].errors &&
-      !this.form.controls['description'].errors
-    ) {
-      this.informationService.createInformation(data).subscribe(
-        (val) => {
-          this.snackBarService.openSnackBar('Send successfully', 'Success');
-          this.isClose();
-        },
-        (err) => {
-          this.snackBarService.openSnackBar(err, 'Error');
-          console.error(err);
-        }
-      );
+    if (this.user) {
+      data = {
+        location: this.form.controls['location'].value,
+        createBy: this.user.name,
+        createDate: new Date(),
+        transportation: this.form.controls['transportation'].value,
+        departure_Date: new Date(this.form.controls['departure_date'].value),
+        end_Date: new Date(this.form.controls['end_date'].value),
+        destination: this.form.controls['destination'].value,
+        description: this.description,
+        name: this.user.name,
+        email: this.user.email,
+        phone: this.user.phone,
+      };
+    } else {
+      data = {
+        location: this.form.controls['location'].value,
+        createBy: this.form.controls['name'].value,
+        createDate: new Date(),
+        transportation: this.form.controls['transportation'].value,
+        departure_Date: new Date(this.form.controls['departure_date'].value),
+        end_Date: new Date(this.form.controls['end_date'].value),
+        destination: this.form.controls['destination'].value,
+        description: this.description,
+        name: this.form.controls['name'].value,
+        email: this.form.controls['email'].value,
+        phone: this.form.controls['phone'].value,
+      };
+    }
+
+    if (this.user) {
+      if (
+        !this.form.controls['location'].errors &&
+        !this.form.controls['transportation'].errors &&
+        !this.form.controls['departure_date'].errors &&
+        !this.form.controls['end_date'].errors &&
+        !this.form.controls['destination'].errors &&
+        !this.form.controls['description'].errors
+      ) {
+        this.informationService.createInformation(data).subscribe(
+          (val) => {
+            this.snackBarService.openSnackBar('Send successfully', 'Success');
+            this.isClose();
+          },
+          (err) => {
+            this.snackBarService.openSnackBar(err, 'Error');
+            console.error(err);
+          }
+        );
+      }
+    } else {
+      if (
+        !this.form.controls['location'].errors &&
+        !this.form.controls['transportation'].errors &&
+        !this.form.controls['departure_date'].errors &&
+        !this.form.controls['end_date'].errors &&
+        !this.form.controls['destination'].errors &&
+        !this.form.controls['description'].errors &&
+        !this.form.controls['name'].errors &&
+        !this.form.controls['email'].errors &&
+        !this.form.controls['phone'].errors
+      ) {
+        this.informationService.createInformation(data).subscribe(
+          (val) => {
+            this.snackBarService.openSnackBar('Send successfully', 'Success');
+            this.isClose();
+          },
+          (err) => {
+            this.snackBarService.openSnackBar(err, 'Error');
+            console.error(err);
+          }
+        );
+      }
     }
   };
 
